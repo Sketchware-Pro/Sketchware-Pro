@@ -5,9 +5,7 @@ import io.github.rosemoe.sora.lang.Language;
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage;
 import io.github.rosemoe.sora.langs.textmate.registry.FileProviderRegistry;
 import io.github.rosemoe.sora.langs.textmate.registry.GrammarRegistry;
-import io.github.rosemoe.sora.langs.textmate.registry.dsl.LanguageDefinitionListBuilder;
 import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver;
-import kotlin.Unit;
 import mod.jbk.util.LogUtil;
 import pro.sketchware.SketchApplication;
 
@@ -18,18 +16,18 @@ public class CodeEditorLanguages {
 
     static {
         FileProviderRegistry.getInstance().addFileProvider(new AssetsFileResolver(SketchApplication.getContext().getAssets()));
-            Throwable t;
-            try {
-                GrammarRegistry.getInstance().loadGrammars("textmate/languages.json");
-            } catch (Exception e) {
-                t = e;
-                // fall-through
-            } catch (NoSuchMethodError e) {
-                t = e;
-                LogUtil.e(TAG, "Probably running on a low API device");
-                // fall-through
-            }
-        
+        Throwable t;
+        try {
+            GrammarRegistry.getInstance().loadGrammars("textmate/languages.json");
+        } catch (Exception e) {
+            t = e;
+            // fall-through
+        } catch (NoSuchMethodError e) {
+            t = e;
+            LogUtil.e(TAG, "Probably running on a low API device");
+            // fall-through
+        }
+
     }
 
     public static Language loadTextMateLanguage(String scopeName) {

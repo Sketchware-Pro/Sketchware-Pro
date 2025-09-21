@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +21,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import org.xml.sax.InputSource;
 
 import java.io.ByteArrayInputStream;
@@ -141,7 +139,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         }
 
     }
-    
+
     public static String prettifyXml(String xml, int indentAmount, Intent extras) {
         if (xml == null || xml.trim().isEmpty()) return xml;
 
@@ -149,12 +147,12 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(new InputSource(
-                new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))));
+                    new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))));
             document.normalize();
 
             XPath xPath = XPathFactory.newInstance().newXPath();
             NodeList nodeList = (NodeList) xPath.evaluate(
-                "//text()[normalize-space()='']", document, XPathConstants.NODESET);
+                    "//text()[normalize-space()='']", document, XPathConstants.NODESET);
             for (int i = 0; i < nodeList.getLength(); ++i) {
                 Node node = nodeList.item(i);
                 node.getParentNode().removeChild(node);
@@ -164,7 +162,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount",
-                String.valueOf(indentAmount));
+                    String.valueOf(indentAmount));
 
             boolean omitXmlDecl = extras != null && extras.hasExtra("disableHeader");
             if (omitXmlDecl) {
@@ -178,9 +176,9 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             if (!omitXmlDecl && result.startsWith("<?xml")) {
                 int endOfDecl = result.indexOf("?>");
                 if (endOfDecl != -1 && endOfDecl + 2 < result.length()
-                    && result.charAt(endOfDecl + 2) != '\n') {
+                        && result.charAt(endOfDecl + 2) != '\n') {
                     result = result.substring(0, endOfDecl + 2) + "\n"
-                        + result.substring(endOfDecl + 2);
+                            + result.substring(endOfDecl + 2);
                 }
             }
 
@@ -190,8 +188,8 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                 String trimmed = line.trim();
 
                 if (trimmed.startsWith("<") && !trimmed.startsWith("<?")
-                    && !trimmed.startsWith("<!") && trimmed.contains(" ")
-                    && !trimmed.startsWith("</")) {
+                        && !trimmed.startsWith("<!") && trimmed.contains(" ")
+                        && !trimmed.startsWith("</")) {
 
                     int indentBase = line.indexOf('<');
                     String baseIndent = " ".repeat(Math.max(0, indentBase));
@@ -203,7 +201,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                     if (tagEnd > 0) {
                         String tagName = trimmed.substring(1, tagEnd);
                         String attrPart = trimmed.substring(tagEnd + 1)
-                            .replaceAll("/?>$", "").trim();
+                                .replaceAll("/?>$", "").trim();
                         String[] attrs = attrPart.split("\\s+(?=[^=]+\\=)");
 
                         formatted.append(baseIndent).append("<").append(tagName).append("\n");
@@ -231,7 +229,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             return null;
         }
     }
-    
+
     /**
      * Adds a specified amount of tabs.
      */

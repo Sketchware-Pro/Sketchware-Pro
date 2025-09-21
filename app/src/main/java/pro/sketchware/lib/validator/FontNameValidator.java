@@ -1,7 +1,6 @@
 package pro.sketchware.lib.validator;
 
 import android.content.Context;
-import android.text.Spanned;
 
 import com.google.android.material.textfield.TextInputLayout;
 
