@@ -90,11 +90,6 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         onCreateOptionsMenu(toolbar.getMenu());
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-    }
-
     private void onNextPressed() {
         if (step.isValid()) {
             step.a(firebaseSettings);
@@ -263,11 +258,6 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         super.onPostCreate(savedInstanceState);
         firebaseSettings = getIntent().getParcelableExtra("firebase");
         setStep(stepNumber);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override

@@ -27,7 +27,6 @@ public abstract class MA extends AsyncTask<Void, String, String> {
         } catch (Exception e) {
             Log.e("MA", e.getMessage(), e);
             // the bytecode's lying
-            // noinspection ConstantValue
             if (e instanceof By) {
                 return e.getMessage();
             }

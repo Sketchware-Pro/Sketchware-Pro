@@ -108,12 +108,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-
-    }
-
     private void nextStep() {
         if (step.isValid()) {
             step.a(adMobSettings);
