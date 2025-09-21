@@ -20,24 +20,24 @@ public class Material3LibraryManager {
     private final Context context;
 
     public Material3LibraryManager(String sc_id) {
-        this.isEditingState = false;
-        this.appCombatLibraryBean = jC.c(sc_id).c();
-        this.isAppCompatEnabled = appCombatLibraryBean.isEnabled();
-        this.context = getContext();
+        isEditingState = false;
+        appCombatLibraryBean = jC.c(sc_id).c();
+        isAppCompatEnabled = appCombatLibraryBean.isEnabled();
+        context = getContext();
     }
 
     public Material3LibraryManager(Context context, String sc_id) {
         this.context = context;
-        this.isEditingState = false;
-        this.appCombatLibraryBean = jC.c(sc_id).c();
-        this.isAppCompatEnabled = appCombatLibraryBean.isEnabled();
+        isEditingState = false;
+        appCombatLibraryBean = jC.c(sc_id).c();
+        isAppCompatEnabled = appCombatLibraryBean.isEnabled();
     }
 
     public Material3LibraryManager(ProjectLibraryBean projectLibraryBean) {
-        this.context = getContext();
-        this.isEditingState = true;
-        this.appCombatLibraryBean = projectLibraryBean;
-        this.isAppCompatEnabled = projectLibraryBean.isEnabled();
+        context = getContext();
+        isEditingState = true;
+        appCombatLibraryBean = projectLibraryBean;
+        isAppCompatEnabled = projectLibraryBean.isEnabled();
     }
 
     public boolean isAppCompatEnabled() {

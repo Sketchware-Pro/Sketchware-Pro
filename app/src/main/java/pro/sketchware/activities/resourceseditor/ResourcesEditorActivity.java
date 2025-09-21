@@ -52,30 +52,35 @@ import pro.sketchware.utility.UI;
 
 public class ResourcesEditorActivity extends BaseAppCompatActivity {
 
-    private ResourcesEditorsActivityBinding binding;
-
-    private MaterialAlertDialogBuilder builder;
-
+    private final String variantFullNameStarts = "values-";
     public yq yq;
-
     public boolean isComingFromSrcCodeEditor;
-
     public String sc_id;
     public String variant;
-    private final String variantFullNameStarts = "values-";
     public String stringsFilePath;
     public String colorsFilePath;
     public String stylesFilePath;
     public String themesFilePath;
     public String arrayFilePath;
-
     public StringsEditor stringsEditor;
     public ColorsEditor colorsEditor;
     public StylesEditor stylesEditor;
     public ThemesEditor themesEditor;
     public ArraysEditor arraysEditor;
-
+    private ResourcesEditorsActivityBinding binding;
+    private MaterialAlertDialogBuilder builder;
     private int currentTabPosition = 0;
+
+    public static String escapeXml(String text) {
+        if (text == null) return "";
+        return text.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "\\'")
+                .replace("\n", "&#10;")
+                .replace("\r", "&#13;");
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -449,7 +454,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
             String files = formatUnsavedFilesList(unsavedFiles);
             String message = String.format(Helper.getResString(R.string.resources_editor_unsaved_changes_message_variant_change), files);
 
-            new MaterialAlertDialogBuilder(ResourcesEditorActivity.this)
+            new MaterialAlertDialogBuilder(this)
                     .setTitle(Helper.getResString(R.string.common_word_warning))
                     .setMessage(message)
                     .setPositiveButton(Helper.getResString(R.string.common_word_save), (dialog, which) -> {
@@ -608,17 +613,6 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
 
         dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
-    }
-
-    public static String escapeXml(String text) {
-        if (text == null) return "";
-        return text.replace("&", "&amp;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;")
-                .replace("\"", "&quot;")
-                .replace("'", "\\'")
-                .replace("\n", "&#10;")
-                .replace("\r", "&#13;");
     }
 
 }

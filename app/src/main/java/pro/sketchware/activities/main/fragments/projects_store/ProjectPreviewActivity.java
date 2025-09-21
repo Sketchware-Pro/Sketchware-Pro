@@ -101,7 +101,7 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
             int[] location = new int[2];
             binding.author.getLocationOnScreen(location);
 
-            if (location[1] + binding.author.getHeight() + UI.getStatusBarHeight(ProjectPreviewActivity.this) < binding.toolbar.getHeight()) {
+            if (location[1] + binding.author.getHeight() + UI.getStatusBarHeight(this) < binding.toolbar.getHeight()) {
                 if (isTitleContainerShown) return;
                 isTitleContainerShown = true;
 

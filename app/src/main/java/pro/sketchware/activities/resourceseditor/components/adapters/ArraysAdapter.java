@@ -25,7 +25,7 @@ public class ArraysAdapter extends RecyclerView.Adapter<ArraysAdapter.ArrayViewH
 
     public ArraysAdapter(ArrayList<ArrayModel> arraysList, Fragment fragment, HashMap<Integer, String> notesMap) {
         this.arraysList = arraysList;
-        this.originalList = new ArrayList<>(arraysList);
+        originalList = new ArrayList<>(arraysList);
         this.notesMap = notesMap;
         this.fragment = fragment;
     }
