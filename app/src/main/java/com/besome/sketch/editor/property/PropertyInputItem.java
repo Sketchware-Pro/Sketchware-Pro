@@ -868,7 +868,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             holder.bind(getItem(position));
         }
 
-        private class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder {
             private final PropertyInputItemBinding binding;
 
             public ViewHolder(FrameLayout view) {
