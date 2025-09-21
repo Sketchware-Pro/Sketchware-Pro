@@ -187,7 +187,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                 new MaterialAlertDialogBuilder(this)
                         .setTitle("Select an XML")
                         .setAdapter(
-                                new ArrayAdapter<String>(
+                                new ArrayAdapter<>(
                                         this, android.R.layout.simple_list_item_1, xmlFiles),
                                 (d, w) -> showSourceCode(xmlFiles.get(w)))
                         .show();
@@ -244,11 +244,11 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         }
 
         binding.xmlName.setAdapter(
-                new ArrayAdapter<String>(
+                new ArrayAdapter<>(
                         this, android.R.layout.simple_dropdown_item_1line, xmlFiles));
 
         binding.command.setAdapter(
-                new ArrayAdapter<String>(
+                new ArrayAdapter<>(
                         this, android.R.layout.simple_dropdown_item_1line, COMMANDS_ACTION));
 
         binding.positive.setText(R.string.common_word_save);

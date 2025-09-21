@@ -26,7 +26,7 @@ public class Selector implements Parcelable {
         this.title = title;
     }
 
-    public static final Creator<Selector> CREATOR = new Creator<Selector>() {
+    public static final Creator<Selector> CREATOR = new Creator<>() {
         @Override
         public Selector createFromParcel(Parcel in) {
             return new Selector(in);
