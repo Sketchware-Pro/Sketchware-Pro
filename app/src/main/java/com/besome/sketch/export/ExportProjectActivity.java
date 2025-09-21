@@ -78,15 +78,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private HashMap<String, Object> sc_metadata = null;
     private yq project_metadata = null;
 
-    private ImageView sign_apk_ic;
     private Button sign_apk_button;
-    private TextView sign_apk_title;
-    private ImageView export_aab_ic;
     private Button export_aab_button;
-    private TextView export_aab_title;
-    private ImageView export_source_ic;
     private Button export_source_button;
-    private TextView export_source_title;
     private TextView sign_apk_output_path;
     private Button export_source_send_button;
     private LinearLayout sign_apk_output_stage;
@@ -100,14 +94,14 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.export_project);
 
-        sign_apk_ic = findViewById(R.id.sign_apk_ic);
-        export_aab_ic = findViewById(R.id.export_aab_ic);
-        sign_apk_title = findViewById(R.id.sign_apk_title);
+        ImageView sign_apk_ic = findViewById(R.id.sign_apk_ic);
+        ImageView export_aab_ic = findViewById(R.id.export_aab_ic);
+        TextView sign_apk_title = findViewById(R.id.sign_apk_title);
         sign_apk_button = findViewById(R.id.sign_apk_button);
-        export_source_ic = findViewById(R.id.export_source_ic);
-        export_aab_title = findViewById(R.id.export_aab_title);
+        ImageView export_source_ic = findViewById(R.id.export_source_ic);
+        TextView export_aab_title = findViewById(R.id.export_aab_title);
         export_aab_button = findViewById(R.id.export_aab_button);
-        export_source_title = findViewById(R.id.export_source_title);
+        TextView export_source_title = findViewById(R.id.export_source_title);
         sign_apk_output_path = findViewById(R.id.sign_apk_output_path);
         export_source_button = findViewById(R.id.export_source_button);
         sign_apk_output_stage = findViewById(R.id.sign_apk_output_stage);

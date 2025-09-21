@@ -56,15 +56,12 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
     private static final String[] COMMANDS_ACTION = {
             "insert", "add", "replace", "find-replace", "find-replace-first", "find-replace-all"
     };
-    private ManageXmlCommandBinding binding;
     private String sc_id;
     private String commandPath;
     private XMLCommandAdapter adapter;
     private ProjectSettings settings;
     private ArrayList<HashMap<String, Object>> commands = new ArrayList<>();
     private ArrayList<String> xmlFiles;
-
-    private hC projectFile;
 
     public static void fetchXMLCommand(Context context, String sc_id) {
         var path = wq.b(sc_id) + "/command";
@@ -94,7 +91,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ManageXmlCommandBinding.inflate(getLayoutInflater());
+        ManageXmlCommandBinding binding = ManageXmlCommandBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("XML Command Manager");
@@ -114,7 +111,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
             sc_id = savedInstanceState.getString("sc_id");
         }
         commandPath = wq.b(sc_id) + "/command";
-        projectFile = jC.b(sc_id);
+        hC projectFile = jC.b(sc_id);
         xmlFiles = new ArrayList<>(projectFile.e());
         xmlFiles.addAll(
                 Arrays.asList("strings.xml", "colors.xml", "styles.xml", "AndroidManifest.xml"));

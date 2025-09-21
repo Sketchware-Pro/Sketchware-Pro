@@ -46,7 +46,6 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
     private CheckBox addToCollection;
     private TextInputEditText soundName;
-    private TextInputLayout soundInputLayout;
     private TextView nowPlayingFilename;
     private TextView nowPlayingProgress;
     private TextView nowPlayingTotalDuration;
@@ -150,7 +149,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         albumCover = findViewById(R.id.img_album);
         nowPlayingProgressBar = findViewById(R.id.seek);
         nowPlayingContainer.setVisibility(View.GONE);
-        soundInputLayout = findViewById(R.id.ti_input);
+        TextInputLayout soundInputLayout = findViewById(R.id.ti_input);
         soundName = findViewById(R.id.ed_input);
         soundNameValidator = new WB(this, soundInputLayout, uq.b, existingSoundNames);
         playPause.setEnabled(false);

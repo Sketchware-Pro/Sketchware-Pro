@@ -86,7 +86,6 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private ArrayList<BlockCollectionBean> blocks;
     private ArrayList<MoreBlockCollectionBean> moreBlocks;
     private int currentItemId = 1;
-    private final int collectionItemsSize = 6;
     private TextView noItemsNote;
     private FloatingActionButton fab;
     private String sc_id;
@@ -255,6 +254,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private void deleteSelectedToBeDeletedItems() {
+        int collectionItemsSize = 6;
         for (int i = 0; i < collectionItemsSize; i++) {
             switch (i) {
                 case 0 -> {

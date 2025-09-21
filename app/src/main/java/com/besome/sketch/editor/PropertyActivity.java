@@ -55,8 +55,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     private int layoutPosition;
 
     private LinearLayout content;
-    private CustomScrollView scrollView;
-    private RecyclerView propertyGroupList;
 
     @Override
     public void a(String var1, Object var2) {
@@ -160,8 +158,8 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         setContentView(R.layout.property);
 
         content = findViewById(R.id.content);
-        scrollView = findViewById(R.id.scroll_view);
-        propertyGroupList = findViewById(R.id.property_group_list);
+        CustomScrollView scrollView = findViewById(R.id.scroll_view);
+        RecyclerView propertyGroupList = findViewById(R.id.property_group_list);
 
         if (!j()) {
             finish();

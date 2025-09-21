@@ -70,7 +70,6 @@ public class ExtraMenuBean {
     private final String NATIVE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/native_libs/";
     private final DefaultExtraMenuBean defaultExtraMenu;
     private final FilePathUtil fpu;
-    private FilePickerDialogFragment fpd;
     private final FileResConfig frc;
     private final LogicEditorActivity logicEditor;
     private final FilePickerOptions mOptions = new FilePickerOptions();
@@ -814,7 +813,7 @@ public class ExtraMenuBean {
                 logicEditor.a(ss, file.getAbsolutePath().split(splitter)[1]);
             }
         };
-        fpd = new FilePickerDialogFragment(mOptions, callback);
+        FilePickerDialogFragment fpd = new FilePickerDialogFragment(mOptions, callback);
         fpd.show(logicEditor.getSupportFragmentManager(), "filePicker");
     }
 }

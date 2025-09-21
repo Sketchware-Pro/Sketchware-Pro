@@ -31,7 +31,7 @@ public class Hx {
     public String l = "";
 
     public Hx(jq logicHolder, ProjectFileBean projectFileBean, eC eC) {
-        this.jq = logicHolder;
+        jq = logicHolder;
         this.projectFileBean = projectFileBean;
 
         ProjectSettings projectSettings = new ProjectSettings(logicHolder.sc_id);
@@ -347,12 +347,10 @@ public class Hx {
         private final Hx hx;
         private final String id;
         private final ArrayList<ComponentEvents> listeners = new ArrayList<>();
-        private final boolean isViewBindingEnabled;
 
         private Event(Hx hx, String id, Gx classInfo, boolean isViewBindingEnabled) {
             this.hx = hx;
             this.id = id;
-            this.isViewBindingEnabled = isViewBindingEnabled;
 
             String[] listeners = oq.getListenersForClass(classInfo);
             if (listeners.length > 0) {

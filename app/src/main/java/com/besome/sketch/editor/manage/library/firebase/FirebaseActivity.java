@@ -45,15 +45,10 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     private int stepNumber = STEP_1;
 
     private Toolbar toolbar;
-    private ImageView icon;
     private Button btn_import;
-    private Button btn_open_doc;
     private TextView tv_step_desc;
     private TextView tv_step_title;
-    private TextView tv_goto_console;
-    private LinearLayout ll_goto_console;
     private LinearLayout layout_container;
-    private LinearLayout layout_step_guide;
     private com.google.android.material.card.MaterialCardView cv_console;
 
     private void setStep(int stepNumber) {
@@ -184,16 +179,16 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_library_firebase);
 
-        icon = findViewById(R.id.icon);
+        ImageView icon = findViewById(R.id.icon);
         cv_console = findViewById(R.id.cv_console);
         btn_import = findViewById(R.id.btn_import);
         tv_step_desc = findViewById(R.id.tv_step_desc);
-        btn_open_doc = findViewById(R.id.btn_open_doc);
+        Button btn_open_doc = findViewById(R.id.btn_open_doc);
         tv_step_title = findViewById(R.id.tv_step_title);
-        ll_goto_console = findViewById(R.id.ll_goto_console);
-        tv_goto_console = findViewById(R.id.tv_goto_console);
+        LinearLayout ll_goto_console = findViewById(R.id.ll_goto_console);
+        TextView tv_goto_console = findViewById(R.id.tv_goto_console);
         layout_container = findViewById(R.id.layout_container);
-        layout_step_guide = findViewById(R.id.layout_step_guide);
+        LinearLayout layout_step_guide = findViewById(R.id.layout_step_guide);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
