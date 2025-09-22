@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.ColorStateList;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,7 +31,6 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -72,7 +69,6 @@ import pro.sketchware.databinding.PropertyPopupInputTextBinding;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
 import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.lib.highlighter.SyntaxScheme;
-import pro.sketchware.lib.validator.MinMaxInputValidator;
 import pro.sketchware.lib.validator.PropertyNameValidator;
 import pro.sketchware.utility.FileUtil;
 
