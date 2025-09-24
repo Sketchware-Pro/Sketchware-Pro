@@ -480,7 +480,6 @@ public class ViewPane extends RelativeLayout {
                     }
                 }
             } catch (Exception e) {
-                crashlytics.recordException(e);
                 Log.e("DEBUG", e.getMessage(), e);
             }
         }
