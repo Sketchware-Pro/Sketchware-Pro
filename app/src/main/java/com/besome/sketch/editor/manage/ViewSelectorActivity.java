@@ -331,6 +331,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     viewHolder.itemBinding.cardView.setStrokeColor(
                             ThemeUtils.getColor(ViewSelectorActivity.this, R.attr.colorPrimary));
                     viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(3f));
+                } else {
+                    viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(0f));
                 }
                 String javaName = projectFileBean.getJavaName();
                 viewHolder.itemBinding.imgEdit.setVisibility(View.VISIBLE);
@@ -346,6 +348,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     viewHolder.itemBinding.cardView.setStrokeColor(
                             ThemeUtils.getColor(ViewSelectorActivity.this, R.attr.colorPrimary));
                     viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(3f));
+                } else {
+                    viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(0f));
                 }
                 if (customView.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
                     viewHolder.itemBinding.imgView.setImageResource(getViewIcon(4));
