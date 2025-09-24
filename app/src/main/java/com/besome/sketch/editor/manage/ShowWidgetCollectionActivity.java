@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ViewBean;
-import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.view.ItemView;
 import com.besome.sketch.editor.view.ViewPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -99,8 +98,9 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
         });
 
         widgetName = getIntent().getStringExtra("widget_name");
+        String sc_id = getIntent().getStringExtra("sc_id");
         viewPane = findViewById(R.id.pane);
-        viewPane.initialize(DesignActivity.sc_id, true);
+        viewPane.initialize(sc_id, true);
         viewPane.setVerticalScrollBarEnabled(true);
         kC kCVar = new kC("", wq.a() + "/image/data/", "", "");
         kCVar.b(Op.g().f());

@@ -183,6 +183,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private void openWidgetDetails(int position) {
         String widgetName = Rp.h().g().get(position);
         Intent intent = new Intent(getApplicationContext(), ShowWidgetCollectionActivity.class);
+        intent.putExtra("sc_id", sc_id);
         intent.putExtra("widget_name", widgetName);
         startActivityForResult(intent, REQUEST_CODE_SHOW_WIDGET_DETAILS);
     }
