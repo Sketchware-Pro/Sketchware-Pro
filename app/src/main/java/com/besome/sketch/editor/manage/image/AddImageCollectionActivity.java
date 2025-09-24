@@ -32,7 +32,6 @@ import a.a.a.iB;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.wq;
-import a.a.a.xB;
 import a.a.a.yy;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -129,8 +128,8 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        e(xB.b().a(this, R.string.design_manager_image_title_add_image));
-        d(xB.b().a(getApplicationContext(), R.string.common_word_save));
+        e(getString(R.string.design_manager_image_title_add_image));
+        d(getString(R.string.common_word_save));
         setContentView(R.layout.manage_image_add);
         Intent intent = getIntent();
         images = intent.getParcelableArrayListExtra("images");
@@ -153,10 +152,10 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         ed_input = findViewById(R.id.ed_input);
         ed_input_edittext = ed_input.getEditText();
         ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
-        ed_input.setHint(xB.b().a(this, R.string.design_manager_image_hint_enter_image_name));
+        ed_input.setHint(getString(R.string.design_manager_image_hint_enter_image_name));
         imageNameValidator = new PB(this, ed_input.getTextInputLayout(), uq.b, getReservedImageNames());
         imageNameValidator.a(1);
-        tv_add_photo.setText(xB.b().a(this, R.string.design_manager_image_title_add_image));
+        tv_add_photo.setText((R.string.design_manager_image_title_add_image));
         preview.setOnClickListener(this);
         img_rotate.setOnClickListener(this);
         img_vertical.setOnClickListener(this);
@@ -174,7 +173,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         super.onPostCreate(savedInstanceState);
         if (editing) {
             editTarget.isEdited = true;
-            e(xB.b().a(this, R.string.design_manager_image_title_edit_image_name));
+            e(getString(R.string.design_manager_image_title_edit_image_name));
             imageNameValidator = new PB(this, ed_input.getTextInputLayout(), uq.b, getReservedImageNames(), editTarget.resName);
             imageNameValidator.a(1);
             ed_input_edittext.setText(editTarget.resName);
@@ -198,9 +197,9 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         try {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
-            startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 215);
+            startActivityForResult(Intent.createChooser(intent, getString(R.string.common_word_choose)), 215);
         } catch (ActivityNotFoundException unused) {
-            bB.b(this, xB.b().a(this, R.string.common_error_activity_not_found), bB.TOAST_NORMAL).show();
+            bB.b(this, getString(R.string.common_error_activity_not_found), bB.TOAST_NORMAL).show();
         }
     }
 
@@ -291,7 +290,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         @Override
         public void a() {
             var activity = this.activity.get();
-            bB.a(activity.getApplicationContext(), xB.b().a(activity.getApplicationContext(),
+            bB.a(activity.getApplicationContext(), activity.getString(
                     activity.editing ? R.string.design_manager_message_edit_complete :
                             R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
             activity.h();
@@ -325,7 +324,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
                         case "duplicate_name" -> R.string.collection_duplicated_name;
                         default -> 0;
                     };
-                    var message = messageId != 0 ? xB.b().a(activity.getApplicationContext(), messageId) : "";
+                    var message = messageId != 0 ? activity.getString(messageId) : "";
 
                     var a = yy.a();
                     if (a != null && !a.isEmpty()) {

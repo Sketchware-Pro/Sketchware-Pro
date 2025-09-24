@@ -41,7 +41,6 @@ import a.a.a.mB;
 import a.a.a.oq;
 import a.a.a.rs;
 import a.a.a.wB;
-import a.a.a.xB;
 import pro.sketchware.R;
 
 public class AddEventActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -257,9 +256,9 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                             jC.a(sc_id).a(projectFile.getJavaName(), eventBean);
                         }
                         if (eventsToAdd.size() == 1) {
-                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.event_message_new_event), bB.TOAST_NORMAL).show();
+                            bB.a(getApplicationContext(), getApplicationContext().getString(R.string.event_message_new_event), bB.TOAST_NORMAL).show();
                         } else if (eventsToAdd.size() > 1) {
-                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.event_message_new_events), bB.TOAST_NORMAL).show();
+                            bB.a(getApplicationContext(), getApplicationContext().getString(R.string.event_message_new_events), bB.TOAST_NORMAL).show();
                         }
                         jC.a(sc_id).k();
                         setResult(RESULT_OK);
@@ -334,9 +333,9 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        add_button.setText(xB.b().a(this, R.string.common_word_add));
-        cancel_button.setText(xB.b().a(this, R.string.common_word_cancel));
-        empty_message.setText(xB.b().a(this, R.string.event_message_no_avail_events));
+        add_button.setText(R.string.common_word_add);
+        cancel_button.setText(R.string.common_word_cancel);
+        empty_message.setText(R.string.event_message_no_avail_events);
         moreBlockView.setFuncNameValidator(jC.a(sc_id).a(projectFile));
     }
 
@@ -358,8 +357,8 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     private class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
-        private int lastSelectedEvent = -1;
         private final ArrayList<EventBean> events = new ArrayList<>();
+        private int lastSelectedEvent = -1;
         private boolean e;
 
         public EventAdapter() {

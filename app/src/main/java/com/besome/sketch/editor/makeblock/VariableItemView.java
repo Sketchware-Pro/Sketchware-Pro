@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.VarTypeItemBinding;
@@ -51,15 +50,15 @@ public class VariableItemView extends LinearLayout {
     private String getTypeName(String type, String name) {
         switch (type) {
             case "b":
-                type = xB.b().a(getContext(), R.string.logic_variable_type_boolean);
+                type = getContext().getString(R.string.logic_variable_type_boolean);
                 break;
 
             case "d":
-                type = xB.b().a(getContext(), R.string.logic_variable_type_number);
+                type = getContext().getString(R.string.logic_variable_type_number);
                 break;
 
             case "s":
-                type = xB.b().a(getContext(), R.string.logic_variable_type_string);
+                type = getContext().getString(R.string.logic_variable_type_string);
                 break;
 
             default:
@@ -68,31 +67,31 @@ public class VariableItemView extends LinearLayout {
 
         switch (name) {
             case "varInt":
-                type = xB.b().a(getContext(), R.string.logic_variable_type_number);
+                type = getContext().getString(R.string.logic_variable_type_number);
                 break;
 
             case "varBool":
-                type = xB.b().a(getContext(), R.string.logic_variable_type_boolean);
+                type = getContext().getString(R.string.logic_variable_type_boolean);
                 break;
 
             case "varStr":
-                type = xB.b().a(getContext(), R.string.logic_variable_type_string);
+                type = getContext().getString(R.string.logic_variable_type_string);
                 break;
 
             case "varMap":
-                type = xB.b().a(getContext(), R.string.logic_variable_type_map);
+                type = getContext().getString(R.string.logic_variable_type_map);
                 break;
 
             case "listInt":
-                type = xB.b().a(getContext(), R.string.logic_variable_type_list_number);
+                type = getContext().getString(R.string.logic_variable_type_list_number);
                 break;
 
             case "listStr":
-                type = xB.b().a(getContext(), R.string.logic_variable_type_list_string);
+                type = getContext().getString(R.string.logic_variable_type_list_string);
                 break;
 
             case "listMap":
-                type = xB.b().a(getContext(), R.string.logic_variable_type_list_map);
+                type = getContext().getString(R.string.logic_variable_type_list_map);
                 break;
 
             default:

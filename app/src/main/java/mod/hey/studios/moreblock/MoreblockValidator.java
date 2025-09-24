@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import a.a.a.MB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
@@ -36,17 +35,17 @@ public class MoreblockValidator extends MB {
         String name = charSequence.toString();
         int trimmedLength = name.trim().length();
         if (trimmedLength < 1) {
-            b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, 1));
+            b.setError(a.getString(R.string.invalid_value_min_lenth, 1));
             d = false;
         } else if (name.length() > 60) {
-            b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, 60));
+            b.setError(a.getString(R.string.invalid_value_max_lenth, 60));
             d = false;
         } else {
             if (i != null && !i.isEmpty() && name.equals(i)) {
                 b.setError(null);
                 d = true;
             } else if (registeredVariables.contains(name)) {
-                b.setError(xB.b().a(a, R.string.common_message_name_unavailable, 0));
+                b.setError(a.getString(R.string.common_message_name_unavailable, 0));
                 d = false;
             } else {
                 boolean z = false;
@@ -84,7 +83,7 @@ public class MoreblockValidator extends MB {
                         d = false;
                     }
                     if (name.trim().isEmpty()) {
-                        b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, 1));
+                        b.setError(a.getString(R.string.invalid_value_min_lenth, 1));
                         d = false;
                     }
                 }

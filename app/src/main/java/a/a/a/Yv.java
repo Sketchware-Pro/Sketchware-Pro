@@ -47,7 +47,7 @@ public class Yv extends qA {
     private void updateImportSoundsText() {
         int selectedSounds = (int) sounds.stream().filter(projectResourceBean -> projectResourceBean.isSelected).count();
         if (selectedSounds > 0) {
-            actBinding.btnImport.setText(xB.b().a(getContext(), R.string.common_word_import_count, selectedSounds));
+            actBinding.btnImport.setText(getString(R.string.common_word_import_count, selectedSounds));
             actBinding.layoutBtnImport.setVisibility(View.VISIBLE);
         } else {
             actBinding.layoutBtnImport.setVisibility(View.GONE);
@@ -84,7 +84,7 @@ public class Yv extends qA {
         binding.soundList.setLayoutManager(new LinearLayoutManager(null, LinearLayoutManager.VERTICAL, false));
         adapter = new Adapter();
         binding.soundList.setAdapter(adapter);
-        binding.tvGuide.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
+        binding.tvGuide.setText((R.string.design_manager_sound_description_guide_add_sound));
         actBinding.btnImport.setOnClickListener(view -> {
             if (!mB.a()) {
                 stopPlayback();

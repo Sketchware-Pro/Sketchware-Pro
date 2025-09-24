@@ -29,7 +29,6 @@ import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.uq;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 import pro.sketchware.R;
@@ -167,7 +166,7 @@ public class InnerAddComponentBottomSheet extends BottomSheetDialogFragment {
     }
 
     public final String getTranslatedString(@StringRes int resId) {
-        return xB.b().a(getContext(), resId);
+        return getString(resId);
     }
 
     private void setOnSaveClickListener(OnSaveClickListener onSaveClickListener) {

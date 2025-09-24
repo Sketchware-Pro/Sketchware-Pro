@@ -32,7 +32,6 @@ import a.a.a.cC;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.oq;
-import a.a.a.xB;
 import mod.hey.studios.project.ProjectSettings;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.R;
@@ -61,13 +60,13 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         label.setGravity(Gravity.CENTER);
         label.setPadding(8, 8, 8, 8);
         label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        label.setText(xB.b().a(getContext(), R.string.design_property_recent_message_nodata));
+        label.setText((R.string.design_property_recent_message_nodata));
         addView(label);
     }
 
     private void a(ViewBean bean) {
         if (getOrientation() == LinearLayout.VERTICAL) {
-            a(xB.b().a(getResources(), R.string.property_header_layout));
+            a(getContext().getString(R.string.property_header_layout));
         }
 
         a(bean, "property_margin");
@@ -358,7 +357,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
 
     private void c(ViewBean bean) {
         if (getOrientation() == LinearLayout.VERTICAL) {
-            a(xB.b().a(getResources(), R.string.property_header_image), this);
+            a(getContext().getString(R.string.property_header_image), this);
         }
 
         a(bean, "property_image");
@@ -406,7 +405,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
 
     public void d(ViewBean bean) {
         if (getOrientation() == LinearLayout.VERTICAL) {
-            a(xB.b().a(getResources(), R.string.property_header_layout));
+            a(getContext().getString(R.string.property_header_layout));
         }
 
         Gx classInfo = bean.getClassInfo();
@@ -620,7 +619,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         Gx classInfo = bean.getClassInfo();
         if (classInfo.a("TextView")) {
             if (getOrientation() == LinearLayout.VERTICAL) {
-                a(xB.b().a(getResources(), R.string.property_header_text));
+                a(getContext().getString(R.string.property_header_text));
             }
 
             a(bean, "property_text");
@@ -653,11 +652,11 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         Gx classInfo = bean.getClassInfo();
         if (getOrientation() == LinearLayout.VERTICAL) {
             if (classInfo.a("ImageView")) {
-                a(xB.b().a(getResources(), R.string.property_header_image), this);
+                a(getContext().getString(R.string.property_header_image), this);
                 a(bean, "property_image");
                 a(bean, "property_scale_type");
             } else {
-                a(xB.b().a(getResources(), R.string.property_header_image));
+                a(getContext().getString(R.string.property_header_image));
             }
         } else if (classInfo.a("ImageView")) {
             a(bean, "property_image");

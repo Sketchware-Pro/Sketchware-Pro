@@ -27,7 +27,6 @@ import java.util.ArrayList;
 
 import a.a.a.MA;
 import a.a.a.lC;
-import a.a.a.xB;
 import dev.chrisbanes.insetter.Insetter;
 import pro.sketchware.dialogs.ProgressDialog;
 
@@ -121,7 +120,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     public final String getTranslatedString(@StringRes int resId) {
-        return xB.b().a(getApplicationContext(), resId);
+        return getApplicationContext().getString(resId);
     }
 
     @Override

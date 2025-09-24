@@ -29,7 +29,6 @@ import a.a.a.Uu;
 import a.a.a.bB;
 import a.a.a.gB;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
@@ -73,7 +72,7 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
     private void initialize(Context context) {
         wB.a(context, this, R.layout.manage_library_admob_test_device);
         gB.b(this, 600, 200, null);
-        ((TextView) findViewById(R.id.tv_set_test_device)).setText(xB.b().a(getContext(), R.string.design_library_admob_button_set_test_device));
+        ((TextView) findViewById(R.id.tv_set_test_device)).setText((R.string.design_library_admob_button_set_test_device));
         findViewById(R.id.layout_set_test_device).setOnClickListener(this);
         RecyclerView testDevices = findViewById(R.id.list_test_device);
         testDevices.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -103,18 +102,18 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
 
     private void showAddTestDeviceDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-        dialog.setTitle(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_title));
+        dialog.setTitle((R.string.design_library_admob_dialog_set_test_device_title));
         dialog.setIcon(R.drawable.ic_mtrl_add);
         View content = wB.a(getContext(), R.layout.manage_library_setting_admob_test_device_add);
         EditText edDeviceId = content.findViewById(R.id.ed_device_id);
-        ((TextInputLayout) content.findViewById(R.id.ti_device_id)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_hint_device_id));
+        ((TextInputLayout) content.findViewById(R.id.ti_device_id)).setHint(getContext().getString(R.string.design_library_admob_dialog_set_test_device_hint_device_id));
         NB validator = new NB(getContext(), content.findViewById(R.id.ti_device_id), testDevices.stream()
                 .map(AdTestDeviceBean::getDeviceId)
                 .collect(Collectors.toCollection(ArrayList::new)));
         edDeviceId.setText(getCurrentDeviceId());
         edDeviceId.setPrivateImeOptions("defaultInputmode=english;");
         dialog.setView(content);
-        dialog.setPositiveButton(xB.b().a(getContext(), R.string.common_word_add), (v, which) -> {
+        dialog.setPositiveButton((R.string.common_word_add), (v, which) -> {
             if (validator.b()) {
                 String deviceId = Helper.getText(edDeviceId);
                 testDevices.add(new AdTestDeviceBean(deviceId));
@@ -124,22 +123,22 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
                 edDeviceId.requestFocus();
             }
         });
-        dialog.setNegativeButton(xB.b().a(getContext(), R.string.common_word_cancel), null);
+        dialog.setNegativeButton((R.string.common_word_cancel), null);
         dialog.show();
     }
 
     private void showDeleteTestDeviceDialog(int index) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-        dialog.setTitle(xB.b().a(getContext(), R.string.design_library_admob_dialog_delete_test_device_title));
+        dialog.setTitle((R.string.design_library_admob_dialog_delete_test_device_title));
         dialog.setIcon(R.drawable.delete_96);
-        dialog.setMessage(xB.b().a(getContext(), R.string.design_library_admob_dialog_confirm_delete_test_device));
-        dialog.setPositiveButton(xB.b().a(getContext(), R.string.common_word_delete), (v, which) -> {
+        dialog.setMessage((R.string.design_library_admob_dialog_confirm_delete_test_device));
+        dialog.setPositiveButton((R.string.common_word_delete), (v, which) -> {
             testDevices.remove(index);
             adapter.notifyItemRemoved(index);
-            bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
+            bB.a(getContext(), getContext().getString(R.string.common_message_complete_delete), 0).show();
             v.dismiss();
         });
-        dialog.setNegativeButton(xB.b().a(getContext(), R.string.common_word_cancel), null);
+        dialog.setNegativeButton((R.string.common_word_cancel), null);
         dialog.show();
     }
 

@@ -28,7 +28,6 @@ import a.a.a.lv;
 import a.a.a.mB;
 import a.a.a.mv;
 import a.a.a.nv;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.LibrarySettingsImporter;
 import pro.sketchware.R;
@@ -56,7 +55,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             step.a();
         }
 
-        getSupportActionBar().setSubtitle(stepNumber == STEP_3 ? getTranslatedString(R.string.common_word_review) : xB.b().a(getApplicationContext(), R.string.common_word_step, stepNumber + 1));
+        getSupportActionBar().setSubtitle(stepNumber == STEP_3 ? getTranslatedString(R.string.common_word_review) : getString(R.string.common_word_step, stepNumber + 1));
         tv_step_title.setText(stepTitles[stepNumber]);
         tv_step_desc.setText(stepDescriptions[stepNumber]);
 

@@ -59,7 +59,6 @@ import a.a.a.oB;
 import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
-import a.a.a.xB;
 import dev.aldi.sayuti.editor.view.palette.IconBottomNavigationView;
 import dev.aldi.sayuti.editor.view.palette.IconCardView;
 import dev.aldi.sayuti.editor.view.palette.IconCollapsingToolbar;
@@ -784,8 +783,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         if (!(x > locationOnScreen[0])) return false;
         if (!(x < locationOnScreen[0] + viewPane.getWidth() * viewPane.getScaleX())) return false;
         if (!(y > locationOnScreen[1])) return false;
-        if (!(y < locationOnScreen[1] + viewPane.getHeight() * viewPane.getScaleY())) return false;
-        return true;
+        return y < locationOnScreen[1] + viewPane.getHeight() * viewPane.getScaleY();
     }
 
     private void deleteWidgetFromCollection(String str) {
@@ -803,7 +801,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private String getString(@StringRes int res) {
-        return xB.b().a(getContext(), res);
+        return getContext().getString(res);
     }
 
     private void cancelAnimation() {
@@ -1072,8 +1070,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         if (!(x > locationOnScreen[0])) return false;
         if (!(x < (locationOnScreen[0] + deleteView.getWidth()))) return false;
         if (!(y > locationOnScreen[1])) return false;
-        if (!(y < (locationOnScreen[1] + deleteView.getHeight()))) return false;
-        return true;
+        return y < (locationOnScreen[1] + deleteView.getHeight());
     }
 
     private void updateDeleteIcon(boolean z, boolean isCustomWidget) {

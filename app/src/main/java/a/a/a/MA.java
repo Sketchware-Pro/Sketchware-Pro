@@ -30,7 +30,7 @@ public abstract class MA extends AsyncTask<Void, String, String> {
             if (e instanceof By) {
                 return e.getMessage();
             }
-            return xB.b().a(a, R.string.common_error_an_error_occurred) + "[" + e.getMessage() + "]";
+            return a.getString(R.string.common_error_an_error_occurred) + "[" + e.getMessage() + "]";
         }
     }
 

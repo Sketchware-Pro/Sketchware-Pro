@@ -22,7 +22,7 @@ public class NB extends MB {
         String inputValue = charSequence.toString();
         if (preDefNames.contains(inputValue)) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, R.string.common_message_name_unavailable));
+            b.setError(a.getString(R.string.common_message_name_unavailable));
             d = false;
         } else {
             b.setErrorEnabled(false);

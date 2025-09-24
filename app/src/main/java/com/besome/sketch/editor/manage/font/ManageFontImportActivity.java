@@ -26,7 +26,6 @@ import a.a.a.QB;
 import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.uq;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageFontImportBinding;
@@ -54,7 +53,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     private void showPreview(int position) {
         String fontFilePath = selectedCollection.get(position).resFullName;
         binding.textFont.setTypeface(Typeface.createFromFile(fontFilePath));
-        binding.textFont.setText(xB.b().a(getApplicationContext(), R.string.design_manager_font_description_example_sentence));
+        binding.textFont.setText((R.string.design_manager_font_description_example_sentence));
     }
 
     private ArrayList<String> getReservedSelectedCollectionNames() {
@@ -92,8 +91,8 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
                 names += name;
             }
 
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(),
-                    R.string.common_message_name_unavailable) + "\n[" + names + "]", bB.TOAST_WARNING).show();
+            bB.a(getApplicationContext(), getString(R.string.common_message_name_unavailable)
+                    + "\n[" + names + "]", bB.TOAST_WARNING).show();
             return true;
         } else {
             return false;
@@ -154,9 +153,9 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         binding = ManageFontImportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.imgBackbtn.setOnClickListener(this);
-        binding.tvSendbtn.setText(xB.b().a(getApplicationContext(), R.string.common_word_import).toUpperCase());
+        binding.tvSendbtn.setText(getString(R.string.common_word_import).toUpperCase());
         binding.tvSendbtn.setOnClickListener(this);
-        binding.tvSamename.setText(xB.b().a(getApplicationContext(), R.string.design_manager_font_title_apply_same_naming));
+        binding.tvSamename.setText(getString(R.string.design_manager_font_title_apply_same_naming));
         itemAdapter = new ItemAdapter();
         binding.recyclerList.setHasFixedSize(true);
         binding.recyclerList.setAdapter(itemAdapter);
@@ -168,7 +167,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         r = binding.edInput.getEditText();
         r.setText(selectedCollection.get(0).resName);
         r.setPrivateImeOptions("defaultInputmode=english;");
-        binding.edInput.setHint(xB.b().a(this, R.string.design_manager_font_hint_enter_font_name));
+        binding.edInput.setHint(getString(R.string.design_manager_font_hint_enter_font_name));
         nameValidator = new QB(getApplicationContext(), binding.edInput.getTextInputLayout(), uq.b, getReservedProjectImageNames(), getReservedSelectedCollectionNames());
         binding.chkSamename.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -180,7 +179,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
             }
         });
         Button btnDecide = findViewById(R.id.btn_decide);
-        btnDecide.setText(xB.b().a(getApplicationContext(), R.string.design_manager_change_name_button));
+        btnDecide.setText((R.string.design_manager_change_name_button));
         btnDecide.setOnClickListener(this);
     }
 
@@ -214,9 +213,9 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         }
 
         if (!duplicateCollections.isEmpty()) {
-            bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_conflict), 1).show();
+            bB.b(getApplicationContext(), getString(R.string.design_manager_message_collection_name_conflict), 1).show();
         } else {
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_no_conflict), 0).show();
+            bB.a(getApplicationContext(), getString(R.string.design_manager_message_collection_name_no_conflict), 0).show();
         }
 
         selectedCollection = new ArrayList<>();

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import a.a.a.xB;
 import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.utility.FileUtil;
 
@@ -79,7 +78,7 @@ public class Helper {
     }
 
     public static String getResString(@StringRes int resId) {
-        return xB.b().a(getContext(), resId);
+        return getContext().getString(resId);
     }
 
     public static String getResString(@StringRes int resId, Object... formatArgs) {

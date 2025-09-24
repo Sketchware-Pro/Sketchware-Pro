@@ -22,9 +22,9 @@ public class SB extends MB {
         if (s.toString().trim().length() < min) {
             b.setErrorEnabled(true);
             if (e == 0) {
-                b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, min));
+                b.setError(a.getString(R.string.invalid_value_min_lenth, min));
             } else {
-                b.setError(xB.b().a(a, e, min));
+                b.setError(a.getString(e, min));
             }
 
             d = false;
@@ -32,9 +32,9 @@ public class SB extends MB {
             if (s.toString().trim().length() > max) {
                 b.setErrorEnabled(true);
                 if (e == 0) {
-                    b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, max));
+                    b.setError(a.getString(R.string.invalid_value_max_lenth, max));
                 } else {
-                    b.setError(xB.b().a(a, e, max));
+                    b.setError(a.getString(e, max));
                 }
 
                 d = false;

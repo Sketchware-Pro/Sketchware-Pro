@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import a.a.a.Lx;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.OldResourceIdMapper;
 import pro.sketchware.R;
@@ -220,7 +219,7 @@ public class ComponentsHandler {
     public static String description(int id) {
         int componentBeanDescriptionResId = ComponentBean.getDescStrResource(id);
         if (componentBeanDescriptionResId != 0) {
-            return xB.b().a(SketchApplication.getContext(), componentBeanDescriptionResId);
+            return SketchApplication.getContext().getString(componentBeanDescriptionResId);
         } else {
             return description2(id);
         }
