@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import mod.agus.jcoderz.editor.manifest.EditorManifest;
@@ -40,6 +41,7 @@ public class Ix {
     public ProjectSettings settings;
     private boolean targetsSdkVersion31OrHigher = false;
     private String packageName;
+    private final Set<String> addedPermissions = new HashSet<>();
 
     public Ix(jq jq, ArrayList<ProjectFileBean> projectFileBeans, BuiltInLibraryManager builtInLibraryManager) {
         c = jq;
@@ -75,9 +77,13 @@ public class Ix {
      * @param permissionName The {@code uses-permission} {@link XmlBuilder} tag
      */
     private void writePermission(XmlBuilder manifestTag, String permissionName) {
+        if (addedPermissions.contains(permissionName)) {
+            return;
+        }
         XmlBuilder usesPermissionTag = new XmlBuilder("uses-permission");
         usesPermissionTag.addAttribute("android", "name", permissionName);
         manifestTag.addChildNode(usesPermissionTag);
+        addedPermissions.add(permissionName);
     }
 
     /**
