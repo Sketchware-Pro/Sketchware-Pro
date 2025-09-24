@@ -23,7 +23,9 @@
             android:id="@+id/editor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"
+            android:forceDarkAllowed="false"
+            tools:ignore="UnusedAttribute" />
     </LinearLayout>
 
     <com.besome.sketch.editor.LogicEditorDrawer
