@@ -28,7 +28,6 @@ import a.a.a.Cx;
 import a.a.a.Gx;
 import a.a.a.Kw;
 import a.a.a.Lw;
-import a.a.a.Vw;
 import a.a.a.cC;
 import a.a.a.jC;
 import a.a.a.mB;
@@ -813,10 +812,6 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             } else if (view instanceof PropertySizeItem sizeItem) {
                 if (sizeItem.getKey().equals("property_divider_height")) {
                     bean.dividerHeight = sizeItem.getValue();
-                }
-            } else if (view instanceof Vw vw) {
-                if (vw.getKey().equals("property_text_font")) {
-                    bean.text.textFont = vw.getValue();
                 }
             } else if (view instanceof PropertyAttributesItem item) {
                 if (item.getKey().equals("property_parent_attr")) {
