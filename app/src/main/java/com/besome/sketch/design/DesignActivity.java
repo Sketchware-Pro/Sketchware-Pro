@@ -1483,7 +1483,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private void doInBackground() {
             DesignActivity activity = getActivity();
             if (activity != null) {
-                jC.a(sc_id).k();
+                eC ecInstance = jC.a(sc_id);
+                synchronized (ecInstance) {
+                    ecInstance.k();
+                }
             }
         }
     }
