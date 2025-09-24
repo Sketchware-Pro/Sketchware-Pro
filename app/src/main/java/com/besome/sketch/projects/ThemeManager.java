@@ -1,8 +1,12 @@
 package com.besome.sketch.projects;
 
+import static mod.hey.studios.util.ProjectFile.getDefaultColor;
+
 import android.graphics.Color;
 
 import java.util.Random;
+
+import mod.hey.studios.util.ProjectFile;
 
 
 public class ThemeManager {
@@ -91,6 +95,16 @@ public class ThemeManager {
 
         return new ThemePreset("Random Theme", accentColor, primaryColor, primaryDarkColor,
                 controlHighlightColor, controlNormalColor);
+    }
+
+    public static ThemePreset getDefault() {
+        return new ThemePreset(
+                "Default",
+                getDefaultColor(ProjectFile.COLOR_ACCENT),
+                getDefaultColor(ProjectFile.COLOR_PRIMARY),
+                getDefaultColor(ProjectFile.COLOR_PRIMARY_DARK),
+                getDefaultColor(ProjectFile.COLOR_CONTROL_HIGHLIGHT),
+                getDefaultColor(ProjectFile.COLOR_CONTROL_NORMAL));
     }
 
     private static int darkenColor(int color, float factor) {

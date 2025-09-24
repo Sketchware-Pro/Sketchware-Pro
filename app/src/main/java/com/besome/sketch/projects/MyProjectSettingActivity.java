@@ -454,6 +454,10 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             generateRandomTheme();
         });
 
+        binding.btnReset.setOnClickListener(v -> {
+            applyTheme(ThemeManager.getDefault());
+        });
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         binding.layoutThemePresets.setLayoutManager(layoutManager);
 
