@@ -585,7 +585,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             }
 
             if (classInfo.b("WaveSideBar")) {
-                a(bean, "property_text_size");
+                b("property_text_size", String.valueOf(bean.text.textSize));
                 a(bean, "property_text_color");
             }
 
@@ -623,7 +623,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             }
 
             a(bean, "property_text");
-            a(bean, "property_text_size");
+            b("property_text_size", String.valueOf(bean.text.textSize));
             a(bean, "property_text_style");
             a(bean, "property_text_color");
             if (classInfo.b("EditText")) {
@@ -703,6 +703,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                     case "property_inject" -> bean.inject = inputItem.getValue();
                     case "property_text" -> bean.text.text = inputItem.getValue();
                     case "property_hint" -> bean.text.hint = inputItem.getValue();
+                    case "property_text_size" -> bean.text.textSize = Integer.parseInt(inputItem.getValue());
                     case "property_weight" ->
                             bean.layout.weight = Integer.parseInt(inputItem.getValue());
                     case "property_weight_sum" ->
@@ -733,7 +734,6 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                     case "property_orientation" ->
                             bean.layout.orientation = selectorItem.getValue();
                     case "property_text_style" -> bean.text.textType = selectorItem.getValue();
-                    case "property_text_size" -> bean.text.textSize = selectorItem.getValue();
                     case "property_input_type" -> bean.text.inputType = selectorItem.getValue();
                     case "property_ime_option" -> bean.text.imeOption = selectorItem.getValue();
                     case "property_spinner_mode" -> bean.spinnerMode = selectorItem.getValue();
