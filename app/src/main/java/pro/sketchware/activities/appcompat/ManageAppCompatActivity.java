@@ -296,10 +296,11 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                 });
         dialog.setNegativeButton(
                 R.string.common_word_cancel, (dialog1, which) -> dialog1.dismiss());
-        dialog.show();
-        Objects.requireNonNull(dialog.create().getWindow())
+        var alertDialog = dialog.create();
+        Objects.requireNonNull(alertDialog.getWindow())
                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        attributeBinding.inputRes.requestFocus();
+        alertDialog.show();
+        attributeBinding.inputAttr.post(attributeBinding.inputAttr::requestFocus);
     }
 
     private List<HashMap<String, Object>> filterInjections(String widgetName) {
