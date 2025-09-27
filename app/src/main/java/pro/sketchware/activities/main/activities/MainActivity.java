@@ -159,7 +159,6 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         super.onCreate(savedInstanceState);
         enableEdgeToEdgeNoContrast();
 
-        tryLoadingCustomizedAppStrings();
         binding = MainBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
@@ -472,9 +471,6 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             storageAccessDenied.setActionTextColor(Color.YELLOW);
             storageAccessDenied.show();
         }
-    }
-
-    private void tryLoadingCustomizedAppStrings() {
     }
 
 }
