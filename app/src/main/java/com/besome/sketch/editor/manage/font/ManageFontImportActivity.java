@@ -246,7 +246,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
             } else {
                 viewHolder.img.setBackgroundResource(R.drawable.bg_outline);
             }
-            viewHolder.img.setImageResource(R.drawable.ic_font_48dp);
+            viewHolder.img.setImageResource(R.drawable.ic_mtrl_font);
             viewHolder.tvName.setText(selectedCollection.get(position).resName);
         }
 
