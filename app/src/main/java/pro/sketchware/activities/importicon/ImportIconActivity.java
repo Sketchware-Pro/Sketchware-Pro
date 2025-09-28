@@ -491,10 +491,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         public void a() {
             var activity = this.activity.get();
             activity.h();
-            int oldPosition = activity.selectedIconPosition;
             activity.selectedIconPosition = -1;
-            activity.adapter.notifyItemChanged(oldPosition);
-            activity.adapter.submitList(activity.icons);
         }
 
         @Override
