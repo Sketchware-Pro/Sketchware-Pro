@@ -489,11 +489,6 @@ public class ExtraMenuBean {
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE);
                 break;
 
-            case "dynamiclink":
-                title = "Select a DynamicLink Component";
-                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS);
-                break;
-
             case "cloudmessage":
                 title = "Select a CloudMessage Component";
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE);

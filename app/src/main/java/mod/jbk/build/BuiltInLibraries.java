@@ -92,7 +92,6 @@ public class BuiltInLibraries {
     public static String FIREBASE_COMPONENTS = "firebase-components-16.0.0";
     public static String FIREBASE_DATABASE = "firebase-database-19.3.1";
     public static String FIREBASE_DATABASE_COLLECTION = "firebase-database-collection-17.0.0";
-    public static String FIREBASE_DYNAMIC_LINKS = "firebase-dynamic-links-19.0.0";
     public static String FIREBASE_IID = "firebase-iid-19.0.0";
     public static String FIREBASE_IID_INTEROP = "firebase-iid-interop-17.0.0";
     public static String FIREBASE_MEASUREMENT_CONNECTOR = "firebase-measurement-connector-18.0.0";
@@ -261,8 +260,6 @@ public class BuiltInLibraries {
                     PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
 
             new BuiltInLibrary(FIREBASE_DATABASE_COLLECTION),
-            new BuiltInLibrary(FIREBASE_DYNAMIC_LINKS, List.of(FIREBASE_COMMON, FIREBASE_MEASUREMENT_CONNECTOR, PLAY_SERVICES_BASE,
-                    PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
 
             new BuiltInLibrary(FIREBASE_IID, List.of(FIREBASE_COMMON, FIREBASE_IID_INTEROP, ANDROIDX_COLLECTION, ANDROIDX_CORE,
                     ANDROIDX_LEGACY_SUPPORT_CORE_UTILS, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_STATS, PLAY_SERVICES_TASKS)),

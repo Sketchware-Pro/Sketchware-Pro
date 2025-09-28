@@ -123,8 +123,6 @@ public class ExtraPaletteBlock {
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW, str2);
             case "googlelogin" ->
                     jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN, str2);
-            case "dynamiclink" ->
-                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS, str2);
             case "youtubeview" ->
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW, str2);
             case "signinbutton" ->
@@ -1079,9 +1077,6 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "firebaseauthSignInAnonymously");
                     logicEditor.a(" ", "firebaseauthResetPassword");
                     logicEditor.a(" ", "firebaseauthSignOutUser");
-                }
-                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS)) {
-                    logicEditor.a(" ", "setDynamicLinkDataHost");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_GYROSCOPE)) {
                     logicEditor.a("Gyroscope", getTitleBgColor());

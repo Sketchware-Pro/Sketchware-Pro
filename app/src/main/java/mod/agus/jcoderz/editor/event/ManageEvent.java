@@ -149,10 +149,6 @@ public class ManageEvent {
         if (gx.a("FirebasePhoneAuth")) {
             listeners.add("OnVerificationStateChangedListener");
         }
-        if (gx.a("FirebaseDynamicLink")) {
-            listeners.add("OnSuccessListener");
-            listeners.add("OnFailureListener");
-        }
         if (gx.a("FirebaseCloudMessage")) {
             listeners.add("OnCompleteListenerFCM");
         }
@@ -483,11 +479,6 @@ public class ManageEvent {
                     "super.onScrolled(recyclerView, _offsetX, _offsetY);\r\n" +
                     eventLogic + "\r\n" +
                     "}";
-            case "onSuccessLink" -> "@Override\r\n" +
-                    "public void onSuccess(PendingDynamicLinkData _pendingDynamicLinkData) {\r\n" +
-                    "final String _link = _pendingDynamicLinkData != null ? _pendingDynamicLinkData.getLink().toString() : \"\";\r\n" +
-                    eventLogic + "\r\n" +
-                    "}";
             case "onPatternLockCleared" -> "@Override\r\n" +
                     "public void onCleared() {\r\n" +
                     eventLogic + "\n" +
@@ -745,10 +736,6 @@ public class ManageEvent {
                     targetId + "_updatePasswordListener = new OnCompleteListener<Void>() {\r\n" +
                             listenerLogic + "\r\n" +
                             "};";
-            case "OnSuccessListener" ->
-                    targetId + "_onSuccessLink = new OnSuccessListener<PendingDynamicLinkData>() {\r\n" +
-                            listenerLogic + "\r\n" +
-                            "};";
             case "OnGridItemClickListener" ->
                     targetId + ".setOnItemClickListener(new AdapterView.OnItemClickListener() {\r\n" +
                             listenerLogic + "\r\n" +
@@ -923,10 +910,6 @@ public class ManageEvent {
             list.add("onVerificationCompleted");
             list.add("onVerificationFailed");
             list.add("onCodeSent");
-        }
-        if (gx.a("FirebaseDynamicLink")) {
-            list.add("onSuccessLink");
-            list.add("onFailureLink");
         }
         if (gx.a("FirebaseCloudMessage")) {
             list.add("onCompleteRegister");

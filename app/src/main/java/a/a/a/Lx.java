@@ -110,10 +110,6 @@ public class Lx {
             content.append("implementation 'com.google.firebase:firebase-storage'\r\n");
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS, excludedLibraries) && metadata.isDynamicLinkUsed) {
-            content.append("implementation 'com.google.firebase:firebase-dynamic-links'\r\n");
-        }
-
         if (isLibraryNotExcluded(BuiltInLibraries.PLAY_SERVICES_ADS, excludedLibraries) && metadata.isAdMobEnabled) {
             content.append("implementation 'com.google.android.gms:play-services-ads:23.4.0'\r\n");
         }
@@ -703,11 +699,6 @@ public class Lx {
 
                 case "PhoneAuthProvider.OnVerificationStateChangedCallbacks":
                     fieldDeclaration += "private PhoneAuthProvider.ForceResendingToken " + typeInstanceName + "_resendToken;";
-                    break;
-
-                case "DynamicLink":
-                    fieldDeclaration += "\r\nprivate OnSuccessListener " + typeInstanceName + "_onSuccessLink;"
-                            + "\r\nprivate OnFailureListener " + typeInstanceName + "_onFailureLink;";
                     break;
 
                 case "TimePickerDialog":

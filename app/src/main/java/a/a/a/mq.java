@@ -87,7 +87,6 @@ public class mq {
             case ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER -> "FragmentStatePagerAdapter";
             case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE ->
                     "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "DynamicLink";
             case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "GoogleSignInClient";
             default -> ComponentsHandler.var(componentId);
@@ -206,7 +205,6 @@ public class mq {
             case "recyclerview" -> "RecyclerView";
             case "resource" -> "Image";
             case "googlelogin" -> "FirebaseGoogleSignIn";
-            case "dynamiclink" -> "FirebaseDynamicLink";
             case "youtubeview" -> "YoutubePlayer";
             case "cardview" -> "CardView";
             case "radiogroup" -> "RadioGroup";
@@ -628,15 +626,6 @@ public class mq {
                 importList.add("com.google.firebase.auth.FirebaseAuth");
                 importList.add("com.google.firebase.auth.FirebaseUser");
                 importList.add("com.google.firebase.auth.GoogleAuthProvider");
-                return importList;
-
-            case "DynamicLink":
-                importList.add("com.google.android.gms.tasks.OnSuccessListener");
-                importList.add("com.google.android.gms.tasks.OnFailureListener");
-                importList.add("com.google.firebase.dynamiclinks.DynamicLink");
-                importList.add("com.google.firebase.dynamiclinks.FirebaseDynamicLinks");
-                importList.add("com.google.firebase.dynamiclinks.PendingDynamicLinkData");
-                importList.add("com.google.firebase.dynamiclinks.ShortDynamicLink");
                 return importList;
 
             case "RewardedVideoAd":

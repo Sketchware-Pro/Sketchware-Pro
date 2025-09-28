@@ -580,8 +580,6 @@ public class yq {
                     }
                     case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER ->
                             N.addPermission(activity.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS ->
-                            N.isDynamicLinkUsed = true;
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE ->
                             N.x.isFCMUsed = true;
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN ->
@@ -608,13 +606,6 @@ public class yq {
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(activity.getJavaName()).entrySet()) {
                 for (BlockBean block : entry.getValue()) {
                     switch (block.opCode) {
-                        case "FirebaseDynamicLink setDataHost":
-                        case "setDynamicLinkDataHost":
-                            if (block.parameters.size() >= 2) {
-                                N.dlDataList.add(new Pair<>(block.parameters.get(0), block.parameters.get(1)));
-                            }
-                            break;
-
                         case "intentSetAction":
                             // If an Intent setAction (ACTION_CALL) block is used
                             if (block.parameters.get(1).equals(uq.c[1])) {

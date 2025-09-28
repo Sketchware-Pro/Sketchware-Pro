@@ -242,14 +242,6 @@ public class InnerAddComponentBottomSheet extends BottomSheetDialogFragment {
                 jC.a(scId).a(projectFileBean.getJavaName(), componentType, componentId);
                 break;
 
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
-                if (jC.c(scId).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
-                    bB.b(getContext(), Helper.getResString(R.string.design_library_guide_setup_first), bB.TOAST_WARNING).show();
-                    return false;
-                }
-                jC.a(scId).a(projectFileBean.getJavaName(), componentType, componentId);
-                break;
-
             case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
             case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD:
                 if (jC.c(scId).b().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {

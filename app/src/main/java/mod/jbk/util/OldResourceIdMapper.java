@@ -1134,7 +1134,6 @@ public class OldResourceIdMapper {
             case 2131166322 -> R.drawable.code_white_48;
             case 2131166323 -> R.drawable.add_file_48;
             case 2131166324 -> R.drawable.widget_phone_auth;
-            case 2131166325 -> R.drawable.component_dynamic_link;
             case 2131166326 -> R.drawable.component_fcm;
             case 2131166327 -> R.drawable.component_firebase_google;
             case 2131166328 -> R.drawable.component_firebase_admin;
@@ -1143,8 +1142,6 @@ public class OldResourceIdMapper {
             case 2131166333 -> R.drawable.event_delete_user;
             case 2131166334 -> R.drawable.event_email_updated;
             case 2131166335 -> R.drawable.event_email_verif_sent;
-            case 2131166336 -> R.drawable.event_fb_dynamic_fail;
-            case 2131166337 -> R.drawable.event_fb_dynamic_success;
             case 2131166344 -> R.drawable.event_google_result;
             case 2131166345 -> R.drawable.event_google_revoke;
             case 2131166346 -> R.drawable.event_google_signin;

@@ -51,7 +51,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
     public static final int COMPONENT_TYPE_NOTIFICATION = 26;
     public static final int COMPONENT_TYPE_FRAGMENT_ADAPTER = 27;
     public static final int COMPONENT_TYPE_FIREBASE_AUTH_PHONE = 28;
-    public static final int COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS = 29;
     public static final int COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE = 30;
     public static final int COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN = 31;
 
@@ -137,8 +136,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
                     "https://docs.sketchware.io/docs/component-firebase-auth.html";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE ->
                     "https://sketchware-pro.vercel.app/docs/components/Firebase/cloud-messaging";
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS ->
-                    "https://sketchware-pro.vercel.app/docs/components/Firebase/dynamic-links";
             case COMPONENT_TYPE_INTERSTITIAL_AD, COMPONENT_TYPE_REQUEST_NETWORK,
                  COMPONENT_TYPE_TEXT_TO_SPEECH, COMPONENT_TYPE_SPEECH_TO_TEXT,
                  COMPONENT_TYPE_BLUETOOTH_CONNECT, COMPONENT_TYPE_LOCATION_MANAGER ->
@@ -186,7 +183,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_NOTIFICATION -> "Notification";
             case COMPONENT_TYPE_FRAGMENT_ADAPTER -> "FragmentAdapter";
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> "PhoneAuth";
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "Dynamic Link";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "Cloud Message";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "Google Login";
             default -> ComponentsHandler.name(type);
@@ -223,7 +219,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case "Notification" -> COMPONENT_TYPE_NOTIFICATION;
             case "FragmentAdapter" -> COMPONENT_TYPE_FRAGMENT_ADAPTER;
             case "FirebasePhoneAuth" -> COMPONENT_TYPE_FIREBASE_AUTH_PHONE;
-            case "FirebaseDynamicLink" -> COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS;
             case "FirebaseCloudMessage" -> COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE;
             case "FirebaseGoogleLogin" -> COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN;
             default -> ComponentsHandler.id(typeName);
@@ -260,7 +255,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_NOTIFICATION -> "Notification";
             case COMPONENT_TYPE_FRAGMENT_ADAPTER -> "FragmentAdapter";
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> "FirebasePhoneAuth";
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "FirebaseDynamicLink";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "FirebaseGoogleLogin";
             default -> ComponentsHandler.typeName(type);
@@ -305,7 +299,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_NOTIFICATION -> R.string.component_description_notification;
             case COMPONENT_TYPE_FRAGMENT_ADAPTER -> R.string.component_description_fragment_adapter;
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> R.string.component_description_fb_phone_auth;
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> R.string.component_description_fb_dynamic;
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> R.string.component_description_fb_fcm;
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN ->
                     R.string.component_description_fb_google;
@@ -343,7 +336,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_NOTIFICATION -> R.drawable.ic_mtrl_notifications;
             case COMPONENT_TYPE_FRAGMENT_ADAPTER -> R.drawable.ic_mtrl_viewpager;
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> R.drawable.ic_mtrl_firebase_sms;
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> R.drawable.ic_mtrl_firebase_dl;
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> R.drawable.ic_mtrl_firebase_cloud;
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> R.drawable.ic_mtrl_firebase_google;
             case 36 -> R.drawable.ic_mtrl_sync;
@@ -382,7 +374,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_NOTIFICATION -> "Notification";
             case COMPONENT_TYPE_FRAGMENT_ADAPTER -> "FragmentAdapter";
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> "FirebasePhoneAuth";
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "FirebaseDynamicLink";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "FirebaseGoogleLogin";
             default -> ComponentsHandler.c(type);

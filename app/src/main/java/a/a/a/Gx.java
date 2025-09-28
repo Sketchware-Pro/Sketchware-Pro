@@ -322,10 +322,6 @@ public class Gx {
                 classInfos = "Component.FirebaseGoogleLogin";
                 break;
 
-            case "FirebaseDynamicLink":
-                classInfos = "Component.FirebaseDynamicLink";
-                break;
-
             case "PopupMenu":
                 classInfos = "Component.PopupMenu";
                 break;

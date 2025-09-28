@@ -141,7 +141,7 @@ public class kq {
                  "intent", "locationmanager", "firebase", "speechtotext", "calendar", "file",
                  "firebaseauth", "timer", "gyroscope", "mediaplayer", "bluetoothconnect",
                  "vibrator", "firebasestorage", "phoneauth",
-                 "googlelogin", "dynamiclink", "cloudmessage" -> "p";
+                 "googlelogin", "cloudmessage" -> "p";
             case "varMap" -> "a";
             case "listInt", "listMap", "listStr" -> "l";
             default -> "v";
@@ -230,7 +230,6 @@ public class kq {
             case "recyclerview" -> "RecyclerView";
             case "resource" -> "Image";
             case "googlelogin" -> "FirebaseGoogleSignIn";
-            case "dynamiclink" -> "FirebaseDynamicLink";
             case "youtubeview" -> "YoutubePlayer";
             case "cardview" -> "CardView";
             case "radiogroup" -> "RadioGroup";
