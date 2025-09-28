@@ -92,7 +92,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         } else {
             nowPlayingPlayer.start();
             startNowPlayingProgressUpdater();
-            playPause.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
+            playPause.setImageResource(R.drawable.ic_mtrl_circle_pause);
         }
     }
 
@@ -260,7 +260,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         if (nowPlayingPlayer != null && nowPlayingPlayer.isPlaying()) {
             timer.cancel();
             nowPlayingPlayer.pause();
-            playPause.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+            playPause.setImageResource(R.drawable.ic_mtrl_circle_play);
         }
     }
 
@@ -306,7 +306,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build());
             nowPlayingPlayer.setOnPreparedListener(mp -> {
-                playPause.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
+                playPause.setImageResource(R.drawable.ic_mtrl_circle_pause);
                 playPause.setEnabled(true);
                 nowPlayingProgressBar.setMax(mp.getDuration() / 100);
                 nowPlayingProgressBar.setProgress(0);
@@ -321,7 +321,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
             });
             nowPlayingPlayer.setOnCompletionListener(mp -> {
                 timer.cancel();
-                playPause.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+                playPause.setImageResource(R.drawable.ic_mtrl_circle_play);
                 nowPlayingProgressBar.setProgress(0);
                 nowPlayingProgress.setText("0:00");
             });
