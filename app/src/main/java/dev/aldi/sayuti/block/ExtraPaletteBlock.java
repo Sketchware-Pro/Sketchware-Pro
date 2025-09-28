@@ -112,8 +112,6 @@ public class ExtraPaletteBlock {
         return switch (str) {
             case "circleimageview" ->
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW, str2);
-            case "onesignal" ->
-                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_ONESIGNAL, str2);
             case "asynctask" -> jC.a(sc_id).d(javaName, 36, str2);
             case "otpview" -> jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW, str2);
             case "lottie" ->

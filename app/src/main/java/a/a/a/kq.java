@@ -140,7 +140,7 @@ public class kq {
             case "soundpool", "requestnetwork", "objectanimator", "dialog", "texttospeech",
                  "intent", "locationmanager", "firebase", "speechtotext", "calendar", "file",
                  "firebaseauth", "timer", "gyroscope", "mediaplayer", "bluetoothconnect",
-                 "vibrator", "firebasestorage", "onesignal", "phoneauth",
+                 "vibrator", "firebasestorage", "phoneauth",
                  "googlelogin", "dynamiclink", "cloudmessage" -> "p";
             case "varMap" -> "a";
             case "listInt", "listMap", "listStr" -> "l";
@@ -220,7 +220,6 @@ public class kq {
             case "sidebar" -> "WaveSideBar";
             case "badgeview" -> "BadgeView";
             case "circleimageview" -> "CircleImageView";
-            case "onesignal" -> "OneSignal";
             case "customViews" -> "CustomView";
             case "asynctask" -> "AsyncTask";
             case "activity" -> "Context";

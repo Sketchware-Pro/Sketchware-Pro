@@ -302,10 +302,6 @@ public class Gx {
                 classInfos = "Component.Videos";
                 break;
 
-            case "FirebaseAdmin":
-                classInfos = "Component.OneSignal";
-                break;
-
             case "FirebaseCloudMessage":
                 classInfos = "Component.FirebaseCloudMessage";
                 break;

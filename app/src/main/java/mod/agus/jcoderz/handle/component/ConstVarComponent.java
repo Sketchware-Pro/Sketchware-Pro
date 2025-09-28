@@ -14,7 +14,6 @@ public class ConstVarComponent {
     public boolean isFCMUsed = false;
     public boolean isLottieUsed = false;
     public boolean isOTPViewUsed = false;
-    public boolean isOneSignalUsed = false;
     public boolean isPatternLockViewUsed = false;
     public boolean isWaveSideBarUsed = false;
     public boolean isYoutubePlayerUsed = false;
@@ -28,10 +27,6 @@ public class ConstVarComponent {
 
             case "FirebaseGoogleLogin":
                 isFBGoogleUsed = false;
-                break;
-
-            case "OneSignal":
-                isOneSignalUsed = false;
                 break;
 
             default:

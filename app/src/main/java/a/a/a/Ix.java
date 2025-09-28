@@ -487,32 +487,6 @@ public class Ix {
             writePermission(a, Manifest.permission.WAKE_LOCK);
             writePermission(a, "com.google.android.c2dm.permission.RECEIVE");
         }
-        if (c.x.isOneSignalUsed) {
-            XmlBuilder permission = new XmlBuilder("permission");
-            permission.addAttribute("android", "name", packageName + ".permission.C2D_MESSAGE");
-            permission.addAttribute("android", "protectionLevel", "signature");
-            a.addChildNode(permission);
-            writePermission(a, packageName + ".permission.C2D_MESSAGE");
-            writePermission(a, Manifest.permission.WAKE_LOCK);
-            writePermission(a, Manifest.permission.VIBRATE);
-            writePermission(a, Manifest.permission.RECEIVE_BOOT_COMPLETED);
-            writePermission(a, "com.sec.android.provider.badge.permission.READ");
-            writePermission(a, "com.sec.android.provider.badge.permission.WRITE");
-            writePermission(a, "com.htc.launcher.permission.READ_SETTINGS");
-            writePermission(a, "com.htc.launcher.permission.UPDATE_SHORTCUT");
-            writePermission(a, "com.sonyericsson.home.permission.BROADCAST_BADGE");
-            writePermission(a, "com.sonymobile.home.permission.PROVIDER_INSERT_BADGE");
-            writePermission(a, "com.anddoes.launcher.permission.UPDATE_COUNT");
-            writePermission(a, "com.majeur.launcher.permission.UPDATE_BADGE");
-            writePermission(a, "com.huawei.android.launcher.permission.CHANGE_BADGE");
-            writePermission(a, "com.huawei.android.launcher.permission.READ_SETTINGS");
-            writePermission(a, "com.huawei.android.launcher.permission.WRITE_SETTINGS");
-            writePermission(a, "android.permission.READ_APP_BADGE");
-            writePermission(a, "com.oppo.launcher.permission.READ_SETTINGS");
-            writePermission(a, "com.oppo.launcher.permission.WRITE_SETTINGS");
-            writePermission(a, "me.everything.badger.permission.BADGE_COUNT_READ");
-            writePermission(a, "me.everything.badger.permission.BADGE_COUNT_WRITE");
-        }
         AndroidManifestInjector.getP(a, c.sc_id);
 
         if (c.isAdMobEnabled || c.isTextToSpeechUsed || c.isSpeechToTextUsed) {
@@ -697,9 +671,6 @@ public class Ix {
         }
         if (c.x.isFCMUsed) {
             EditorManifest.writeDefFCM(applicationTag);
-        }
-        if (c.x.isOneSignalUsed) {
-            EditorManifest.manifestOneSignal(applicationTag, packageName, c.x.param);
         }
         if (c.x.isFBGoogleUsed) {
             EditorManifest.manifestFBGoogleLogin(applicationTag);

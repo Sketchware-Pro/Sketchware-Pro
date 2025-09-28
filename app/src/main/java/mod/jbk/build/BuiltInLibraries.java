@@ -115,7 +115,6 @@ public class BuiltInLibraries {
     public static String MATERIAL = "material-1.6.1";
     public static String OKHTTP = "okhttp-3.9.1";
     public static String OKIO = "okio-1.17.4";
-    public static String ONESIGNAL = "OneSignal-3.14.0";
     public static String OTPVIEW = "OTPView-0.1.0";
     public static String PATTERN_LOCK_VIEW = "pattern-lock-view";
     public static String PLAY_SERVICES_ADS = "play-services-ads-22.2.0";
@@ -297,8 +296,6 @@ public class BuiltInLibraries {
 
             new BuiltInLibrary(OKHTTP, List.of(OKIO)),
             new BuiltInLibrary(OKIO),
-            new BuiltInLibrary(ONESIGNAL, List.of(ANDROIDX_BROWSER, ANDROIDX_CARDVIEW, ANDROIDX_FRAGMENT, ANDROIDX_MEDIA, FIREBASE_MESSAGING,
-                    PLAY_SERVICES_ADS_IDENTIFIER, PLAY_SERVICES_BASE, PLAY_SERVICES_LOCATION), "com.onesignal"),
 
             new BuiltInLibrary(OTPVIEW, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE_KTX, ANDROIDX_CONSTRAINTLAYOUT, KOTLIN_STDLIB_JDK7),
                     "affan.ahmad.otp"),

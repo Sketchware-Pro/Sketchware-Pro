@@ -1241,7 +1241,6 @@ public class OldResourceIdMapper {
             case 2131166439 -> R.drawable.ic_mtrl_firebase_cloud;
             case 2131166440 -> R.drawable.ic_mtrl_firebase_dl;
             case 2131166441 -> R.drawable.ic_mtrl_firebase_google;
-            case 2131166442 -> R.drawable.ic_mtrl_firebase_onesignal;
             case 2131166443 -> R.drawable.ic_mtrl_firebase_rtdb;
             case 2131166444 -> R.drawable.ic_mtrl_firebase_sms;
             case 2131166445 -> R.drawable.ic_mtrl_firebase_storage;

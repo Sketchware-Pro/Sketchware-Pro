@@ -155,10 +155,6 @@ public class Lx {
             content.append("implementation 'affan.ahmad:otp:0.1.0'\r\n");
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.ONESIGNAL, excludedLibraries) && extraMetadata.isOneSignalUsed) {
-            content.append("implementation 'com.onesignal:OneSignal:3.14.0'\r\n");
-        }
-
         if (isLibraryNotExcluded(BuiltInLibraries.PATTERN_LOCK_VIEW, excludedLibraries) && extraMetadata.isPatternLockViewUsed) {
             content.append("implementation 'com.andrognito:patternlockview:1.0.0'\r\n");
         }

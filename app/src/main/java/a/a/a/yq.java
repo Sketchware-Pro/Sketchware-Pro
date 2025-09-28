@@ -586,7 +586,6 @@ public class yq {
                             N.x.isFCMUsed = true;
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN ->
                             N.x.isFBGoogleUsed = true;
-                    case ComponentBean.COMPONENT_TYPE_ONESIGNAL -> N.x.isOneSignalUsed = true;
                     default -> {
                     }
                 }
@@ -676,11 +675,6 @@ public class yq {
                         case "webViewLoadUrl":
                             N.addPermission(jq.PERMISSION_INTERNET);
                             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
-                            break;
-
-                        case "OneSignal setAppId":
-                        case "OnResultBillingResponse":
-                        case "Youtube useWebUI":
                             break;
 
                         default:

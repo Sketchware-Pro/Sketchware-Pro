@@ -504,11 +504,6 @@ public class ExtraMenuBean {
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN);
                 break;
 
-            case "onesignal":
-                title = "Select a OneSignal Component";
-                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_ONESIGNAL);
-                break;
-
             case "providerType":
                 title = Helper.getResString(R.string.logic_editor_title_location_manager_provider_type);
                 menus = new ArrayList<>(Arrays.asList(uq.p));

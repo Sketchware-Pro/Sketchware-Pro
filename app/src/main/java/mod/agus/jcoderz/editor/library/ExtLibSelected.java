@@ -16,10 +16,6 @@ public class ExtLibSelected {
         if (component.isFCMUsed) {
             kp.addLibrary(BuiltInLibraries.FIREBASE_MESSAGING);
         }
-        if (component.isOneSignalUsed) {
-            kp.addLibrary(BuiltInLibraries.ONESIGNAL);
-            kp.addLibrary(BuiltInLibraries.PLAY_SERVICES_GCM);
-        }
         if (component.isLottieUsed) {
             kp.addLibrary(BuiltInLibraries.LOTTIE);
         }

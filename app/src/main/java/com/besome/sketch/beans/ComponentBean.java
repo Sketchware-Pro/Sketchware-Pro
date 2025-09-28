@@ -54,7 +54,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
     public static final int COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS = 29;
     public static final int COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE = 30;
     public static final int COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN = 31;
-    public static final int COMPONENT_TYPE_ONESIGNAL = 32;
 
     public Gx classInfo;
     @Expose
@@ -190,7 +189,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "Dynamic Link";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "Cloud Message";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "Google Login";
-            case COMPONENT_TYPE_ONESIGNAL -> "OneSignal";
             default -> ComponentsHandler.name(type);
         };
     }
@@ -228,7 +226,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case "FirebaseDynamicLink" -> COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS;
             case "FirebaseCloudMessage" -> COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE;
             case "FirebaseGoogleLogin" -> COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN;
-            case "OneSignal" -> COMPONENT_TYPE_ONESIGNAL;
             default -> ComponentsHandler.id(typeName);
         };
     }
@@ -266,7 +263,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "FirebaseDynamicLink";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "FirebaseGoogleLogin";
-            case COMPONENT_TYPE_ONESIGNAL -> "OneSignal";
             default -> ComponentsHandler.typeName(type);
         };
     }
@@ -313,7 +309,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> R.string.component_description_fb_fcm;
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN ->
                     R.string.component_description_fb_google;
-            case COMPONENT_TYPE_ONESIGNAL -> R.string.component_description_fb_admin;
             default -> 0;
         };
     }
@@ -351,7 +346,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> R.drawable.ic_mtrl_firebase_dl;
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> R.drawable.ic_mtrl_firebase_cloud;
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> R.drawable.ic_mtrl_firebase_google;
-            case COMPONENT_TYPE_ONESIGNAL -> R.drawable.ic_mtrl_firebase_onesignal;
             case 36 -> R.drawable.ic_mtrl_sync;
 
             default -> ComponentsHandler.icon(type);
@@ -391,7 +385,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "FirebaseDynamicLink";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "FirebaseGoogleLogin";
-            case COMPONENT_TYPE_ONESIGNAL -> "OneSignal";
             default -> ComponentsHandler.c(type);
         };
         classInfo = new Gx(typeName);

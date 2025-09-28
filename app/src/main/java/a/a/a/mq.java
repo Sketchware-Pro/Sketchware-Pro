@@ -90,7 +90,6 @@ public class mq {
             case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "DynamicLink";
             case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "GoogleSignInClient";
-            case ComponentBean.COMPONENT_TYPE_ONESIGNAL -> "OSSubscriptionObserver";
             default -> ComponentsHandler.var(componentId);
         };
     }
@@ -197,7 +196,6 @@ public class mq {
             case "patternview" -> "PatternLockView";
             case "sidebar" -> "WaveSideBar";
             case "circleimageview" -> "CircleImageView";
-            case "onesignal" -> "OneSignal";
             case "customViews" -> "CustomView";
             case "asynctask" -> "AsyncTask";
             case "activity" -> "Context";
@@ -602,12 +600,6 @@ public class mq {
                 importList.add("com.google.firebase.iid.FirebaseInstanceId");
                 importList.add("com.google.firebase.iid.InstanceIdResult");
                 importList.add("com.google.firebase.messaging.FirebaseMessaging");
-                return importList;
-
-            case "OSSubscriptionObserver":
-                importList.add("com.onesignal.OSSubscriptionObserver");
-                importList.add("com.onesignal.OneSignal");
-                importList.add("org.json.JSONObject");
                 return importList;
 
             case "PhoneAuthProvider.OnVerificationStateChangedCallbacks":
