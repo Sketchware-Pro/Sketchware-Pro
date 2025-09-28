@@ -182,27 +182,14 @@ public class yq {
      * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/raw
      */
     public final String importedSoundsPath;
-
+    public final HashMap<String, Object> metadata;
     private final Material3LibraryManager material3LibraryManager;
-
     private final oB fileUtil;
     private final Context context;
-
-    private ExportType exportingType;
-
-    public final HashMap<String, Object> metadata;
-
     public jq N;
     public boolean generateDataBindingClasses;
     public boolean isAndroidStudioExport;
-
-    public enum ExportType {
-        AAB,
-        SIGN_APP,
-        DEBUG_APP,
-        ANDROID_STUDIO,
-        SOURCE_CODE_VIEWING
-    }
+    private ExportType exportingType;
 
     public yq(Context context, String sc_id) {
         this(context, wq.d(sc_id), lC.b(sc_id));
@@ -600,9 +587,6 @@ public class yq {
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN ->
                             N.x.isFBGoogleUsed = true;
                     case ComponentBean.COMPONENT_TYPE_ONESIGNAL -> N.x.isOneSignalUsed = true;
-                    case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER,
-                         ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
-                            N.x.isFBAdsUsed = true;
                     default -> {
                     }
                 }
@@ -697,12 +681,6 @@ public class yq {
                         case "OneSignal setAppId":
                         case "OnResultBillingResponse":
                         case "Youtube useWebUI":
-                        case "FacebookAds setProvider":
-                            if (!block.parameters.isEmpty()) {
-                                if (N.x.param == null) N.x.param = new HashMap<>();
-                                N.x.param.clear();
-                                N.x.param.put(block.opCode, block.parameters);
-                            }
                             break;
 
                         default:
@@ -1063,5 +1041,13 @@ public class yq {
             stylesFileBuilder.addStyle("AppTheme.DebugActivity", "AppTheme");
             return CommandBlock.applyCommands("styles.xml", stylesFileBuilder.toCode());
         }
+    }
+
+    public enum ExportType {
+        AAB,
+        SIGN_APP,
+        DEBUG_APP,
+        ANDROID_STUDIO,
+        SOURCE_CODE_VIEWING
     }
 }

@@ -509,16 +509,6 @@ public class ExtraMenuBean {
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_ONESIGNAL);
                 break;
 
-            case "fbadbanner":
-                title = "Select an FBAdsBanner Component";
-                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER);
-                break;
-
-            case "fbadinterstitial":
-                title = "Select an FBAdsInterstitial Component";
-                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL);
-                break;
-
             case "providerType":
                 title = Helper.getResString(R.string.logic_editor_title_location_manager_provider_type);
                 menus = new ArrayList<>(Arrays.asList(uq.p));

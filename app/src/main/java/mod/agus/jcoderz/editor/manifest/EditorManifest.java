@@ -117,22 +117,6 @@ public class EditorManifest {
         applicationTag.addChildNode(upgradeReceiverTag);
     }
 
-    public static void manifestFBAds(XmlBuilder applicationTag, String packageName) {
-        XmlBuilder activityTag = new XmlBuilder("activity");
-        activityTag.addAttribute("android", "name", "com.facebook.ads.AudienceNetworkActivity");
-        activityTag.addAttribute("android", "configChanges", "keyboardHidden|orientation|screenSize");
-        activityTag.addAttribute("android", "exported", "false");
-        activityTag.addAttribute("android", "theme", "@android:style/Theme.Translucent.NoTitleBar");
-        applicationTag.addChildNode(activityTag);
-        if (!packageName.isEmpty()) {
-            XmlBuilder nx3 = new XmlBuilder("provider");
-            nx3.addAttribute("android", "name", "com.facebook.ads.AudienceNetworkContentProvider");
-            nx3.addAttribute("android", "authorities", packageName + ".AudienceNetworkContentProvider");
-            nx3.addAttribute("android", "exported", "false");
-            applicationTag.addChildNode(nx3);
-        }
-    }
-
     public static void manifestFBGoogleLogin(XmlBuilder applicationTag) {
         XmlBuilder activityTag = new XmlBuilder("activity");
         activityTag.addAttribute("android", "name", "com.google.android.gms.auth.api.signin.internal.SignInHubActivity");

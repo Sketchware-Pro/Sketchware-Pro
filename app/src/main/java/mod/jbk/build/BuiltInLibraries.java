@@ -100,7 +100,6 @@ public class BuiltInLibraries {
     public static String FIREBASE_STORAGE = "firebase-storage-19.0.0";
     public static String CIRCLEIMAGEVIEW = "circleimageview-3.1.0";
     public static String CODEVIEW = "CodeView-0.4.0";
-    public static String FACEBOOK_ADS_AUDIENCE_NETWORK_SDK = "audience-network-sdk-5.9.0";
     public static String GLIDE_ANNOTATIONS = "annotations-4.11.0";
     public static String GLIDE_DISKLRUCACHE = "disklrucache-4.11.0";
     public static String GLIDE_GIFDECODER = "gifdecoder-4.11.0";
@@ -253,7 +252,6 @@ public class BuiltInLibraries {
                     GUAVA_LISTENABLEFUTURE), "androidx.work"),
             new BuiltInLibrary(CIRCLEIMAGEVIEW, List.of(ANDROIDX_ANNOTATION), "de.hdodenhof.circleimageview"),
             new BuiltInLibrary(CODEVIEW, List.of(), "br.tiagohm.codeview"),
-            new BuiltInLibrary(FACEBOOK_ADS_AUDIENCE_NETWORK_SDK),
             new BuiltInLibrary(FIREBASE_AUTH, List.of(FIREBASE_AUTH_INTEROP, FIREBASE_COMMON, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_FRAGMENT,
                     ANDROIDX_LOCALBROADCASTMANAGER, PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
 

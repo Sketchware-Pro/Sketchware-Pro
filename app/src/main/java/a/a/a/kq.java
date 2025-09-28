@@ -140,8 +140,8 @@ public class kq {
             case "soundpool", "requestnetwork", "objectanimator", "dialog", "texttospeech",
                  "intent", "locationmanager", "firebase", "speechtotext", "calendar", "file",
                  "firebaseauth", "timer", "gyroscope", "mediaplayer", "bluetoothconnect",
-                 "vibrator", "firebasestorage", "onesignal", "phoneauth", "fbadbanner",
-                 "googlelogin", "dynamiclink", "fbadinterstitial", "cloudmessage" -> "p";
+                 "vibrator", "firebasestorage", "onesignal", "phoneauth",
+                 "googlelogin", "dynamiclink", "cloudmessage" -> "p";
             case "varMap" -> "a";
             case "listInt", "listMap", "listStr" -> "l";
             default -> "v";
@@ -227,7 +227,6 @@ public class kq {
             case "otpview" -> "OTPView";
             case "lottie" -> "LottieAnimation";
             case "phoneauth" -> "FirebasePhoneAuth";
-            case "fbadbanner" -> "FBAdsBanner";
             case "codeview" -> "CodeView";
             case "recyclerview" -> "RecyclerView";
             case "resource" -> "Image";
@@ -237,7 +236,6 @@ public class kq {
             case "cardview" -> "CardView";
             case "radiogroup" -> "RadioGroup";
             case "color" -> "Color";
-            case "fbadinterstitial" -> "FBAdsInterstitial";
             case "textinputlayout" -> "TextInputLayout";
             case "collapsingtoolbar" -> "CollapsingToolbarLayout";
             case "cloudmessage" -> "FirebaseCloudMessage";

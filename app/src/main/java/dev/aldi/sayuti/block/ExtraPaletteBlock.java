@@ -120,8 +120,6 @@ public class ExtraPaletteBlock {
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW, str2);
             case "phoneauth" ->
                     jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE, str2);
-            case "fbadbanner" ->
-                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER, str2);
             case "codeview" -> jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW, str2);
             case "recyclerview" ->
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW, str2);
@@ -136,8 +134,6 @@ public class ExtraPaletteBlock {
             case "cardview" -> jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW, str2);
             case "radiogroup" ->
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP, str2);
-            case "fbadinterstitial" ->
-                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL, str2);
             case "textinputlayout" ->
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT, str2);
             case "collapsingtoolbar" ->

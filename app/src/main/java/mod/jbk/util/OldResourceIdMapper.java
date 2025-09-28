@@ -1138,8 +1138,6 @@ public class OldResourceIdMapper {
             case 2131166326 -> R.drawable.component_fcm;
             case 2131166327 -> R.drawable.component_firebase_google;
             case 2131166328 -> R.drawable.component_firebase_admin;
-            case 2131166329 -> R.drawable.component_fbads_banner;
-            case 2131166330 -> R.drawable.component_fbads_interstitial;
             case 2131166331 -> R.drawable.event_code_sent;
             case 2131166332 -> R.drawable.event_complete_register;
             case 2131166333 -> R.drawable.event_delete_user;
@@ -1147,12 +1145,6 @@ public class OldResourceIdMapper {
             case 2131166335 -> R.drawable.event_email_verif_sent;
             case 2131166336 -> R.drawable.event_fb_dynamic_fail;
             case 2131166337 -> R.drawable.event_fb_dynamic_success;
-            case 2131166338 -> R.drawable.event_fbads_click;
-            case 2131166339 -> R.drawable.event_fbads_dismiss;
-            case 2131166340 -> R.drawable.event_fbads_displayed;
-            case 2131166341 -> R.drawable.event_fbads_error;
-            case 2131166342 -> R.drawable.event_fbads_impression;
-            case 2131166343 -> R.drawable.event_fbads_loaded;
             case 2131166344 -> R.drawable.event_google_result;
             case 2131166345 -> R.drawable.event_google_revoke;
             case 2131166346 -> R.drawable.event_google_signin;
@@ -1240,8 +1232,6 @@ public class OldResourceIdMapper {
             case 2131166428 -> R.drawable.ic_mtrl_expand;
             case 2131166429 -> R.drawable.ic_mtrl_export;
             case 2131166430 -> R.drawable.ic_mtrl_fab;
-            case 2131166431 -> R.drawable.ic_mtrl_fbads_banner;
-            case 2131166432 -> R.drawable.ic_mtrl_fbads_interstitial;
             case 2131166433 -> R.drawable.ic_mtrl_file;
             case 2131166434 -> R.drawable.ic_mtrl_file_present;
             case 2131166435 -> R.drawable.ic_mtrl_filter;

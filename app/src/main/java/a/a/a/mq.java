@@ -91,9 +91,6 @@ public class mq {
             case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "GoogleSignInClient";
             case ComponentBean.COMPONENT_TYPE_ONESIGNAL -> "OSSubscriptionObserver";
-            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> "com.facebook.ads.AdView";
-            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
-                    "com.facebook.ads.InterstitialAd";
             default -> ComponentsHandler.var(componentId);
         };
     }
@@ -207,7 +204,6 @@ public class mq {
             case "otpview" -> "OTPView";
             case "lottie" -> "LottieAnimation";
             case "phoneauth" -> "FirebasePhoneAuth";
-            case "fbadbanner" -> "FBAdsBanner";
             case "codeview" -> "CodeView";
             case "recyclerview" -> "RecyclerView";
             case "resource" -> "Image";
@@ -217,7 +213,6 @@ public class mq {
             case "cardview" -> "CardView";
             case "radiogroup" -> "RadioGroup";
             case "color" -> "Color";
-            case "fbadinterstitial" -> "FBAdsInterstitial";
             case "textinputlayout" -> "TextInputLayout";
             case "collapsingtoolbar" -> "CollapsingToolbarLayout";
             case "cloudmessage" -> "FirebaseCloudMessage";
@@ -659,11 +654,6 @@ public class mq {
                 importList.add("com.google.android.gms.ads.rewarded.RewardItem");
                 importList.add("com.google.android.gms.ads.rewarded.RewardedAd");
                 importList.add("com.google.android.gms.ads.rewarded.RewardedAdLoadCallback");
-                return importList;
-
-            case "com.facebook.ads.AdView":
-            case "com.facebook.ads.InterstitialAd":
-                importList.add("com.facebook.ads.*");
                 return importList;
 
             default:

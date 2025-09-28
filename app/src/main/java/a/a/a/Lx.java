@@ -163,10 +163,6 @@ public class Lx {
             content.append("implementation 'com.andrognito:patternlockview:1.0.0'\r\n");
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.FACEBOOK_ADS_AUDIENCE_NETWORK_SDK, excludedLibraries) && extraMetadata.isFBAdsUsed) {
-            content.append("implementation 'com.facebook.android:audience-network-sdk:6.18.0'");
-        }
-
         if (isLibraryNotExcluded(BuiltInLibraries.PLAY_SERVICES_AUTH, excludedLibraries) && extraMetadata.isFBGoogleUsed) {
             content.append("implementation 'com.google.android.gms:play-services-auth:19.0.0'");
         }
@@ -709,10 +705,6 @@ public class Lx {
                     fieldDeclaration += "\r\nprivate OnCompleteListener " + typeInstanceName + "_onCompleteListener;";
                     break;
 
-                case "com.facebook.ads.InterstitialAd":
-                    fieldDeclaration += "\r\nprivate InterstitialAdListener " + typeInstanceName + "_InterstitialAdListener;";
-                    break;
-
                 case "PhoneAuthProvider.OnVerificationStateChangedCallbacks":
                     fieldDeclaration += "private PhoneAuthProvider.ForceResendingToken " + typeInstanceName + "_resendToken;";
                     break;
@@ -720,10 +712,6 @@ public class Lx {
                 case "DynamicLink":
                     fieldDeclaration += "\r\nprivate OnSuccessListener " + typeInstanceName + "_onSuccessLink;"
                             + "\r\nprivate OnFailureListener " + typeInstanceName + "_onFailureLink;";
-                    break;
-
-                case "com.facebook.ads.AdView":
-                    fieldDeclaration += "\r\nprivate AdListener " + typeInstanceName + "_AdListener;";
                     break;
 
                 case "TimePickerDialog":

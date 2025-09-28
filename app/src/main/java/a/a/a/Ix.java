@@ -701,9 +701,6 @@ public class Ix {
         if (c.x.isOneSignalUsed) {
             EditorManifest.manifestOneSignal(applicationTag, packageName, c.x.param);
         }
-        if (c.x.isFBAdsUsed) {
-            EditorManifest.manifestFBAds(applicationTag, packageName);
-        }
         if (c.x.isFBGoogleUsed) {
             EditorManifest.manifestFBGoogleLogin(applicationTag);
         }

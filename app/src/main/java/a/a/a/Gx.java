@@ -298,10 +298,6 @@ public class Gx {
                 classInfos = "Component.LocationManager";
                 break;
 
-            case "FBAdsInterstitial":
-                classInfos = "Component.FBAdsInterstitial";
-                break;
-
             case "Videos":
                 classInfos = "Component.Videos";
                 break;
@@ -316,10 +312,6 @@ public class Gx {
 
             case "TimePickerDialog":
                 classInfos = "Component.TimePickerDialog";
-                break;
-
-            case "FBAdsBanner":
-                classInfos = "Component.FBAdsBanner";
                 break;
 
             case "Notification":
