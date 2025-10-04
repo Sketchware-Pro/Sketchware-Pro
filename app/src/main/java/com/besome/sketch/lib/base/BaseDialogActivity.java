@@ -94,11 +94,6 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
         dialogIcon.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-    }
-
     public void l() {
         dialogButtonsView.setVisibility(View.GONE);
     }

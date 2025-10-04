@@ -83,7 +83,7 @@ public class pu extends qA {
             addNewColorFilterInfo(selectedColorHex, selectedColor, images.size());
 
             addImage(icon);
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
+            bB.a(requireActivity(), getString(R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
         }
     });
     private final ActivityResultLauncher<Intent> showAddImageDialog = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -99,7 +99,7 @@ public class pu extends qA {
             adapter.notifyItemRangeInserted(images.size() - addedImages.size(), addedImages.size());
             updateGuideVisibility();
             ((ManageImageActivity) requireActivity()).l().refreshData();
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
+            bB.a(requireActivity(), getString(R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
         }
     });
     private final ActivityResultLauncher<Intent> showImageDetailsDialog = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -121,7 +121,7 @@ public class pu extends qA {
             }
             updateGuideVisibility();
             ((ManageImageActivity) requireActivity()).l().refreshData();
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
+            bB.a(requireActivity(), getString(R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
         }
     });
 
@@ -317,7 +317,7 @@ public class pu extends qA {
         binding.imageList.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
         adapter = new Adapter(binding.imageList);
         binding.imageList.setAdapter(adapter);
-        binding.tvGuide.setText(xB.b().a(requireContext(), R.string.design_manager_image_description_guide_add_image));
+        binding.tvGuide.setText((R.string.design_manager_image_description_guide_add_image));
         actionButtonContainer = requireActivity().findViewById(R.id.layout_btn_group);
         MaterialButton delete = requireActivity().findViewById(R.id.btn_delete);
         MaterialButton cancel = requireActivity().findViewById(R.id.btn_cancel);
@@ -326,7 +326,7 @@ public class pu extends qA {
                 deleteSelected();
                 a(false);
                 updateGuideVisibility();
-                bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
+                bB.a(requireActivity(), getString(R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
                 fab.show();
             }
         });
@@ -401,10 +401,10 @@ public class pu extends qA {
         }
         addImages(imagesToAdd);
         if (!duplicateNames.isEmpty()) {
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n" +
+            bB.a(requireActivity(), getString(R.string.common_message_name_unavailable) + "\n" +
                     "[" + String.join(", ", duplicateNames) + "]", bB.TOAST_WARNING).show();
         } else {
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_import_complete), bB.TOAST_WARNING).show();
+            bB.a(requireActivity(), getString(R.string.design_manager_message_import_complete), bB.TOAST_WARNING).show();
         }
         adapter.notifyDataSetChanged();
         updateGuideVisibility();

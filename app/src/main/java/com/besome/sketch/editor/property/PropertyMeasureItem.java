@@ -30,7 +30,6 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
     private View propertyItem;
     private View propertyMenuItem;
     private Kw valueChangeListener;
-    private boolean isMatchParent = true;
     private boolean isWrapContent = true;
     private boolean isCustomValue = true;
     private int imgLeftIconDrawableResId;
@@ -90,7 +89,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
     }
 
     public void setItemEnabled(int itemEnabled) {
-        isMatchParent = (itemEnabled & 1) == 1;
+        boolean isMatchParent = (itemEnabled & 1) == 1;
         isWrapContent = (itemEnabled & 2) == 2;
         isCustomValue = (itemEnabled & 4) == 4;
     }

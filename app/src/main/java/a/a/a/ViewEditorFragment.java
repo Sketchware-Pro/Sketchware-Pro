@@ -38,10 +38,10 @@ public class ViewEditorFragment extends qA {
     private ProjectFileBean projectFileBean;
     private boolean isFabEnabled = false;
     private ViewProperty viewProperty;
-    private ObjectAnimator n;
-    private ObjectAnimator o;
-    private boolean p;
-    private boolean q = false;
+    private ObjectAnimator showPropertyViewAnimator;
+    private ObjectAnimator hidePropertyViewAnimator;
+    private boolean isPropertyViewVisible;
+    private boolean isDragging = false;
     private String sc_id;
 
     private WidgetsCreatorManager widgetsCreatorManager;
@@ -113,7 +113,7 @@ public class ViewEditorFragment extends qA {
 
             @Override
             public void b() {
-                q = true;
+                isDragging = true;
                 ((DesignActivity) requireActivity()).setTouchEventEnabled(false);
             }
 
@@ -124,7 +124,7 @@ public class ViewEditorFragment extends qA {
 
             @Override
             public void d() {
-                q = false;
+                isDragging = false;
                 ((DesignActivity) requireActivity()).setTouchEventEnabled(true);
             }
         });
@@ -132,10 +132,10 @@ public class ViewEditorFragment extends qA {
         viewEditor.setFavoriteData(Rp.h().f());
     }
 
-    public void a(ProjectFileBean projectFileBean) {
+    public void initialize(ProjectFileBean projectFileBean) {
         this.projectFileBean = projectFileBean;
         isFabEnabled = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB);
-        viewEditor.a(sc_id, projectFileBean);
+        viewEditor.initialize(sc_id, projectFileBean);
         viewEditor.h();
         viewProperty.a(sc_id, this.projectFileBean);
         e();
@@ -177,15 +177,15 @@ public class ViewEditorFragment extends qA {
 
     public void a(boolean var1) {
         startAnimation();
-        if (!p || !var1) {
+        if (!isPropertyViewVisible || !var1) {
             cancelAnimations();
             if (var1) {
-                n.start();
-            } else if (p) {
-                o.start();
+                showPropertyViewAnimator.start();
+            } else if (isPropertyViewVisible) {
+                hidePropertyViewAnimator.start();
             }
 
-            p = var1;
+            isPropertyViewVisible = var1;
         }
     }
 
@@ -203,22 +203,17 @@ public class ViewEditorFragment extends qA {
         a(viewBeans);
     }
 
-    public void b(boolean var1) {
-        viewEditor.setIsAdLoaded(var1);
-        viewEditor.requestLayout();
-    }
-
     private void cancelAnimations() {
-        if (n.isRunning()) n.cancel();
-        if (o.isRunning()) o.cancel();
+        if (showPropertyViewAnimator.isRunning()) showPropertyViewAnimator.cancel();
+        if (hidePropertyViewAnimator.isRunning()) hidePropertyViewAnimator.cancel();
     }
 
     public void c(ViewBean var1) {
         viewEditor.e(var1);
     }
 
-    public void c(boolean var1) {
-        viewProperty.setVisibility(var1 ? View.VISIBLE : View.GONE);
+    public void showHidePropertyView(boolean shouldShow) {
+        viewProperty.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
     }
 
     public ProjectFileBean d() {
@@ -298,26 +293,26 @@ public class ViewEditorFragment extends qA {
     }
 
     private void startAnimation() {
-        if (n == null) {
-            n = ObjectAnimator.ofFloat(viewProperty, View.TRANSLATION_Y, 0.0F);
-            n.setDuration(700L);
-            n.setInterpolator(new DecelerateInterpolator());
+        if (showPropertyViewAnimator == null) {
+            showPropertyViewAnimator = ObjectAnimator.ofFloat(viewProperty, View.TRANSLATION_Y, 0.0F);
+            showPropertyViewAnimator.setDuration(700L);
+            showPropertyViewAnimator.setInterpolator(new DecelerateInterpolator());
         }
 
-        if (o == null) {
+        if (hidePropertyViewAnimator == null) {
             if (getActivity() == null) return;
-            o = ObjectAnimator.ofFloat(viewProperty, View.TRANSLATION_Y, wB.a(requireActivity(), (float) viewProperty.getHeight()));
-            o.setDuration(300L);
-            o.setInterpolator(new DecelerateInterpolator());
+            hidePropertyViewAnimator = ObjectAnimator.ofFloat(viewProperty, View.TRANSLATION_Y, wB.a(requireActivity(), (float) viewProperty.getHeight()));
+            hidePropertyViewAnimator.setDuration(300L);
+            hidePropertyViewAnimator.setInterpolator(new DecelerateInterpolator());
         }
     }
 
-    public boolean g() {
-        return p;
+    public boolean isPropertyViewVisible() {
+        return isPropertyViewVisible;
     }
 
     private void onRedo() {
-        if (!q) {
+        if (!isDragging) {
             HistoryViewBean historyViewBean = cC.c(sc_id).h(projectFileBean.getXmlName());
             if (historyViewBean != null) {
                 int actionType = historyViewBean.getActionType();
@@ -383,7 +378,7 @@ public class ViewEditorFragment extends qA {
     }
 
     private void onUndo() {
-        if (!q) {
+        if (!isDragging) {
             HistoryViewBean historyViewBean = cC.c(sc_id).i(projectFileBean.getXmlName());
             if (historyViewBean != null) {
                 int actionType = historyViewBean.getActionType();

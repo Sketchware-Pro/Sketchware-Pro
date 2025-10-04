@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.PopupMenu;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -56,15 +57,12 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
     private static final String[] COMMANDS_ACTION = {
             "insert", "add", "replace", "find-replace", "find-replace-first", "find-replace-all"
     };
-    private ManageXmlCommandBinding binding;
     private String sc_id;
     private String commandPath;
     private XMLCommandAdapter adapter;
     private ProjectSettings settings;
     private ArrayList<HashMap<String, Object>> commands = new ArrayList<>();
     private ArrayList<String> xmlFiles;
-
-    private hC projectFile;
 
     public static void fetchXMLCommand(Context context, String sc_id) {
         var path = wq.b(sc_id) + "/command";
@@ -94,7 +92,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ManageXmlCommandBinding.inflate(getLayoutInflater());
+        ManageXmlCommandBinding binding = ManageXmlCommandBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("XML Command Manager");
@@ -114,7 +112,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
             sc_id = savedInstanceState.getString("sc_id");
         }
         commandPath = wq.b(sc_id) + "/command";
-        projectFile = jC.b(sc_id);
+        hC projectFile = jC.b(sc_id);
         xmlFiles = new ArrayList<>(projectFile.e());
         xmlFiles.addAll(
                 Arrays.asList("strings.xml", "colors.xml", "styles.xml", "AndroidManifest.xml"));
@@ -183,13 +181,13 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case 0 -> {
                 new MaterialAlertDialogBuilder(this)
                         .setTitle("Select an XML")
                         .setAdapter(
-                                new ArrayAdapter<String>(
+                                new ArrayAdapter<>(
                                         this, android.R.layout.simple_list_item_1, xmlFiles),
                                 (d, w) -> showSourceCode(xmlFiles.get(w)))
                         .show();
@@ -246,11 +244,11 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         }
 
         binding.xmlName.setAdapter(
-                new ArrayAdapter<String>(
+                new ArrayAdapter<>(
                         this, android.R.layout.simple_dropdown_item_1line, xmlFiles));
 
         binding.command.setAdapter(
-                new ArrayAdapter<String>(
+                new ArrayAdapter<>(
                         this, android.R.layout.simple_dropdown_item_1line, COMMANDS_ACTION));
 
         binding.positive.setText(R.string.common_word_save);

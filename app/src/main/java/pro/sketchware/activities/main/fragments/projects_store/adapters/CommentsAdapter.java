@@ -34,11 +34,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ViewStoreProjectPreviewCommentBinding binding;
 
         public ViewHolder(ViewStoreProjectPreviewCommentBinding binding) {
             super(binding.getRoot());
-            this.binding = binding;
         }
     }
 

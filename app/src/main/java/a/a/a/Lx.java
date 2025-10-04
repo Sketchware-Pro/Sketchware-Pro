@@ -110,10 +110,6 @@ public class Lx {
             content.append("implementation 'com.google.firebase:firebase-storage'\r\n");
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS, excludedLibraries) && metadata.isDynamicLinkUsed) {
-            content.append("implementation 'com.google.firebase:firebase-dynamic-links'\r\n");
-        }
-
         if (isLibraryNotExcluded(BuiltInLibraries.PLAY_SERVICES_ADS, excludedLibraries) && metadata.isAdMobEnabled) {
             content.append("implementation 'com.google.android.gms:play-services-ads:23.4.0'\r\n");
         }
@@ -155,16 +151,8 @@ public class Lx {
             content.append("implementation 'affan.ahmad:otp:0.1.0'\r\n");
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.ONESIGNAL, excludedLibraries) && extraMetadata.isOneSignalUsed) {
-            content.append("implementation 'com.onesignal:OneSignal:3.14.0'\r\n");
-        }
-
         if (isLibraryNotExcluded(BuiltInLibraries.PATTERN_LOCK_VIEW, excludedLibraries) && extraMetadata.isPatternLockViewUsed) {
             content.append("implementation 'com.andrognito:patternlockview:1.0.0'\r\n");
-        }
-
-        if (isLibraryNotExcluded(BuiltInLibraries.FACEBOOK_ADS_AUDIENCE_NETWORK_SDK, excludedLibraries) && extraMetadata.isFBAdsUsed) {
-            content.append("implementation 'com.facebook.android:audience-network-sdk:6.18.0'");
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.PLAY_SERVICES_AUTH, excludedLibraries) && extraMetadata.isFBGoogleUsed) {
@@ -254,7 +242,7 @@ public class Lx {
 
     /**
      * @param widgetName The list widget's name
-     * @return The adapter's class name (e.g. List_filesAdapter from list_files)
+     * @return The adapter's class name (e.g., List_filesAdapter from list_files)
      */
     public static String a(String widgetName, boolean isViewBindingEnabled) {
         if (isViewBindingEnabled)
@@ -359,7 +347,7 @@ public class Lx {
                     eventLogic + "\r\n" +
                     "}";
             case "onStopTrackingTouch" ->
-                // Why's the parameter named <code>_param2</code> even if it's the first parameter
+                // Why's the parameter named <code>_param2</code> even if it's the first parameter?
                     "@Override\r\n" +
                             "public void onStopTrackingTouch(SeekBar _param2) {\r\n" +
                             eventLogic + "\r\n" +
@@ -588,7 +576,7 @@ public class Lx {
     }
 
     /**
-     * @return One or more lines which declare a Type's needed fields.
+     * @return One or more lines which declare a Type's necessary fields.
      * Example for a Camera Component:
      * <pre>
      * private File _file_&lt;component name&gt;;
@@ -709,21 +697,8 @@ public class Lx {
                     fieldDeclaration += "\r\nprivate OnCompleteListener " + typeInstanceName + "_onCompleteListener;";
                     break;
 
-                case "com.facebook.ads.InterstitialAd":
-                    fieldDeclaration += "\r\nprivate InterstitialAdListener " + typeInstanceName + "_InterstitialAdListener;";
-                    break;
-
                 case "PhoneAuthProvider.OnVerificationStateChangedCallbacks":
                     fieldDeclaration += "private PhoneAuthProvider.ForceResendingToken " + typeInstanceName + "_resendToken;";
-                    break;
-
-                case "DynamicLink":
-                    fieldDeclaration += "\r\nprivate OnSuccessListener " + typeInstanceName + "_onSuccessLink;"
-                            + "\r\nprivate OnFailureListener " + typeInstanceName + "_onFailureLink;";
-                    break;
-
-                case "com.facebook.ads.AdView":
-                    fieldDeclaration += "\r\nprivate AdListener " + typeInstanceName + "_AdListener;";
                     break;
 
                 case "TimePickerDialog":
@@ -3416,7 +3391,7 @@ public class Lx {
      * A field's access modifier. Can either be
      * <code>private</code>, <code>protected</code> or <code>public</code>.
      */
-    enum AccessModifier {
+    public enum AccessModifier {
         /**
          * MODE_PRIVATE
          */

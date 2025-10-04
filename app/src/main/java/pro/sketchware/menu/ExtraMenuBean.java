@@ -70,7 +70,6 @@ public class ExtraMenuBean {
     private final String NATIVE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/native_libs/";
     private final DefaultExtraMenuBean defaultExtraMenu;
     private final FilePathUtil fpu;
-    private FilePickerDialogFragment fpd;
     private final FileResConfig frc;
     private final LogicEditorActivity logicEditor;
     private final FilePickerOptions mOptions = new FilePickerOptions();
@@ -490,11 +489,6 @@ public class ExtraMenuBean {
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE);
                 break;
 
-            case "dynamiclink":
-                title = "Select a DynamicLink Component";
-                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS);
-                break;
-
             case "cloudmessage":
                 title = "Select a CloudMessage Component";
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE);
@@ -503,21 +497,6 @@ public class ExtraMenuBean {
             case "googlelogin":
                 title = "Select a FirebaseGoogle Component";
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN);
-                break;
-
-            case "onesignal":
-                title = "Select a OneSignal Component";
-                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_ONESIGNAL);
-                break;
-
-            case "fbadbanner":
-                title = "Select an FBAdsBanner Component";
-                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER);
-                break;
-
-            case "fbadinterstitial":
-                title = "Select an FBAdsInterstitial Component";
-                menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL);
                 break;
 
             case "providerType":
@@ -814,7 +793,7 @@ public class ExtraMenuBean {
                 logicEditor.a(ss, file.getAbsolutePath().split(splitter)[1]);
             }
         };
-        fpd = new FilePickerDialogFragment(mOptions, callback);
+        FilePickerDialogFragment fpd = new FilePickerDialogFragment(mOptions, callback);
         fpd.show(logicEditor.getSupportFragmentManager(), "filePicker");
     }
 }

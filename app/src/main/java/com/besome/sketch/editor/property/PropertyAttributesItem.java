@@ -85,7 +85,6 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
     private View propertyItem;
     private View propertyMenuItem;
     private ImageView imgLeftIcon;
-    private int icon;
     private Kw valueChangeListener;
     private ViewBean bean;
     private List<String> ids = new ArrayList<>();
@@ -118,7 +117,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
         int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
             tvName.setText(Helper.getResString(identifier));
-            icon = R.drawable.ic_property_parent_attr;
+            int icon = R.drawable.ic_property_parent_attr;
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
                 ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));

@@ -11,7 +11,6 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ItemView;
 
 import a.a.a.wB;
-import a.a.a.xB;
 import pro.sketchware.R;
 
 public class ItemSignInButton extends AppCompatButton implements ItemView {
@@ -57,7 +56,7 @@ public class ItemSignInButton extends AppCompatButton implements ItemView {
         int resSize = size.getText();
         String text = "";
         if (resSize != 0) {
-            text = xB.b().a(context, resSize);
+            text = context.getString(resSize);
         }
         int color = scheme.getTextColor();
         int background = scheme.getBackgroundResource();

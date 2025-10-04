@@ -11,7 +11,6 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.google.android.material.divider.MaterialDivider;
 
 import a.a.a.wB;
-import a.a.a.xB;
 import pro.sketchware.R;
 import pro.sketchware.utility.ThemeUtils;
 
@@ -47,8 +46,8 @@ public class LibraryItemView extends FrameLayout {
         CharSequence enabledLabel = enabledChecked ? "ON" : "OFF";
 
         icon.setImageResource(ProjectLibraryBean.getLibraryIcon(projectLibraryBean.libType));
-        title.setText(xB.b().a(getContext(), ProjectLibraryBean.getLibraryResName(projectLibraryBean.libType)));
-        description.setText(xB.b().a(getContext(), ProjectLibraryBean.getLibraryResDesc(projectLibraryBean.libType)));
+        title.setText(ProjectLibraryBean.getLibraryResName(projectLibraryBean.libType));
+        description.setText(ProjectLibraryBean.getLibraryResDesc(projectLibraryBean.libType));
         enabled.setText(enabledLabel);
         enabled.setSelected(enabledChecked);
     }

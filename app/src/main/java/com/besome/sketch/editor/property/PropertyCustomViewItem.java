@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import a.a.a.Kw;
 import a.a.a.mB;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
@@ -77,7 +76,7 @@ public class PropertyCustomViewItem extends RelativeLayout implements View.OnCli
         }
 
         dialog.setView(propertyBinding.getRoot());
-        dialog.setPositiveButton(xB.b().a(getContext(), R.string.common_word_select), (v, which) -> {
+        dialog.setPositiveButton((R.string.common_word_select), (v, which) -> {
             for (int i = 0, childCount = rgContent.getChildCount(); i < childCount; i++) {
                 RadioButton radioButton = (RadioButton) rgContent.getChildAt(i);
 
@@ -90,7 +89,7 @@ public class PropertyCustomViewItem extends RelativeLayout implements View.OnCli
             }
             v.dismiss();
         });
-        dialog.setNegativeButton(xB.b().a(getContext(), R.string.common_word_cancel), null);
+        dialog.setNegativeButton((R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -115,13 +114,13 @@ public class PropertyCustomViewItem extends RelativeLayout implements View.OnCli
         this.key = key;
         int var2 = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (var2 > 0) {
-            tvName.setText(xB.b().a(getResources(), var2));
+            tvName.setText((var2));
             f = R.drawable.ic_mtrl_interface;
             if (propertyMenuItem.getVisibility() == View.VISIBLE) {
                 ImageView var3 = findViewById(R.id.img_icon);
                 TextView var4 = findViewById(R.id.tv_title);
                 var3.setImageResource(f);
-                var4.setText(xB.b().a(getContext(), var2));
+                var4.setText((var2));
             } else {
                 imgLeftIcon.setImageResource(f);
             }

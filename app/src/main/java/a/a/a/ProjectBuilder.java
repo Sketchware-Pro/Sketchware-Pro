@@ -790,9 +790,6 @@ public class ProjectBuilder {
         if (yq.N.isHttp3Used) {
             builtInLibraryManager.addLibrary(BuiltInLibraries.OKHTTP);
         }
-        if (yq.N.isDynamicLinkUsed) {
-            builtInLibraryManager.addLibrary(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS);
-        }
 
         KotlinCompilerBridge.maybeAddKotlinBuiltInLibraryDependenciesIfPossible(this, builtInLibraryManager);
 

@@ -1,7 +1,6 @@
 package pro.sketchware.lib.validator;
 
 import android.content.Context;
-import android.text.Spanned;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import a.a.a.MB;
-import a.a.a.xB;
 import pro.sketchware.R;
 
 public class FontNameValidator extends MB {
@@ -39,11 +37,11 @@ public class FontNameValidator extends MB {
         int msgRes;
         String trim = charSequence.toString().trim();
         if (trim.length() < 3) {
-            a2 = xB.b().a(a, R.string.invalid_value_min_lenth, 3);
+            a2 = a.getString(R.string.invalid_value_min_lenth, 3);
         } else if (trim.length() > 70) {
-            a2 = xB.b().a(a, R.string.invalid_value_max_lenth, 70);
+            a2 = a.getString(R.string.invalid_value_max_lenth, 70);
         } else if (trim.equals("default_image") || "NONE".equalsIgnoreCase(trim) || (!trim.equals(h) && (fontNames != null && fontNames.contains(trim)))) {
-            a2 = xB.b().a(a, R.string.common_message_name_unavailable);
+            a2 = a.getString(R.string.common_message_name_unavailable);
         } else {
             int count = 0;
             while (true) {
@@ -59,14 +57,14 @@ public class FontNameValidator extends MB {
                         d = true;
                         return;
                     }
-                    b.setError(xB.b().a(a, R.string.invalid_value_rule_4));
+                    b.setError(a.getString(R.string.invalid_value_rule_4));
                     d = false;
                     return;
                 } else {
                     msgRes = R.string.logic_editor_message_variable_name_must_start_letter;
                 }
             }
-            a2 = xB.b().a(a, msgRes);
+            a2 = a.getString(msgRes);
         }
         b.setError(a2);
         d = false;

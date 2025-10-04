@@ -225,7 +225,7 @@ public class Fw extends qA {
         projectFilesAdapter = new ProjectFilesAdapter(activitiesList);
         activitiesList.setAdapter(projectFilesAdapter);
         tvGuide = root.findViewById(R.id.tv_guide);
-        tvGuide.setText(xB.b().a(getActivity(), R.string.design_manager_view_description_guide_create_activity));
+        tvGuide.setText((R.string.design_manager_view_description_guide_create_activity));
         return root;
     }
 

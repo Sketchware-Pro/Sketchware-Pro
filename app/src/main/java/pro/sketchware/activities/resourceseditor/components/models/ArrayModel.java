@@ -19,7 +19,7 @@ public class ArrayModel {
     public ArrayModel(String arrayName, ARRAYS_TYPES arrayType) {
         this.arrayName = arrayName;
         this.arrayType = arrayType;
-        this.attributes = new LinkedHashMap<>();
+        attributes = new LinkedHashMap<>();
     }
 
     public String getArrayName() {

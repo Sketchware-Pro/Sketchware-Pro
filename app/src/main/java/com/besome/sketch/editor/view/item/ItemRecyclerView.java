@@ -90,7 +90,7 @@ public class ItemRecyclerView extends RecyclerView implements ItemView, EditorLi
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
         if (hasSelection) {
             paint.setColor(0x9599d5d0);
             rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());

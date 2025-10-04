@@ -152,7 +152,7 @@ public class Fx {
             return "\"" + escapeString(param) + "\"";
         } else if (type == 1) {
             /**
-             * Ideally, a.a.aFx#a(BlockBean, String) should be responsible for parsing the input properly.
+             * Ideally, a.a.a.Fx#a(BlockBean, String) should be responsible for parsing the input properly.
              * However, upon decompiling this class, it seems to completely ignore this case.
              * This is the solution for now to prevent errors during code generation.
              */

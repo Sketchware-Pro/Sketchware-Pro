@@ -17,7 +17,7 @@ public class StyleModel {
     public StyleModel(String styleName, String parent) {
         this.styleName = styleName;
         this.parent = parent;
-        this.attributes = new LinkedHashMap<>();
+        attributes = new LinkedHashMap<>();
     }
 
     public String getStyleName() {

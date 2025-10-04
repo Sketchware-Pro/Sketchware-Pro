@@ -11,11 +11,10 @@ public class IconImageView extends IconBase {
 
     public IconImageView(Context context) {
         super(context);
+        initialize();
     }
 
-    @Override
-    public void a(Context context) {
-        super.a(context);
+    private void initialize() {
         setWidgetImage(R.drawable.ic_mtrl_image);
         setWidgetName("ImageView");
     }

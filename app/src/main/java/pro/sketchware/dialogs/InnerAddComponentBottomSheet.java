@@ -29,7 +29,6 @@ import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.uq;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 import pro.sketchware.R;
@@ -167,7 +166,7 @@ public class InnerAddComponentBottomSheet extends BottomSheetDialogFragment {
     }
 
     public final String getTranslatedString(@StringRes int resId) {
-        return xB.b().a(getContext(), resId);
+        return getString(resId);
     }
 
     private void setOnSaveClickListener(OnSaveClickListener onSaveClickListener) {
@@ -237,14 +236,6 @@ public class InnerAddComponentBottomSheet extends BottomSheetDialogFragment {
 
             case ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER:
                 if (jC.c(scId).c().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
-                    bB.b(getContext(), Helper.getResString(R.string.design_library_guide_setup_first), bB.TOAST_WARNING).show();
-                    return false;
-                }
-                jC.a(scId).a(projectFileBean.getJavaName(), componentType, componentId);
-                break;
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
-                if (jC.c(scId).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
                     bB.b(getContext(), Helper.getResString(R.string.design_library_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 }

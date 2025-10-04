@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupMenu;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.besome.sketch.beans.ProjectFileBean;
@@ -193,7 +194,7 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case 0 -> {
                 MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
@@ -295,10 +296,11 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                 });
         dialog.setNegativeButton(
                 R.string.common_word_cancel, (dialog1, which) -> dialog1.dismiss());
-        dialog.show();
-        Objects.requireNonNull(dialog.create().getWindow())
+        var alertDialog = dialog.create();
+        Objects.requireNonNull(alertDialog.getWindow())
                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        attributeBinding.inputRes.requestFocus();
+        alertDialog.show();
+        attributeBinding.inputAttr.post(attributeBinding.inputAttr::requestFocus);
     }
 
     private List<HashMap<String, Object>> filterInjections(String widgetName) {

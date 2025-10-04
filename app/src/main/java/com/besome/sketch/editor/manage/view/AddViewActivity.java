@@ -26,7 +26,6 @@ import a.a.a.bB;
 import a.a.a.rq;
 import a.a.a.uq;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageScreenActivityAddTempBinding;
@@ -219,11 +218,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
         binding.viewTypeSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
-                if (checkedId == R.id.select_activity) {
-                    setManifestViewState(true);
-                } else {
-                    setManifestViewState(false);
-                }
+                setManifestViewState(checkedId == R.id.select_activity);
             }
         });
 
@@ -268,7 +263,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra("project_file", projectFileBean);
         setResult(RESULT_OK, intent);
-        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete, new Object[0]), bB.TOAST_NORMAL).show();
+        bB.a(getApplicationContext(), getString(R.string.design_manager_message_edit_complete, new Object[0]), bB.TOAST_NORMAL).show();
         finish();
     }
 
@@ -281,7 +276,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
             intent.putExtra("preset_views", getPresetData(presetName));
         }
         setResult(RESULT_OK, intent);
-        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
+        bB.a(getApplicationContext(), getString(R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
         finish();
     }
 

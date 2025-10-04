@@ -127,6 +127,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
             return R.drawable.project_item_shape_middle;
         }
     }
+
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         holder.itemView.setBackgroundResource(getShapedBackgroundForList(shownProjects, position));
@@ -186,7 +187,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
     @NonNull
     @Override
-    public ProjectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         MyprojectsItemBinding binding = MyprojectsItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ProjectViewHolder(binding);
     }
@@ -274,7 +275,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         projectOptionsBSD.show();
     }
 
-    static class ProjectViewHolder extends RecyclerView.ViewHolder {
+    public static class ProjectViewHolder extends RecyclerView.ViewHolder {
         final MyprojectsItemBinding binding;
 
         ProjectViewHolder(MyprojectsItemBinding binding) {

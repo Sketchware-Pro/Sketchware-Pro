@@ -24,7 +24,6 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.rq;
 import a.a.a.wq;
-import a.a.a.xB;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
 import pro.sketchware.databinding.FileSelectorPopupSelectXmlBinding;
@@ -188,7 +187,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         }
 
         binding.optionsSelector.check(selectedTab == TAB_ACTIVITY ? R.id.option_view : R.id.option_custom_view);
-        binding.emptyMessage.setText(xB.b().a(this, R.string.design_manager_view_message_no_view));
+        binding.emptyMessage.setText((R.string.design_manager_view_message_no_view));
         viewSelectorAdapter = new ViewSelectorAdapter();
         binding.listXml.setHasFixedSize(true);
         binding.listXml.setAdapter(viewSelectorAdapter);
@@ -332,6 +331,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     viewHolder.itemBinding.cardView.setStrokeColor(
                             ThemeUtils.getColor(ViewSelectorActivity.this, R.attr.colorPrimary));
                     viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(3f));
+                } else {
+                    viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(0f));
                 }
                 String javaName = projectFileBean.getJavaName();
                 viewHolder.itemBinding.imgEdit.setVisibility(View.VISIBLE);
@@ -347,6 +348,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     viewHolder.itemBinding.cardView.setStrokeColor(
                             ThemeUtils.getColor(ViewSelectorActivity.this, R.attr.colorPrimary));
                     viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(3f));
+                } else {
+                    viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(0f));
                 }
                 if (customView.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
                     viewHolder.itemBinding.imgView.setImageResource(getViewIcon(4));

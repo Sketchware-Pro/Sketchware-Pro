@@ -207,8 +207,6 @@ public class jq {
 
     public String sc_id = "";
 
-    public boolean isDynamicLinkUsed = false;
-
     public ArrayList<Pair<String, String>> dlDataList = new ArrayList<>();
 
     /**

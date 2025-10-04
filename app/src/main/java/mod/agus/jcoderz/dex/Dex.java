@@ -689,7 +689,7 @@ public final class Dex {
                 write(Mutf8.encode(value));
                 writeByte(0);
             } catch (UTFDataFormatException e) {
-                throw new AssertionError();
+                throw new AssertionError(e);
             }
         }
 

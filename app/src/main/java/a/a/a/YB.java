@@ -33,13 +33,13 @@ public class YB extends MB {
     public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
         if (charSequence.toString().trim().length() < 3) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, 3));
+            b.setError(a.getString(R.string.invalid_value_min_lenth, 3));
             d = false;
             return;
         }
         if (charSequence.toString().trim().length() > 100) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, 100));
+            b.setError(a.getString(R.string.invalid_value_max_lenth, 100));
             d = false;
             return;
         }
@@ -52,25 +52,25 @@ public class YB extends MB {
         for (String reservedName : reservedNames) {
             if (charSequence.toString().equals(reservedName)) {
                 b.setErrorEnabled(true);
-                b.setError(xB.b().a(a, R.string.logic_editor_message_reserved_keywords));
+                b.setError(a.getString(R.string.logic_editor_message_reserved_keywords));
                 d = false;
                 return;
             }
         }
         if ("main".equals(charSequence.toString()) || existingNames.contains(charSequence.toString())) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, R.string.common_message_name_unavailable));
+            b.setError(a.getString(R.string.common_message_name_unavailable));
             d = false;
         } else if (!Character.isLetter(charSequence.charAt(0))) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, R.string.logic_editor_message_variable_name_must_start_letter));
+            b.setError(a.getString(R.string.logic_editor_message_variable_name_must_start_letter));
             d = false;
         } else if (YB.namePattern.matcher(charSequence.toString()).matches()) {
             b.setErrorEnabled(false);
             d = true;
         } else {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, R.string.invalid_value_rule_4));
+            b.setError(a.getString(R.string.invalid_value_rule_4));
             d = false;
         }
     }

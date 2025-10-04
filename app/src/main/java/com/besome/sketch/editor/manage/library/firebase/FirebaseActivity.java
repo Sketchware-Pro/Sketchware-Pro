@@ -28,7 +28,6 @@ import a.a.a.lv;
 import a.a.a.mB;
 import a.a.a.mv;
 import a.a.a.nv;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.LibrarySettingsImporter;
 import pro.sketchware.R;
@@ -45,15 +44,10 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     private int stepNumber = STEP_1;
 
     private Toolbar toolbar;
-    private ImageView icon;
     private Button btn_import;
-    private Button btn_open_doc;
     private TextView tv_step_desc;
     private TextView tv_step_title;
-    private TextView tv_goto_console;
-    private LinearLayout ll_goto_console;
     private LinearLayout layout_container;
-    private LinearLayout layout_step_guide;
     private com.google.android.material.card.MaterialCardView cv_console;
 
     private void setStep(int stepNumber) {
@@ -61,7 +55,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             step.a();
         }
 
-        getSupportActionBar().setSubtitle(stepNumber == STEP_3 ? getTranslatedString(R.string.common_word_review) : xB.b().a(getApplicationContext(), R.string.common_word_step, stepNumber + 1));
+        getSupportActionBar().setSubtitle(stepNumber == STEP_3 ? getTranslatedString(R.string.common_word_review) : getString(R.string.common_word_step, stepNumber + 1));
         tv_step_title.setText(stepTitles[stepNumber]);
         tv_step_desc.setText(stepDescriptions[stepNumber]);
 
@@ -88,11 +82,6 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         cv_console.setVisibility(step.getDocUrl().isEmpty() ? View.GONE : View.VISIBLE);
         btn_import.setVisibility(stepNumber > STEP_1 ? View.GONE : View.VISIBLE);
         onCreateOptionsMenu(toolbar.getMenu());
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
     }
 
     private void onNextPressed() {
@@ -189,16 +178,16 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_library_firebase);
 
-        icon = findViewById(R.id.icon);
+        ImageView icon = findViewById(R.id.icon);
         cv_console = findViewById(R.id.cv_console);
         btn_import = findViewById(R.id.btn_import);
         tv_step_desc = findViewById(R.id.tv_step_desc);
-        btn_open_doc = findViewById(R.id.btn_open_doc);
+        Button btn_open_doc = findViewById(R.id.btn_open_doc);
         tv_step_title = findViewById(R.id.tv_step_title);
-        ll_goto_console = findViewById(R.id.ll_goto_console);
-        tv_goto_console = findViewById(R.id.tv_goto_console);
+        LinearLayout ll_goto_console = findViewById(R.id.ll_goto_console);
+        TextView tv_goto_console = findViewById(R.id.tv_goto_console);
         layout_container = findViewById(R.id.layout_container);
-        layout_step_guide = findViewById(R.id.layout_step_guide);
+        LinearLayout layout_step_guide = findViewById(R.id.layout_step_guide);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -263,11 +252,6 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         super.onPostCreate(savedInstanceState);
         firebaseSettings = getIntent().getParcelableExtra("firebase");
         setStep(stepNumber);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override

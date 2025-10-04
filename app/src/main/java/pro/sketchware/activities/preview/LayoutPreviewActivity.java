@@ -18,8 +18,6 @@ import pro.sketchware.utility.UI;
 
 public class LayoutPreviewActivity extends BaseAppCompatActivity {
 
-    private ActivityLayoutPreviewBinding binding;
-
     private ViewPane pane;
 
     private String content;
@@ -28,7 +26,7 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
-        binding = ActivityLayoutPreviewBinding.inflate(getLayoutInflater());
+        ActivityLayoutPreviewBinding binding = ActivityLayoutPreviewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         var toolbar = binding.toolbar;
         setSupportActionBar(toolbar);

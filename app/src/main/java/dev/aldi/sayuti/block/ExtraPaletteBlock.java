@@ -112,23 +112,17 @@ public class ExtraPaletteBlock {
         return switch (str) {
             case "circleimageview" ->
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW, str2);
-            case "onesignal" ->
-                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_ONESIGNAL, str2);
             case "asynctask" -> jC.a(sc_id).d(javaName, 36, str2);
             case "otpview" -> jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW, str2);
             case "lottie" ->
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW, str2);
             case "phoneauth" ->
                     jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE, str2);
-            case "fbadbanner" ->
-                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER, str2);
             case "codeview" -> jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW, str2);
             case "recyclerview" ->
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW, str2);
             case "googlelogin" ->
                     jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN, str2);
-            case "dynamiclink" ->
-                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS, str2);
             case "youtubeview" ->
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW, str2);
             case "signinbutton" ->
@@ -136,8 +130,6 @@ public class ExtraPaletteBlock {
             case "cardview" -> jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW, str2);
             case "radiogroup" ->
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP, str2);
-            case "fbadinterstitial" ->
-                    jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL, str2);
             case "textinputlayout" ->
                     jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT, str2);
             case "collapsingtoolbar" ->
@@ -407,8 +399,6 @@ public class ExtraPaletteBlock {
                 StringsEditorManager stringsEditorManager = new StringsEditorManager();
                 stringsEditorManager.convertXmlStringsToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
-                logicEditor.b("Add new String", "XmlString.Add");
-                logicEditor.b("Remove String(s)", "XmlString.remove");
                 logicEditor.b("Open Resources editor", "openResourcesEditor");
 
                 logicEditor.a("s", "getResString");
@@ -1087,9 +1077,6 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "firebaseauthSignInAnonymously");
                     logicEditor.a(" ", "firebaseauthResetPassword");
                     logicEditor.a(" ", "firebaseauthSignOutUser");
-                }
-                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS)) {
-                    logicEditor.a(" ", "setDynamicLinkDataHost");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_GYROSCOPE)) {
                     logicEditor.a("Gyroscope", getTitleBgColor());

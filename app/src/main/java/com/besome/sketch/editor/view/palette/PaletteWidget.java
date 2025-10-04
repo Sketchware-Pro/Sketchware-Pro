@@ -69,11 +69,11 @@ public class PaletteWidget extends LinearLayout {
         initialize(context);
     }
 
-    public void AddCustomWidgets(View view) {
+    public void addCustomWidgets(View view) {
         layoutContainer.addView(view);
     }
 
-    public View CustomWidget(HashMap<String, Object> map) {
+    public View customWidget(HashMap<String, Object> map) {
         String title = map.get("title").toString();
         String name = map.get("name").toString();
         if (map.get("Class").toString().equals("Layouts")) {
@@ -133,7 +133,7 @@ public class PaletteWidget extends LinearLayout {
             case l -> iconBase = new IconAdView(getContext());
             case m -> iconBase = new IconProgressBar(getContext());
             case n -> iconBase = new IconMapView(getContext());
-            default -> iconBase = null;
+            default -> iconBase = new IconBase(getContext());
         }
 
         if (tag != null && !tag.isEmpty()) {
@@ -206,7 +206,7 @@ public class PaletteWidget extends LinearLayout {
             case "OTPView" -> new IconOTPView(context);
             case "CodeView" -> new IconCodeView(context);
             case "RecyclerView" -> new IconRecyclerView(context);
-            default -> null;
+            default -> new IconBase(context);
         };
         if (tag != null && !tag.isEmpty()) {
             iconBase.setTag(tag);
@@ -230,7 +230,7 @@ public class PaletteWidget extends LinearLayout {
             case "CardView" -> new IconCardView(context);
             case "TextInputLayout" -> new IconTextInputLayout(context);
             case "RelativeLayout" -> new IconRelativeLayout(context);
-            default -> null;
+            default -> new IconBase(context);
         };
         if (tag != null && !tag.isEmpty()) {
             iconBase.setTag(tag);

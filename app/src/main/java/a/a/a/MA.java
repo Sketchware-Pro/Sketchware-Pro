@@ -27,11 +27,10 @@ public abstract class MA extends AsyncTask<Void, String, String> {
         } catch (Exception e) {
             Log.e("MA", e.getMessage(), e);
             // the bytecode's lying
-            // noinspection ConstantValue
             if (e instanceof By) {
                 return e.getMessage();
             }
-            return xB.b().a(a, R.string.common_error_an_error_occurred) + "[" + e.getMessage() + "]";
+            return a.getString(R.string.common_error_an_error_occurred) + "[" + e.getMessage() + "]";
         }
     }
 

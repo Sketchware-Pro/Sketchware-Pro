@@ -22,14 +22,9 @@ android {
         targetSdk = 28
         minSdk = 26
         versionCode = 150
-        versionName = "v7.0.0-SNAPSHOT-" + shortCommitHash
+        versionName = "v7.0.0-beta1"
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
-
-        buildConfigField("String", "FLAVOR_NAME_WITH_AABS", "\"minApi26\"")
-        buildConfigField("String", "FLAVOR_NAME_WITHOUT_AABS", "\"minApi21\"")
-
-        buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"v7.0.0-SNAPSHOT-${shortCommitHash}\"")
 
         buildConfigField("String", "SKETCHUB_API_KEY", "\"${System.getenv("SKETCHUB_API_KEY")}\"")
     }
@@ -90,16 +85,16 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:1.7.1"
     implementation "androidx.core:core-splashscreen:1.0.1"
-    implementation "androidx.activity:activity:1.10.1"
+    implementation "androidx.activity:activity:1.11.0"
     implementation "androidx.recyclerview:recyclerview:1.4.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.viewpager:viewpager:1.1.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "com.google.android.material:material:1.14.0-alpha04"
-    implementation "com.airbnb.android:lottie:6.5.2"
+    implementation "com.google.android.material:material:1.14.0-alpha05"
+    implementation "com.airbnb.android:lottie:6.6.7"
     implementation "com.google.android.flexbox:flexbox:3.0.0"
 
-    implementation "com.github.bumptech.glide:glide:4.16.0"
+    implementation "com.github.bumptech.glide:glide:5.0.4"
 
     implementation 'androidx.exifinterface:exifinterface:1.4.1'
     implementation "androidx.preference:preference:1.2.1"
@@ -115,7 +110,7 @@ dependencies {
     implementation 'io.coil-kt:coil:2.0.0'
     implementation 'io.coil-kt:coil-svg:2.0.0'
 
-    implementation "com.android.tools.build:bundletool:1.18.1"
+    implementation "com.android.tools.build:bundletool:1.18.2"
 
     //noinspection GradleDependency copied from above dependency for not just runtime access
     implementation "com.google.protobuf:protobuf-java:3.19.2"
@@ -124,7 +119,7 @@ dependencies {
         exclude group: "com.intellij", module: "annotations"
     }
 
-    implementation "com.android.tools:r8:8.9.35"
+    implementation "com.android.tools:r8:8.11.18"
     implementation "com.github.Iyxan23:zipalign-java:1.2.2"
 
     implementation "com.google.code.gson:gson:2.13.1"
@@ -133,7 +128,7 @@ dependencies {
     implementation 'io.noties.markwon:core:4.6.2'
 
     implementation "com.squareup.okhttp3:okhttp:4.12.0"
-    implementation "com.squareup.okio:okio:3.12.0"
+    implementation "com.squareup.okio:okio:3.16.0"
 
     implementation "org.eclipse.jdt:ecj:3.26.0"
     implementation 'javax.xml.stream:stax-api:1.0-2'
@@ -141,8 +136,8 @@ dependencies {
     implementation "com.github.waelchateur:kotlinc-for-sketchware:2.1.21_rc3"
     compileOnly "org.jetbrains.kotlin:kotlin-compiler:2.1.21"
     implementation 'io.github.itsaky:nb-javac-android:17.0.0.3'
-    implementation 'com.fasterxml.woodstox:woodstox-core:6.5.1'
-    
+    implementation 'com.fasterxml.woodstox:woodstox-core:7.1.1'
+
     implementation "com.github.Cosmic-Ide:DependencyResolver:05ec26af0b"
     implementation "com.github.PranavPurwar:filepicker:74526bea66"
 
@@ -159,7 +154,7 @@ dependencies {
     if (analyticsEnabled) {
         new File("$projectDir/google-services.json").text = secrets
     }
-    implementation platform("com.google.firebase:firebase-bom:33.14.0")
+    implementation platform("com.google.firebase:firebase-bom:34.3.0")
     implementation "com.google.firebase:firebase-crashlytics"
     implementation "com.google.firebase:firebase-analytics"
     implementation "com.google.firebase:firebase-messaging"

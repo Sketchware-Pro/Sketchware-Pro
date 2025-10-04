@@ -112,7 +112,7 @@ public class fu extends qA implements View.OnClickListener {
             }
         }
         if (count > 0) {
-            btnImport.setText(xB.b().a(requireContext(), R.string.common_word_import_count, count).toUpperCase());
+            btnImport.setText(getString(R.string.common_word_import_count, count).toUpperCase());
             layoutBtnImport.setVisibility(View.VISIBLE);
         } else {
             layoutBtnImport.setVisibility(View.GONE);
@@ -151,7 +151,7 @@ public class fu extends qA implements View.OnClickListener {
         binding.imageList.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
         adapter = new Adapter();
         binding.imageList.setAdapter(adapter);
-        binding.tvGuide.setText(xB.b().a(requireContext(), R.string.design_manager_image_description_guide_add_image));
+        binding.tvGuide.setText((R.string.design_manager_image_description_guide_add_image));
         btnImport = requireActivity().findViewById(R.id.btn_import);
         layoutBtnImport = requireActivity().findViewById(R.id.layout_btn_import);
         btnImport.setOnClickListener(this);

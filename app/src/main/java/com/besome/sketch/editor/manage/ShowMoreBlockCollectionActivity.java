@@ -183,11 +183,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     }
 
     private Rs getBlock(BlockBean blockBean) {
-        Rs block = new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
-        // main reason why some blocks are not showing because Ts class is using View#LAYER_TYPE_SOFTWARE.
-        // we are changing it to fix it.
-        block.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        return block;
+        return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
 
     @Override

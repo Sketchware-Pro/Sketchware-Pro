@@ -10,11 +10,10 @@ import pro.sketchware.R;
 public class IconProgressBar extends IconBase {
     public IconProgressBar(Context context) {
         super(context);
+        initialize();
     }
 
-    @Override
-    public void a(Context context) {
-        super.a(context);
+    private void initialize() {
         setWidgetImage(R.drawable.ic_mtrl_progress_bar);
         setWidgetName("ProgressBar");
     }

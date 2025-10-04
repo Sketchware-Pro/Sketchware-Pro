@@ -360,7 +360,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
             }
         }
 
-        class AssetsViewHolder extends RecyclerView.ViewHolder {
+        public static class AssetsViewHolder extends RecyclerView.ViewHolder {
             ManageJavaItemHsBinding binding;
 
             public AssetsViewHolder(ManageJavaItemHsBinding binding) {

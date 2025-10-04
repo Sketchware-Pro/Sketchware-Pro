@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import a.a.a.xB;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ProgressMsgBoxBinding;
 
@@ -63,6 +62,6 @@ public class ProgressDialog {
     }
 
     private String getStr(@StringRes int resId) {
-        return xB.b().a(context, resId);
+        return context.getString(resId);
     }
 }

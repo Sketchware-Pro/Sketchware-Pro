@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ItemView;
 import com.besome.sketch.editor.view.ScrollContainer;
@@ -195,7 +197,7 @@ public class ItemVerticalScrollView extends FrameLayout implements ItemView, Scr
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
         if (!isFixed) {
             int scrollX = getScrollX();
             int measuredWidthX = getScrollX() + getMeasuredWidth();

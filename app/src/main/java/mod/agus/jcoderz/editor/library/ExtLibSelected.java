@@ -1,8 +1,8 @@
 package mod.agus.jcoderz.editor.library;
 
-import pro.sketchware.util.library.BuiltInLibraryManager;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
 import mod.jbk.build.BuiltInLibraries;
+import pro.sketchware.util.library.BuiltInLibraryManager;
 
 public class ExtLibSelected {
 
@@ -15,13 +15,6 @@ public class ExtLibSelected {
     public static void addUsedDependencies(ConstVarComponent component, BuiltInLibraryManager kp) {
         if (component.isFCMUsed) {
             kp.addLibrary(BuiltInLibraries.FIREBASE_MESSAGING);
-        }
-        if (component.isOneSignalUsed) {
-            kp.addLibrary(BuiltInLibraries.ONESIGNAL);
-            kp.addLibrary(BuiltInLibraries.PLAY_SERVICES_GCM);
-        }
-        if (component.isFBAdsUsed) {
-            kp.addLibrary(BuiltInLibraries.FACEBOOK_ADS_AUDIENCE_NETWORK_SDK);
         }
         if (component.isLottieUsed) {
             kp.addLibrary(BuiltInLibraries.LOTTIE);

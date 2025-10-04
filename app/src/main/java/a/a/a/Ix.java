@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import mod.agus.jcoderz.editor.manifest.EditorManifest;
@@ -40,6 +41,7 @@ public class Ix {
     public ProjectSettings settings;
     private boolean targetsSdkVersion31OrHigher = false;
     private String packageName;
+    private final Set<String> addedPermissions = new HashSet<>();
 
     public Ix(jq jq, ArrayList<ProjectFileBean> projectFileBeans, BuiltInLibraryManager builtInLibraryManager) {
         c = jq;
@@ -75,9 +77,13 @@ public class Ix {
      * @param permissionName The {@code uses-permission} {@link XmlBuilder} tag
      */
     private void writePermission(XmlBuilder manifestTag, String permissionName) {
+        if (addedPermissions.contains(permissionName)) {
+            return;
+        }
         XmlBuilder usesPermissionTag = new XmlBuilder("uses-permission");
         usesPermissionTag.addAttribute("android", "name", permissionName);
         manifestTag.addChildNode(usesPermissionTag);
+        addedPermissions.add(permissionName);
     }
 
     /**
@@ -110,12 +116,6 @@ public class Ix {
         if (c.isFirebaseStorageUsed) {
             XmlBuilder metadataTag = new XmlBuilder("meta-data");
             metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.storage.StorageRegistrar");
-            metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
-            serviceTag.addChildNode(metadataTag);
-        }
-        if (c.isDynamicLinkUsed) {
-            XmlBuilder metadataTag = new XmlBuilder("meta-data");
-            metadataTag.addAttribute("android", "name", "com.google.firebase.components:com.google.firebase.dynamiclinks.internal.FirebaseDynamicLinkRegistrar");
             metadataTag.addAttribute("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.addChildNode(metadataTag);
         }
@@ -481,32 +481,6 @@ public class Ix {
             writePermission(a, Manifest.permission.WAKE_LOCK);
             writePermission(a, "com.google.android.c2dm.permission.RECEIVE");
         }
-        if (c.x.isOneSignalUsed) {
-            XmlBuilder permission = new XmlBuilder("permission");
-            permission.addAttribute("android", "name", packageName + ".permission.C2D_MESSAGE");
-            permission.addAttribute("android", "protectionLevel", "signature");
-            a.addChildNode(permission);
-            writePermission(a, packageName + ".permission.C2D_MESSAGE");
-            writePermission(a, Manifest.permission.WAKE_LOCK);
-            writePermission(a, Manifest.permission.VIBRATE);
-            writePermission(a, Manifest.permission.RECEIVE_BOOT_COMPLETED);
-            writePermission(a, "com.sec.android.provider.badge.permission.READ");
-            writePermission(a, "com.sec.android.provider.badge.permission.WRITE");
-            writePermission(a, "com.htc.launcher.permission.READ_SETTINGS");
-            writePermission(a, "com.htc.launcher.permission.UPDATE_SHORTCUT");
-            writePermission(a, "com.sonyericsson.home.permission.BROADCAST_BADGE");
-            writePermission(a, "com.sonymobile.home.permission.PROVIDER_INSERT_BADGE");
-            writePermission(a, "com.anddoes.launcher.permission.UPDATE_COUNT");
-            writePermission(a, "com.majeur.launcher.permission.UPDATE_BADGE");
-            writePermission(a, "com.huawei.android.launcher.permission.CHANGE_BADGE");
-            writePermission(a, "com.huawei.android.launcher.permission.READ_SETTINGS");
-            writePermission(a, "com.huawei.android.launcher.permission.WRITE_SETTINGS");
-            writePermission(a, "android.permission.READ_APP_BADGE");
-            writePermission(a, "com.oppo.launcher.permission.READ_SETTINGS");
-            writePermission(a, "com.oppo.launcher.permission.WRITE_SETTINGS");
-            writePermission(a, "me.everything.badger.permission.BADGE_COUNT_READ");
-            writePermission(a, "me.everything.badger.permission.BADGE_COUNT_WRITE");
-        }
         AndroidManifestInjector.getP(a, c.sc_id);
 
         if (c.isAdMobEnabled || c.isTextToSpeechUsed || c.isSpeechToTextUsed) {
@@ -620,11 +594,6 @@ public class Ix {
                         activityTag.addAttribute("android", "exported", "true");
                     }
                     activityTag.addChildNode(intentFilterTag);
-                } else if (c.isDynamicLinkUsed) {
-                    if (targetsSdkVersion31OrHigher && !AndroidManifestInjector.isActivityExportedUsed(c.sc_id, javaName)) {
-                        activityTag.addAttribute("android", "exported", "false");
-                    }
-                    writeDLIntentFilter(activityTag);
                 }
                 applicationTag.addChildNode(activityTag);
             }
@@ -691,12 +660,6 @@ public class Ix {
         }
         if (c.x.isFCMUsed) {
             EditorManifest.writeDefFCM(applicationTag);
-        }
-        if (c.x.isOneSignalUsed) {
-            EditorManifest.manifestOneSignal(applicationTag, packageName, c.x.param);
-        }
-        if (c.x.isFBAdsUsed) {
-            EditorManifest.manifestFBAds(applicationTag, packageName);
         }
         if (c.x.isFBGoogleUsed) {
             EditorManifest.manifestFBGoogleLogin(applicationTag);

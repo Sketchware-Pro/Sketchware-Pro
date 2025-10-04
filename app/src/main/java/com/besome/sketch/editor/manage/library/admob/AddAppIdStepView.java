@@ -14,7 +14,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import a.a.a.Uu;
 import a.a.a.bB;
 import a.a.a.gB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLibraryAdmobAppIdBinding;
@@ -77,14 +76,14 @@ public class AddAppIdStepView extends LinearLayout implements Uu, View.OnClickLi
 
     private void showAddAppIdDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-        dialog.setTitle(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_app_id));
+        dialog.setTitle(R.string.design_library_admob_dialog_set_app_id);
         dialog.setIcon(R.drawable.ic_mtrl_add);
         ManageLibrarySettingAdmobAppIdAddBinding addBinding = ManageLibrarySettingAdmobAppIdAddBinding.inflate(LayoutInflater.from(getContext()));
         EditText edAppId = addBinding.edAppId;
         edAppId.setText(appId);
         edAppId.setPrivateImeOptions("defaultInputmode=english;");
         dialog.setView(addBinding.getRoot());
-        dialog.setPositiveButton(xB.b().a(getContext(), R.string.common_word_add), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_add, (v, which) -> {
             String id = Helper.getText(edAppId);
             if (!isEmpty(id)) {
                 setAppId(id);
@@ -93,7 +92,7 @@ public class AddAppIdStepView extends LinearLayout implements Uu, View.OnClickLi
                 edAppId.requestFocus();
             }
         });
-        dialog.setNegativeButton(xB.b().a(getContext(), R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 }

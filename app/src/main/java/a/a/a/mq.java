@@ -87,13 +87,8 @@ public class mq {
             case ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER -> "FragmentStatePagerAdapter";
             case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE ->
                     "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "DynamicLink";
             case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "GoogleSignInClient";
-            case ComponentBean.COMPONENT_TYPE_ONESIGNAL -> "OSSubscriptionObserver";
-            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> "com.facebook.ads.AdView";
-            case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
-                    "com.facebook.ads.InterstitialAd";
             default -> ComponentsHandler.var(componentId);
         };
     }
@@ -200,24 +195,20 @@ public class mq {
             case "patternview" -> "PatternLockView";
             case "sidebar" -> "WaveSideBar";
             case "circleimageview" -> "CircleImageView";
-            case "onesignal" -> "OneSignal";
             case "customViews" -> "CustomView";
             case "asynctask" -> "AsyncTask";
             case "activity" -> "Context";
             case "otpview" -> "OTPView";
             case "lottie" -> "LottieAnimation";
             case "phoneauth" -> "FirebasePhoneAuth";
-            case "fbadbanner" -> "FBAdsBanner";
             case "codeview" -> "CodeView";
             case "recyclerview" -> "RecyclerView";
             case "resource" -> "Image";
             case "googlelogin" -> "FirebaseGoogleSignIn";
-            case "dynamiclink" -> "FirebaseDynamicLink";
             case "youtubeview" -> "YoutubePlayer";
             case "cardview" -> "CardView";
             case "radiogroup" -> "RadioGroup";
             case "color" -> "Color";
-            case "fbadinterstitial" -> "FBAdsInterstitial";
             case "textinputlayout" -> "TextInputLayout";
             case "collapsingtoolbar" -> "CollapsingToolbarLayout";
             case "cloudmessage" -> "FirebaseCloudMessage";
@@ -609,12 +600,6 @@ public class mq {
                 importList.add("com.google.firebase.messaging.FirebaseMessaging");
                 return importList;
 
-            case "OSSubscriptionObserver":
-                importList.add("com.onesignal.OSSubscriptionObserver");
-                importList.add("com.onesignal.OneSignal");
-                importList.add("org.json.JSONObject");
-                return importList;
-
             case "PhoneAuthProvider.OnVerificationStateChangedCallbacks":
                 importList.add("com.google.android.gms.tasks.OnCompleteListener");
                 importList.add("com.google.android.gms.tasks.Task");
@@ -643,15 +628,6 @@ public class mq {
                 importList.add("com.google.firebase.auth.GoogleAuthProvider");
                 return importList;
 
-            case "DynamicLink":
-                importList.add("com.google.android.gms.tasks.OnSuccessListener");
-                importList.add("com.google.android.gms.tasks.OnFailureListener");
-                importList.add("com.google.firebase.dynamiclinks.DynamicLink");
-                importList.add("com.google.firebase.dynamiclinks.FirebaseDynamicLinks");
-                importList.add("com.google.firebase.dynamiclinks.PendingDynamicLinkData");
-                importList.add("com.google.firebase.dynamiclinks.ShortDynamicLink");
-                return importList;
-
             case "RewardedVideoAd":
                 importList.add("com.google.android.gms.ads.AdError");
                 importList.add("com.google.android.gms.ads.MobileAds");
@@ -659,11 +635,6 @@ public class mq {
                 importList.add("com.google.android.gms.ads.rewarded.RewardItem");
                 importList.add("com.google.android.gms.ads.rewarded.RewardedAd");
                 importList.add("com.google.android.gms.ads.rewarded.RewardedAdLoadCallback");
-                return importList;
-
-            case "com.facebook.ads.AdView":
-            case "com.facebook.ads.InterstitialAd":
-                importList.add("com.facebook.ads.*");
                 return importList;
 
             default:

@@ -65,7 +65,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     private static final String ICON_TYPE_TWO_TONE = "twotone";
     private static final String ICON_TYPE_ROUND = "round";
     private static final String ICON_TYPE_BASELINE = "baseline";
-    private final int ITEMS_PER_PAGE = 40;
     private String iconName;
     private WB iconNameValidator;
     private MenuItem search;
@@ -100,8 +99,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     private boolean isLoading = false;
     private boolean isLastPage = false;
 
-    private ColorPickerDialog colorpicker;
-
     private int getGridLayoutColumnCount() {
         return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 80;
     }
@@ -129,7 +126,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         binding = ImportIconBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        colorpicker = new ColorPickerDialog(this, 0xFF9E9E9E, false, false);
+        ColorPickerDialog colorpicker = new ColorPickerDialog(this, 0xFF9E9E9E, false, false);
         svgUtils = new SvgUtils(this);
         Toolbar toolbar = binding.toolbar.toolbar;
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
@@ -241,6 +238,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     }
 
     private void loadMoreItems() {
+        int ITEMS_PER_PAGE = 40;
         int start = currentPage * ITEMS_PER_PAGE;
         int end = Math.min(start + ITEMS_PER_PAGE, allIconPaths.size());
 
@@ -493,10 +491,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         public void a() {
             var activity = this.activity.get();
             activity.h();
-            int oldPosition = activity.selectedIconPosition;
             activity.selectedIconPosition = -1;
-            activity.adapter.notifyItemChanged(oldPosition);
-            activity.adapter.submitList(activity.icons);
         }
 
         @Override

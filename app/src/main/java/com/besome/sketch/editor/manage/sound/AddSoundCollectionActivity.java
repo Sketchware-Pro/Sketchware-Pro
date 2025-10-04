@@ -27,7 +27,6 @@ import a.a.a.WB;
 import a.a.a.bB;
 import a.a.a.uq;
 import a.a.a.wq;
-import a.a.a.xB;
 import a.a.a.yy;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -122,11 +121,11 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        e(xB.b().a(this, R.string.design_manager_sound_title_add_sound));
+        e(getString(R.string.design_manager_sound_title_add_sound));
         binding = ManageSoundAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        d(xB.b().a(this, R.string.common_word_save));
-        b(xB.b().a(this, R.string.common_word_cancel));
+        d(getString(R.string.common_word_save));
+        b(getString(R.string.common_word_cancel));
         Intent intent = getIntent();
         N = intent.getParcelableArrayListExtra("sounds");
         t = intent.getStringExtra("sc_id");
@@ -135,7 +134,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
             u = true;
         }
         binding.layoutControl.setVisibility(View.GONE);
-        binding.tiInput.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
+        binding.tiInput.setHint((R.string.design_manager_sound_hint_enter_sound_name));
         M = new WB(this, binding.tiInput, uq.b, getResourceNames());
         binding.play.setEnabled(false);
         binding.play.setOnClickListener(this);
@@ -167,7 +166,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         r.setOnClickListener(this);
         s.setOnClickListener(this);
         if (u) {
-            e(xB.b().a(this, R.string.design_manager_sound_title_edit_sound_name));
+            e(getString(R.string.design_manager_sound_title_edit_sound_name));
             M = new WB(this, binding.tiInput, uq.b, getResourceNames(), O.resName);
             binding.edInput.setText(O.resName);
             f(a(O));
@@ -183,7 +182,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     private void p() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT", MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("audio/*");
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 218);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.common_word_choose)), 218);
     }
 
     private void q() {
@@ -209,7 +208,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
                 projectResourceBean.isNew = true;
                 try {
                     Qp.g().a(t, projectResourceBean);
-                    bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete), 1).show();
+                    bB.a(this, getApplicationContext().getString(R.string.design_manager_message_add_complete), 1).show();
                 } catch (Exception e) {
                     // the bytecode's lying
                     // noinspection ConstantValue
@@ -221,7 +220,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
                             default -> 0;
                         };
                         if (messageId != 0) {
-                            bB.a(this, xB.b().a(getApplicationContext(), messageId), bB.TOAST_WARNING).show();
+                            bB.a(this, getApplicationContext().getString(messageId), bB.TOAST_WARNING).show();
                         }
                     } else {
                         throw e;
@@ -229,7 +228,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
                 }
             } else {
                 Qp.g().a(O, Helper.getText(binding.edInput), true);
-                bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), 1).show();
+                bB.a(this, getApplicationContext().getString(R.string.design_manager_message_edit_complete), 1).show();
             }
             finish();
         }

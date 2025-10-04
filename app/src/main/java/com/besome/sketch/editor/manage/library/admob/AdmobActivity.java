@@ -17,7 +17,6 @@ import a.a.a.Uu;
 import a.a.a.bB;
 import a.a.a.iC;
 import a.a.a.mB;
-import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.LibrarySettingsImporter;
 import pro.sketchware.R;
@@ -37,7 +36,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             binding.tvToptitle.setText(Helper.getResString(R.string.common_word_review));
             binding.tvNextbtn.setText(Helper.getResString(R.string.common_word_save));
         } else {
-            binding.tvToptitle.setText(xB.b().a(this, R.string.common_word_step, position + 1));
+            binding.tvToptitle.setText(getString(R.string.common_word_step, position + 1));
             binding.tvNextbtn.setText(Helper.getResString(R.string.common_word_next));
         }
 
@@ -106,12 +105,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         } else {
             binding.btnImport.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-
     }
 
     private void nextStep() {

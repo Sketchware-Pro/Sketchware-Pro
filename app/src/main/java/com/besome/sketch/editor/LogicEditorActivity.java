@@ -1,8 +1,5 @@
 package com.besome.sketch.editor;
 
-import static android.view.View.LAYER_TYPE_HARDWARE;
-import static pro.sketchware.widgets.WidgetsCreatorManager.clearErrorOnTextChanged;
-
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -74,6 +71,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -81,7 +79,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -113,7 +110,6 @@ import a.a.a.uq;
 import a.a.a.wB;
 import a.a.a.xB;
 import a.a.a.yq;
-import a.a.a.yy;
 import dev.aldi.sayuti.block.ExtraPaletteBlock;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.editor.view.IdGenerator;
@@ -124,19 +120,15 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.AsdDialog;
 import mod.jbk.editor.manage.MoreblockImporter;
 import mod.jbk.util.BlockUtil;
+import mod.jbk.util.LogUtil;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.R;
 import pro.sketchware.activities.editor.view.CodeViewerActivity;
 import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
-import pro.sketchware.activities.resourceseditor.components.utils.StringsEditorManager;
 import pro.sketchware.databinding.ImagePickerItemBinding;
-import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
 import pro.sketchware.databinding.SearchWithRecyclerViewBinding;
-import pro.sketchware.databinding.ViewStringEditorAddBinding;
 import pro.sketchware.menu.ExtraMenuBean;
 import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.SvgUtils;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
@@ -144,6 +136,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     private final Handler handler = new Handler();
     private final int[] v = new int[2];
+    private final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
     public ProjectFileBean M;
     public PaletteBlock m;
     public BlockPane o;
@@ -157,10 +150,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private LogicEditorDrawer O;
     private ObjectAnimator U, V, ba, ca, fa, ga;
     private ExtraPaletteBlock extraPaletteBlock;
-    private ViewLogicEditor n;
+    private ViewLogicEditor viewLogicEditor;
     private ViewDummy dummy;
     private PaletteSelector paletteSelector;
-
+    private final ActivityResultLauncher<Intent> openResourcesEditor = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            paletteSelector.performClickPalette(-1);
+        }
+    });
     private Rs w;
     private float posInitY, posInitX, s, t;
     private int minDist, S, x, y;
@@ -169,16 +166,29 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private boolean G, isDragged, W, X, da, ea, ha, ia;
     private ArrayList<BlockBean> savedBlockBean = new ArrayList<>();
     private final Runnable longPressed = this::r;
-
-    private final ActivityResultLauncher<Intent> openResourcesEditor = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            paletteSelector.performClickPalette(-1);
-        }
-    });
-
     private Boolean isViewBindingEnabled;
 
+    public static ArrayList<String> getAllJavaFileNames(String projectScId) {
+        ArrayList<String> javaFileNames = new ArrayList<>();
+        for (ProjectFileBean projectFile : jC.b(projectScId).b()) {
+            javaFileNames.add(projectFile.getJavaName());
+        }
+        return javaFileNames;
+    }
+
+    public static ArrayList<String> getAllXmlFileNames(String projectScId) {
+        ArrayList<String> xmlFileNames = new ArrayList<>();
+        for (ProjectFileBean projectFile : jC.b(projectScId).b()) {
+            String xmlName = projectFile.getXmlName();
+            if (xmlName != null && !xmlName.isEmpty()) {
+                xmlFileNames.add(xmlName);
+            }
+        }
+        return xmlFileNames;
+    }
+
     private void loadEventBlocks() {
+        crashlytics.log("Loading event blocks");
         ArrayList<BlockBean> eventBlocks = jC.a(scId).a(M.getJavaName(), id + "_" + eventName);
         if (eventBlocks != null) {
             if (eventBlocks.isEmpty()) {
@@ -245,25 +255,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
-    public static ArrayList<String> getAllJavaFileNames(String projectScId) {
-        ArrayList<String> javaFileNames = new ArrayList<>();
-        for (ProjectFileBean projectFile : jC.b(projectScId).b()) {
-            javaFileNames.add(projectFile.getJavaName());
-        }
-        return javaFileNames;
-    }
-
-    public static ArrayList<String> getAllXmlFileNames(String projectScId) {
-        ArrayList<String> xmlFileNames = new ArrayList<>();
-        for (ProjectFileBean projectFile : jC.b(projectScId).b()) {
-            String xmlName = projectFile.getXmlName();
-            if (xmlName != null && !xmlName.isEmpty()) {
-                xmlFileNames.add(xmlName);
-            }
-        }
-        return xmlFileNames;
-    }
-
     private void redo() {
         if (!isDragged) {
             HistoryBlockBean historyBlockBean = bC.d(scId).i(s());
@@ -319,14 +310,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void G() {
-        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
-        aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_add_new_list));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_add_new_list));
         View a2 = wB.a(this, R.layout.logic_popup_add_list);
         RadioGroup radioGroup = a2.findViewById(R.id.rg_type);
         TextInputEditText editText = a2.findViewById(R.id.ed_input);
         ZB zb = new ZB(getContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(scId).a(M));
-        aBVar.setView(a2);
-        aBVar.setPositiveButton(getTranslatedString(R.string.common_word_add), (v, which) -> {
+        dialog.setView(a2);
+        dialog.setPositiveButton(getTranslatedString(R.string.common_word_add), (v, which) -> {
             if (zb.b()) {
                 int i = 1;
                 int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
@@ -342,8 +333,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 v.dismiss();
             }
         });
-        aBVar.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
-        aBVar.show();
+        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.show();
     }
 
     private void showAddNewVariableDialog() {
@@ -376,187 +367,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.show();
     }
 
-    private void showAddNewXmlStringDialog() {
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        ViewStringEditorAddBinding binding = ViewStringEditorAddBinding.inflate(LayoutInflater.from(this));
-        dialog.setTitle("Create new string");
-        dialog.setPositiveButton("Create", (v1, which) -> {
-
-            String filePath = new FilePathUtil().getPathResource(scId) + "/values/strings.xml";
-            ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
-            StringsEditorManager stringsEditorManager = new StringsEditorManager();
-            stringsEditorManager.convertXmlStringsToListMap(FileUtil.readFile(filePath), StringsListMap);
-
-            clearErrorOnTextChanged(binding.stringKeyInput, binding.stringKeyInputLayout);
-
-            String key = Objects.requireNonNull(binding.stringKeyInput.getText()).toString();
-            String value = Objects.requireNonNull(binding.stringValueInput.getText()).toString();
-
-            if (stringsEditorManager.isXmlStringsExist(StringsListMap, key)) {
-                binding.stringKeyInputLayout.setError("\"" + key + "\" is already exist");
-                return;
-            }
-
-            if (key.isEmpty() || value.isEmpty()) {
-                SketchwareUtil.toastError("Please fill in all fields");
-                return;
-            }
-
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("key", key);
-            map.put("text", value);
-            StringsListMap.add(map);
-            FileUtil.writeFile(filePath, stringsEditorManager.convertListMapToXmlStrings(StringsListMap, new HashMap<>()));
-            paletteSelector.performClickPalette(-1);
-            v1.dismiss();
-        });
-        dialog.setNegativeButton(Helper.getResString(R.string.cancel), (v1, which) -> v1.dismiss());
-        dialog.setView(binding.getRoot());
-        dialog.show();
-    }
-
-    private void showRemoveXmlStringDialog() {
-        String filePath = new FilePathUtil().getPathResource(scId) + "/values/strings.xml";
-
-        ArrayList<HashMap<String, Object>> stringsList = new ArrayList<>();
-        StringsEditorManager stringsEditorManager = new StringsEditorManager();
-        stringsEditorManager.convertXmlStringsToListMap(FileUtil.readFile(filePath), stringsList);
-
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_remove_xml_strings));
-
-        PropertyPopupSelectorSingleBinding binding = PropertyPopupSelectorSingleBinding.inflate(LayoutInflater.from(this));
-        ViewGroup viewGroup = binding.rgContent;
-
-        for (HashMap<String, Object> map : stringsList) {
-            String key = Objects.requireNonNull(map.get("key")).toString();
-            CheckBox checkBox = createCheckBox(key);
-            checkBox.setTag(key);
-            setOnCheckedListener(checkBox);
-            viewGroup.addView(checkBox);
-        }
-
-        dialog.setView(binding.getRoot());
-
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_remove), (v, which) -> {
-            int childCount = viewGroup.getChildCount();
-
-            for (int i = 0; i < childCount; i++) {
-                CheckBox checkBox = (CheckBox) viewGroup.getChildAt(i);
-                if (checkBox.isChecked()) {
-                    removeItem(stringsList, Helper.getText(checkBox));
-                }
-            }
-
-            FileUtil.writeFile(filePath, stringsEditorManager.convertListMapToXmlStrings(stringsList, new HashMap<>()));
-
-            paletteSelector.performClickPalette(-1);
-            v.dismiss();
-        });
-
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
-        dialog.show();
-    }
-
-    public void setOnCheckedListener(CheckBox checkBox) {
-        checkBox.setOnCheckedChangeListener((view, isChecked) -> {
-            if (isChecked && isXmlStringUsed(scId, Helper.getText(checkBox))) {
-                checkBox.setChecked(false);
-            }
-        });
-    }
-
-    public void removeItem(ArrayList<HashMap<String, Object>> listMap, String key) {
-        listMap.removeIf(map -> key.equals(map.get("key")));
-    }
-
-    private boolean isXmlStringUsed(String projectScId, String key) {
-        if ("app_name".equals(key)) {
-            return true;
-        }
-        eC projectDataManager = jC.a(projectScId);
-
-        return isKeyHasNonSavedUsage(key) || isKeyUsedInJavaFiles(projectDataManager, projectScId, key) || isKeyUsedInXmlFiles(projectDataManager, projectScId, key);
-    }
-
-    private boolean isKeyHasNonSavedUsage(String key) {
-        for (BlockBean block : o.getBlocks()) {
-            if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
-
-                showToastError();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isKeyHasSavedUsage(String key) {
-        for (BlockBean block : savedBlockBean) {
-            if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
-
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isKeyUsedInJavaFiles(eC projectDataManager, String projectScId, String key) {
-
-        if ((getStringUsageLengthInJava(projectDataManager, projectScId, key) == 1) && isKeyHasSavedUsage(key) && !isKeyHasNonSavedUsage(key)) {
-            return false;
-        }
-
-        for (String javaFileName : getAllJavaFileNames(projectScId)) {
-            for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
-                for (BlockBean block : entry.getValue()) {
-                    if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                            (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
-
-                        showToastError();
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean isKeyUsedInXmlFiles(eC projectDataManager, String projectScId, String key) {
-        for (String xmlFileName : getAllXmlFileNames(projectScId)) {
-            for (ViewBean view : projectDataManager.d(xmlFileName)) {
-                if (view.text.text.equals("@string/" + key) ||
-                        (view.text.hint.equals("@string/" + key))) {
-
-                    showToastError();
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private void showToastError() {
-        SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_title_remove_xml_string_error));
-    }
-
-    private int getStringUsageLengthInJava(eC projectDataManager, String projectScId, String key) {
-        int length = 0;
-        for (String javaFileName : getAllJavaFileNames(projectScId)) {
-            for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
-                for (BlockBean block : entry.getValue()) {
-                    if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                            (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
-
-                        length++;
-                    }
-                }
-            }
-        }
-        return length;
-    }
-
     public void openResourcesEditor() {
         Intent intent = new Intent();
         intent.setClass(getApplicationContext(), ResourcesEditorActivity.class);
@@ -570,15 +380,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void J() {
-        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
-        aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_remove_list));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_remove_list));
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         for (Pair<Integer, String> list : jC.a(scId).j(M.getJavaName())) {
             viewGroup.addView(e(list.second));
         }
-        aBVar.setView(a2);
-        aBVar.setPositiveButton(getTranslatedString(R.string.common_word_remove), (v, which) -> {
+        dialog.setView(a2);
+        dialog.setPositiveButton(getTranslatedString(R.string.common_word_remove), (v, which) -> {
             int childCount = viewGroup.getChildCount();
             int i = 0;
             while (i < childCount) {
@@ -596,13 +406,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             v.dismiss();
         });
-        aBVar.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
-        aBVar.show();
+        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.show();
     }
 
     public void K() {
-        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
-        aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_remove_variable));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_remove_variable));
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         for (Pair<Integer, String> next : jC.a(scId).k(M.getJavaName())) {
@@ -610,8 +420,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             e.setTag(next.first);
             viewGroup.addView(e);
         }
-        aBVar.setView(a2);
-        aBVar.setPositiveButton(getTranslatedString(R.string.common_word_remove), (v, which) -> {
+        dialog.setView(a2);
+        dialog.setPositiveButton(getTranslatedString(R.string.common_word_remove), (v, which) -> {
             int childCount = viewGroup.getChildCount();
             int i = 0;
             while (i < childCount) {
@@ -629,15 +439,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             v.dismiss();
         });
-        aBVar.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
-        aBVar.show();
+        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.show();
     }
 
     public void L() {
         try {
             new Handler().postDelayed(() -> new ProjectSaver(this).execute(), 500L);
         } catch (Exception e) {
-            e.printStackTrace();
+            crashlytics.recordException(e);
         }
     }
 
@@ -751,6 +561,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
                         xmlToSvgConverter.setImageVectorFromFile(imageView, xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, str));
                     } catch (Exception e) {
+                        crashlytics.log("Converting SVG to XML.");
+                        crashlytics.recordException(e);
                         imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
                     }
                 }
@@ -954,8 +766,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void a(Ss ss, boolean z) {
-        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
-        aBVar.setTitle(getTranslatedString(z ? R.string.logic_editor_title_enter_number_value : R.string.logic_editor_title_enter_string_value));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(getTranslatedString(z ? R.string.logic_editor_title_enter_number_value : R.string.logic_editor_title_enter_string_value));
         View a2 = wB.a(this, R.layout.property_popup_input_text);
         EditText editText = a2.findViewById(R.id.ed_input);
         if (z) {
@@ -967,8 +779,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
         }
         editText.setText(ss.getArgValue().toString());
-        aBVar.setView(a2);
-        aBVar.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
+        dialog.setView(a2);
+        dialog.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
             String text = Helper.getText(editText);
             emptyStringSetter:
             {
@@ -979,7 +791,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                             break emptyStringSetter;
                         }
                     } catch (NumberFormatException e) {
-                        e.printStackTrace();
+                        LogUtil.e("LogicEditor", "", e);
                     }
                 } else if (!text.isEmpty()) {
                     if (text.charAt(0) == '@') {
@@ -994,8 +806,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             a(ss, text);
             v.dismiss();
         });
-        aBVar.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
-        aBVar.show();
+        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.show();
     }
 
     public void a(BlockBean blockBean, boolean z) {
@@ -1388,13 +1200,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             Mp.h().a(str, arrayList2, true);
             O.a(str, arrayList2).setOnTouchListener(this);
         } catch (Exception e) {
-            // The bytecode is lying. Checked exceptions suck.
-            //noinspection ConstantConditions
-            if (e instanceof yy) {
-                e.printStackTrace();
-            } else {
-                throw e;
-            }
+            crashlytics.recordException(e);
         }
     }
 
@@ -1424,11 +1230,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public Rs b(BlockBean blockBean) {
-        Rs block = new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
-        // main reason why some blocks are not showing because Ts class is using View#LAYER_TYPE_SOFTWARE.
-        // we are changing it to fix it.
-        block.setLayerType(LAYER_TYPE_HARDWARE, null);
-        return block;
+        return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
 
     private RadioButton getFontRadioButton(String fontName) {
@@ -1467,26 +1269,26 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 LogicEditorActivity.this.a(ss, "R.color." + var1);
             }
         });
-        colorPickerDialog.materialColorAttr((attr, attrColor) -> LogicEditorActivity.this.a(ss, "R.attr." + attr));
+        colorPickerDialog.materialColorAttr((attr, attrColor) -> a(ss, "R.attr." + attr));
         colorPickerDialog.showAtLocation(ss, Gravity.CENTER, 0, 0);
     }
 
-    public void b(String str, String str2) {
-        TextView a2 = m.a(str);
-        a2.setTag(str2);
-        a2.setSoundEffectsEnabled(true);
-        a2.setOnClickListener(this);
+    public void b(String str, String tag) {
+        TextView textView = m.a(str);
+        textView.setTag(tag);
+        textView.setSoundEffectsEnabled(true);
+        textView.setOnClickListener(this);
     }
 
-    public void b(String str, String str2, View.OnClickListener onClickListener) {
-        TextView a2 = m.a(str);
-        a2.setTag(str2);
-        a2.setSoundEffectsEnabled(true);
-        a2.setOnClickListener(onClickListener);
+    public void b(String str, String tag, View.OnClickListener onClickListener) {
+        TextView textView = m.a(str);
+        textView.setTag(tag);
+        textView.setSoundEffectsEnabled(true);
+        textView.setOnClickListener(onClickListener);
     }
 
-    public void activeIconDelete(boolean z) {
-        logicTopMenu.setDeleteActive(z);
+    public void activeIconDelete(boolean showDeleteIcon) {
+        logicTopMenu.setDeleteActive(showDeleteIcon);
     }
 
     public final boolean hitTestIconDelete(float f, float f2) {
@@ -1494,8 +1296,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void c(Rs rs) {
-        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
-        aBVar.setTitle(getTranslatedString(R.string.logic_block_favorites_save_title));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(getTranslatedString(R.string.logic_block_favorites_save_title));
         View a2 = wB.a(this, R.layout.property_popup_save_to_favorite);
         ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(getTranslatedString(R.string.logic_block_favorites_save_guide));
         EditText editText = a2.findViewById(R.id.ed_input);
@@ -1504,20 +1306,20 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         NB nb = new NB(this, a2.findViewById(R.id.ti_input), Mp.h().g());
-        aBVar.setView(a2);
-        aBVar.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
+        dialog.setView(a2);
+        dialog.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
             if (nb.b()) {
                 a(Helper.getText(editText), rs);
                 v.dismiss();
             }
         });
-        aBVar.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
-        aBVar.show();
+        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.show();
     }
 
     public void c(Ss ss) {
-        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
-        aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_enter_string_value));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_enter_string_value));
         View a2 = wB.a(this, R.layout.property_popup_input_text);
         ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.property_hint_enter_value));
         EditText editText = a2.findViewById(R.id.ed_input);
@@ -1525,13 +1327,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editText.setText(ss.getArgValue().toString());
-        aBVar.setView(a2);
-        aBVar.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
+        dialog.setView(a2);
+        dialog.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
             a(ss, Helper.getText(editText));
             v.dismiss();
         });
-        aBVar.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
-        aBVar.show();
+        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.show();
     }
 
     public void c(String str, String str2) {
@@ -1569,6 +1371,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             try {
                 typeface = Typeface.createFromFile(jC.d(scId).d(fontName));
             } catch (RuntimeException e) {
+                crashlytics.log("Loading font preview");
+                crashlytics.recordException(e);
                 typeface = Typeface.DEFAULT;
                 preview.setText("Couldn't load font");
             }
@@ -1658,21 +1462,21 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void e(Ss ss) {
-        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
-        aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_enter_data_value));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_enter_data_value));
         View a2 = wB.a(this, R.layout.property_popup_input_intent_data);
         ((TextView) a2.findViewById(R.id.tv_desc_intent_usage)).setText(getTranslatedString(R.string.property_description_component_intent_usage));
         EditText editText = a2.findViewById(R.id.ed_input);
         ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.property_hint_enter_value));
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setText(ss.getArgValue().toString());
-        aBVar.setView(a2);
-        aBVar.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
+        dialog.setView(a2);
+        dialog.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
             a(ss, Helper.getText(editText));
             v.dismiss();
         });
-        aBVar.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
-        aBVar.show();
+        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.show();
     }
 
     public void e(boolean z) {
@@ -1709,14 +1513,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 i2 = width - ((int) wB.a(this, 320.0f));
                 a2 = ViewGroup.LayoutParams.MATCH_PARENT;
             } else {
-                a2 = n.getHeight() - K.getHeight();
+                a2 = viewLogicEditor.getHeight() - K.getHeight();
             }
             layoutParams = new LinearLayout.LayoutParams(i2, a2);
         } else {
             layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
-        n.setLayoutParams(layoutParams);
-        n.requestLayout();
+        viewLogicEditor.setLayoutParams(layoutParams);
+        viewLogicEditor.requestLayout();
     }
 
     public void f(Ss ss) {
@@ -1931,8 +1735,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void i(Ss ss) {
-        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
-        aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_select_typeface));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_select_typeface));
         View a3 = wB.a(this, R.layout.property_popup_selector_single);
         RadioGroup radioGroup = a3.findViewById(R.id.rg_content);
         for (Pair<Integer, String> pair : sq.a("property_text_style")) {
@@ -1942,8 +1746,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 e.setChecked(true);
             }
         }
-        aBVar.setView(a3);
-        aBVar.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
+        dialog.setView(a3);
+        dialog.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
             int childCount = radioGroup.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
@@ -1955,8 +1759,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
             v.dismiss();
         });
-        aBVar.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
-        aBVar.show();
+        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.show();
     }
 
     public void l() {
@@ -1997,16 +1801,16 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void n(String str) {
-        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
-        aBVar.setTitle(getTranslatedString(R.string.logic_block_favorites_delete_title));
-        aBVar.setMessage(getTranslatedString(R.string.logic_block_favorites_delete_message));
-        aBVar.setPositiveButton(getTranslatedString(R.string.common_word_delete), (v, which) -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(getTranslatedString(R.string.logic_block_favorites_delete_title));
+        dialog.setMessage(getTranslatedString(R.string.logic_block_favorites_delete_message));
+        dialog.setPositiveButton(getTranslatedString(R.string.common_word_delete), (v, which) -> {
             Mp.h().a(str, true);
             O.a(str);
             v.dismiss();
         });
-        aBVar.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
-        aBVar.show();
+        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.show();
     }
 
     public void o(String str) {
@@ -2058,10 +1862,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     showAddNewVariableDialog();
                 } else if (tag.equals("variableRemove")) {
                     K();
-                } else if (tag.equals("XmlString.Add")) {
-                    showAddNewXmlStringDialog();
-                } else if (tag.equals("XmlString.remove")) {
-                    showRemoveXmlStringDialog();
                 } else if (tag.equals("openResourcesEditor")) {
                     openResourcesEditor();
                 } else if (tag.equals("listAdd")) {
@@ -2069,7 +1869,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 } else if (tag.equals("listRemove")) {
                     J();
                 } else if (tag.equals("blockAdd")) {
-                    Intent intent = new Intent(LogicEditorActivity.this, MakeBlockActivity.class);
+                    Intent intent = new Intent(this, MakeBlockActivity.class);
                     intent.putExtra("sc_id", scId);
                     intent.putExtra("project_file", M);
                     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -2137,8 +1937,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         paletteSelector.setOnBlockCategorySelectListener(this);
         m = findViewById(R.id.palette_block);
         dummy = findViewById(R.id.dummy);
-        n = findViewById(R.id.editor);
-        o = n.getBlockPane();
+        viewLogicEditor = findViewById(R.id.editor);
+        o = viewLogicEditor.getBlockPane();
         J = findViewById(R.id.layout_palette);
         K = findViewById(R.id.area_palette);
         openBlocksMenuButton = findViewById(R.id.fab_toggle_palette);
@@ -2305,7 +2105,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             c(false);
             dummy.a(this.v);
-            if (n.hitTest(this.v[0], this.v[1])) {
+            if (viewLogicEditor.hitTest(this.v[0], this.v[1])) {
                 dummy.setAllow(true);
                 o.c((Rs) v, this.v[0], this.v[1]);
             } else {
@@ -2325,7 +2125,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 return false;
             }
             m.setDragEnabled(true);
-            n.setScrollEnabled(true);
+            viewLogicEditor.setScrollEnabled(true);
             O.setDragEnabled(true);
             dummy.setDummyVisibility(View.GONE);
             if (!dummy.getAllow()) {
@@ -2477,8 +2277,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     }
                 }
                 int[] nLocationOnScreen = new int[2];
-                n.getLocationOnScreen(nLocationOnScreen);
-                int width = nLocationOnScreen[0] + (n.getWidth() / 2);
+                viewLogicEditor.getLocationOnScreen(nLocationOnScreen);
+                int width = nLocationOnScreen[0] + (viewLogicEditor.getWidth() / 2);
                 int a2 = nLocationOnScreen[1] + ((int) wB.a(getContext(), 4.0f));
                 ArrayList<BlockBean> a3 = a(arrayList2, width, a2, true);
                 int[] oLocationOnScreen = new int[2];
@@ -2595,7 +2395,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private void r() {
         if (currentTouchedView != null) {
             m.setDragEnabled(false);
-            n.setScrollEnabled(false);
+            viewLogicEditor.setScrollEnabled(false);
             O.setDragEnabled(false);
             if (ia) {
                 g(false);
@@ -2628,7 +2428,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             float b = posInitY - t;
             dummy.a(currentTouchedView, a, b, a, b, S, T);
             dummy.a(v);
-            if (n.hitTest(v[0], v[1])) {
+            if (viewLogicEditor.hitTest(v[0], v[1])) {
                 dummy.setAllow(true);
                 o.c((Rs) currentTouchedView, v[0], v[1]);
             } else {
@@ -2697,7 +2497,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         @Override
         public void a(String str) {
-            Toast.makeText(a, xB.b().a(activity.get(), R.string.common_error_failed_to_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(a, (R.string.common_error_failed_to_save), Toast.LENGTH_SHORT).show();
             activity.get().h();
         }
 
@@ -2705,6 +2505,32 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         public void b() {
             publishProgress("Now saving..");
             activity.get().E();
+        }
+    }
+
+    public static class LoadEventBlocksTask {
+        private final WeakReference<LogicEditorActivity> activityRef;
+        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        public LoadEventBlocksTask(LogicEditorActivity activity) {
+            activityRef = new WeakReference<>(activity);
+        }
+
+        public void execute() {
+            getActivity().k();
+            executorService.execute(this::doInBackground);
+        }
+
+        private void doInBackground() {
+            LogicEditorActivity activity = getActivity();
+            if (activity != null) {
+                activity.loadEventBlocks();
+                activity.runOnUiThread(activity::h);
+            }
+        }
+
+        private LogicEditorActivity getActivity() {
+            return activityRef.get();
         }
     }
 
@@ -2790,32 +2616,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 super(binding.getRoot());
                 this.binding = binding;
             }
-        }
-    }
-
-    public static class LoadEventBlocksTask {
-        private final WeakReference<LogicEditorActivity> activityRef;
-        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-        public LoadEventBlocksTask(LogicEditorActivity activity) {
-            activityRef = new WeakReference<>(activity);
-        }
-
-        public void execute() {
-            getActivity().k();
-            executorService.execute(this::doInBackground);
-        }
-
-        private void doInBackground() {
-            LogicEditorActivity activity = getActivity();
-            if (activity != null) {
-                activity.loadEventBlocks();
-                activity.runOnUiThread(activity::h);
-            }
-        }
-
-        private LogicEditorActivity getActivity() {
-            return activityRef.get();
         }
     }
 }

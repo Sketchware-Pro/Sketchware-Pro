@@ -22,348 +22,106 @@ public class kq {
             return harmonizeWithPrimary(context, 0xffc88330);
         }
 
-        switch (opcode) {
-            case "getResStr":
-                return harmonizeWithPrimary(context, 0xff7c83db);
-            case "getVar":
-                return switch (blockType) {
-                    case "v" -> viewType;
-                    case "p" -> harmonizeWithPrimary(context, 0xff2ca5e2);
-                    case "l" -> harmonizeWithPrimary(context, 0xffcc5b22);
-                    default -> harmonizeWithPrimary(context, 0xffee7d16);
-                };
-            case "addListInt":
-            case "insertListInt":
-            case "deleteList":
-            case "getAtListInt":
-            case "indexListInt":
-            case "lengthList":
-            case "containListInt":
-            case "clearList":
-            case "addListStr":
-            case "insertListStr":
-            case "getAtListStr":
-            case "indexListStr":
-            case "containListStr":
-            case "addListMap":
-            case "insertListMap":
-            case "getAtListMap":
-            case "setListMap":
-            case "containListMap":
-            case "addMapToList":
-            case "insertMapToList":
-            case "getMapInList":
-                return harmonizeWithPrimary(context, 0xffcc5b22);
-            case "setVarBoolean":
-            case "setVarInt":
-            case "increaseInt":
-            case "decreaseInt":
-            case "setVarString":
-            case "mapCreateNew":
-            case "mapPut":
-            case "mapGet":
-            case "mapContainKey":
-            case "mapRemoveKey":
-            case "mapSize":
-            case "mapIsEmpty":
-            case "mapClear":
-            case "mapGetAllKeys":
-                return harmonizeWithPrimary(context, 0xffee7d16);
-            case "repeat":
-            case "forever":
-            case "break":
-            case "if":
-            case "ifElse":
-                return harmonizeWithPrimary(context, 0xffe1a92a);
-            case "true":
-            case "false":
-            case "<":
-            case "=":
-            case ">":
-            case "&&":
-            case "||":
-            case "not":
-            case "+":
-            case "-":
-            case "*":
-            case "/":
-            case "%":
-            case "random":
-            case "stringLength":
-            case "stringJoin":
-            case "stringIndex":
-            case "stringLastIndex":
-            case "stringSub":
-            case "stringEquals":
-            case "stringContains":
-            case "stringReplace":
-            case "stringReplaceFirst":
-            case "stringReplaceAll":
-            case "toNumber":
-            case "trim":
-            case "toUpperCase":
-            case "toLowerCase":
-            case "toString":
-            case "toStringWithDecimal":
-            case "toStringFormat":
-            case "addSourceDirectly":
-            case "strToMap":
-            case "mapToStr":
-            case "strToListMap":
-            case "listMapToStr":
-                return harmonizeWithPrimary(context, 0xff5cb722);
-            case "mathGetDip":
-            case "mathGetDisplayWidth":
-            case "mathGetDisplayHeight":
-            case "mathPi":
-            case "mathE":
-            case "mathPow":
-            case "mathMin":
-            case "mathMax":
-            case "mathSqrt":
-            case "mathAbs":
-            case "mathRound":
-            case "mathCeil":
-            case "mathFloor":
-            case "mathSin":
-            case "mathCos":
-            case "mathTan":
-            case "mathAsin":
-            case "mathAcos":
-            case "mathAtan":
-            case "mathExp":
-            case "mathLog":
-            case "mathLog10":
-            case "mathToRadian":
-            case "mathToDegree":
-                return harmonizeWithPrimary(context, 0xff23b9a9);
-            case "viewOnClick":
-            case "isDrawerOpen":
-            case "openDrawer":
-            case "closeDrawer":
-            case "setEnable":
-            case "getEnable":
-            case "setVisible":
-            case "setClickable":
-            case "setText":
-            case "setTypeface":
-            case "getText":
-            case "setBgColor":
-            case "setBgResource":
-            case "setTextColor":
-            case "setImage":
-            case "setColorFilter":
-            case "requestFocus":
-            case "setRotate":
-            case "getRotate":
-            case "setAlpha":
-            case "getAlpha":
-            case "setTranslationX":
-            case "getTranslationX":
-            case "setTranslationY":
-            case "getTranslationY":
-            case "setScaleX":
-            case "getScaleX":
-            case "setScaleY":
-            case "getScaleY":
-            case "getLocationX":
-            case "getLocationY":
-            case "setChecked":
-            case "getChecked":
-            case "seekBarGetMax":
-            case "seekBarGetProgress":
-            case "seekBarSetMax":
-            case "seekBarSetProgress":
-            case "setThumbResource":
-            case "setTrackResource":
-            case "listSetData":
-            case "listSetCustomViewData":
-            case "listRefresh":
-            case "listSetItemChecked":
-            case "listGetCheckedPosition":
-            case "listGetCheckedPositions":
-            case "listGetCheckedCount":
-            case "listSmoothScrollTo":
-            case "spnSetData":
-            case "spnRefresh":
-            case "spnSetSelection":
-            case "spnGetSelection":
-            case "webViewLoadUrl":
-            case "webViewGetUrl":
-            case "webViewSetCacheMode":
-            case "webViewCanGoBack":
-            case "webViewCanGoForward":
-            case "webViewGoBack":
-            case "webViewGoForward":
-            case "webViewClearCache":
-            case "webViewClearHistory":
-            case "webViewStopLoading":
-            case "webViewZoomIn":
-            case "webViewZoomOut":
-            case "calendarViewGetDate":
-            case "calendarViewSetDate":
-            case "calendarViewSetMinDate":
-            case "calnedarViewSetMaxDate":
-            case "adViewLoadAd":
-            case "setImageFilePath":
-            case "setImageUrl":
-            case "setHint":
-            case "setHintTextColor":
-            case "progressBarSetIndeterminate":
-            case "mapViewSetMapType":
-            case "mapViewMoveCamera":
-            case "mapViewZoomTo":
-            case "mapViewZoomIn":
-            case "mapViewZoomOut":
-            case "mapViewAddMarker":
-            case "mapViewSetMarkerInfo":
-            case "mapViewSetMarkerPosition":
-            case "mapViewSetMarkerColor":
-            case "mapViewSetMarkerIcon":
-            case "mapViewSetMarkerVisible":
-                return viewType;
-            case "doToast":
-            case "copyToClipboard":
-            case "setTitle":
-            case "intentSetAction":
-            case "intentSetData":
-            case "intentSetScreen":
-            case "intentPutExtra":
-            case "intentSetFlags":
-            case "startActivity":
-            case "intentGetString":
-            case "finishActivity":
-            case "fileGetData":
-            case "fileSetData":
-            case "fileRemoveData":
-            case "calendarGetNow":
-            case "calendarAdd":
-            case "calendarSet":
-            case "calendarFormat":
-            case "calendarDiff":
-            case "calendarGetTime":
-            case "calendarSetTime":
-            case "vibratorAction":
-            case "timerAfter":
-            case "timerEvery":
-            case "timerCancel":
-            case "dialogSetTitle":
-            case "dialogSetMessage":
-            case "dialogOkButton":
-            case "dialogCancelButton":
-            case "dialogNeutralButton":
-            case "dialogShow":
-            case "dialogDismiss":
-            case "mediaplayerCreate":
-            case "mediaplayerStart":
-            case "mediaplayerPause":
-            case "mediaplayerSeek":
-            case "mediaplayerGetCurrent":
-            case "mediaplayerGetDuration":
-            case "mediaplayerIsPlaying":
-            case "mediaplayerSetLooping":
-            case "mediaplayerIsLooping":
-            case "mediaplayerReset":
-            case "mediaplayerRelease":
-            case "soundpoolCreate":
-            case "soundpoolLoad":
-            case "soundpoolStreamPlay":
-            case "soundpoolStreamStop":
-            case "objectanimatorSetTarget":
-            case "objectanimatorSetProperty":
-            case "objectanimatorSetValue":
-            case "objectanimatorSetFromTo":
-            case "objectanimatorSetDuration":
-            case "objectanimatorSetRepeatMode":
-            case "objectanimatorSetRepeatCount":
-            case "objectanimatorSetInterpolator":
-            case "objectanimatorStart":
-            case "objectanimatorCancel":
-            case "objectanimatorIsRunning":
-            case "firebaseAdd":
-            case "firebaseDelete":
-            case "firebasePush":
-            case "firebaseGetPushKey":
-            case "firebaseGetChildren":
-            case "firebaseauthCreateUser":
-            case "firebaseauthSignInUser":
-            case "firebaseauthSignInAnonymously":
-            case "firebaseauthIsLoggedIn":
-            case "firebaseauthGetCurrentUser":
-            case "firebaseauthGetUid":
-            case "firebaseauthResetPassword":
-            case "firebaseauthSignOutUser":
-            case "firebaseStartListen":
-            case "firebaseStopListen":
-            case "gyroscopeStartListen":
-            case "gyroscopeStopListen":
-            case "interstitialadCreate":
-            case "interstitialadLoadAd":
-            case "interstitialadShow":
-            case "firebasestorageUploadFile":
-            case "firebasestorageDownloadFile":
-            case "firebasestorageDelete":
-            case "camerastarttakepicture":
-            case "filepickerstartpickfiles":
-            case "requestnetworkSetParams":
-            case "requestnetworkSetHeaders":
-            case "requestnetworkStartRequestNetwork":
-            case "textToSpeechSetPitch":
-            case "textToSpeechSetSpeechRate":
-            case "textToSpeechSpeak":
-            case "textToSpeechIsSpeaking":
-            case "textToSpeechStop":
-            case "textToSpeechShutdown":
-            case "speechToTextStartListening":
-            case "speechToTextStopListening":
-            case "speechToTextShutdown":
-            case "bluetoothConnectReadyConnection":
-            case "bluetoothConnectReadyConnectionToUuid":
-            case "bluetoothConnectStartConnection":
-            case "bluetoothConnectStartConnectionToUuid":
-            case "bluetoothConnectStopConnection":
-            case "bluetoothConnectSendData":
-            case "bluetoothConnectIsBluetoothEnabled":
-            case "bluetoothConnectIsBluetoothActivated":
-            case "bluetoothConnectActivateBluetooth":
-            case "bluetoothConnectGetPairedDevices":
-            case "bluetoothConnectGetRandomUuid":
-            case "locationManagerRequestLocationUpdates":
-            case "locationManagerRemoveUpdates":
-                return harmonizeWithPrimary(context, 0xff2ca5e2);
-            case "fileutildelete":
-            case "fileutilcopy":
-            case "fileutilwrite":
-            case "fileutilread":
-            case "fileutilmove":
-            case "fileutilisexist":
-            case "fileutilmakedir":
-            case "fileutillistdir":
-            case "fileutilisdir":
-            case "fileutilisfile":
-            case "fileutillength":
-            case "fileutilStartsWith":
-            case "fileutilEndsWith":
-            case "fileutilGetLastSegmentPath":
-            case "getExternalStorageDir":
-            case "getPackageDataDir":
-            case "getPublicDir":
-            case "resizeBitmapFileRetainRatio":
-            case "resizeBitmapFileToSquare":
-            case "resizeBitmapFileToCircle":
-            case "resizeBitmapFileWithRoundedBorder":
-            case "cropBitmapFileFromCenter":
-            case "rotateBitmapFile":
-            case "scaleBitmapFile":
-            case "skewBitmapFile":
-            case "setBitmapFileColorFilter":
-            case "setBitmapFileBrightness":
-            case "setBitmapFileContrast":
-            case "getJpegRotate":
-                return harmonizeWithPrimary(context, 0xffa1887f);
-            default:
-                return 0xff8a55d7;
-        }
+        return switch (opcode) {
+            case "getResStr" -> harmonizeWithPrimary(context, 0xff7c83db);
+            case "getVar" -> switch (blockType) {
+                case "v" -> viewType;
+                case "p" -> harmonizeWithPrimary(context, 0xff2ca5e2);
+                case "l" -> harmonizeWithPrimary(context, 0xffcc5b22);
+                default -> harmonizeWithPrimary(context, 0xffee7d16);
+            };
+            case "addListInt", "insertListInt", "deleteList", "getAtListInt", "indexListInt",
+                 "lengthList", "containListInt", "clearList", "addListStr", "insertListStr",
+                 "getAtListStr", "indexListStr", "containListStr", "addListMap", "insertListMap",
+                 "getAtListMap", "setListMap", "containListMap", "addMapToList", "insertMapToList",
+                 "getMapInList" -> harmonizeWithPrimary(context, 0xffcc5b22);
+            case "setVarBoolean", "setVarInt", "increaseInt", "decreaseInt", "setVarString",
+                 "mapCreateNew", "mapPut", "mapGet", "mapContainKey", "mapRemoveKey", "mapSize",
+                 "mapIsEmpty", "mapClear", "mapGetAllKeys" ->
+                    harmonizeWithPrimary(context, 0xffee7d16);
+            case "repeat", "forever", "break", "if", "ifElse" ->
+                    harmonizeWithPrimary(context, 0xffe1a92a);
+            case "true", "false", "<", "=", ">", "&&", "||", "not", "+", "-", "*", "/", "%",
+                 "random", "stringLength", "stringJoin", "stringIndex", "stringLastIndex",
+                 "stringSub", "stringEquals", "stringContains", "stringReplace",
+                 "stringReplaceFirst", "stringReplaceAll", "toNumber", "trim", "toUpperCase",
+                 "toLowerCase", "toString", "toStringWithDecimal", "toStringFormat",
+                 "addSourceDirectly", "strToMap", "mapToStr", "strToListMap", "listMapToStr" ->
+                    harmonizeWithPrimary(context, 0xff5cb722);
+            case "mathGetDip", "mathGetDisplayWidth", "mathGetDisplayHeight", "mathPi", "mathE",
+                 "mathPow", "mathMin", "mathMax", "mathSqrt", "mathAbs", "mathRound", "mathCeil",
+                 "mathFloor", "mathSin", "mathCos", "mathTan", "mathAsin", "mathAcos", "mathAtan",
+                 "mathExp", "mathLog", "mathLog10", "mathToRadian", "mathToDegree" ->
+                    harmonizeWithPrimary(context, 0xff23b9a9);
+            case "viewOnClick", "isDrawerOpen", "openDrawer", "closeDrawer", "setEnable",
+                 "getEnable", "setVisible", "setClickable", "setText", "setTypeface", "getText",
+                 "setBgColor", "setBgResource", "setTextColor", "setImage", "setColorFilter",
+                 "requestFocus", "setRotate", "getRotate", "setAlpha", "getAlpha",
+                 "setTranslationX", "getTranslationX", "setTranslationY", "getTranslationY",
+                 "setScaleX", "getScaleX", "setScaleY", "getScaleY", "getLocationX", "getLocationY",
+                 "setChecked", "getChecked", "seekBarGetMax", "seekBarGetProgress", "seekBarSetMax",
+                 "seekBarSetProgress", "setThumbResource", "setTrackResource", "listSetData",
+                 "listSetCustomViewData", "listRefresh", "listSetItemChecked",
+                 "listGetCheckedPosition", "listGetCheckedPositions", "listGetCheckedCount",
+                 "listSmoothScrollTo", "spnSetData", "spnRefresh", "spnSetSelection",
+                 "spnGetSelection", "webViewLoadUrl", "webViewGetUrl", "webViewSetCacheMode",
+                 "webViewCanGoBack", "webViewCanGoForward", "webViewGoBack", "webViewGoForward",
+                 "webViewClearCache", "webViewClearHistory", "webViewStopLoading", "webViewZoomIn",
+                 "webViewZoomOut", "calendarViewGetDate", "calendarViewSetDate",
+                 "calendarViewSetMinDate", "calnedarViewSetMaxDate", "adViewLoadAd",
+                 "setImageFilePath", "setImageUrl", "setHint", "setHintTextColor",
+                 "progressBarSetIndeterminate", "mapViewSetMapType", "mapViewMoveCamera",
+                 "mapViewZoomTo", "mapViewZoomIn", "mapViewZoomOut", "mapViewAddMarker",
+                 "mapViewSetMarkerInfo", "mapViewSetMarkerPosition", "mapViewSetMarkerColor",
+                 "mapViewSetMarkerIcon", "mapViewSetMarkerVisible" -> viewType;
+            case "doToast", "copyToClipboard", "setTitle", "intentSetAction", "intentSetData",
+                 "intentSetScreen", "intentPutExtra", "intentSetFlags", "startActivity",
+                 "intentGetString", "finishActivity", "fileGetData", "fileSetData",
+                 "fileRemoveData", "calendarGetNow", "calendarAdd", "calendarSet", "calendarFormat",
+                 "calendarDiff", "calendarGetTime", "calendarSetTime", "vibratorAction",
+                 "timerAfter", "timerEvery", "timerCancel", "dialogSetTitle", "dialogSetMessage",
+                 "dialogOkButton", "dialogCancelButton", "dialogNeutralButton", "dialogShow",
+                 "dialogDismiss", "mediaplayerCreate", "mediaplayerStart", "mediaplayerPause",
+                 "mediaplayerSeek", "mediaplayerGetCurrent", "mediaplayerGetDuration",
+                 "mediaplayerIsPlaying", "mediaplayerSetLooping", "mediaplayerIsLooping",
+                 "mediaplayerReset", "mediaplayerRelease", "soundpoolCreate", "soundpoolLoad",
+                 "soundpoolStreamPlay", "soundpoolStreamStop", "objectanimatorSetTarget",
+                 "objectanimatorSetProperty", "objectanimatorSetValue", "objectanimatorSetFromTo",
+                 "objectanimatorSetDuration", "objectanimatorSetRepeatMode",
+                 "objectanimatorSetRepeatCount", "objectanimatorSetInterpolator",
+                 "objectanimatorStart", "objectanimatorCancel", "objectanimatorIsRunning",
+                 "firebaseAdd", "firebaseDelete", "firebasePush", "firebaseGetPushKey",
+                 "firebaseGetChildren", "firebaseauthCreateUser", "firebaseauthSignInUser",
+                 "firebaseauthSignInAnonymously", "firebaseauthIsLoggedIn",
+                 "firebaseauthGetCurrentUser", "firebaseauthGetUid", "firebaseauthResetPassword",
+                 "firebaseauthSignOutUser", "firebaseStartListen", "firebaseStopListen",
+                 "gyroscopeStartListen", "gyroscopeStopListen", "interstitialadCreate",
+                 "interstitialadLoadAd", "interstitialadShow", "firebasestorageUploadFile",
+                 "firebasestorageDownloadFile", "firebasestorageDelete", "camerastarttakepicture",
+                 "filepickerstartpickfiles", "requestnetworkSetParams", "requestnetworkSetHeaders",
+                 "requestnetworkStartRequestNetwork", "textToSpeechSetPitch",
+                 "textToSpeechSetSpeechRate", "textToSpeechSpeak", "textToSpeechIsSpeaking",
+                 "textToSpeechStop", "textToSpeechShutdown", "speechToTextStartListening",
+                 "speechToTextStopListening", "speechToTextShutdown",
+                 "bluetoothConnectReadyConnection", "bluetoothConnectReadyConnectionToUuid",
+                 "bluetoothConnectStartConnection", "bluetoothConnectStartConnectionToUuid",
+                 "bluetoothConnectStopConnection", "bluetoothConnectSendData",
+                 "bluetoothConnectIsBluetoothEnabled", "bluetoothConnectIsBluetoothActivated",
+                 "bluetoothConnectActivateBluetooth", "bluetoothConnectGetPairedDevices",
+                 "bluetoothConnectGetRandomUuid", "locationManagerRequestLocationUpdates",
+                 "locationManagerRemoveUpdates" -> harmonizeWithPrimary(context, 0xff2ca5e2);
+            case "fileutildelete", "fileutilcopy", "fileutilwrite", "fileutilread", "fileutilmove",
+                 "fileutilisexist", "fileutilmakedir", "fileutillistdir", "fileutilisdir",
+                 "fileutilisfile", "fileutillength", "fileutilStartsWith", "fileutilEndsWith",
+                 "fileutilGetLastSegmentPath", "getExternalStorageDir", "getPackageDataDir",
+                 "getPublicDir", "resizeBitmapFileRetainRatio", "resizeBitmapFileToSquare",
+                 "resizeBitmapFileToCircle", "resizeBitmapFileWithRoundedBorder",
+                 "cropBitmapFileFromCenter", "rotateBitmapFile", "scaleBitmapFile",
+                 "skewBitmapFile", "setBitmapFileColorFilter", "setBitmapFileBrightness",
+                 "setBitmapFileContrast", "getJpegRotate" ->
+                    harmonizeWithPrimary(context, 0xffa1887f);
+            default -> 0xff8a55d7;
+        };
     }
 
     public static String a(int listType) {
@@ -382,8 +140,8 @@ public class kq {
             case "soundpool", "requestnetwork", "objectanimator", "dialog", "texttospeech",
                  "intent", "locationmanager", "firebase", "speechtotext", "calendar", "file",
                  "firebaseauth", "timer", "gyroscope", "mediaplayer", "bluetoothconnect",
-                 "vibrator", "firebasestorage", "onesignal", "phoneauth", "fbadbanner",
-                 "googlelogin", "dynamiclink", "fbadinterstitial", "cloudmessage" -> "p";
+                 "vibrator", "firebasestorage", "phoneauth",
+                 "googlelogin", "cloudmessage" -> "p";
             case "varMap" -> "a";
             case "listInt", "listMap", "listStr" -> "l";
             default -> "v";
@@ -462,24 +220,20 @@ public class kq {
             case "sidebar" -> "WaveSideBar";
             case "badgeview" -> "BadgeView";
             case "circleimageview" -> "CircleImageView";
-            case "onesignal" -> "OneSignal";
             case "customViews" -> "CustomView";
             case "asynctask" -> "AsyncTask";
             case "activity" -> "Context";
             case "otpview" -> "OTPView";
             case "lottie" -> "LottieAnimation";
             case "phoneauth" -> "FirebasePhoneAuth";
-            case "fbadbanner" -> "FBAdsBanner";
             case "codeview" -> "CodeView";
             case "recyclerview" -> "RecyclerView";
             case "resource" -> "Image";
             case "googlelogin" -> "FirebaseGoogleSignIn";
-            case "dynamiclink" -> "FirebaseDynamicLink";
             case "youtubeview" -> "YoutubePlayer";
             case "cardview" -> "CardView";
             case "radiogroup" -> "RadioGroup";
             case "color" -> "Color";
-            case "fbadinterstitial" -> "FBAdsInterstitial";
             case "textinputlayout" -> "TextInputLayout";
             case "collapsingtoolbar" -> "CollapsingToolbarLayout";
             case "cloudmessage" -> "FirebaseCloudMessage";

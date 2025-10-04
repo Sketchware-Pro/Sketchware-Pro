@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import a.a.a.xB;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -242,9 +241,9 @@ public class BlocksManager extends BaseAppCompatActivity {
     private void showMoveToBinDialog(int position) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         dialog.setIcon(R.drawable.ic_mtrl_delete);
-        dialog.setTitle(xB.b().a(activity, R.string.block_move_to_bin));
-        dialog.setMessage(xB.b().a(activity, R.string.common_message_confirm));
-        dialog.setPositiveButton(xB.b().a(activity, R.string.common_word_yes), (v, which) -> {
+        dialog.setTitle((R.string.block_move_to_bin));
+        dialog.setMessage((R.string.common_message_confirm));
+        dialog.setPositiveButton((R.string.common_word_yes), (v, which) -> {
             pallet_listmap.remove(position);
             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemRemoved(position);
             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemChanged(position);
@@ -256,7 +255,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             refreshCount();
             v.dismiss();
         });
-        dialog.setNegativeButton(xB.b().a(activity, R.string.common_word_cancel), null);
+        dialog.setNegativeButton((R.string.common_word_cancel), null);
         dialog.show();
     }
 

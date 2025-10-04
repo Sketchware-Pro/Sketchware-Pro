@@ -36,13 +36,13 @@ import pro.sketchware.utility.SketchwareUtil;
 public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHolder> {
 
     private final ArrayList<HashMap<String, Object>> originalData;
-    private ArrayList<HashMap<String, Object>> filteredData;
     private final ResourcesEditorActivity activity;
     private final HashMap<Integer, String> notesMap;
+    private ArrayList<HashMap<String, Object>> filteredData;
 
     public StringsAdapter(ResourcesEditorActivity activity, ArrayList<HashMap<String, Object>> data, HashMap<Integer, String> notesMap) {
-        this.originalData = new ArrayList<>(data);
-        this.filteredData = data;
+        originalData = new ArrayList<>(data);
+        filteredData = data;
         this.activity = activity;
         this.notesMap = notesMap;
     }
@@ -143,15 +143,6 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
         return filteredData.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        PalletCustomviewBinding binding;
-
-        public ViewHolder(PalletCustomviewBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
-
     public void filter(String query) {
         if (query == null || query.isEmpty()) {
             filteredData = new ArrayList<>(originalData);
@@ -201,5 +192,14 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
             }
         }
         return false;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        PalletCustomviewBinding binding;
+
+        public ViewHolder(PalletCustomviewBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
     }
 }

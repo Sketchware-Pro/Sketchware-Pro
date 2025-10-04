@@ -29,7 +29,6 @@ import a.a.a.jC;
 import a.a.a.kC;
 import a.a.a.mB;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -71,7 +70,7 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
         b = str;
         int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
         if (identifier > 0) {
-            e.setText(xB.b().a(getResources(), identifier));
+            e.setText(getResources().getString(identifier));
             if ("property_image".equals(b)) {
                 m = R.drawable.ic_mtrl_image;
             } else if ("property_background_resource".equals(b)) {
@@ -79,7 +78,7 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
             }
             if (l.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(m);
-                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((TextView) findViewById(R.id.tv_title)).setText(getContext().getString(identifier));
             } else {
                 h.setImageResource(m);
             }
@@ -195,7 +194,7 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
             radioButton.setChecked(true);
         }
         aBVar.setView(a3);
-        aBVar.setPositiveButton(xB.b().a(getContext(), R.string.common_word_select), (v, which) -> {
+        aBVar.setPositiveButton((R.string.common_word_select), (v, which) -> {
             for (int i = 0; i < this.i.getChildCount(); i++) {
                 RadioButton child = (RadioButton) this.i.getChildAt(i);
                 if (child.isChecked()) {
@@ -208,7 +207,7 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
             }
             v.dismiss();
         });
-        aBVar.setNegativeButton(xB.b().a(getContext(), R.string.common_word_cancel), null);
+        aBVar.setNegativeButton((R.string.common_word_cancel), null);
         RadioButton finalRadioButton = radioButton;
 
         var dialog = aBVar.create();

@@ -92,7 +92,6 @@ public class BuiltInLibraries {
     public static String FIREBASE_COMPONENTS = "firebase-components-16.0.0";
     public static String FIREBASE_DATABASE = "firebase-database-19.3.1";
     public static String FIREBASE_DATABASE_COLLECTION = "firebase-database-collection-17.0.0";
-    public static String FIREBASE_DYNAMIC_LINKS = "firebase-dynamic-links-19.0.0";
     public static String FIREBASE_IID = "firebase-iid-19.0.0";
     public static String FIREBASE_IID_INTEROP = "firebase-iid-interop-17.0.0";
     public static String FIREBASE_MEASUREMENT_CONNECTOR = "firebase-measurement-connector-18.0.0";
@@ -100,7 +99,6 @@ public class BuiltInLibraries {
     public static String FIREBASE_STORAGE = "firebase-storage-19.0.0";
     public static String CIRCLEIMAGEVIEW = "circleimageview-3.1.0";
     public static String CODEVIEW = "CodeView-0.4.0";
-    public static String FACEBOOK_ADS_AUDIENCE_NETWORK_SDK = "audience-network-sdk-5.9.0";
     public static String GLIDE_ANNOTATIONS = "annotations-4.11.0";
     public static String GLIDE_DISKLRUCACHE = "disklrucache-4.11.0";
     public static String GLIDE_GIFDECODER = "gifdecoder-4.11.0";
@@ -116,7 +114,6 @@ public class BuiltInLibraries {
     public static String MATERIAL = "material-1.6.1";
     public static String OKHTTP = "okhttp-3.9.1";
     public static String OKIO = "okio-1.17.4";
-    public static String ONESIGNAL = "OneSignal-3.14.0";
     public static String OTPVIEW = "OTPView-0.1.0";
     public static String PATTERN_LOCK_VIEW = "pattern-lock-view";
     public static String PLAY_SERVICES_ADS = "play-services-ads-22.2.0";
@@ -253,7 +250,6 @@ public class BuiltInLibraries {
                     GUAVA_LISTENABLEFUTURE), "androidx.work"),
             new BuiltInLibrary(CIRCLEIMAGEVIEW, List.of(ANDROIDX_ANNOTATION), "de.hdodenhof.circleimageview"),
             new BuiltInLibrary(CODEVIEW, List.of(), "br.tiagohm.codeview"),
-            new BuiltInLibrary(FACEBOOK_ADS_AUDIENCE_NETWORK_SDK),
             new BuiltInLibrary(FIREBASE_AUTH, List.of(FIREBASE_AUTH_INTEROP, FIREBASE_COMMON, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_FRAGMENT,
                     ANDROIDX_LOCALBROADCASTMANAGER, PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
 
@@ -264,8 +260,6 @@ public class BuiltInLibraries {
                     PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
 
             new BuiltInLibrary(FIREBASE_DATABASE_COLLECTION),
-            new BuiltInLibrary(FIREBASE_DYNAMIC_LINKS, List.of(FIREBASE_COMMON, FIREBASE_MEASUREMENT_CONNECTOR, PLAY_SERVICES_BASE,
-                    PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
 
             new BuiltInLibrary(FIREBASE_IID, List.of(FIREBASE_COMMON, FIREBASE_IID_INTEROP, ANDROIDX_COLLECTION, ANDROIDX_CORE,
                     ANDROIDX_LEGACY_SUPPORT_CORE_UTILS, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_STATS, PLAY_SERVICES_TASKS)),
@@ -299,8 +293,6 @@ public class BuiltInLibraries {
 
             new BuiltInLibrary(OKHTTP, List.of(OKIO)),
             new BuiltInLibrary(OKIO),
-            new BuiltInLibrary(ONESIGNAL, List.of(ANDROIDX_BROWSER, ANDROIDX_CARDVIEW, ANDROIDX_FRAGMENT, ANDROIDX_MEDIA, FIREBASE_MESSAGING,
-                    PLAY_SERVICES_ADS_IDENTIFIER, PLAY_SERVICES_BASE, PLAY_SERVICES_LOCATION), "com.onesignal"),
 
             new BuiltInLibrary(OTPVIEW, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE_KTX, ANDROIDX_CONSTRAINTLAYOUT, KOTLIN_STDLIB_JDK7),
                     "affan.ahmad.otp"),

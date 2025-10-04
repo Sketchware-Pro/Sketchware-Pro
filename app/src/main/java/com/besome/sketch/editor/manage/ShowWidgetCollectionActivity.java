@@ -4,20 +4,14 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ViewBean;
-import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.view.ItemView;
-import com.besome.sketch.editor.view.ViewPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.lib.ui.EasyDeleteEditText;
 
 import java.util.ArrayList;
 
@@ -31,14 +25,13 @@ import a.a.a.mB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageCollectionShowWidgetBinding;
 
 public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private String widgetName;
-    private ViewPane viewPane;
-    private ScrollView scrollView;
     private EditText widgetNameInput;
-    private LinearLayout actionContainer;
     private NB widgetNameValidator;
+    private ManageCollectionShowWidgetBinding binding;
 
     private ItemView loadViews(ArrayList<ViewBean> views) {
         ItemView syVar = null;
@@ -57,10 +50,10 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
     }
 
     private void setActionContainerHeight() {
-        actionContainer.measure(0, 0);
-        scrollView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                getResources().getDisplayMetrics().heightPixels - GB.a(e) - GB.f(e) - actionContainer.getMeasuredHeight()));
-        scrollView.requestLayout();
+        binding.layoutButton.measure(0, 0);
+        binding.scrollView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                getResources().getDisplayMetrics().heightPixels - GB.a(getApplicationContext()) - GB.f(getApplicationContext()) - binding.layoutButton.getMeasuredHeight()));
+        binding.scrollView.requestLayout();
     }
 
     @Override
@@ -84,38 +77,32 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_collection_show_widget);
+        binding = ManageCollectionShowWidgetBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(getTranslatedString(R.string.design_manager_widget_title_actionbar_title));
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> {
+
+        binding.toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
         });
 
         widgetName = getIntent().getStringExtra("widget_name");
-        viewPane = findViewById(R.id.pane);
-        viewPane.initialize(DesignActivity.sc_id, true);
-        viewPane.setVerticalScrollBarEnabled(true);
+        String sc_id = getIntent().getStringExtra("sc_id");
+        binding.pane.initialize(sc_id, true);
+        binding.pane.setVerticalScrollBarEnabled(true);
         kC kCVar = new kC("", wq.a() + "/image/data/", "", "");
         kCVar.b(Op.g().f());
-        viewPane.setResourceManager(kCVar);
-        EasyDeleteEditText input = findViewById(R.id.ed_input);
-        widgetNameInput = input.getEditText();
+        binding.pane.setResourceManager(kCVar);
+        widgetNameInput = binding.edInput.getEditText();
         widgetNameInput.setPrivateImeOptions("defaultInputmode=english;");
         widgetNameInput.setText(widgetName);
-        input.setHint(getTranslatedString(R.string.design_manager_widget_hint_enter_widget_name));
-        Button save = findViewById(R.id.save_button);
-        save.setText(getTranslatedString(R.string.common_word_save));
-        save.setOnClickListener(this);
-        widgetNameValidator = new NB(this, input.getTextInputLayout(), Rp.h().g());
-        actionContainer = findViewById(R.id.layout_button);
-        scrollView = findViewById(R.id.scroll_view);
+        binding.edInput.setHint(getTranslatedString(R.string.design_manager_widget_hint_enter_widget_name));
+        binding.saveButton.setOnClickListener(this);
+        widgetNameValidator = new NB(this, binding.edInput.getTextInputLayout(), Rp.h().g());
     }
 
     @Override
@@ -126,8 +113,8 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
     }
 
     private ItemView loadView(ViewBean view) {
-        View v = viewPane.createItemView(view);
-        viewPane.addViewAndUpdateIndex(v);
+        View v = binding.pane.createItemView(view);
+        binding.pane.addViewAndUpdateIndex(v);
         return (ItemView) v;
     }
 }

@@ -51,12 +51,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
     public static final int COMPONENT_TYPE_NOTIFICATION = 26;
     public static final int COMPONENT_TYPE_FRAGMENT_ADAPTER = 27;
     public static final int COMPONENT_TYPE_FIREBASE_AUTH_PHONE = 28;
-    public static final int COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS = 29;
     public static final int COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE = 30;
     public static final int COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN = 31;
-    public static final int COMPONENT_TYPE_ONESIGNAL = 32;
-    public static final int COMPONENT_TYPE_FACEBOOK_ADS_BANNER = 33;
-    public static final int COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL = 34;
 
     public Gx classInfo;
     @Expose
@@ -140,8 +136,6 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
                     "https://docs.sketchware.io/docs/component-firebase-auth.html";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE ->
                     "https://sketchware-pro.vercel.app/docs/components/Firebase/cloud-messaging";
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS ->
-                    "https://sketchware-pro.vercel.app/docs/components/Firebase/dynamic-links";
             case COMPONENT_TYPE_INTERSTITIAL_AD, COMPONENT_TYPE_REQUEST_NETWORK,
                  COMPONENT_TYPE_TEXT_TO_SPEECH, COMPONENT_TYPE_SPEECH_TO_TEXT,
                  COMPONENT_TYPE_BLUETOOTH_CONNECT, COMPONENT_TYPE_LOCATION_MANAGER ->
@@ -189,12 +183,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_NOTIFICATION -> "Notification";
             case COMPONENT_TYPE_FRAGMENT_ADAPTER -> "FragmentAdapter";
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> "PhoneAuth";
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "Dynamic Link";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "Cloud Message";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "Google Login";
-            case COMPONENT_TYPE_ONESIGNAL -> "OneSignal";
-            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> "Facebook Ads Banner";
-            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL -> "Facebook Ads Interstitial";
             default -> ComponentsHandler.name(type);
         };
     }
@@ -229,12 +219,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case "Notification" -> COMPONENT_TYPE_NOTIFICATION;
             case "FragmentAdapter" -> COMPONENT_TYPE_FRAGMENT_ADAPTER;
             case "FirebasePhoneAuth" -> COMPONENT_TYPE_FIREBASE_AUTH_PHONE;
-            case "FirebaseDynamicLink" -> COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS;
             case "FirebaseCloudMessage" -> COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE;
             case "FirebaseGoogleLogin" -> COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN;
-            case "OneSignal" -> COMPONENT_TYPE_ONESIGNAL;
-            case "FBAdsBanner" -> COMPONENT_TYPE_FACEBOOK_ADS_BANNER;
-            case "FBAdsInterstitial" -> COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL;
             default -> ComponentsHandler.id(typeName);
         };
     }
@@ -269,12 +255,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_NOTIFICATION -> "Notification";
             case COMPONENT_TYPE_FRAGMENT_ADAPTER -> "FragmentAdapter";
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> "FirebasePhoneAuth";
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "FirebaseDynamicLink";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "FirebaseGoogleLogin";
-            case COMPONENT_TYPE_ONESIGNAL -> "OneSignal";
-            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> "FBAdsBanner";
-            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL -> "FBAdsInterstitial";
             default -> ComponentsHandler.typeName(type);
         };
     }
@@ -317,14 +299,9 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_NOTIFICATION -> R.string.component_description_notification;
             case COMPONENT_TYPE_FRAGMENT_ADAPTER -> R.string.component_description_fragment_adapter;
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> R.string.component_description_fb_phone_auth;
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> R.string.component_description_fb_dynamic;
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> R.string.component_description_fb_fcm;
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN ->
                     R.string.component_description_fb_google;
-            case COMPONENT_TYPE_ONESIGNAL -> R.string.component_description_fb_admin;
-            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> R.string.component_description_fb_ads_banner;
-            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
-                    R.string.component_description_fb_ads_interstitial;
             default -> 0;
         };
     }
@@ -359,13 +336,9 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_NOTIFICATION -> R.drawable.ic_mtrl_notifications;
             case COMPONENT_TYPE_FRAGMENT_ADAPTER -> R.drawable.ic_mtrl_viewpager;
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> R.drawable.ic_mtrl_firebase_sms;
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> R.drawable.ic_mtrl_firebase_dl;
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> R.drawable.ic_mtrl_firebase_cloud;
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> R.drawable.ic_mtrl_firebase_google;
-            case COMPONENT_TYPE_ONESIGNAL -> R.drawable.ic_mtrl_firebase_onesignal;
             case 36 -> R.drawable.ic_mtrl_sync;
-            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> R.drawable.ic_mtrl_fbads_banner;
-            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL -> R.drawable.ic_mtrl_fbads_banner;
 
             default -> ComponentsHandler.icon(type);
         };
@@ -401,12 +374,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_NOTIFICATION -> "Notification";
             case COMPONENT_TYPE_FRAGMENT_ADAPTER -> "FragmentAdapter";
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> "FirebasePhoneAuth";
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> "FirebaseDynamicLink";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "FirebaseGoogleLogin";
-            case COMPONENT_TYPE_ONESIGNAL -> "OneSignal";
-            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> "FBAdsBanner";
-            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL -> "FBAdsInterstitial";
             default -> ComponentsHandler.c(type);
         };
         classInfo = new Gx(typeName);

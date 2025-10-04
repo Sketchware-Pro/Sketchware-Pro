@@ -15,7 +15,6 @@ import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.hey.studios.code.SrcCodeEditor;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageProguardBinding;
-import pro.sketchware.utility.FileUtil;
 
 public class ManageProguardActivity extends BaseAppCompatActivity
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {

@@ -20,14 +20,14 @@ import pro.sketchware.utility.PropertiesUtil;
 public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ViewHolder> {
 
     private final ArrayList<ColorModel> originalData;
-    private ArrayList<ColorModel> filteredData;
     private final HashMap<Integer, String> notesMap;
     private final ResourcesEditorActivity activity;
     private final ColorsEditorManager colorsEditorManager;
+    private ArrayList<ColorModel> filteredData;
 
     public ColorsAdapter(ColorsEditorManager colorsEditorManager, ArrayList<ColorModel> filteredData, ResourcesEditorActivity activity, HashMap<Integer, String> notesMap) {
         this.colorsEditorManager = colorsEditorManager;
-        this.originalData = new ArrayList<>(filteredData);
+        originalData = new ArrayList<>(filteredData);
         this.filteredData = filteredData;
         this.activity = activity;
         this.notesMap = notesMap;

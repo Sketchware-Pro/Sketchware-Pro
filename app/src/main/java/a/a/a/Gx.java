@@ -298,16 +298,8 @@ public class Gx {
                 classInfos = "Component.LocationManager";
                 break;
 
-            case "FBAdsInterstitial":
-                classInfos = "Component.FBAdsInterstitial";
-                break;
-
             case "Videos":
                 classInfos = "Component.Videos";
-                break;
-
-            case "FirebaseAdmin":
-                classInfos = "Component.OneSignal";
                 break;
 
             case "FirebaseCloudMessage":
@@ -316,10 +308,6 @@ public class Gx {
 
             case "TimePickerDialog":
                 classInfos = "Component.TimePickerDialog";
-                break;
-
-            case "FBAdsBanner":
-                classInfos = "Component.FBAdsBanner";
                 break;
 
             case "Notification":
@@ -332,10 +320,6 @@ public class Gx {
 
             case "FirebaseGoogleLogin":
                 classInfos = "Component.FirebaseGoogleLogin";
-                break;
-
-            case "FirebaseDynamicLink":
-                classInfos = "Component.FirebaseDynamicLink";
                 break;
 
             case "PopupMenu":

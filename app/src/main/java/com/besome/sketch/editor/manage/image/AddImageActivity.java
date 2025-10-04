@@ -32,7 +32,6 @@ import a.a.a.bB;
 import a.a.a.iB;
 import a.a.a.oB;
 import a.a.a.uq;
-import a.a.a.xB;
 import a.a.a.yy;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -137,8 +136,8 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        e(xB.b().a(this, R.string.design_manager_image_title_add_image));
-        d(xB.b().a(getApplicationContext(), R.string.common_word_save));
+        e(getString(R.string.design_manager_image_title_add_image));
+        d(getString(R.string.common_word_save));
         setContentView(R.layout.manage_image_add);
         Intent intent = getIntent();
         existingImages = intent.getParcelableArrayListExtra("images");
@@ -161,11 +160,11 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         ed_input = findViewById(R.id.ed_input);
         ed_input_edittext = ed_input.getEditText();
         ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
-        ed_input.setHint(xB.b().a(this, R.string.design_manager_image_hint_enter_image_name));
+        ed_input.setHint(getString(R.string.design_manager_image_hint_enter_image_name));
         O = new PB(this, ed_input.getTextInputLayout(), uq.b, getReservedImageNames());
         O.a(1);
-        chk_collection.setText(xB.b().a(getApplicationContext(), R.string.design_manager_title_add_to_collection));
-        tv_add_photo.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_title_add_image));
+        chk_collection.setText((R.string.design_manager_title_add_to_collection));
+        tv_add_photo.setText((R.string.design_manager_image_title_add_image));
         preview.setOnClickListener(this);
         img_rotate.setOnClickListener(this);
         img_vertical.setOnClickListener(this);
@@ -185,7 +184,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         super.onPostCreate(bundle);
         if (editing) {
             image.isEdited = true;
-            e(xB.b().a(this, R.string.design_manager_image_title_edit_image));
+            e(getString(R.string.design_manager_image_title_edit_image));
             imageRotationDegrees = image.rotate;
             imageScaleX = image.flipHorizontal;
             imageScaleY = image.flipVertical;
@@ -242,9 +241,9 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
             if (allowMultiple) {
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             }
-            startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 215);
+            startActivityForResult(Intent.createChooser(intent, getString(R.string.common_word_choose)), 215);
         } catch (ActivityNotFoundException unused) {
-            bB.b(this, xB.b().a(this, R.string.common_error_activity_not_found), bB.TOAST_NORMAL).show();
+            bB.b(this, getString(R.string.common_error_activity_not_found), bB.TOAST_NORMAL).show();
         }
     }
 
@@ -426,7 +425,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                         case "duplicate_name" -> R.string.collection_duplicated_name;
                         default -> 0;
                     };
-                    var message = code != 0 ? xB.b().a(activity.getApplicationContext(), code) : null;
+                    var message = code != 0 ? activity.getString(code) : null;
 
                     var a = yy.a();
                     if (a != null && !a.isEmpty()) {

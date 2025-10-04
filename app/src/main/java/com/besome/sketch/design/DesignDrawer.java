@@ -34,32 +34,29 @@ public class DesignDrawer extends LinearLayout {
     @SuppressLint("NonConstantResourceId")
     private final View.OnClickListener drawerItemClickListener = v -> {
         Activity activity = (Activity) getContext();
-        if (!(activity instanceof DesignActivity)) return;
+        if (!(activity instanceof DesignActivity designActivity)) return;
         int id = v.getId();
 
         switch (id) {
-            case R.id.item_library_manager -> ((DesignActivity) activity).toLibraryManager();
-            case R.id.item_view_manager -> ((DesignActivity) activity).toViewManager();
-            case R.id.item_image_manager -> ((DesignActivity) activity).toImageManager();
-            case R.id.item_sound_manager -> ((DesignActivity) activity).toSoundManager();
-            case R.id.item_font_manager -> ((DesignActivity) activity).toFontManager();
-            case R.id.item_java_manager -> ((DesignActivity) activity).toJavaManager();
-            case R.id.item_resource_manager -> ((DesignActivity) activity).toResourceManager();
-            case R.id.item_resource_editor -> ((DesignActivity) activity).toResourceEditor();
-            case R.id.item_assets_manager -> ((DesignActivity) activity).toAssetManager();
-            case R.id.item_permission_manager -> ((DesignActivity) activity).toPermissionManager();
-            case R.id.item_appcompat_manager ->
-                    ((DesignActivity) activity).toAppCompatInjectionManager();
-            case R.id.item_manifest_manager ->
-                    ((DesignActivity) activity).toAndroidManifestManager();
-            case R.id.item_used_custom_blocks -> ((DesignActivity) activity).toCustomBlocksViewer();
-            case R.id.item_code_shrinking_manager ->
-                    ((DesignActivity) activity).toProguardManager();
-            case R.id.item_stringfog_manager -> ((DesignActivity) activity).toStringFogManager();
-            case R.id.item_show_src -> ((DesignActivity) activity).toSourceCodeViewer();
-            case R.id.item_xml_command_manager -> ((DesignActivity) activity).toXMLCommandManager();
-            case R.id.item_logcat_reader -> ((DesignActivity) activity).toLogReader();
-            case R.id.item_collection_manager -> ((DesignActivity) activity).toCollectionManager();
+            case R.id.item_library_manager -> designActivity.toLibraryManager();
+            case R.id.item_view_manager -> designActivity.toViewManager();
+            case R.id.item_image_manager -> designActivity.toImageManager();
+            case R.id.item_sound_manager -> designActivity.toSoundManager();
+            case R.id.item_font_manager -> designActivity.toFontManager();
+            case R.id.item_java_manager -> designActivity.toJavaManager();
+            case R.id.item_resource_manager -> designActivity.toResourceManager();
+            case R.id.item_resource_editor -> designActivity.toResourceEditor();
+            case R.id.item_assets_manager -> designActivity.toAssetManager();
+            case R.id.item_permission_manager -> designActivity.toPermissionManager();
+            case R.id.item_appcompat_manager -> designActivity.toAppCompatInjectionManager();
+            case R.id.item_manifest_manager -> designActivity.toAndroidManifestManager();
+            case R.id.item_used_custom_blocks -> designActivity.toCustomBlocksViewer();
+            case R.id.item_code_shrinking_manager -> designActivity.toProguardManager();
+            case R.id.item_stringfog_manager -> designActivity.toStringFogManager();
+            case R.id.item_show_src -> designActivity.toSourceCodeViewer();
+            case R.id.item_xml_command_manager -> designActivity.toXMLCommandManager();
+            case R.id.item_logcat_reader -> designActivity.toLogReader();
+            case R.id.item_collection_manager -> designActivity.toCollectionManager();
             default -> throw new IllegalArgumentException("Invalid item id: " + id);
         }
     };

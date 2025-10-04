@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import a.a.a.MB;
-import a.a.a.xB;
 import pro.sketchware.R;
 
 public class PropertyNameValidator extends MB {
@@ -35,13 +34,13 @@ public class PropertyNameValidator extends MB {
         String trimmedLowerName = charSequence.toString().trim().toLowerCase();
         if (trimmedLowerName.length() < 1) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, 1));
+            b.setError(a.getString(R.string.invalid_value_min_lenth, 1));
             d = false;
             return;
         }
         if (trimmedLowerName.length() > 100) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, 100));
+            b.setError(a.getString(R.string.invalid_value_max_lenth, 100));
             d = false;
             return;
         }
@@ -52,14 +51,14 @@ public class PropertyNameValidator extends MB {
         }
         if (fileNames.contains(trimmedLowerName)) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, R.string.common_message_name_unavailable));
+            b.setError(a.getString(R.string.common_message_name_unavailable));
             d = false;
             return;
         }
         for (String reservedMethodName : reservedMethodNames) {
             if (trimmedLowerName.equals(reservedMethodName)) {
                 b.setErrorEnabled(true);
-                b.setError(xB.b().a(a, R.string.common_message_name_unavailable));
+                b.setError(a.getString(R.string.common_message_name_unavailable));
                 d = false;
                 return;
             }
@@ -67,21 +66,21 @@ public class PropertyNameValidator extends MB {
         for (String reservedName : reservedNames) {
             if (trimmedLowerName.equals(reservedName)) {
                 b.setErrorEnabled(true);
-                b.setError(xB.b().a(a, R.string.logic_editor_message_reserved_keywords));
+                b.setError(a.getString(R.string.logic_editor_message_reserved_keywords));
                 d = false;
                 return;
             }
         }
         if (!Character.isLetter(trimmedLowerName.charAt(0))) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, R.string.logic_editor_message_variable_name_must_start_letter));
+            b.setError(a.getString(R.string.logic_editor_message_variable_name_must_start_letter));
             d = false;
         } else if (pattern.matcher(charSequence).matches()) {
             b.setErrorEnabled(false);
             d = true;
         } else {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, R.string.invalid_value_rule_3));
+            b.setError(a.getString(R.string.invalid_value_rule_3));
             d = false;
         }
     }
