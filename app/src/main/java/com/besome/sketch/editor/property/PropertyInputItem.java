@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.property;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,6 +46,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -61,11 +64,11 @@ import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.activities.resourceseditor.components.utils.StringsEditorManager;
 import pro.sketchware.databinding.PropertyInputItemBinding;
+import pro.sketchware.databinding.PropertyPopupHybridBinding;
 import pro.sketchware.databinding.PropertyPopupInputTextBinding;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
 import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.lib.highlighter.SyntaxScheme;
-import pro.sketchware.lib.validator.MinMaxInputValidator;
 import pro.sketchware.lib.validator.PropertyNameValidator;
 import pro.sketchware.utility.FileUtil;
 
@@ -112,6 +115,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             case "property_scale_x" -> icon = R.drawable.ic_mtrl_scale_x;
             case "property_inject" -> icon = R.drawable.ic_mtrl_code;
             case "property_convert" -> icon = R.drawable.ic_mtrl_switch;
+            case "property_text_size" -> icon = R.drawable.ic_mtrl_font;
         }
         imageView.setImageResource(icon);
     }
@@ -157,16 +161,279 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             switch (key) {
                 case "property_id" -> showViewIdDialog();
                 case "property_text", "property_hint" -> showTextInputDialog(9999, false);
-                case "property_weight", "property_weight_sum", "property_rotate", "property_lines",
-                     "property_max", "property_progress" -> showNumberInputDialog();
-                case "property_alpha" -> showNumberDecimalInputDialog(0, 1);
-                case "property_translation_x", "property_translation_y" ->
-                        showNumberDecimalInputDialog(-9999, 9999);
-                case "property_scale_x", "property_scale_y" -> showNumberDecimalInputDialog(0, 99);
+                case "property_rotate" -> showHybridSliderDialog(
+                        Helper.getText(tvName),
+                        Float.parseFloat(value.isEmpty() ? "0" : value),
+                        -360f, 360f, 1f, true);
+                case "property_alpha" -> showHybridSliderDialog(
+                        Helper.getText(tvName),
+                        Float.parseFloat(value.isEmpty() ? "1" : value),
+                        0f, 1f, 0.1f, false);
+                case "property_translation_x", "property_translation_y" -> showHybridSliderDialog(
+                        Helper.getText(tvName),
+                        Float.parseFloat(value.isEmpty() ? "0" : value),
+                        -200f, 200f, 1f, true);
+                case "property_scale_x", "property_scale_y" -> {
+                    float currentVal = Float.parseFloat(value.isEmpty() ? "1" : value);
+                    float maxRange = Math.max(10f, currentVal * 1.2f);
+                    showHybridSliderDialog(
+                            Helper.getText(tvName),
+                            currentVal,
+                            0.1f, maxRange, 0.1f, false);
+                }
+
+                case "property_text_size" -> {
+                    float currentVal = Float.parseFloat(value.isEmpty() ? "14" : value);
+                    float maxRange = Math.max(100f, currentVal);
+                    float minRange = Math.min(10f, currentVal);
+                    showHybridSliderDialog(
+                            Helper.getText(tvName),
+                            currentVal,
+                            minRange, maxRange, 1f, true);
+                }
+                case "property_weight", "property_weight_sum" -> showHybridSliderDialog(
+                        Helper.getText(tvName),
+                        Float.parseFloat(value.isEmpty() ? "0" : value),
+                        0f, 10f, 1f, true);
+                case "property_lines" -> {
+                    float currentVal = Float.parseFloat(value.isEmpty() ? "0" : value);
+                    float maxRange = Math.max(20f, currentVal);
+                    float minRange = Math.min(0f, currentVal);
+                    showHybridSliderDialog(
+                            Helper.getText(tvName),
+                            currentVal,
+                            minRange, maxRange, 1f, true);
+                }
+                case "property_max" -> showHybridSliderDialog(
+                        Helper.getText(tvName),
+                        Float.parseFloat(value.isEmpty() ? "100" : value),
+                        1f, 1000f, 1f, true);
+                case "property_progress" -> {
+                    float maxValue = bean != null ? bean.max : 100f;
+                    showHybridSliderDialog(
+                            Helper.getText(tvName),
+                            Float.parseFloat(value.isEmpty() ? "0" : value),
+                            0f, maxValue, 1f, true);
+                }
+                case "property_divider_height" -> showHybridSliderDialog(
+                        Helper.getText(tvName),
+                        Float.parseFloat(value.isEmpty() ? "1" : value),
+                        0f, 50f, 1f, true);
                 case "property_convert" -> showAutoCompleteDialog();
                 case "property_inject" -> showInjectDialog();
             }
         }
+    }
+
+    private void showHybridSliderDialog(String propertyName, float currentValue, float minValue, float maxValue, float stepSize, boolean isInteger) {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(propertyName);
+        dialog.setIcon(icon);
+
+        PropertyPopupHybridBinding binding = PropertyPopupHybridBinding.inflate(LayoutInflater.from(getContext()));
+
+        float validCurrentValue = Math.max(minValue, Math.min(maxValue, currentValue));
+
+        binding.slider.setValueFrom(minValue);
+        binding.slider.setValueTo(maxValue);
+        binding.slider.setStepSize(stepSize);
+
+        boolean isCenteredProperty = key.equals("property_translation_x") ||
+                key.equals("property_translation_y") ||
+                key.equals("property_rotate");
+
+        if (isCenteredProperty) {
+            binding.slider.setCentered(true);
+        }
+
+        binding.slider.setValue(minValue);
+
+        binding.edInput.setText(isInteger ? String.valueOf((int) validCurrentValue) : String.valueOf(validCurrentValue));
+        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), propertyName));
+
+        updateValueDisplay(binding.tvCurrentValue, validCurrentValue, isInteger);
+
+        binding.slider.addOnChangeListener((s, value, fromUser) -> {
+            if (fromUser) {
+                float roundedSliderValue = Math.round(value * 10.0f) / 10.0f;
+                updateValueDisplay(binding.tvCurrentValue, roundedSliderValue, isInteger);
+                binding.edInput.setText(isInteger ? String.valueOf((int) roundedSliderValue) :
+                        String.format(Locale.US, "%.1f", roundedSliderValue));
+            }
+        });
+
+        binding.edInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    float inputValue = Float.parseFloat(s.toString());
+                    boolean isUnlimited = key.equals("property_translation_x") || key.equals("property_translation_y") ||
+                            key.equals("property_text_size") || key.equals("property_lines") ||
+                            key.equals("property_scale_x") || key.equals("property_scale_y");
+
+                    if (isUnlimited) {
+                        float minLimit = 0.0f;
+                        if (key.equals("property_translation_x") || key.equals("property_translation_y")) {
+                            minLimit = Float.NEGATIVE_INFINITY;
+                        } else if (key.equals("property_scale_x") || key.equals("property_scale_y")) {
+                            minLimit = 0.1f;
+                        }
+
+                        if (inputValue >= minLimit) {
+                            if (inputValue >= minValue && inputValue <= maxValue) {
+                                binding.slider.setValue(inputValue);
+                            }
+                            binding.tiInput.setError(null);
+                        } else {
+                            if (key.equals("property_scale_x") || key.equals("property_scale_y")) {
+                                binding.tiInput.setError("Value must be 0.1 or greater");
+                            } else {
+                                binding.tiInput.setError("Value must be 0 or greater");
+                            }
+                        }
+                    } else if (key.equals("property_progress") && bean != null) {
+                        float maxLimit = bean.max;
+                        if (inputValue >= 0 && inputValue <= maxLimit) {
+                            binding.slider.setValue(inputValue);
+                            binding.tiInput.setError(null);
+                        } else {
+                            binding.tiInput.setError(String.format("Value must be between 0 and %.0f", maxLimit));
+                        }
+                    } else {
+                        if (inputValue >= minValue && inputValue <= maxValue) {
+                            binding.slider.setValue(inputValue);
+                            binding.tiInput.setError(null);
+                        } else {
+                            binding.tiInput.setError(String.format("Value must be between %.1f and %.1f", minValue, maxValue));
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    binding.tiInput.setError("Invalid value");
+                }
+            }
+        });
+
+        dialog.setView(binding.getRoot());
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+            float finalValue;
+            try {
+                finalValue = Float.parseFloat(binding.edInput.getText().toString());
+            } catch (NumberFormatException e) {
+                finalValue = validCurrentValue;
+            }
+
+            if (binding.sliderSection.getVisibility() == View.VISIBLE) {
+                setValue(isInteger ? String.valueOf((int) finalValue) :
+                        String.format(Locale.US, "%.1f", Math.round(finalValue * 10.0f) / 10.0f));
+            } else {
+                setValue(isInteger ? String.valueOf((int) finalValue) :
+                        String.format(Locale.US, "%.2f", finalValue));
+            }
+
+            if (valueChangeListener != null) {
+                valueChangeListener.a(key, value);
+            }
+
+            v.dismiss();
+        });
+
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_reset), null);
+        dialog.setNeutralButton("Custom", null);
+
+        AlertDialog alertDialog = dialog.create();
+
+        alertDialog.setOnShowListener(dialogInterface -> {
+            float animationStartValue;
+            if (key.equals("property_translation_x") || key.equals("property_translation_y") || key.equals("property_rotate")) {
+                animationStartValue = 0f;
+            } else {
+                animationStartValue = minValue;
+            }
+
+            ValueAnimator sliderAnimator = ValueAnimator.ofFloat(animationStartValue, validCurrentValue);
+            sliderAnimator.setDuration(800);
+            sliderAnimator.setInterpolator(new DecelerateInterpolator());
+
+            sliderAnimator.addUpdateListener(animation -> {
+                float animatedValue = (float) animation.getAnimatedValue();
+                float validAnimatedValue = Math.round(animatedValue / stepSize) * stepSize;
+                validAnimatedValue = Math.max(minValue, Math.min(maxValue, validAnimatedValue));
+                binding.slider.setValue(validAnimatedValue);
+                updateValueDisplay(binding.tvCurrentValue, validAnimatedValue, isInteger);
+            });
+
+            sliderAnimator.start();
+
+            Button customButton = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+            Button resetButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+            customButton.setOnClickListener(v -> {
+                if (binding.sliderSection.getVisibility() == View.VISIBLE) {
+                    binding.sliderSection.setVisibility(View.GONE);
+                    binding.tiInput.setVisibility(View.VISIBLE);
+                    binding.edInput.requestFocus();
+                    customButton.setText("Slider");
+                } else {
+                    binding.sliderSection.setVisibility(View.VISIBLE);
+                    binding.tiInput.setVisibility(View.GONE);
+                    customButton.setText("Custom");
+                }
+            });
+
+            resetButton.setOnClickListener(v -> {
+                float defaultValue = getDefaultValue(key);
+
+                ValueAnimator resetAnimator = ValueAnimator.ofFloat(binding.slider.getValue(), defaultValue);
+                resetAnimator.setDuration(400);
+                resetAnimator.setInterpolator(new DecelerateInterpolator());
+
+                resetAnimator.addUpdateListener(animation -> {
+                    float animatedValue = (float) animation.getAnimatedValue();
+                    float validAnimatedValue = Math.round(animatedValue / stepSize) * stepSize;
+                    validAnimatedValue = Math.max(minValue, Math.min(maxValue, validAnimatedValue));
+                    binding.slider.setValue(validAnimatedValue);
+                    updateValueDisplay(binding.tvCurrentValue, validAnimatedValue, isInteger);
+                    binding.edInput.setText(isInteger ? String.valueOf((int) validAnimatedValue) :
+                            String.format(Locale.US, "%.1f", validAnimatedValue));
+                });
+
+                resetAnimator.start();
+                binding.tiInput.setError(null);
+            });
+        });
+
+        alertDialog.show();
+    }
+
+    private void updateValueDisplay(TextView textView, float value, boolean isInteger) {
+        if (key.equals("property_rotate")) {
+            textView.setText(Math.round(value) + "°");
+        } else if (key.equals("property_text_size")) {
+            textView.setText(Math.round(value) + "sp");
+        } else if (key.equals("property_divider_height")) {
+            textView.setText(Math.round(value) + "dp");
+        } else if (isInteger) {
+            textView.setText(String.valueOf(Math.round(value)));
+        } else {
+            textView.setText(String.format("%.2f", value));
+        }
+    }
+
+    private float getDefaultValue(String key) {
+        return switch (key) {
+            case "property_alpha", "property_scale_x", "property_scale_y" -> 1.0f;
+            case "property_text_size" -> 14.0f;
+            case "property_max" -> 100.0f;
+            default -> 0.0f;
+        };
     }
 
     public void setOnPropertyValueChangeListener(Kw onPropertyValueChangeListener) {
@@ -228,32 +495,6 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     public void a(String projectId, ProjectFileBean projectFileBean) {
         sc_id = projectId;
         this.projectFileBean = projectFileBean;
-    }
-
-    private void showNumberInputDialog() {
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-        dialog.setTitle(Helper.getText(tvName));
-        dialog.setIcon(icon);
-
-        PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
-        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
-
-        binding.edInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
-        binding.edInput.setText(value);
-
-        MinMaxInputValidator validator = new MinMaxInputValidator(context, binding.tiInput, 0,
-                (key.equals("property_max") || key.equals("property_progress")) ? 0x7fffffff : 999);
-
-        dialog.setView(binding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
-            if (validator.b()) {
-                setValue(Helper.getText(binding.edInput));
-                if (valueChangeListener != null) valueChangeListener.a(key, value);
-                v.dismiss();
-            }
-        });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
-        dialog.show();
     }
 
     private void showTextInputDialog(int maxValue, boolean isInject) {
@@ -362,7 +603,8 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         StringsEditorManager stringsEditorManager = new StringsEditorManager();
         stringsEditorManager.convertXmlStringsToListMap(FileUtil.readFileIfExist(filePath), stringsListMap);
 
-        if (!stringsEditorManager.isXmlStringsExist(stringsListMap, "app_name") && filePath != null) {
+        if (!stringsEditorManager.isXmlStringsExist(stringsListMap, "app_name") &&
+                filePath != null) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("key", "app_name");
             map.put("text", yB.c(lC.b(sc_id), "my_app_name"));
