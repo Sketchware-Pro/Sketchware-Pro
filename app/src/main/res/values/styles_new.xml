@@ -132,8 +132,6 @@
     </style>
 
     <style name="TextAppearance.SketchwarePro.Chip" parent="TextAppearance.SketchwarePro.BodyMedium">
-        <item name="android:fontFamily">@font/gilroy</item>
-        <item name="fontFamily">@font/gilroy</item>
     </style>
 
     <style name="ThemeOverlay.SketchwarePro.Chip.ProjectPreview" parent="">
