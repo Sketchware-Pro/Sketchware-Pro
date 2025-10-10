@@ -321,7 +321,7 @@ public class BuiltInLibraries {
 
             new BuiltInLibrary(ANDROIDX_STARTUP_RUNTIME, List.of(ANDROIDX_ANNOTATION_JVM, ANDROIDX_LIFECYCLE_COMMON, ANDROIDX_TRACING), "androidx.startup"),
 
-            new BuiltInLibrary(ANDROIDX_SWIPEREFRESHLAYOUT, List.of(ANDROIDX_ANNOTATION_JVM, ANDROIDX_CORE, ANDROIDX_INTERPOLATOR), "androidx.swiperefreshlayout"),
+            new BuiltInLibrary(ANDROIDX_SWIPEREFRESHLAYOUT, List.of(ANDROIDX_ANNOTATION_JVM, ANDROIDX_CORE, ANDROIDX_INTERPOLATOR)),
 
             new BuiltInLibrary(ANDROIDX_TRACING, List.of(ANDROIDX_ANNOTATION_JVM)),
 
@@ -362,7 +362,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(FIREBASE_AUTH_INTEROP, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, FIREBASE_COMMON)),
 
             new BuiltInLibrary(FIREBASE_COMMON, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, AUTO_VALUE_ANNOTATIONS,
-                    FIREBASE_COMPONENTS), "com.google.firebase"),
+                    FIREBASE_COMPONENTS)),
 
             new BuiltInLibrary(FIREBASE_COMPONENTS, List.of(ANDROIDX_ANNOTATION_JVM)),
 
