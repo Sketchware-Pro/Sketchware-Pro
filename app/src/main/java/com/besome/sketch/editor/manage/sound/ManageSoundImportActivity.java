@@ -164,7 +164,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         tv_sendbtn.setText(getString(R.string.common_word_import).toUpperCase());
         tv_sendbtn.setOnClickListener(this);
         TextView tv_samename = findViewById(R.id.tv_samename);
-        tv_samename.setText((R.string.design_manager_sound_title_apply_same_naming));
+        tv_samename.setText(R.string.design_manager_sound_title_apply_same_naming);
         adapter = new ItemAdapter();
         RecyclerView recycler_list = findViewById(R.id.recycler_list);
         recycler_list.setAdapter(adapter);

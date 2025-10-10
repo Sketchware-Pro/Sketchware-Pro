@@ -503,10 +503,10 @@ public class WidgetsCreatorManager {
 
     private void deleteWidgetMap(int position) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
-        dialog.setTitle((R.string.view_widget_favorites_delete_title));
+        dialog.setTitle(R.string.view_widget_favorites_delete_title);
         dialog.setIcon(R.drawable.ic_mtrl_delete);
-        dialog.setMessage((R.string.view_widget_favorites_delete_message));
-        dialog.setPositiveButton((R.string.common_word_delete), (v, which) -> {
+        dialog.setMessage(R.string.view_widget_favorites_delete_message);
+        dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
             String Class = Objects.requireNonNull(widgetConfigurationsList.get(position).get("Class")).toString();
             widgetConfigurationsList.remove(position);
             if (isClassEmpty(Class) && !mainCategories.contains(Class)) {
@@ -516,7 +516,7 @@ public class WidgetsCreatorManager {
             viewEditorFragment.e();
             v.dismiss();
         });
-        dialog.setNegativeButton((R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

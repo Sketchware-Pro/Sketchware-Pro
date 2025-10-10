@@ -187,7 +187,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         }
 
         binding.optionsSelector.check(selectedTab == TAB_ACTIVITY ? R.id.option_view : R.id.option_custom_view);
-        binding.emptyMessage.setText((R.string.design_manager_view_message_no_view));
+        binding.emptyMessage.setText(R.string.design_manager_view_message_no_view);
         viewSelectorAdapter = new ViewSelectorAdapter();
         binding.listXml.setHasFixedSize(true);
         binding.listXml.setAdapter(viewSelectorAdapter);

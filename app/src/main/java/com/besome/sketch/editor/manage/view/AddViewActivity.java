@@ -65,7 +65,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
                 } else {
                     slideInVertically(binding.previewStatusbar);
                     if (featureToolbar) {
-                        binding.previewToolbar.animate().translationY((float) (-binding.previewStatusbar.getMeasuredHeight())).start();
+                        binding.previewToolbar.animate().translationY((float) -binding.previewStatusbar.getMeasuredHeight()).start();
                     } else {
                         slideOutPreviewToolbar();
                     }
@@ -74,7 +74,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
             case FEATURE_TYPE_TOOLBAR -> {
                 if (featureItem.isEnabled) {
                     if (!featureStatusBar) {
-                        binding.previewToolbar.animate().translationY((float) (-binding.previewStatusbar.getMeasuredHeight())).start();
+                        binding.previewToolbar.animate().translationY((float) -binding.previewStatusbar.getMeasuredHeight()).start();
                     } else {
                         resetTranslationY(binding.previewToolbar);
                     }
@@ -107,7 +107,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
     private void slideOutHorizontally(View view, String direction) {
         if ("left".equals(direction)) {
-            view.animate().translationX((float) (-view.getMeasuredWidth())).start();
+            view.animate().translationX((float) -view.getMeasuredWidth()).start();
         } else {
             view.animate().translationX((float) view.getMeasuredWidth()).start();
         }
@@ -118,11 +118,11 @@ public class AddViewActivity extends BaseAppCompatActivity {
     }
 
     private void slideOutPreviewToolbar() {
-        binding.previewToolbar.animate().translationY((float) (-(binding.previewStatusbar.getMeasuredHeight() + binding.previewToolbar.getMeasuredHeight()))).start();
+        binding.previewToolbar.animate().translationY((float) -(binding.previewStatusbar.getMeasuredHeight() + binding.previewToolbar.getMeasuredHeight())).start();
     }
 
     private void slideInVertically(View view) {
-        view.animate().translationY((float) (-view.getMeasuredHeight())).start();
+        view.animate().translationY((float) -view.getMeasuredHeight()).start();
     }
 
     private void disableDrawer() {

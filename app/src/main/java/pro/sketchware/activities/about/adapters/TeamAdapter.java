@@ -56,7 +56,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
 
         holder.binding.tvDescription.setText(member.getDescription());
 
-        boolean isTitled = position == 0 || !(member.getTitle().equals(team.get(position - 1).getTitle()));
+        boolean isTitled = position == 0 || !member.getTitle().equals(team.get(position - 1).getTitle());
         if (isTitled) {
             String titleText = member.getTitle();
             if (titleText != null) {

@@ -37,7 +37,7 @@ public class StylesEditorManager {
                 xmlBuilder.append("    <!--").append(notesMap.get(styleIndex)).append("-->\n");
             }
 
-            String parentStyle = (style.getParent() != null && !style.getParent().isEmpty()) ? style.getParent() : null;
+            String parentStyle = style.getParent() != null && !style.getParent().isEmpty() ? style.getParent() : null;
             if (parentStyle == null || parentStyle.isEmpty()) {
                 xmlBuilder.append("    <style name=\"").append(style.getStyleName()).append("\">\n");
             } else {

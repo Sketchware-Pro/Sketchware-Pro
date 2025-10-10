@@ -84,7 +84,7 @@ public class Yv extends qA {
         binding.soundList.setLayoutManager(new LinearLayoutManager(null, LinearLayoutManager.VERTICAL, false));
         adapter = new Adapter();
         binding.soundList.setAdapter(adapter);
-        binding.tvGuide.setText((R.string.design_manager_sound_description_guide_add_sound));
+        binding.tvGuide.setText(R.string.design_manager_sound_description_guide_add_sound);
         actBinding.btnImport.setOnClickListener(view -> {
             if (!mB.a()) {
                 stopPlayback();

@@ -158,10 +158,10 @@ public class MoreblockImporter {
 
     private void showAutoAddDialog(MoreBlockCollectionBean moreBlock) {
         MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(activity);
-        aBVar.setTitle((R.string.logic_more_block_title_add_variable_resource));
+        aBVar.setTitle(R.string.logic_more_block_title_add_variable_resource);
         aBVar.setIcon(R.drawable.break_warning_96_red);
-        aBVar.setMessage((R.string.logic_more_block_desc_add_variable_resource));
-        aBVar.setPositiveButton((R.string.common_word_continue), (v, which) -> {
+        aBVar.setMessage(R.string.logic_more_block_desc_add_variable_resource);
+        aBVar.setPositiveButton(R.string.common_word_continue, (v, which) -> {
             for (Pair<Integer, String> pair : toBeAddedVariables) {
                 eC eC = jC.a(sc_id);
                 eC.c(activityJavaName, pair.first, pair.second);
@@ -182,17 +182,17 @@ public class MoreblockImporter {
             createEvent(moreBlock);
             v.dismiss();
         });
-        aBVar.setNegativeButton((R.string.common_word_cancel), null);
+        aBVar.setNegativeButton(R.string.common_word_cancel, null);
         aBVar.show();
     }
 
     private void showEditMoreBlockNameDialog(MoreBlockCollectionBean moreBlock) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
-        dialog.setTitle((R.string.logic_more_block_title_change_block_name));
+        dialog.setTitle(R.string.logic_more_block_title_change_block_name);
         dialog.setIcon(R.drawable.more_block_96dp);
 
         View customView = wB.a(activity, R.layout.property_popup_save_to_favorite);
-        ((TextView) customView.findViewById(R.id.tv_favorites_guide)).setText((R.string.logic_more_block_desc_change_block_name));
+        ((TextView) customView.findViewById(R.id.tv_favorites_guide)).setText(R.string.logic_more_block_desc_change_block_name);
         EditText newName = customView.findViewById(R.id.ed_input);
         newName.setPrivateImeOptions("defaultInputmode=english;");
         newName.setLines(1);
@@ -206,7 +206,7 @@ public class MoreblockImporter {
 
         ZB validator = new ZB(activity, customView.findViewById(R.id.ti_input), uq.b, uq.a(), new ArrayList<>(moreBlockNamesWithoutReturnTypes));
         dialog.setView(customView);
-        dialog.setPositiveButton((R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (validator.b()) {
                 String moreBlockName = ReturnMoreblockManager.getMbName(ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec));
                 moreBlock.spec = Helper.getText(newName) + moreBlock.spec.substring(moreBlockName.length());
@@ -216,7 +216,7 @@ public class MoreblockImporter {
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton((R.string.common_word_cancel), (v, which) -> {
+        dialog.setNegativeButton(R.string.common_word_cancel, (v, which) -> {
             mB.a(activity, newName);
             v.dismiss();
         });

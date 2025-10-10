@@ -204,7 +204,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         builder.setTitle(Helper.getResString(R.string.resources_manager_xml_load_failed_title))
                 .setMessage(String.format(Helper.getResString(R.string.resources_manager_xml_load_failed_message), title))
                 .setPositiveButton("Open code editor", (dialog, which) -> goToCodeEditor(title, contentPath))
-                .setNegativeButton(Helper.getResString(R.string.common_word_exit), ((dialogInterface, i) -> finish()))
+                .setNegativeButton(Helper.getResString(R.string.common_word_exit), (dialogInterface, i) -> finish())
                 .setCancelable(false)
                 .create()
                 .show();

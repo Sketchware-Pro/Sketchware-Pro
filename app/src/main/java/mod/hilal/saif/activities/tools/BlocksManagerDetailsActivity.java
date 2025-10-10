@@ -559,7 +559,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                 downLayout.setVisibility(View.GONE);
                 upLayout.setVisibility(View.GONE);
             } else {
-                downLayout.setVisibility(position != (blocks.size() - 1) ? View.VISIBLE : View.GONE);
+                downLayout.setVisibility(position != blocks.size() - 1 ? View.VISIBLE : View.GONE);
                 upLayout.setVisibility(position != 0 ? View.VISIBLE : View.GONE);
             }
 

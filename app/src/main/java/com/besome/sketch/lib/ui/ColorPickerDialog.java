@@ -93,15 +93,15 @@ public class ColorPickerDialog extends PopupWindow {
     private void deleteAllSavedColors() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         dialog.setIcon(R.drawable.delete_96);
-        dialog.setTitle((R.string.picker_color_title_delete_all_custom_color));
-        dialog.setMessage((R.string.picker_color_message_delete_all_custom_color));
-        dialog.setPositiveButton((R.string.common_word_delete), (v, which) -> {
+        dialog.setTitle(R.string.picker_color_title_delete_all_custom_color);
+        dialog.setMessage(R.string.picker_color_message_delete_all_custom_color);
+        dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
             colorPref.a();
             colorGroups.set(0, getSavedColorBeans());
             notifyChanges();
             v.dismiss();
         });
-        dialog.setNegativeButton((R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -343,7 +343,7 @@ public class ColorPickerDialog extends PopupWindow {
 
                 String savedAttrs = colorPref.f("P24I2");
                 String attrsToSave = savedAttrs + "," + attributeName;
-                colorPref.a("P24I2", (Object) (attrsToSave));
+                colorPref.a("P24I2", (Object) attrsToSave);
                 attributes.add(new Attribute(attributeName, savedAttrs.isEmpty() ? "Custom" : null));
                 assert binding.colorList.getAdapter() != null;
                 binding.colorList.getAdapter().notifyItemInserted(attributes.size());
@@ -367,14 +367,14 @@ public class ColorPickerDialog extends PopupWindow {
     private void showColorRemoveDialog(String color) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         dialog.setIcon(R.drawable.delete_96);
-        dialog.setTitle((R.string.picker_color_title_delete_custom_color));
-        dialog.setMessage((R.string.picker_color_message_delete_custom_color));
-        dialog.setPositiveButton((R.string.common_word_delete), (v, which) -> {
+        dialog.setTitle(R.string.picker_color_title_delete_custom_color);
+        dialog.setMessage(R.string.picker_color_message_delete_custom_color);
+        dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
             removeSavedColor(color);
             notifyChanges();
             v.dismiss();
         });
-        dialog.setNegativeButton((R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -446,7 +446,7 @@ public class ColorPickerDialog extends PopupWindow {
         if (savedColors.contains(color)) {
             String colorToRemove = color + ",";
             String colorToSave = savedColors.replaceAll(colorToRemove, "");
-            colorPref.a("P24I1", ((Object) colorToSave));
+            colorPref.a("P24I1", (Object) colorToSave);
             colorGroups.set(0, getSavedColorBeans());
             notifyChanges();
         }
@@ -505,7 +505,7 @@ public class ColorPickerDialog extends PopupWindow {
             bB.b(activity, activity.getString(R.string.picker_color_already_exist), 0).show();
         } else {
             String colorsToSave = color + "," + savedColors;
-            colorPref.a("P24I1", (Object) (colorsToSave));
+            colorPref.a("P24I1", (Object) colorsToSave);
             colorGroups.set(0, getSavedColorBeans());
             notifyChanges();
             k = 0;

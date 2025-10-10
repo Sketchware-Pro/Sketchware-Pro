@@ -53,7 +53,7 @@ public class Material3LibraryManager {
     }
 
     public String getTheme() {
-        return (isMaterial3Enabled() || isEditingState) ? safeGetString("theme") : "DayNight";
+        return isMaterial3Enabled() || isEditingState ? safeGetString("theme") : "DayNight";
     }
 
     private String safeGetString(String key) {
@@ -98,7 +98,7 @@ public class Material3LibraryManager {
         }
 
         return getTheme().equals("Dark") ||
-                (!getTheme().equals("Light") && ThemeUtils.isDarkThemeEnabled(context));
+                !getTheme().equals("Light") && ThemeUtils.isDarkThemeEnabled(context);
     }
 
     public ProjectLibraryBean getAppCombatLibraryBean() {

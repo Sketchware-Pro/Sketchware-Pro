@@ -108,8 +108,8 @@ public class ViewDummy extends RelativeLayout {
             setDummyVisibility(View.VISIBLE);
         }
         getLocationOnScreen(e);
-        layout_dummy.setX(((((d[0] - e[0]) + f) - f3) - img_notallowed.getWidth()) + f5);
-        layout_dummy.setY((((d[1] - e[1]) + f2) - f4) + f6);
+        layout_dummy.setX((d[0] - e[0]) + f - f3 - img_notallowed.getWidth() + f5);
+        layout_dummy.setY((d[1] - e[1]) + f2 - f4 + f6);
     }
 
     public void a(View view, float f, float f2, float f3, float f4) {

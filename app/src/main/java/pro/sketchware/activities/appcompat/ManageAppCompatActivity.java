@@ -241,7 +241,7 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
     }
 
     private void setNote(String title, String message) {
-        if ((title == null && message == null) || (title.isEmpty() && message.isEmpty())) {
+        if (title == null && message == null || title.isEmpty() && message.isEmpty()) {
             return;
         }
 

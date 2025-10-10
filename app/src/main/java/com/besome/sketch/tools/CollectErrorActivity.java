@@ -35,7 +35,7 @@ public class CollectErrorActivity extends BaseAppCompatActivity {
             String error = intent.getStringExtra("error");
 
             var dialog = new MaterialAlertDialogBuilder(this)
-                    .setTitle((R.string.common_error_an_error_occurred))
+                    .setTitle(R.string.common_error_an_error_occurred)
                     .setMessage("An error occurred while running Sketchware Pro. " +
                             "Do you want to report this error log so that we can fix it? " +
                             "No personal information will be included.")

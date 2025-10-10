@@ -176,7 +176,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             }
         });
         Button btn_decide = findViewById(R.id.btn_decide);
-        btn_decide.setText((R.string.design_manager_change_name_button));
+        btn_decide.setText(R.string.design_manager_change_name_button);
         btn_decide.setOnClickListener(this);
         img = findViewById(R.id.img);
     }

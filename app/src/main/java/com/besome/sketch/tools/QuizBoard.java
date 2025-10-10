@@ -85,7 +85,7 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
             q = tq.a();
         }
 
-        int var1 = (new Random()).nextInt(q.size());
+        int var1 = new Random().nextInt(q.size());
         setData(q.remove(var1));
         e();
     }
@@ -150,7 +150,7 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
         }
 
         invalidateClickListeners();
-        (new Handler()).postDelayed(() -> {
+        new Handler().postDelayed(() -> {
             resetQuizViews();
             b();
         }, 2000); // ask next question after 2 secs
@@ -187,7 +187,7 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            (new Handler()).post(() -> quizBinding.tvRemaingTime.setText(String.valueOf(millisUntilFinished / 1000L + 1L)));
+            new Handler().post(() -> quizBinding.tvRemaingTime.setText(String.valueOf(millisUntilFinished / 1000L + 1L)));
         }
     }
 }

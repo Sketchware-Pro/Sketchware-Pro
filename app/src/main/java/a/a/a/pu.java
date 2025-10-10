@@ -317,7 +317,7 @@ public class pu extends qA {
         binding.imageList.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
         adapter = new Adapter(binding.imageList);
         binding.imageList.setAdapter(adapter);
-        binding.tvGuide.setText((R.string.design_manager_image_description_guide_add_image));
+        binding.tvGuide.setText(R.string.design_manager_image_description_guide_add_image);
         actionButtonContainer = requireActivity().findViewById(R.id.layout_btn_group);
         MaterialButton delete = requireActivity().findViewById(R.id.btn_delete);
         MaterialButton cancel = requireActivity().findViewById(R.id.btn_cancel);

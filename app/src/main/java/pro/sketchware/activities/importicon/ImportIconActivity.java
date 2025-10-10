@@ -100,7 +100,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     private boolean isLastPage = false;
 
     private int getGridLayoutColumnCount() {
-        return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 80;
+        return (int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density) / 80;
     }
 
     private boolean doExtractedIconsExist() {

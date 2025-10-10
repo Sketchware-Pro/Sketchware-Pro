@@ -420,7 +420,7 @@ public class mq {
 
             case "Toolbar":
                 importList.add(
-                        (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
+                        materialLibraryManager.isMaterial3Enabled() ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
                 );
                 importList.add("androidx.annotation.NonNull");
                 return importList;

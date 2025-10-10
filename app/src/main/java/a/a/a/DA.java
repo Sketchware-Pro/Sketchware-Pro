@@ -36,17 +36,17 @@ public abstract class DA extends qA {
     public void d(int var1) {
         if (!Sp.a) {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(super.a);
-            dialog.setTitle((R.string.common_message_permission_title_storage));
+            dialog.setTitle(R.string.common_message_permission_title_storage);
             dialog.setIcon(R.drawable.break_warning_96_red);
-            dialog.setMessage((R.string.common_message_permission_storage));
-            dialog.setPositiveButton((R.string.common_word_ok), (view, which) -> {
+            dialog.setMessage(R.string.common_message_permission_storage);
+            dialog.setPositiveButton(R.string.common_word_ok, (view, which) -> {
                 if (!mB.a()) {
                     requestPermissions(new String[]{"android.permission.WRITE_EXTERNAL_STORAGE",
                             "android.permission.READ_EXTERNAL_STORAGE"}, var1);
                     view.dismiss();
                 }
             });
-            dialog.setNegativeButton((R.string.common_word_cancel), (view, which) -> {
+            dialog.setNegativeButton(R.string.common_word_cancel, (view, which) -> {
                 d();
                 view.dismiss();
             });
@@ -63,16 +63,16 @@ public abstract class DA extends qA {
     public void e(int var1) {
         if (!Sp.a) {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(super.a);
-            builder.setTitle((R.string.common_message_permission_title_storage));
+            builder.setTitle(R.string.common_message_permission_title_storage);
             builder.setIcon(R.drawable.break_warning_96_red);
-            builder.setMessage((R.string.common_message_permission_storage1));
-            builder.setPositiveButton((R.string.common_word_settings), (view, which) -> {
+            builder.setMessage(R.string.common_message_permission_storage1);
+            builder.setPositiveButton(R.string.common_word_settings, (view, which) -> {
                 if (!mB.a()) {
                     c(var1);
                     view.dismiss();
                 }
             });
-            builder.setNegativeButton((R.string.common_word_cancel), (view, which) -> {
+            builder.setNegativeButton(R.string.common_word_cancel, (view, which) -> {
                 e();
                 view.dismiss();
             });

@@ -99,7 +99,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String _charSeq = s.toString();
-                if (_charSeq.isEmpty() && (pkgFilterList.isEmpty())) {
+                if (_charSeq.isEmpty() && pkgFilterList.isEmpty()) {
                     binding.logsRecyclerView.setAdapter(new Adapter(mainList));
                 } else {
                     ArrayList<HashMap<String, Object>> filteredList = new ArrayList<>();
@@ -149,7 +149,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
 
     private String safeGet(HashMap<String, Object> log, String key) {
         Object value = log.get(key);
-        return (value != null) ? value.toString() : "";
+        return value != null ? value.toString() : "";
     }
 
     private void exportLogcat(ArrayList<HashMap<String, Object>> logs) {
@@ -213,7 +213,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             HashMap<String, Object> map = new HashMap<>();
-            if (intent.hasExtra("log") && (intent.getStringExtra("log") != null)) {
+            if (intent.hasExtra("log") && intent.getStringExtra("log") != null) {
                 if (intent.hasExtra("packageName")) {
                     map.put("pkgName", intent.getStringExtra("packageName"));
                     packageName = intent.getStringExtra("packageName");
@@ -303,7 +303,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
             if (data.get(position).containsKey("culturedLog")) {
                 binding.dateHeader.setVisibility(View.VISIBLE);
                 binding.type.setText(data.get(position).get("type").toString());
-                binding.dateHeader.setText(data.get(position).get("date").toString() + " | " + (data.get(position).get("header").toString()));
+                binding.dateHeader.setText(data.get(position).get("date").toString() + " | " + data.get(position).get("header").toString());
                 switch (Objects.requireNonNull(data.get(position).get("type")).toString()) {
                     case "A" -> binding.type.setBackgroundColor(0xFF9C27B0);
                     case "D" -> binding.type.setBackgroundColor(0xFF2196F3);

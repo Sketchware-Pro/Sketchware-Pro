@@ -60,7 +60,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         label.setGravity(Gravity.CENTER);
         label.setPadding(8, 8, 8, 8);
         label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        label.setText((R.string.design_property_recent_message_nodata));
+        label.setText(R.string.design_property_recent_message_nodata);
         addView(label);
     }
 

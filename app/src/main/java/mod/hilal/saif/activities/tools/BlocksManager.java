@@ -241,9 +241,9 @@ public class BlocksManager extends BaseAppCompatActivity {
     private void showMoveToBinDialog(int position) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         dialog.setIcon(R.drawable.ic_mtrl_delete);
-        dialog.setTitle((R.string.block_move_to_bin));
-        dialog.setMessage((R.string.common_message_confirm));
-        dialog.setPositiveButton((R.string.common_word_yes), (v, which) -> {
+        dialog.setTitle(R.string.block_move_to_bin);
+        dialog.setMessage(R.string.common_message_confirm);
+        dialog.setPositiveButton(R.string.common_word_yes, (v, which) -> {
             pallet_listmap.remove(position);
             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemRemoved(position);
             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemChanged(position);
@@ -255,7 +255,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             refreshCount();
             v.dismiss();
         });
-        dialog.setNegativeButton((R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -312,7 +312,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         }
 
         binding.paletteRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
-        binding.recycleSub.setText("Blocks: " + (long) (getN(-1)));
+        binding.recycleSub.setText("Blocks: " + (long) getN(-1));
         refreshCount();
     }
 
@@ -321,11 +321,11 @@ public class BlocksManager extends BaseAppCompatActivity {
         if (all_blocks_list == null) return 0;
 
         for (int i = 0; i < all_blocks_list.size(); i++) {
-            if (Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString().equals(String.valueOf((long) (_p)))) {
+            if (Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString().equals(String.valueOf((long) _p))) {
                 n++;
             }
         }
-        return (n);
+        return n;
     }
 
     private void refreshCount() {
@@ -401,7 +401,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
     private void insertBlocksAt(double _p) {
         for (int i = 0; i < all_blocks_list.size(); i++) {
-            if ((Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) > _p) || (Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) == _p)) {
+            if (Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) > _p || Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) == _p) {
                 all_blocks_list.get(i).put("palette", String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) + 1)));
             }
         }
@@ -525,7 +525,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
         int draggedY = draggedLocation[1];
 
-        return draggedY <= (trashLocation[1] + draggedView.getMeasuredHeight() / 2) && draggedY >= ((trashLocation[1] - draggedView.getMeasuredHeight() / 2));
+        return draggedY <= trashLocation[1] + draggedView.getMeasuredHeight() / 2 && draggedY >= trashLocation[1] - draggedView.getMeasuredHeight() / 2;
     }
 
     private boolean isItNearTrash(View draggedView, View trash) {
@@ -539,7 +539,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
         int draggedY = draggedLocation[1];
 
-        return draggedY <= (trashLocation[1] + (draggedView.getMeasuredHeight() * 2) / 2) && draggedY >= ((trashLocation[1] - (draggedView.getMeasuredHeight() * 2) / 2));
+        return draggedY <= trashLocation[1] + draggedView.getMeasuredHeight() * 2 / 2 && draggedY >= trashLocation[1] - draggedView.getMeasuredHeight() * 2 / 2;
     }
 
 
@@ -568,10 +568,10 @@ public class BlocksManager extends BaseAppCompatActivity {
 
             holder.itemView.setVisibility(View.VISIBLE);
             holder.itemBinding.title.setText(Objects.requireNonNull(pallet_listmap.get(position).get("name")).toString());
-            holder.itemBinding.sub.setText("Blocks: " + (long) (getN(position + 9)));
+            holder.itemBinding.sub.setText("Blocks: " + (long) getN(position + 9));
             holder.itemBinding.color.setBackgroundColor(backgroundColor);
             holder.itemBinding.dragHandler.setVisibility(View.VISIBLE);
-            binding.recycleSub.setText("Blocks: " + (long) (getN(-1)));
+            binding.recycleSub.setText("Blocks: " + (long) getN(-1));
 
             holder.itemBinding.backgroundCard.setOnLongClickListener(v -> {
                 final String edit = "Edit";

@@ -116,7 +116,7 @@ public class LogicTopMenu extends LinearLayout {
         int[] location = new int[2];
         layout.getLocationOnScreen(location);
 
-        return x > location[0] && x < (location[0] + layout.getWidth())
-                && y > location[1] && y < (location[1] + layout.getHeight());
+        return x > location[0] && x < location[0] + layout.getWidth()
+                && y > location[1] && y < location[1] + layout.getHeight();
     }
 }

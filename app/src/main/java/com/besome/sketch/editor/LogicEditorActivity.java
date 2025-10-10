@@ -2497,7 +2497,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         @Override
         public void a(String str) {
-            Toast.makeText(a, (R.string.common_error_failed_to_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(a, R.string.common_error_failed_to_save, Toast.LENGTH_SHORT).show();
             activity.get().h();
         }
 
