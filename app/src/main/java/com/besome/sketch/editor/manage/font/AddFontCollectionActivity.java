@@ -35,9 +35,9 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
         binding = ManageFontAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        e(getTranslatedString(R.string.design_manager_font_title_edit_font_name));
-        d(getTranslatedString(R.string.common_word_save));
-        b(getTranslatedString(R.string.common_word_cancel));
+        e(getString(R.string.design_manager_font_title_edit_font_name));
+        d(getString(R.string.common_word_save));
+        b(getString(R.string.common_word_cancel));
 
         Intent intent = getIntent();
         projectResourceBeanArrayList = intent.getParcelableArrayListExtra("fonts");
@@ -81,7 +81,7 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
     public final void saveFont() {
         if (fontValidator.b()) {
             Np.g().a(projectResourceBean, Helper.getText(binding.edInput), true);
-            bB.a(this, getTranslatedString(R.string.design_manager_message_edit_complete), 1).show();
+            bB.a(this, getString(R.string.design_manager_message_edit_complete), 1).show();
             finish();
         }
     }

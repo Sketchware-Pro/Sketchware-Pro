@@ -55,7 +55,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             step.a();
         }
 
-        getSupportActionBar().setSubtitle(stepNumber == STEP_3 ? getTranslatedString(R.string.common_word_review) : getString(R.string.common_word_step, stepNumber + 1));
+        getSupportActionBar().setSubtitle(stepNumber == STEP_3 ? getString(R.string.common_word_review) : getString(R.string.common_word_step, stepNumber + 1));
         tv_step_title.setText(stepTitles[stepNumber]);
         tv_step_desc.setText(stepDescriptions[stepNumber]);
 
@@ -115,7 +115,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                     showGetChromeDialog();
                 }
             } else {
-                bB.a(getApplicationContext(), getTranslatedString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
+                bB.a(getApplicationContext(), getString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
             }
         }
     }
@@ -135,7 +135,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                 showGetChromeDialog();
             }
         } else {
-            bB.a(getApplicationContext(), getTranslatedString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
+            bB.a(getApplicationContext(), getString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
         }
     }
 
@@ -202,23 +202,23 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         } else {
             sc_id = getIntent().getStringExtra("sc_id");
         }
-        String titleStep1 = getTranslatedString(R.string.design_library_firebase_setting_step1_title);
-        String titleStep2 = getTranslatedString(R.string.design_library_firebase_setting_step2_title);
-        String titleStep3 = getTranslatedString(R.string.design_library_firebase_setting_step3_title);
-        String descriptionStep1 = getTranslatedString(R.string.design_library_firebase_setting_step1_desc);
-        String descriptionStep2 = getTranslatedString(R.string.design_library_firebase_setting_step2_desc);
-        String descriptionStep3 = getTranslatedString(R.string.design_library_firebase_setting_step3_desc);
+        String titleStep1 = getString(R.string.design_library_firebase_setting_step1_title);
+        String titleStep2 = getString(R.string.design_library_firebase_setting_step2_title);
+        String titleStep3 = getString(R.string.design_library_firebase_setting_step3_title);
+        String descriptionStep1 = getString(R.string.design_library_firebase_setting_step1_desc);
+        String descriptionStep2 = getString(R.string.design_library_firebase_setting_step2_desc);
+        String descriptionStep3 = getString(R.string.design_library_firebase_setting_step3_desc);
         stepTitles = new String[]{titleStep1, titleStep2, titleStep3};
         stepDescriptions = new String[]{descriptionStep1, descriptionStep2, descriptionStep3};
 
         cv_console.setOnClickListener(this);
-        tv_goto_console.setText(getTranslatedString(R.string.design_library_firebase_button_goto_firebase_console));
+        tv_goto_console.setText(R.string.design_library_firebase_button_goto_firebase_console);
         icon.setImageResource(R.drawable.widget_firebase);
 
-        btn_open_doc.setText(getTranslatedString(R.string.common_word_go_to_documentation));
+        btn_open_doc.setText(R.string.common_word_go_to_documentation);
         btn_open_doc.setOnClickListener(this);
 
-        btn_import.setText(getTranslatedString(R.string.design_library_button_import_from_other_project));
+        btn_import.setText(R.string.design_library_button_import_from_other_project);
         btn_import.setOnClickListener(this);
     }
 
@@ -263,9 +263,9 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     private void showGetChromeDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.chrome_96);
-        dialog.setTitle(getTranslatedString(R.string.title_compatible_chrome_browser));
-        dialog.setMessage(getTranslatedString(R.string.message_compatible_chrome_brower));
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_ok), (v, which) -> {
+        dialog.setTitle(R.string.title_compatible_chrome_browser);
+        dialog.setMessage(R.string.message_compatible_chrome_brower);
+        dialog.setPositiveButton(R.string.common_word_ok, (v, which) -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
@@ -273,7 +273,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 }

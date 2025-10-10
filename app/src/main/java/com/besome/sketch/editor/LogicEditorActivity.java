@@ -311,13 +311,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void G() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_add_new_list));
+        dialog.setTitle(R.string.logic_editor_title_add_new_list);
         View a2 = wB.a(this, R.layout.logic_popup_add_list);
         RadioGroup radioGroup = a2.findViewById(R.id.rg_type);
         TextInputEditText editText = a2.findViewById(R.id.ed_input);
         ZB zb = new ZB(getContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(scId).a(M));
         dialog.setView(a2);
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_add), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_add, (v, which) -> {
             if (zb.b()) {
                 int i = 1;
                 int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
@@ -333,20 +333,20 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
     private void showAddNewVariableDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_add_new_variable));
+        dialog.setTitle(R.string.logic_editor_title_add_new_variable);
 
         View customView = wB.a(this, R.layout.logic_popup_add_variable);
         RadioGroup radioGroup = customView.findViewById(R.id.rg_type);
         TextInputEditText editText = customView.findViewById(R.id.ed_input);
         ZB nameValidator = new ZB(getContext(), customView.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(scId).a(M));
         dialog.setView(customView);
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_add), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_add, (v, which) -> {
             int variableType = 1;
             if (radioGroup.getCheckedRadioButtonId() == R.id.rb_boolean) {
                 variableType = 0;
@@ -363,7 +363,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -381,14 +381,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void J() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_remove_list));
+        dialog.setTitle(R.string.logic_editor_title_remove_list);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         for (Pair<Integer, String> list : jC.a(scId).j(M.getJavaName())) {
             viewGroup.addView(e(list.second));
         }
         dialog.setView(a2);
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_remove), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_remove, (v, which) -> {
             int childCount = viewGroup.getChildCount();
             int i = 0;
             while (i < childCount) {
@@ -399,20 +399,20 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                             l(Helper.getText(radioButton));
                         }
                     }
-                    Toast.makeText(getContext(), getTranslatedString(R.string.logic_editor_message_currently_used_list), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.logic_editor_message_currently_used_list, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 i++;
             }
             v.dismiss();
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
     public void K() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_remove_variable));
+        dialog.setTitle(R.string.logic_editor_title_remove_variable);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         for (Pair<Integer, String> next : jC.a(scId).k(M.getJavaName())) {
@@ -421,7 +421,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             viewGroup.addView(e);
         }
         dialog.setView(a2);
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_remove), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_remove, (v, which) -> {
             int childCount = viewGroup.getChildCount();
             int i = 0;
             while (i < childCount) {
@@ -432,14 +432,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                             m(Helper.getText(radioButton));
                         }
                     }
-                    Toast.makeText(getContext(), getTranslatedString(R.string.logic_editor_message_currently_used_variable), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.logic_editor_message_currently_used_variable, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 i++;
             }
             v.dismiss();
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -718,9 +718,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         if (selectingImage) {
-            dialog.setTitle(getTranslatedString(R.string.logic_editor_title_select_image));
+            dialog.setTitle(R.string.logic_editor_title_select_image);
         } else if (selectingBackgroundImage) {
-            dialog.setTitle(getTranslatedString(R.string.logic_editor_title_select_image_background));
+            dialog.setTitle(R.string.logic_editor_title_select_image_background);
         }
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -753,7 +753,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
         });
 
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             String selectedImg = selectedImage.get();
             if (!selectedImg.isEmpty()) {
                 a(ss, selectedImage.get());
@@ -761,13 +761,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         });
 
         dialog.setView(binding.getRoot());
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
     public void a(Ss ss, boolean z) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(z ? R.string.logic_editor_title_enter_number_value : R.string.logic_editor_title_enter_string_value));
+        dialog.setTitle(z ? R.string.logic_editor_title_enter_number_value : R.string.logic_editor_title_enter_string_value);
         View a2 = wB.a(this, R.layout.property_popup_input_text);
         EditText editText = a2.findViewById(R.id.ed_input);
         if (z) {
@@ -780,7 +780,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         editText.setText(ss.getArgValue().toString());
         dialog.setView(a2);
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             String text = Helper.getText(editText);
             emptyStringSetter:
             {
@@ -806,7 +806,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             a(ss, text);
             v.dismiss();
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -1297,9 +1297,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void c(Rs rs) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_block_favorites_save_title));
+        dialog.setTitle(R.string.logic_block_favorites_save_title);
         View a2 = wB.a(this, R.layout.property_popup_save_to_favorite);
-        ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(getTranslatedString(R.string.logic_block_favorites_save_guide));
+        ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(R.string.logic_block_favorites_save_guide);
         EditText editText = a2.findViewById(R.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
@@ -1307,32 +1307,32 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         NB nb = new NB(this, a2.findViewById(R.id.ti_input), Mp.h().g());
         dialog.setView(a2);
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (nb.b()) {
                 a(Helper.getText(editText), rs);
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
     public void c(Ss ss) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_enter_string_value));
+        dialog.setTitle(R.string.logic_editor_title_enter_string_value);
         View a2 = wB.a(this, R.layout.property_popup_input_text);
-        ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.property_hint_enter_value));
+        ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(getString(R.string.property_hint_enter_value));
         EditText editText = a2.findViewById(R.id.ed_input);
         editText.setSingleLine(true);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editText.setText(ss.getArgValue().toString());
         dialog.setView(a2);
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             a(ss, Helper.getText(editText));
             v.dismiss();
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -1398,7 +1398,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void d(Ss ss) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_select_font));
+        dialog.setTitle(R.string.logic_editor_title_select_font);
 
         View customView = wB.a(this, R.layout.property_popup_selector_color);
         RadioGroup radioGroup = customView.findViewById(R.id.rg);
@@ -1417,7 +1417,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
 
         dialog.setView(customView);
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_select), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_select, (v, which) -> {
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -1427,7 +1427,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             v.dismiss();
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -1463,19 +1463,19 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void e(Ss ss) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_enter_data_value));
+        dialog.setTitle(R.string.logic_editor_title_enter_data_value);
         View a2 = wB.a(this, R.layout.property_popup_input_intent_data);
-        ((TextView) a2.findViewById(R.id.tv_desc_intent_usage)).setText(getTranslatedString(R.string.property_description_component_intent_usage));
+        ((TextView) a2.findViewById(R.id.tv_desc_intent_usage)).setText(getString(R.string.property_description_component_intent_usage));
         EditText editText = a2.findViewById(R.id.ed_input);
-        ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.property_hint_enter_value));
+        ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(getString(R.string.property_hint_enter_value));
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setText(ss.getArgValue().toString());
         dialog.setView(a2);
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             a(ss, Helper.getText(editText));
             v.dismiss();
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -1540,7 +1540,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
         }
 
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_select_view));
+        dialog.setTitle(R.string.logic_editor_title_select_view);
         ArrayList<ViewBean> views = jC.a(scId).d(xmlName);
         for (ViewBean viewBean : views) {
             String convert = viewBean.convert;
@@ -1575,7 +1575,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             editor.setOnCancelClickListener(editor);
             v.dismiss();
         });
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_select), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_select, (v, which) -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -1585,7 +1585,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             v.dismiss();
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -1683,7 +1683,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void h(Ss ss) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_select_sound));
+        dialog.setTitle(R.string.logic_editor_title_select_sound);
 
         View customView = wB.a(this, R.layout.property_popup_selector_single);
         RadioGroup radioGroup = customView.findViewById(R.id.rg_content);
@@ -1709,12 +1709,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             sound.setOnClickListener(v -> soundPool.load(jC.d(scId).i(Helper.getText(sound)), 1));
         }
         dialog.setView(customView);
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_select), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_select, (v, which) -> {
             RadioButton checkedRadioButton = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
             a(ss, Helper.getText(checkedRadioButton));
             v.dismiss();
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -1736,7 +1736,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void i(Ss ss) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_select_typeface));
+        dialog.setTitle(R.string.logic_editor_title_select_typeface);
         View a3 = wB.a(this, R.layout.property_popup_selector_single);
         RadioGroup radioGroup = a3.findViewById(R.id.rg_content);
         for (Pair<Integer, String> pair : sq.a("property_text_style")) {
@@ -1747,7 +1747,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
         }
         dialog.setView(a3);
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             int childCount = radioGroup.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
@@ -1759,7 +1759,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
             v.dismiss();
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -1802,14 +1802,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void n(String str) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_block_favorites_delete_title));
-        dialog.setMessage(getTranslatedString(R.string.logic_block_favorites_delete_message));
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_delete), (v, which) -> {
+        dialog.setTitle(R.string.logic_block_favorites_delete_title);
+        dialog.setMessage(R.string.logic_block_favorites_delete_message);
+        dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
             Mp.h().a(str, true);
             O.a(str);
             v.dismiss();
         });
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -1981,7 +1981,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         String title;
         if (eventName.equals("moreBlock")) {
-            title = getTranslatedString(R.string.root_spec_common_define) + " " + ReturnMoreblockManager.getLogicEditorTitle(jC.a(scId).b(M.getJavaName(), id));
+            title = getString(R.string.root_spec_common_define) + " " + ReturnMoreblockManager.getLogicEditorTitle(jC.a(scId).b(M.getJavaName(), id));
         } else if (id.equals("_fab")) {
             title = xB.b().a(getContext(), "fab", eventName);
         } else {

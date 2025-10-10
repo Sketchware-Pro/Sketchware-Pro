@@ -83,7 +83,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     private void pickSound() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("audio/*");
-        startActivityForResult(Intent.createChooser(intent, getTranslatedString(R.string.common_word_choose)), REQUEST_CODE_SOUND_PICKER);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.common_word_choose)), REQUEST_CODE_SOUND_PICKER);
     }
 
     private void playOrPause() {
@@ -129,9 +129,9 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_sound_add);
-        e(getTranslatedString(R.string.design_manager_sound_title_add_sound));
-        d(getTranslatedString(R.string.common_word_save));
-        b(getTranslatedString(R.string.common_word_cancel));
+        e(getString(R.string.design_manager_sound_title_add_sound));
+        d(getString(R.string.common_word_save));
+        b(getString(R.string.common_word_cancel));
 
         Intent intent = getIntent();
         ArrayList<String> existingSoundNames = intent.getStringArrayListExtra("sound_names");
@@ -182,7 +182,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         r.setOnClickListener(this);
         s.setOnClickListener(this);
         if (requestCode == 270) {
-            e(getTranslatedString(R.string.design_manager_sound_title_edit_sound));
+            e(getString(R.string.design_manager_sound_title_edit_sound));
             ProjectResourceBean projectResourceBean = intent.getParcelableExtra("project_resource");
             soundNameValidator = new WB(this, soundInputLayout, uq.b, new ArrayList<>());
             soundName.setText(projectResourceBean.resName);
@@ -226,15 +226,15 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
                                     switch (message) {
                                         case "duplicate_name":
-                                            bB.b(this, getTranslatedString(R.string.collection_duplicated_name), 1).show();
+                                            bB.b(this, getString(R.string.collection_duplicated_name), 1).show();
                                             break;
 
                                         case "file_no_exist":
-                                            bB.b(this, getTranslatedString(R.string.collection_no_exist_file), 1).show();
+                                            bB.b(this, getString(R.string.collection_no_exist_file), 1).show();
                                             break;
 
                                         case "fail_to_copy":
-                                            bB.b(this, getTranslatedString(R.string.collection_failed_to_copy), 1).show();
+                                            bB.b(this, getString(R.string.collection_failed_to_copy), 1).show();
                                             break;
 
                                         default:

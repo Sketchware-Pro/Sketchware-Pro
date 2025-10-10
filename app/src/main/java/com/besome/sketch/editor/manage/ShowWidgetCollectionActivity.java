@@ -63,7 +63,7 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
             onBackPressed();
         } else if (id == R.id.save_button && widgetNameValidator.b()) {
             Rp.h().a(widgetName, Helper.getText(widgetNameInput), true);
-            bB.a(getApplicationContext(), getTranslatedString(R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
+            bB.a(getApplicationContext(), getString(R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
             finish();
         }
     }
@@ -100,7 +100,7 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
         widgetNameInput = binding.edInput.getEditText();
         widgetNameInput.setPrivateImeOptions("defaultInputmode=english;");
         widgetNameInput.setText(widgetName);
-        binding.edInput.setHint(getTranslatedString(R.string.design_manager_widget_hint_enter_widget_name));
+        binding.edInput.setHint(getString(R.string.design_manager_widget_hint_enter_widget_name));
         binding.saveButton.setOnClickListener(this);
         widgetNameValidator = new NB(this, binding.edInput.getTextInputLayout(), Rp.h().g());
     }
