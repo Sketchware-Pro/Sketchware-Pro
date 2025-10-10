@@ -59,15 +59,6 @@ import a.a.a.oB;
 import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
-import dev.aldi.sayuti.editor.view.palette.IconBottomNavigationView;
-import dev.aldi.sayuti.editor.view.palette.IconCardView;
-import dev.aldi.sayuti.editor.view.palette.IconCollapsingToolbar;
-import dev.aldi.sayuti.editor.view.palette.IconMaterialButton;
-import dev.aldi.sayuti.editor.view.palette.IconRecyclerView;
-import dev.aldi.sayuti.editor.view.palette.IconSwipeRefreshLayout;
-import dev.aldi.sayuti.editor.view.palette.IconTabLayout;
-import dev.aldi.sayuti.editor.view.palette.IconTextInputLayout;
-import dev.aldi.sayuti.editor.view.palette.IconViewPager;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.hey.studios.util.ProjectFile;
 import mod.jbk.util.LogUtil;
@@ -690,16 +681,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             } else if (currentTouchedView instanceof IconMapView && !draggingListener.isGoogleMapEnabled()) {
                 bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
-            } else if ((currentTouchedView instanceof IconMaterialButton
-                    || currentTouchedView instanceof IconRecyclerView
-                    || currentTouchedView instanceof IconBottomNavigationView
-                    || currentTouchedView instanceof IconTabLayout
-                    || currentTouchedView instanceof IconViewPager
-                    || currentTouchedView instanceof IconCollapsingToolbar
-                    || currentTouchedView instanceof IconTextInputLayout
-                    || currentTouchedView instanceof IconSwipeRefreshLayout
-                    || currentTouchedView instanceof IconCardView)
-                    && !isAppCompatEnabled) {
+            } else if (currentTouchedView instanceof AndroidxOrMaterialView && !isAppCompatEnabled) {
                 bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
             }
