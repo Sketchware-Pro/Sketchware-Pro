@@ -220,7 +220,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
     }
 
     private void showPreview(int index) {
-        Glide.with(getApplicationContext())
+        Glide.with(this)
                 .asBitmap()
                 .load(selectedCollections.get(index).resFullName)
                 .centerCrop()
@@ -254,7 +254,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             } else {
                 viewHolder.img.setBackgroundColor(Color.parseColor("#ffffff"));
             }
-            Glide.with(getApplicationContext())
+            Glide.with(viewHolder.itemView.getContext())
                     .load(projectResourceBean.resFullName)
                     //.asBitmap()
                     .centerCrop()

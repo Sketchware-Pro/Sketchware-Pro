@@ -2288,4 +2288,20 @@ Please try again later"</string>
     <string name="attr_already_exist">This attribute already exists</string>
 
 
+    <string name="file_size_format_int">%d %s</string>
+    <string name="file_size_format_float">%.1f %s</string>
+    <string name="empty_string"></string>
+    <string name="log_tag_file_util">FileUtil</string>
+    <string name="error_cannot_create_dir">Cannot create dir </string>
+    <string name="error_api_level_too_low">Not on an API level 30 or higher device!</string>
+    <string name="package_prefix">package:</string>
+    <string name="mime_type_image">image</string>
+    <string name="mime_type_video">video</string>
+    <string name="mime_type_audio">audio</string>
+    <string name="raw_prefix">raw:</string>
+    <string name="document_id_primary">primary</string>
+    <string name="selection_id">_id=?</string>
+    <string name="authority_external_storage">com.android.externalstorage.documents</string>
+    <string name="authority_downloads">com.android.providers.downloads.documents</string>
+    <string name="authority_media">com.android.providers.media.documents</string>
 </resources>

@@ -93,7 +93,7 @@ public class FileUtil {
     }
 
     public static String formatFileSize(long size, boolean removeZero) {
-        String[] units = {"B", "KiB", "MiB", "GiB"};
+        String[] units = context.getResources().getStringArray(R.array.file_size_units);
         float value = size;
         int unitIndex = 0;
 
@@ -103,9 +103,9 @@ public class FileUtil {
         }
 
         if (removeZero && (value - (int) value) * 10 == 0) {
-            return String.format("%d %s", (int) value, units[unitIndex]);
+            return String.format(context.getString(R.string.file_size_format_int), (int) value, units[unitIndex]);
         } else {
-            return String.format("%.1f %s", value, units[unitIndex]);
+            return String.format(context.getString(R.string.file_size_format_float), value, units[unitIndex]);
         }
     }
 
@@ -118,7 +118,7 @@ public class FileUtil {
      * e.g. "FileUtil" for "FileUtil.java", or "FileUtil" for "/sdcard/Documents/FileUtil.java"
      */
     public static String getFileNameNoExtension(String filePath) {
-        if (filePath.trim().isEmpty()) return "";
+        if (filePath.trim().isEmpty()) return context.getString(R.string.empty_string);
 
         int lastPos = filePath.lastIndexOf('.');
         int lastSep = filePath.lastIndexOf(File.separator);
@@ -128,7 +128,23 @@ public class FileUtil {
         } else if (lastPos == -1 || lastSep > lastPos) {
             return filePath.substring(lastSep + 1);
         }
+
         return filePath.substring(lastSep + 1, lastPos);
+    }
+
+    public static String getFileSize(Context context, long bytes) {
+        int unitIndex = 0;
+        double value = bytes;
+        String[] units = context.getResources().getStringArray(R.array.file_size_units);
+        while (value > 1024 && unitIndex < units.length - 1) {
+            value /= 1024;
+            unitIndex++;
+        }
+        if (unitIndex == 0) {
+            return String.format(context.getString(R.string.file_size_format_int), (int) value, units[unitIndex]);
+        } else {
+            return String.format(context.getString(R.string.file_size_format_float), value, units[unitIndex]);
+        }
     }
 
     /**
@@ -245,11 +261,11 @@ public class FileUtil {
                         fileOutputStream.write(bArr, 0, read);
                     }
                 } catch (IOException e) {
-                    Log.e("FileUtil", "Error copying file " + source.getAbsolutePath() + " to " + copyInto.getAbsolutePath(), e);
+                    Log.e(context.getString(R.string.log_tag_file_util), "Error copying file " + source.getAbsolutePath() + " to " + copyInto.getAbsolutePath(), e);
                     throw e;
                 }
             } else {
-                throw new IOException("Cannot create dir " + parentFile.getAbsolutePath());
+                throw new IOException(context.getString(R.string.error_cannot_create_dir) + parentFile.getAbsolutePath());
             }
         } else if (copyInto.exists() || copyInto.mkdirs()) {
             String[] list = source.list();
@@ -259,7 +275,7 @@ public class FileUtil {
                 }
             }
         } else {
-            throw new IOException("Cannot create dir " + copyInto.getAbsolutePath());
+            throw new IOException(context.getString(R.string.error_cannot_create_dir) + copyInto.getAbsolutePath());
         }
     }
 
@@ -318,7 +334,7 @@ public class FileUtil {
             try {
                 new File(path).mkdirs();
             } catch (SecurityException e) {
-                Log.e("FileUtil", "Error creating directory: " + path, e);
+                Log.e(context.getString(R.string.log_tag_file_util), "Error creating directory: " + path, e);
             }
         }
     }
@@ -419,7 +435,7 @@ public class FileUtil {
                 String[] split = docId.split(":");
                 String type = split[0];
 
-                if ("primary".equalsIgnoreCase(type)) {
+                if (context.getString(R.string.document_id_primary).equalsIgnoreCase(type)) {
                     path = Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
             } else if (isDownloadsDocument(uri)) {
@@ -427,7 +443,7 @@ public class FileUtil {
 
                 if (!TextUtils.isEmpty(id)) {
                     if (id.startsWith("raw:")) {
-                        return id.replaceFirst("raw:", "");
+                        return id.replaceFirst(context.getString(R.string.raw_prefix), context.getString(R.string.empty_string));
                     }
                 }
 
@@ -441,15 +457,15 @@ public class FileUtil {
                 String type = split[0];
 
                 Uri contentUri = null;
-                if ("image".equals(type)) {
+                if (context.getString(R.string.mime_type_image).equals(type)) {
                     contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
+                } else if (context.getString(R.string.mime_type_video).equals(type)) {
                     contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
+                } else if (context.getString(R.string.mime_type_audio).equals(type)) {
                     contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
 
-                final String selection = "_id=?";
+                final String selection = context.getString(R.string.selection_id);
                 String[] selectionArgs = {
                         split[1]
                 };
@@ -497,15 +513,15 @@ public class FileUtil {
     }
 
     private static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+        return context.getString(R.string.authority_external_storage).equals(uri.getAuthority());
     }
 
     private static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+        return context.getString(R.string.authority_downloads).equals(uri.getAuthority());
     }
 
     private static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
+        return context.getString(R.string.authority_media).equals(uri.getAuthority());
     }
 
     private static void saveBitmap(Bitmap bitmap, String destPath) {
@@ -814,16 +830,16 @@ public class FileUtil {
             if (!Environment.isExternalStorageManager()) {
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                intent.setData(Uri.parse("package:" + context.getPackageName()));
+                intent.setData(Uri.parse(context.getString(R.string.package_prefix) + context.getPackageName()));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
                     context.startActivity(intent);
                 } catch (ActivityNotFoundException e) {
-                    Log.e("FileUtil", "Activity to manage apps' all files access permission not found!");
+                    Log.e(context.getString(R.string.log_tag_file_util), "Activity to manage apps' all files access permission not found!");
                 }
             }
         } else {
-            throw new AssertionError("Not on an API level 30 or higher device!");
+            throw new AssertionError(context.getString(R.string.error_api_level_too_low));
         }
     }
 

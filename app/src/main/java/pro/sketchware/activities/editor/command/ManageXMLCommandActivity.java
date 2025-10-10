@@ -233,11 +233,11 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
             binding.xmlName.setText(
                     CommandBlock.getInputName(
                             command.get("input") != null ? command.get("input").toString() : ""));
-            binding.reference.setText(command.get("reference").toString());
-            binding.command.setText(command.get("command").toString());
-            binding.distance.setText(getIntValue(command.get("distance").toString()));
-            binding.front.setText(getIntValue(command.get("after").toString()));
-            binding.backend.setText(getIntValue(command.get("before").toString()));
+            binding.reference.setText(String.valueOf(command.get("reference")));
+            binding.command.setText(String.valueOf(command.get("command")));
+            binding.distance.setText(getIntValue(String.valueOf(command.get("distance"))));
+            binding.front.setText(getIntValue(String.valueOf(command.get("after"))));
+            binding.backend.setText(getIntValue(String.valueOf(command.get("before"))));
             binding.changes.setText(
                     CommandBlock.getExceptFirstLine(
                             command.get("input") != null ? command.get("input").toString() : ""));
