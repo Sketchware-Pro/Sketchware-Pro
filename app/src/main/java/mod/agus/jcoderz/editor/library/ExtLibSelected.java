@@ -40,5 +40,8 @@ public class ExtLibSelected {
         if (component.isWaveSideBarUsed) {
             kp.addLibrary(BuiltInLibraries.WAVE_SIDE_BAR);
         }
+        if (component.isSwipeRefreshLayoutUsed) {
+            kp.addLibrary(BuiltInLibraries.ANDROIDX_SWIPEREFRESHLAYOUT);
+        }
     }
 }
