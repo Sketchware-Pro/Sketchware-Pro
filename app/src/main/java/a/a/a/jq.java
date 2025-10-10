@@ -2,8 +2,6 @@ package a.a.a;
 
 import static android.text.TextUtils.isEmpty;
 
-import android.util.Pair;
-
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 
@@ -206,8 +204,6 @@ public class jq {
     public String appId = "";
 
     public String sc_id = "";
-
-    public ArrayList<Pair<String, String>> dlDataList = new ArrayList<>();
 
     /**
      * Device IDs registered as Test Devices for the current project.

@@ -205,30 +205,6 @@ public class Ix {
         applicationTag.addChildNode(serviceTag);
     }
 
-    private void writeDLIntentFilter(XmlBuilder activityTag) {
-        XmlBuilder intentFilterTag = new XmlBuilder("intent-filter");
-        XmlBuilder intentFilterActionTag = new XmlBuilder("action");
-        intentFilterActionTag.addAttribute("android", "name", "android.intent.action.VIEW");
-        XmlBuilder intentFilterCategoryDefaultTag = new XmlBuilder("category");
-        intentFilterCategoryDefaultTag.addAttribute("android", "name", "android.intent.category.DEFAULT");
-        XmlBuilder intentFilterCategoryBrowsableTag = new XmlBuilder("category");
-        intentFilterCategoryBrowsableTag.addAttribute("android", "name", "android.intent.category.BROWSABLE");
-        intentFilterTag.addChildNode(intentFilterActionTag);
-        intentFilterTag.addChildNode(intentFilterCategoryDefaultTag);
-        intentFilterTag.addChildNode(intentFilterCategoryBrowsableTag);
-        for (Pair<String, String> stringStringPair : c.dlDataList) {
-            if (!isEmpty(stringStringPair.first) && !isEmpty(stringStringPair.second)) {
-                XmlBuilder intentFilterDataTag = new XmlBuilder("data");
-                intentFilterDataTag.addAttribute("android", "host", stringStringPair.first);
-                intentFilterDataTag.addAttribute("android", "scheme", stringStringPair.second);
-                if (!c.dlDataList.isEmpty()) {
-                    intentFilterTag.addChildNode(intentFilterDataTag);
-                }
-            }
-        }
-        activityTag.addChildNode(intentFilterTag);
-    }
-
     private void writeAndroidxRoomService(XmlBuilder application) {
         XmlBuilder invalidationService = new XmlBuilder("service");
         invalidationService.addAttribute("android", "name", "androidx.room.MultiInstanceInvalidationService");
