@@ -1219,8 +1219,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 isBuildFinished = true;
                 activity.indicateCompileErrorOccurred(zy.getMessage());
             } catch (Throwable tr) {
-                FirebaseCrashlytics.getInstance().log("Project build error");
-                FirebaseCrashlytics.getInstance().recordException(tr);
                 isBuildFinished = true;
                 LogUtil.e("DesignActivity$BuildTask", "Failed to build project", tr);
                 activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));
