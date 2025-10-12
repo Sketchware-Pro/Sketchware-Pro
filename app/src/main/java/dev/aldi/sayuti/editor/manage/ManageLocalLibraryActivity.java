@@ -281,6 +281,13 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             projectUsedLibs = getLocalLibraries(scId);
         }
 
+        //This code helps in sorting the list of local libraries to display enabled libraries first.
+        java.util.Collections.sort(localLibraries, (lib1, lib2) -> {
+            boolean isEnabled1 = isUsedLibrary(lib1.getName());
+            boolean isEnabled2 = isUsedLibrary(lib2.getName());
+            return Boolean.compare(isEnabled2, isEnabled1);
+        });
+
         runOnUiThread(() -> {
             adapter.setLocalLibraries(localLibraries);
             binding.noContentLayout.setVisibility(localLibraries.isEmpty() ? View.VISIBLE : View.GONE);
@@ -556,6 +563,13 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                     }
                 }
             }
+            // Sorts the filtered search results to ensure enabled libraries still appear at the top.
+            java.util.Collections.sort(filteredLocalLibraries, (lib1, lib2) -> {
+                boolean isEnabled1 = isUsedLibrary(lib1.getName());
+                boolean isEnabled2 = isUsedLibrary(lib2.getName());
+                return Boolean.compare(isEnabled2, isEnabled1);
+            });
+
             notifyDataSetChanged();
         }
 
