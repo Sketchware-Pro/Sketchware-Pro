@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executors;
+import java.util.Comparator;
 
 import a.a.a.MA;
 import a.a.a.mB;
@@ -280,6 +281,8 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
         if (!notAssociatedWithProject) {
             projectUsedLibs = getLocalLibraries(scId);
         }
+
+        localLibraries.sort(Comparator.comparing(lib -> !isUsedLibrary(lib.getName())));
 
         runOnUiThread(() -> {
             adapter.setLocalLibraries(localLibraries);
@@ -556,6 +559,9 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                     }
                 }
             }
+            
+            filteredLocalLibraries.sort(Comparator.comparing(lib -> !isUsedLibrary(lib.getName())));
+            
             notifyDataSetChanged();
         }
 
