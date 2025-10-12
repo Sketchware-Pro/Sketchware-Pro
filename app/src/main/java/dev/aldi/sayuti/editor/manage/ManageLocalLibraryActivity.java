@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executors;
-import java.util.Comparator;
 
 import a.a.a.MA;
 import a.a.a.mB;
@@ -282,7 +281,12 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             projectUsedLibs = getLocalLibraries(scId);
         }
 
-        localLibraries.sort(Comparator.comparing(lib -> !isUsedLibrary(lib.getName())));
+        //This code helps in sorting the list of local libraries to display enabled libraries first.
+        java.util.Collections.sort(localLibraries, (lib1, lib2) -> {
+            boolean isEnabled1 = isUsedLibrary(lib1.getName());
+            boolean isEnabled2 = isUsedLibrary(lib2.getName());
+            return Boolean.compare(isEnabled2, isEnabled1);
+        });
 
         runOnUiThread(() -> {
             adapter.setLocalLibraries(localLibraries);
@@ -559,9 +563,6 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                     }
                 }
             }
-            
-            filteredLocalLibraries.sort(Comparator.comparing(lib -> !isUsedLibrary(lib.getName())));
-            
             notifyDataSetChanged();
         }
 
