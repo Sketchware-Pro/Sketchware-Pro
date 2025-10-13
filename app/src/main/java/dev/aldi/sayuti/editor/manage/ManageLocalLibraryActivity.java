@@ -563,6 +563,13 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                     }
                 }
             }
+            // Sorts the filtered search results to ensure enabled libraries still appear at the top.
+            filteredLocalLibraries.sort((lib1, lib2) -> {
+                boolean isEnabled1 = isUsedLibrary(lib1.getName());
+                boolean isEnabled2 = isUsedLibrary(lib2.getName());
+                return Boolean.compare(isEnabled2, isEnabled1);
+            });
+
             notifyDataSetChanged();
         }
 
