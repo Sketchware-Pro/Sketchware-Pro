@@ -108,7 +108,7 @@ public class ProjectSettings {
     }
 
     public String getValue(String key, String defaultValue) {
-        if (hashmap.containsKey(key)) {
+        if (hashmap != null && hashmap.containsKey(key)) {
             if (!hashmap.get(key).isEmpty()) {
                 return hashmap.get(key);
             } else {
