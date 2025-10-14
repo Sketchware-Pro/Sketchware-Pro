@@ -134,6 +134,10 @@
     <style name="TextAppearance.SketchwarePro.Chip" parent="TextAppearance.SketchwarePro.BodyMedium">
     </style>
 
+    <style name="TextAppearance.SketchwarePro.BodyLargeEmphasized" parent="TextAppearance.SketchwarePro.BodyLarge">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="ThemeOverlay.SketchwarePro.Chip.ProjectPreview" parent="">
         <item name="chipStyle">@style/Widget.SketchwarePro.Chip.ProjectPreview</item>
     </style>
