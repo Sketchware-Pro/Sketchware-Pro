@@ -1030,7 +1030,7 @@ public class Jx {
 
     private void addFieldsDeclaration() {
         String javaName = projectFileBean.getJavaName();
-        for (Pair<Integer, String> next : projectDataManager.k(javaName)) {
+        for (Pair<Integer, String> next : new ArrayList<>(projectDataManager.k(javaName))) {
             int variableId = next.first;
             String variableValue = next.second;
             if (variableId == 9) {
