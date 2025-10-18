@@ -194,7 +194,7 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
             radioButton.setChecked(true);
         }
         aBVar.setView(a3);
-        aBVar.setPositiveButton((R.string.common_word_select), (v, which) -> {
+        aBVar.setPositiveButton(R.string.common_word_select, (v, which) -> {
             for (int i = 0; i < this.i.getChildCount(); i++) {
                 RadioButton child = (RadioButton) this.i.getChildAt(i);
                 if (child.isChecked()) {
@@ -207,7 +207,7 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
             }
             v.dismiss();
         });
-        aBVar.setNegativeButton((R.string.common_word_cancel), null);
+        aBVar.setNegativeButton(R.string.common_word_cancel, null);
         RadioButton finalRadioButton = radioButton;
 
         var dialog = aBVar.create();

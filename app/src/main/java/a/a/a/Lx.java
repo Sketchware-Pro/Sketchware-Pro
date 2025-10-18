@@ -126,7 +126,7 @@ public class Lx {
             content.append("implementation 'com.google.code.gson:gson:2.11.0'\r\n");
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.OKHTTP, excludedLibraries) && metadata.isHttp3Used) {
+        if (isLibraryNotExcluded(BuiltInLibraries.OKHTTP_ANDROID, excludedLibraries) && metadata.isHttp3Used) {
             content.append("implementation 'com.squareup.okhttp3:okhttp:4.12.0'\r\n");
         }
 

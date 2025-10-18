@@ -60,7 +60,7 @@ public class LibrarySettingsImporter {
     public void showDialog(Activity activity) {
         this.activity = activity;
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
-        dialog.setTitle((R.string.design_library_title_select_project));
+        dialog.setTitle(R.string.design_library_title_select_project);
         dialog.setIcon(R.drawable.widget_firebase);
         LinearLayout root = (LinearLayout) wB.a(activity, R.layout.manage_library_popup_project_selector);
         LottieAnimationView animationView = root.findViewById(R.id.animation_view);
@@ -79,7 +79,7 @@ public class LibrarySettingsImporter {
             });
         }).start();
         dialog.setView(root);
-        dialog.setPositiveButton((R.string.common_word_select), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_select, (v, which) -> {
             if (!mB.a()) {
                 if (adapter.selectedProjectIndex >= 0) {
                     var settings = (ProjectLibraryBean) projects.get(adapter.selectedProjectIndex).get("settings");
@@ -90,7 +90,7 @@ public class LibrarySettingsImporter {
                 }
             }
         });
-        dialog.setNegativeButton((R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

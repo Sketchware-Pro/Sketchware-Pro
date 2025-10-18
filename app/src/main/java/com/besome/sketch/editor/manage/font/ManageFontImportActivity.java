@@ -53,7 +53,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     private void showPreview(int position) {
         String fontFilePath = selectedCollection.get(position).resFullName;
         binding.textFont.setTypeface(Typeface.createFromFile(fontFilePath));
-        binding.textFont.setText((R.string.design_manager_font_description_example_sentence));
+        binding.textFont.setText(R.string.design_manager_font_description_example_sentence);
     }
 
     private ArrayList<String> getReservedSelectedCollectionNames() {
@@ -179,7 +179,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
             }
         });
         Button btnDecide = findViewById(R.id.btn_decide);
-        btnDecide.setText((R.string.design_manager_change_name_button));
+        btnDecide.setText(R.string.design_manager_change_name_button);
         btnDecide.setOnClickListener(this);
     }
 

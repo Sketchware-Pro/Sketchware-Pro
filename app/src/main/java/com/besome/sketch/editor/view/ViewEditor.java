@@ -59,15 +59,6 @@ import a.a.a.oB;
 import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
-import dev.aldi.sayuti.editor.view.palette.IconBottomNavigationView;
-import dev.aldi.sayuti.editor.view.palette.IconCardView;
-import dev.aldi.sayuti.editor.view.palette.IconCollapsingToolbar;
-import dev.aldi.sayuti.editor.view.palette.IconMaterialButton;
-import dev.aldi.sayuti.editor.view.palette.IconRecyclerView;
-import dev.aldi.sayuti.editor.view.palette.IconSwipeRefreshLayout;
-import dev.aldi.sayuti.editor.view.palette.IconTabLayout;
-import dev.aldi.sayuti.editor.view.palette.IconTextInputLayout;
-import dev.aldi.sayuti.editor.view.palette.IconViewPager;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.hey.studios.util.ProjectFile;
 import mod.jbk.util.LogUtil;
@@ -294,7 +285,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             posInitX = motionEvent.getRawX();
             posInitY = motionEvent.getRawY();
             currentTouchedView = view;
-            if ((view instanceof ItemView bean) && bean.getFixed()) {
+            if (view instanceof ItemView bean && bean.getFixed()) {
                 return true;
             }
             if (isInsideItemScrollView(view) && draggingListener != null) {
@@ -337,10 +328,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 if (hitTestToPane(motionEvent.getRawX(), motionEvent.getRawY())) {
                     dummyView.setAllow(true);
                     boolean isNotIcon = !isViewAnIconBase(currentTouchedView);
-                    int width = isNotIcon ? currentTouchedView.getWidth() : (currentTouchedView instanceof IconLinearHorizontal ?
-                            ViewGroup.LayoutParams.MATCH_PARENT : defaultIconWidth);
-                    int height = isNotIcon ? currentTouchedView.getHeight() : (currentTouchedView instanceof IconLinearVertical ?
-                            ViewGroup.LayoutParams.MATCH_PARENT : defaultIconHeight);
+                    int width = isNotIcon ? currentTouchedView.getWidth() : currentTouchedView instanceof IconLinearHorizontal ?
+                            ViewGroup.LayoutParams.MATCH_PARENT : defaultIconWidth;
+                    int height = isNotIcon ? currentTouchedView.getHeight() : currentTouchedView instanceof IconLinearVertical ?
+                            ViewGroup.LayoutParams.MATCH_PARENT : defaultIconHeight;
                     viewPane.updateView((int) motionEvent.getRawX(), (int) motionEvent.getRawY(), width, height);
                 } else {
                     dummyView.setAllow(false);
@@ -684,22 +675,13 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
-            } else if ((currentTouchedView instanceof IconAdView) && !draggingListener.isAdmobEnabled()) {
+            } else if (currentTouchedView instanceof IconAdView && !draggingListener.isAdmobEnabled()) {
                 bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
-            } else if ((currentTouchedView instanceof IconMapView) && !draggingListener.isGoogleMapEnabled()) {
+            } else if (currentTouchedView instanceof IconMapView && !draggingListener.isGoogleMapEnabled()) {
                 bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
-            } else if (((currentTouchedView instanceof IconMaterialButton)
-                    || (currentTouchedView instanceof IconRecyclerView)
-                    || (currentTouchedView instanceof IconBottomNavigationView)
-                    || (currentTouchedView instanceof IconTabLayout)
-                    || (currentTouchedView instanceof IconViewPager)
-                    || (currentTouchedView instanceof IconCollapsingToolbar)
-                    || (currentTouchedView instanceof IconTextInputLayout)
-                    || (currentTouchedView instanceof IconSwipeRefreshLayout)
-                    || (currentTouchedView instanceof IconCardView))
-                    && !isAppCompatEnabled) {
+            } else if (currentTouchedView instanceof AndroidxOrMaterialView && !isAppCompatEnabled) {
                 bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
             }
@@ -770,7 +752,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     private boolean isInsideItemScrollView(View view) {
         for (ViewParent parent = view.getParent(); parent != null && parent != this; parent = parent.getParent()) {
-            if ((parent instanceof ItemVerticalScrollView) || (parent instanceof ItemHorizontalScrollView)) {
+            if (parent instanceof ItemVerticalScrollView || parent instanceof ItemHorizontalScrollView) {
                 return true;
             }
         }
@@ -914,7 +896,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             var11 = statusBarHeight;
             float var12 = var11 * var3;
             bgStatus.setX(var10);
-            bgStatus.setY((var5 - (int) ((var11 - var12) / 2.0F)));
+            bgStatus.setY(var5 - (int) ((var11 - var12) / 2.0F));
             var13 = var5 + (int) var12;
         }
 
@@ -925,7 +907,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             toolbar.setScaleY(var3);
             var11 = (float) toolBarHeight * var3;
             toolbar.setX(var10);
-            toolbar.setY((var13 - (int) (((float) toolBarHeight - var11) / 2.0F)));
+            toolbar.setY(var13 - (int) (((float) toolBarHeight - var11) / 2.0F));
             var8 = var13 + (int) var11;
         }
 
@@ -1068,9 +1050,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         int[] locationOnScreen = new int[2];
         deleteView.getLocationOnScreen(locationOnScreen);
         if (!(x > locationOnScreen[0])) return false;
-        if (!(x < (locationOnScreen[0] + deleteView.getWidth()))) return false;
+        if (!(x < locationOnScreen[0] + deleteView.getWidth())) return false;
         if (!(y > locationOnScreen[1])) return false;
-        return y < (locationOnScreen[1] + deleteView.getHeight());
+        return y < locationOnScreen[1] + deleteView.getHeight();
     }
 
     private void updateDeleteIcon(boolean z, boolean isCustomWidget) {

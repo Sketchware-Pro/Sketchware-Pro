@@ -121,7 +121,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         projectNameValidator = new VB(getApplicationContext(), binding.tilProjectName);
         binding.tilPackageName.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                if (!shownPackageNameChangeWarning && !Helper.getText(((EditText) v)).trim().contains("com.my.newproject")) {
+                if (!shownPackageNameChangeWarning && !Helper.getText((EditText) v).trim().contains("com.my.newproject")) {
                     showPackageNameChangeWarning();
                 }
             }
@@ -367,7 +367,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
     private void pickColor(View anchorView, int colorIndex) {
         ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, projectThemeColors[colorIndex], false, false);
-        colorPickerDialog.a((new ColorPickerDialog.b() {
+        colorPickerDialog.a(new ColorPickerDialog.b() {
             @Override
             public void a(int var1) {
                 projectThemeColors[colorIndex] = var1;
@@ -381,8 +381,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 syncThemeColors();
                 themePresetAdapter.unselectThePreviousTheme(-1);
             }
-        }
-        ));
+        });
         colorPickerDialog.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
     }
 

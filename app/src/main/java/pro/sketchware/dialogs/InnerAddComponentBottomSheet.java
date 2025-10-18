@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
@@ -165,10 +164,6 @@ public class InnerAddComponentBottomSheet extends BottomSheetDialogFragment {
         onSaveClickListener = null;
     }
 
-    public final String getTranslatedString(@StringRes int resId) {
-        return getString(resId);
-    }
-
     private void setOnSaveClickListener(OnSaveClickListener onSaveClickListener) {
         this.onSaveClickListener = onSaveClickListener;
     }
@@ -178,14 +173,14 @@ public class InnerAddComponentBottomSheet extends BottomSheetDialogFragment {
 
         List<String> mimeTypes = Arrays.asList("*/*", "image/*", "audio/*", "text/*");
         List<String> mimeTypeLabels = Arrays.asList(
-                getTranslatedString(R.string.component_file_picker_title_select_mime_type_all_files),
-                getTranslatedString(R.string.component_file_picker_title_select_mime_type_image_files),
-                getTranslatedString(R.string.component_file_picker_title_select_mime_type_audio_files),
-                getTranslatedString(R.string.component_file_picker_title_select_mime_type_text_files)
+                getString(R.string.component_file_picker_title_select_mime_type_all_files),
+                getString(R.string.component_file_picker_title_select_mime_type_image_files),
+                getString(R.string.component_file_picker_title_select_mime_type_audio_files),
+                getString(R.string.component_file_picker_title_select_mime_type_text_files)
         );
 
         new MaterialAlertDialogBuilder(getContext())
-                .setTitle(getTranslatedString(R.string.component_file_picker_title_select_mime_type))
+                .setTitle(R.string.component_file_picker_title_select_mime_type)
                 .setSingleChoiceItems(mimeTypeLabels.toArray(new String[0]), selectedMime.get(), (dialog, which) -> selectedChoice.set(which))
                 .setPositiveButton(R.string.common_word_select, (dialog, which) -> {
                     String selectedMimeType = mimeTypes.get(selectedChoice.get());

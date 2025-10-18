@@ -44,7 +44,7 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
         binding = SrcViewerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         currentFileName = getIntent().hasExtra("current") ? getIntent().getStringExtra("current") : "";
-        sc_id = (savedInstanceState != null) ? savedInstanceState.getString("sc_id") : getIntent().getStringExtra("sc_id");
+        sc_id = savedInstanceState != null ? savedInstanceState.getString("sc_id") : getIntent().getStringExtra("sc_id");
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -54,7 +54,7 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
 
         configureEditor();
 
-        binding.changeFontSize.setOnClickListener((v -> showChangeFontSizeDialog()));
+        binding.changeFontSize.setOnClickListener(v -> showChangeFontSizeDialog());
 
         binding.filesListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -155,9 +155,9 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
     public class FilesListSpinnerAdapter extends BaseAdapter {
 
         private View getCustomSpinnerView(int position, View view, boolean isCurrentlyViewingFile) {
-            CommonSpinnerItem spinnerItem = (view != null) ? (CommonSpinnerItem) view :
+            CommonSpinnerItem spinnerItem = view != null ? (CommonSpinnerItem) view :
                     new CommonSpinnerItem(SrcViewerActivity.this);
-            spinnerItem.a((sourceCodeBeans.get(position)).srcFileName, isCurrentlyViewingFile);
+            spinnerItem.a(sourceCodeBeans.get(position).srcFileName, isCurrentlyViewingFile);
             return spinnerItem;
         }
 
@@ -168,7 +168,7 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            boolean isCheckmarkVisible = (binding.filesListSpinner.getSelectedItemPosition() == position);
+            boolean isCheckmarkVisible = binding.filesListSpinner.getSelectedItemPosition() == position;
             return getCustomSpinnerView(position, convertView, isCheckmarkVisible);
         }
 

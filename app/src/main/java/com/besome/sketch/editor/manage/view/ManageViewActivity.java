@@ -243,7 +243,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                     a(false);
                     activitiesFragment.g();
                     customViewsFragment.g();
-                    bB.a(getApplicationContext(), getTranslatedString(R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
+                    bB.a(getApplicationContext(), getString(R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
                     s.show();
                 }
             } else if (viewId == R.id.fab) {
@@ -274,8 +274,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         actionButtonsContainer = findViewById(R.id.layout_btn_group);
         Button delete = findViewById(R.id.btn_delete);
         Button cancel = findViewById(R.id.btn_cancel);
-        delete.setText(getTranslatedString(R.string.common_word_delete));
-        cancel.setText(getTranslatedString(R.string.common_word_cancel));
+        delete.setText(R.string.common_word_delete);
+        cancel.setText(R.string.common_word_cancel);
         delete.setOnClickListener(this);
         cancel.setOnClickListener(this);
 
@@ -353,11 +353,11 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         public void b() throws By {
             var activity = this.activity.get();
             try {
-                publishProgress(activity.getTranslatedString(R.string.common_message_progress));
+                publishProgress(activity.getString(R.string.common_message_progress));
                 activity.m();
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new By(activity.getTranslatedString(R.string.common_error_unknown));
+                throw new By(activity.getString(R.string.common_error_unknown));
             }
         }
 
@@ -368,7 +368,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
 
         public b(FragmentManager fragmentManager) {
             super(fragmentManager);
-            f = new String[]{getTranslatedString(R.string.common_word_view), getTranslatedString(R.string.common_word_custom_view)};
+            f = new String[]{getString(R.string.common_word_view), getString(R.string.common_word_custom_view)};
         }
 
         @Override

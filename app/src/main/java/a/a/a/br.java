@@ -89,7 +89,7 @@ public class br extends qA implements View.OnClickListener {
     private void initialize() {
         binding.componentList.setHasFixedSize(true);
         binding.emptyMessage.setVisibility(View.GONE);
-        binding.emptyMessage.setText((R.string.component_message_no_components));
+        binding.emptyMessage.setText(R.string.component_message_no_components);
         binding.componentList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
         adapter = new Adapter();
         binding.componentList.setAdapter(adapter);
@@ -153,7 +153,7 @@ public class br extends qA implements View.OnClickListener {
                 binding.componentOption
                         .getDeleteButton()
                         .getLabel()
-                        .setText((R.string.component_context_menu_title_delete_component));
+                        .setText(R.string.component_context_menu_title_delete_component);
                 binding.componentOption.setButtonOnClickListener(v -> {
                     int lastSelectedItem = getLayoutPosition();
                     ComponentBean bean =

@@ -138,7 +138,7 @@ public class LogicEditorScrollView extends FrameLayout {
         View firstView = getChildAt(0);
         int width = firstView.getWidth();
         int height = firstView.getHeight();
-        if (getWidth() < (getPaddingLeft() + width) + getPaddingRight()) return true;
-        return getHeight() < (getPaddingTop() + height) + getPaddingBottom();
+        if (getWidth() < getPaddingLeft() + width + getPaddingRight()) return true;
+        return getHeight() < getPaddingTop() + height + getPaddingBottom();
     }
 }

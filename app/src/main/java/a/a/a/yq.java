@@ -6,7 +6,6 @@ import static mod.hey.studios.util.ProjectFile.getDefaultColor;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.Pair;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ComponentBean;
@@ -528,6 +527,7 @@ public class yq {
                     case "PatternLockView" -> N.x.isPatternLockViewUsed = true;
                     case "WaveSideBar" -> N.x.isWaveSideBarUsed = true;
                     case "YouTubePlayerView" -> N.x.isYoutubePlayerUsed = true;
+                    case "SwipeRefreshLayout" -> N.x.isSwipeRefreshLayoutUsed = true;
                 }
             }
         }
@@ -600,6 +600,7 @@ public class yq {
                     case "PatternLockView" -> N.x.isPatternLockViewUsed = true;
                     case "WaveSideBar" -> N.x.isWaveSideBarUsed = true;
                     case "YouTubePlayerView" -> N.x.isYoutubePlayerUsed = true;
+                    case "SwipeRefreshLayout" -> N.x.isSwipeRefreshLayoutUsed = true;
                 }
             }
 

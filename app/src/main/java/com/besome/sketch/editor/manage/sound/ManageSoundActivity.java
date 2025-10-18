@@ -141,8 +141,8 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         public PagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
             titles = new String[TAB_COUNT];
-            titles[0] = getTranslatedString(R.string.design_manager_tab_title_this_project);
-            titles[1] = getTranslatedString(R.string.design_manager_tab_title_my_collection);
+            titles[0] = getString(R.string.design_manager_tab_title_this_project);
+            titles[1] = getString(R.string.design_manager_tab_title_my_collection);
         }
 
         @Override

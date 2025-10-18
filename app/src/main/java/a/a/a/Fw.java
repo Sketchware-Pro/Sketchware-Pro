@@ -225,7 +225,7 @@ public class Fw extends qA {
         projectFilesAdapter = new ProjectFilesAdapter(activitiesList);
         activitiesList.setAdapter(projectFilesAdapter);
         tvGuide = root.findViewById(R.id.tv_guide);
-        tvGuide.setText((R.string.design_manager_view_description_guide_create_activity));
+        tvGuide.setText(R.string.design_manager_view_description_guide_create_activity);
         return root;
     }
 
@@ -269,7 +269,7 @@ public class Fw extends qA {
 
             // Displaying selection state
             viewHolder.binding.chkSelect.setChecked(projectFileBean.isSelected);
-            viewHolder.binding.chkSelect.setVisibility(position == 0 ? View.GONE : (k ? View.VISIBLE : View.GONE));
+            viewHolder.binding.chkSelect.setVisibility(position == 0 ? View.GONE : k ? View.VISIBLE : View.GONE);
             viewHolder.binding.imgActivity.setVisibility(k && position != 0 ? View.GONE : View.VISIBLE);
 
             viewHolder.binding.imgActivity.setImageResource(getImageResByOptions(projectFileBean.options));

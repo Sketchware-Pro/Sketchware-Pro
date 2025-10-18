@@ -4,12 +4,13 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.AndroidxOrMaterialView;
 import com.besome.sketch.editor.view.palette.IconBase;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 import pro.sketchware.R;
 
-public class IconCollapsingToolbar extends IconBase {
+public class IconCollapsingToolbar extends IconBase implements AndroidxOrMaterialView {
 
     public IconCollapsingToolbar(Context context) {
         super(context);

@@ -8,8 +8,6 @@
         <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.SketchwarePro.CollapsingToolbar</item>
         <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_material</item>
         <item name="textInputStyle">@style/Widget.SketchwarePro.TextInputLayout</item>
-        <item name="fontFamily">@font/gilroy</item>
-        <item name="android:fontFamily">@font/gilroy</item>
         <item name="switchPreferenceCompatStyle">
             @style/Preference.SketchwarePro.SwitchPreferenceCompat
         </item>
@@ -36,6 +34,7 @@
         <item name="textAppearanceLabelLarge">@style/TextAppearance.SketchwarePro.LabelLarge</item>
         <item name="textAppearanceLabelMedium">@style/TextAppearance.SketchwarePro.LabelMedium</item>
         <item name="textAppearanceLabelSmall">@style/TextAppearance.SketchwarePro.LabelSmall</item>
+        <item name="textAppearanceBodyLargeEmphasized">@style/TextAppearance.SketchwarePro.BodyLargeEmphasized</item>
     </style>
 
     <style name="Theme.SketchwarePro.Main">

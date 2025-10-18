@@ -807,7 +807,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
     private void showAvailableJavaFiles() {
         var dialog = new MaterialAlertDialogBuilder(this).create();
-        dialog.setTitle(getTranslatedString(R.string.design_file_selector_title_java));
+        dialog.setTitle(R.string.design_file_selector_title_java);
         dialog.setIcon(R.drawable.ic_mtrl_java);
         View customView = a.a.a.wB.a(this, R.layout.file_selector_popup_select_java);
         RecyclerView recyclerView = customView.findViewById(R.id.file_list);
@@ -1219,8 +1219,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 isBuildFinished = true;
                 activity.indicateCompileErrorOccurred(zy.getMessage());
             } catch (Throwable tr) {
-                FirebaseCrashlytics.getInstance().log("Project build error");
-                FirebaseCrashlytics.getInstance().recordException(tr);
                 isBuildFinished = true;
                 LogUtil.e("DesignActivity$BuildTask", "Failed to build project", tr);
                 activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));

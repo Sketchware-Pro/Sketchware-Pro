@@ -188,9 +188,9 @@ public class SketchwareUtil {
                     }
                 } else {
                     if (ascending) {
-                        return (_compareMap1.get(key).toString()).compareTo(_compareMap2.get(key).toString());
+                        return _compareMap1.get(key).toString().compareTo(_compareMap2.get(key).toString());
                     } else {
-                        return (_compareMap2.get(key).toString()).compareTo(_compareMap1.get(key).toString());
+                        return _compareMap2.get(key).toString().compareTo(_compareMap1.get(key).toString());
                     }
                 }
             }

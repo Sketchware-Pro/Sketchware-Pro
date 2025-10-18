@@ -151,7 +151,7 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
             for (HashMap<String, Object> item : originalData) {
                 String key = (String) item.get("key");
                 String text = (String) item.get("text");
-                if ((key != null && key.toLowerCase().contains(query)) || (text != null && text.toLowerCase().contains(query))) {
+                if (key != null && key.toLowerCase().contains(query) || text != null && text.toLowerCase().contains(query)) {
                     filteredData.add(item);
                 }
             }
@@ -174,7 +174,7 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
         for (String javaFileName : getAllJavaFileNames(projectScId)) {
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
                 for (BlockBean block : entry.getValue()) {
-                    if ((block.opCode.equals("getResStr") && block.spec.equals(key)) || (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+                    if (block.opCode.equals("getResStr") && block.spec.equals(key) || block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key)) {
                         return true;
                     }
                 }

@@ -788,7 +788,7 @@ public class ProjectBuilder {
             builtInLibraryManager.addLibrary(BuiltInLibraries.GLIDE);
         }
         if (yq.N.isHttp3Used) {
-            builtInLibraryManager.addLibrary(BuiltInLibraries.OKHTTP);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.OKHTTP_ANDROID);
         }
 
         KotlinCompilerBridge.maybeAddKotlinBuiltInLibraryDependenciesIfPossible(this, builtInLibraryManager);

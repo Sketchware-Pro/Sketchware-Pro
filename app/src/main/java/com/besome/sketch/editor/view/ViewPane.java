@@ -531,7 +531,7 @@ public class ViewPane extends RelativeLayout {
                         }
                     } else {
                         XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
-                        xmlToSvgConverter.setImageVectorFromFile(((ImageView) view), xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
+                        xmlToSvgConverter.setImageVectorFromFile((ImageView) view, xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                     }
                 } catch (Exception unused2) {
                     crashlytics.recordException(unused2);
@@ -797,7 +797,7 @@ public class ViewPane extends RelativeLayout {
         int layoutGravity = linearLayout.getLayoutGravity();
         int horizontalGravity = layoutGravity & Gravity.FILL_HORIZONTAL;
         int verticalGravity = layoutGravity & Gravity.FILL_VERTICAL;
-        Rect parentRect = new Rect(locationOnScreen[0], locationOnScreen[1], ((int) (linearLayout.getWidth() * getScaleX())) + locationOnScreen[0], ((int) (linearLayout.getHeight() * getScaleY())) + locationOnScreen[1]);
+        Rect parentRect = new Rect(locationOnScreen[0], locationOnScreen[1], (int) (linearLayout.getWidth() * getScaleX()) + locationOnScreen[0], (int) (linearLayout.getHeight() * getScaleY()) + locationOnScreen[1]);
         addViewInfo(parentRect, linearLayout, -1, calculateViewDepth(linearLayout));
 
         int parentWidth = (int) (linearLayout.getMeasuredWidth() * scaleX);
@@ -934,13 +934,13 @@ public class ViewPane extends RelativeLayout {
         int xCoordinate = viewLocationOnScreen[0];
         int yCoordinate = viewLocationOnScreen[1];
         addViewInfo(new Rect(xCoordinate, yCoordinate,
-                        ((int) (viewGroup.getWidth() * getScaleX())) + xCoordinate,
-                        ((int) (viewGroup.getHeight() * getScaleY())) + yCoordinate),
+                        (int) (viewGroup.getWidth() * getScaleX()) + xCoordinate,
+                        (int) (viewGroup.getHeight() * getScaleY()) + yCoordinate),
                 viewGroup, -1, calculateViewDepth(viewGroup)
         );
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View childAt = viewGroup.getChildAt(i);
-            if (childAt != null && childAt.getTag() != null && ((viewBean == null || viewBean.id == null || !childAt.getTag().equals(viewBean.id)) && childAt.getVisibility() == View.VISIBLE)) {
+            if (childAt != null && childAt.getTag() != null && (viewBean == null || viewBean.id == null || !childAt.getTag().equals(viewBean.id)) && childAt.getVisibility() == View.VISIBLE) {
                 if (childAt instanceof ItemLinearLayout) {
                     a(viewBean, (ItemLinearLayout) childAt);
                 } else if (childAt instanceof ItemHorizontalScrollView) {
@@ -961,7 +961,7 @@ public class ViewPane extends RelativeLayout {
         int index = 0;
         for (int i = 0; i < childCount; i++) {
             View childAt = viewGroup.getChildAt(i);
-            if (childAt != null && childAt.getTag() != null && ((viewBean == null || viewBean.id == null || !childAt.getTag().equals(viewBean.id)) && childAt.getVisibility() == View.VISIBLE)) {
+            if (childAt != null && childAt.getTag() != null && (viewBean == null || viewBean.id == null || !childAt.getTag().equals(viewBean.id)) && childAt.getVisibility() == View.VISIBLE) {
                 index++;
                 if (childAt instanceof ItemLinearLayout) {
                     a(viewBean, (ItemLinearLayout) childAt);
@@ -982,8 +982,8 @@ public class ViewPane extends RelativeLayout {
             int xCoordinate = viewLocationOnScreen[0];
             int yCoordinate = viewLocationOnScreen[1];
             addViewInfo(new Rect(xCoordinate, yCoordinate,
-                            ((int) (viewGroup.getWidth() * getScaleX())) + xCoordinate,
-                            ((int) (viewGroup.getHeight() * getScaleY())) + yCoordinate),
+                            (int) (viewGroup.getWidth() * getScaleX()) + xCoordinate,
+                            (int) (viewGroup.getHeight() * getScaleY()) + yCoordinate),
                     viewGroup, -1, calculateViewDepth(viewGroup)
             );
         }
@@ -1102,8 +1102,8 @@ public class ViewPane extends RelativeLayout {
         var bean = handler.getBean();
         var parent = bean.parentAttributes;
         if (Boolean.parseBoolean(layout_centerInParent)
-                || (parent.containsKey("android:layout_centerInParent")
-                && Boolean.parseBoolean(parent.get("android:layout_centerInParent"))))
+                || parent.containsKey("android:layout_centerInParent")
+                && Boolean.parseBoolean(parent.get("android:layout_centerInParent")))
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -1111,8 +1111,8 @@ public class ViewPane extends RelativeLayout {
                     RelativeLayout.CENTER_IN_PARENT);
 
         if (Boolean.parseBoolean(layout_centerVertical)
-                || (parent.containsKey("android:layout_centerVertical")
-                && Boolean.parseBoolean(parent.get("android:layout_centerVertical"))))
+                || parent.containsKey("android:layout_centerVertical")
+                && Boolean.parseBoolean(parent.get("android:layout_centerVertical")))
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -1120,8 +1120,8 @@ public class ViewPane extends RelativeLayout {
                     RelativeLayout.CENTER_VERTICAL);
 
         if (Boolean.parseBoolean(layout_centerHorizontal)
-                || (parent.containsKey("android:layout_centerHorizontal")
-                && Boolean.parseBoolean(parent.get("android:layout_centerHorizontal"))))
+                || parent.containsKey("android:layout_centerHorizontal")
+                && Boolean.parseBoolean(parent.get("android:layout_centerHorizontal")))
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -1136,8 +1136,8 @@ public class ViewPane extends RelativeLayout {
         String layout_alignParentBottom = handler.getAttributeValueOf("layout_alignParentBottom");
 
         if (Boolean.parseBoolean(layout_alignParentStart)
-                || (parent.containsKey("android:layout_alignParentStart")
-                && Boolean.parseBoolean(parent.get("android:layout_alignParentStart")))) {
+                || parent.containsKey("android:layout_alignParentStart")
+                && Boolean.parseBoolean(parent.get("android:layout_alignParentStart"))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -1146,8 +1146,8 @@ public class ViewPane extends RelativeLayout {
         }
 
         if (Boolean.parseBoolean(layout_alignParentRight)
-                || (parent.containsKey("android:layout_alignParentRight")
-                && Boolean.parseBoolean(parent.get("android:layout_alignParentRight")))) {
+                || parent.containsKey("android:layout_alignParentRight")
+                && Boolean.parseBoolean(parent.get("android:layout_alignParentRight"))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -1156,8 +1156,8 @@ public class ViewPane extends RelativeLayout {
         }
 
         if (Boolean.parseBoolean(layout_alignParentTop)
-                || (parent.containsKey("android:layout_alignParentTop")
-                && Boolean.parseBoolean(parent.get("android:layout_alignParentTop")))) {
+                || parent.containsKey("android:layout_alignParentTop")
+                && Boolean.parseBoolean(parent.get("android:layout_alignParentTop"))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -1166,8 +1166,8 @@ public class ViewPane extends RelativeLayout {
         }
 
         if (Boolean.parseBoolean(layout_alignParentEnd)
-                || (parent.containsKey("android:layout_alignParentEnd")
-                && Boolean.parseBoolean(parent.get("android:layout_alignParentEnd")))) {
+                || parent.containsKey("android:layout_alignParentEnd")
+                && Boolean.parseBoolean(parent.get("android:layout_alignParentEnd"))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -1176,8 +1176,8 @@ public class ViewPane extends RelativeLayout {
         }
 
         if (Boolean.parseBoolean(layout_alignParentLeft)
-                || (parent.containsKey("android:layout_alignParentLeft")
-                && Boolean.parseBoolean(parent.get("android:layout_alignParentLeft")))) {
+                || parent.containsKey("android:layout_alignParentLeft")
+                && Boolean.parseBoolean(parent.get("android:layout_alignParentLeft"))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -1186,8 +1186,8 @@ public class ViewPane extends RelativeLayout {
         }
 
         if (Boolean.parseBoolean(layout_alignParentBottom)
-                || (parent.containsKey("android:layout_alignParentBottom")
-                && Boolean.parseBoolean(parent.get("android:layout_alignParentBottom")))) {
+                || parent.containsKey("android:layout_alignParentBottom")
+                && Boolean.parseBoolean(parent.get("android:layout_alignParentBottom"))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",

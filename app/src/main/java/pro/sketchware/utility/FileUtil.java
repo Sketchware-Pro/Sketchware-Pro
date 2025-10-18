@@ -288,7 +288,9 @@ public class FileUtil {
         if (!file.exists()) return;
 
         if (file.isFile()) {
-            file.delete();
+            if (!file.delete()) {
+                Log.e("FileUtil", "Failed to delete file: " + file.getAbsolutePath());
+            }
             return;
         }
 
@@ -306,7 +308,9 @@ public class FileUtil {
             }
         }
 
-        file.delete();
+        if (!file.delete()) {
+            Log.e("FileUtil", "Failed to delete directory: " + file.getAbsolutePath());
+        }
     }
 
     public static boolean isExistFile(String path) {

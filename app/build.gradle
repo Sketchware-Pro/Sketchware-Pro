@@ -22,7 +22,7 @@ android {
         targetSdk = 28
         minSdk = 26
         versionCode = 150
-        versionName = "v7.0.0-beta1"
+        versionName = "v7.0.0"
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 

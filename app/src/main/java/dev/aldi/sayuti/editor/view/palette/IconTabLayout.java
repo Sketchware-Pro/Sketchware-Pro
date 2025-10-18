@@ -4,12 +4,13 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.AndroidxOrMaterialView;
 import com.besome.sketch.editor.view.palette.IconBase;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 import pro.sketchware.R;
 
-public class IconTabLayout extends IconBase {
+public class IconTabLayout extends IconBase implements AndroidxOrMaterialView {
 
     public IconTabLayout(Context context) {
         super(context);

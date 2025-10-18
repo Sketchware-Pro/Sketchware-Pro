@@ -151,7 +151,7 @@ public class fu extends qA implements View.OnClickListener {
         binding.imageList.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
         adapter = new Adapter();
         binding.imageList.setAdapter(adapter);
-        binding.tvGuide.setText((R.string.design_manager_image_description_guide_add_image));
+        binding.tvGuide.setText(R.string.design_manager_image_description_guide_add_image);
         btnImport = requireActivity().findViewById(R.id.btn_import);
         layoutBtnImport = requireActivity().findViewById(R.id.layout_btn_import);
         btnImport.setOnClickListener(this);

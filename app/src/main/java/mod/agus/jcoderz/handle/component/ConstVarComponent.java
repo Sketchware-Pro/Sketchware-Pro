@@ -17,6 +17,7 @@ public class ConstVarComponent {
     public boolean isPatternLockViewUsed = false;
     public boolean isWaveSideBarUsed = false;
     public boolean isYoutubePlayerUsed = false;
+    public boolean isSwipeRefreshLayoutUsed = false;
     public HashMap<String, ArrayList<String>> param = new HashMap<>();
 
     public void handleDeleteComponent(String componentNameId) {

@@ -80,7 +80,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         }
 
         setSupportActionBar(binding.topAppBar);
-        binding.topAppBar.setTitle(getTranslatedString(R.string.design_actionbar_title_manager_image));
+        binding.topAppBar.setTitle(R.string.design_actionbar_title_manager_image);
         binding.topAppBar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
@@ -163,8 +163,8 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         public PagerAdapter(FragmentManager manager) {
             super(manager);
             labels = new String[2];
-            labels[0] = getTranslatedString(R.string.design_manager_tab_title_this_project);
-            labels[1] = getTranslatedString(R.string.design_manager_tab_title_my_collection);
+            labels[0] = getString(R.string.design_manager_tab_title_this_project);
+            labels[1] = getString(R.string.design_manager_tab_title_my_collection);
         }
 
         @Override

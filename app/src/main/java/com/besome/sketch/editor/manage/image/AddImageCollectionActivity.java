@@ -155,7 +155,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         ed_input.setHint(getString(R.string.design_manager_image_hint_enter_image_name));
         imageNameValidator = new PB(this, ed_input.getTextInputLayout(), uq.b, getReservedImageNames());
         imageNameValidator.a(1);
-        tv_add_photo.setText((R.string.design_manager_image_title_add_image));
+        tv_add_photo.setText(R.string.design_manager_image_title_add_image);
         preview.setOnClickListener(this);
         img_rotate.setOnClickListener(this);
         img_vertical.setOnClickListener(this);

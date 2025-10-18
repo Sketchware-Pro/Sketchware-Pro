@@ -100,7 +100,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     private boolean isLastPage = false;
 
     private int getGridLayoutColumnCount() {
-        return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 80;
+        return (int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density) / 80;
     }
 
     private boolean doExtractedIconsExist() {
@@ -131,7 +131,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         Toolbar toolbar = binding.toolbar.toolbar;
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(getTranslatedString(R.string.design_manager_icon_actionbar_title));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.design_manager_icon_actionbar_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {

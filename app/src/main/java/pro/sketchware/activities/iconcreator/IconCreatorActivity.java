@@ -405,43 +405,43 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
             @Override
             public void a(int colorInt) {
                 switch (r) {
-                    case (0):
+                    case 0:
                         bgClr = colorInt;
                         binding.appIcoBg.setBackgroundColor(bgClr);
                         binding.colorPreview.setBackgroundColor(bgClr);
                         break;
-                    case (1):
+                    case 1:
                         gradClr0 = colorInt;
                         binding.appIcoBg.setBackground(new GradientDrawable(gradDirection, new int[]{gradClr0, gradClr1}));
                         binding.gradColorPreview.setBackgroundColor(gradClr0);
                         break;
-                    case (2):
+                    case 2:
                         gradClr1 = colorInt;
                         binding.appIcoBg.setBackground(new GradientDrawable(gradDirection, new int[]{gradClr0, gradClr1}));
                         binding.gradColorPreview2.setBackgroundColor(gradClr1);
                         break;
-                    case (3):
+                    case 3:
                         txtClr = colorInt;
                         binding.appIcoText.setTextColor(txtClr);
                         binding.txtColorPreview.setBackgroundColor(txtClr);
                         break;
-                    case (4):
+                    case 4:
                         badgeTxtClr = colorInt;
                         binding.badgeText.setTextColor(badgeTxtClr);
                         binding.badgeTxtColorPreview.setBackgroundColor(badgeTxtClr);
                         break;
-                    case (5):
+                    case 5:
                         badgeClr = colorInt;
                         binding.appIcoBadge.setBackgroundColor(badgeClr);
                         binding.badgeBgColorPreview.setBackgroundColor(badgeClr);
                         break;
-                    case (6):
+                    case 6:
                         imgColor = colorInt;
                         binding.appIcoImg.getBackground().setColorFilter(new PorterDuffColorFilter(imgColor, PorterDuff.Mode.SRC_ATOP));
                         binding.imgColorPreview.setBackgroundColor(imgColor);
                         break;
 
-                    case (7):
+                    case 7:
                         patternColor = colorInt;
                         binding.appIcoTexture.setColor(patternColor);
                         binding.patternColorPreview.setBackgroundColor(patternColor);
