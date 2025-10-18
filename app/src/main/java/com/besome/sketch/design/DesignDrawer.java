@@ -31,6 +31,9 @@ import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.utility.UI;
 
 public class DesignDrawer extends LinearLayout {
+
+    private LinearLayout content;
+
     @SuppressLint("NonConstantResourceId")
     private final View.OnClickListener drawerItemClickListener = v -> {
         Activity activity = (Activity) getContext();
@@ -89,13 +92,17 @@ public class DesignDrawer extends LinearLayout {
         scrollView.setClipToPadding(false);
         addView(scrollView, new LayoutParams(LayoutParams.MATCH_PARENT, 0, 1));
 
-        LinearLayout content = new LinearLayout(getContext());
+        content = new LinearLayout(getContext());
         content.setOrientation(VERTICAL);
         scrollView.addView(content);
 
         UI.addSystemWindowInsetToPadding(scrollView, false, true, false, false);
         UI.addSystemWindowInsetToPadding(this, false, false, true, true);
 
+        addDrawerItems();
+    }
+
+    private void addDrawerItems() {
         addDrawerSubheaderItem(R.string.design_drawer_menu_title, content);
         addDrawerItem(R.id.item_library_manager, R.drawable.ic_mtrl_category, R.string.design_drawer_menu_title_library, R.string.design_drawer_menu_description_library, content);
         addDrawerItem(R.id.item_view_manager, R.drawable.ic_mtrl_devices, R.string.design_drawer_menu_title_view, R.string.design_drawer_menu_description_view, content);
@@ -117,12 +124,14 @@ public class DesignDrawer extends LinearLayout {
         addDrawerItem(R.id.item_logcat_reader, R.drawable.ic_mtrl_article, R.string.design_drawer_menu_title_logcat_reader, R.string.design_drawer_menu_subtitle_logcat_reader, content);
 
         // if you want to show text "Global", uncomment next line
-        // addDrawerSubheaderItem(R.string.design_drawer_menu_bottom_title, this);
-        addDrawerDivider(this);
-        addDrawerItem(R.id.item_collection_manager, R.drawable.ic_mtrl_bookmark, R.string.design_drawer_menu_title_collection, R.string.design_drawer_menu_description_collection, this);
+        // addDrawerSubheaderItem(R.string.design_drawer_menu_bottom_title, content);
+        addDrawerDivider(content);
+        addDrawerItem(R.id.item_collection_manager, R.drawable.ic_mtrl_bookmark, R.string.design_drawer_menu_title_collection, R.string.design_drawer_menu_description_collection, content);
+    }
 
-        invalidate();
-        requestLayout();
+    public void refresh() {
+        content.removeAllViews();
+        addDrawerItems();
     }
 
     @Override

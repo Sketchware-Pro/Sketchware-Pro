@@ -182,6 +182,7 @@
     </RelativeLayout>
 
     <com.besome.sketch.design.DesignDrawer
+        android:id="@+id/design_drawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end" />

@@ -136,6 +136,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private CustomViewPager viewPager;
     private CoordinatorLayout coordinatorLayout;
     private DrawerLayout drawer;
+    private DesignDrawer designDrawer;
     private yq q;
     private DB r;
     private DB t;
@@ -637,6 +638,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         getSupportActionBar().setTitle(yB.c(projectInfo, "my_ws_name"));
         q = new yq(getApplicationContext(), wq.d(sc_id), projectInfo);
 
+        designDrawer = findViewById(R.id.design_drawer);
+
         try {
             ProjectLoader projectLoader = new ProjectLoader(this, savedInstanceState);
             projectLoader.execute();
@@ -653,6 +656,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         super.onResume();
         if (!isStoragePermissionGranted()) {
             finish();
+        }
+
+        if (designDrawer != null) {
+            designDrawer.refresh();
         }
 
         long freeMegabytes = GB.c();
