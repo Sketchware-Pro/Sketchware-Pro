@@ -2,6 +2,7 @@ package com.besome.sketch.editor.component;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -9,14 +10,11 @@ import android.widget.TextView;
 
 import com.google.android.material.color.MaterialColors;
 
-import a.a.a.wB;
-import pro.sketchware.R;
+import pro.sketchware.databinding.FrLogicListItemComponentEventBinding;
 
 public class ComponentEventButton extends LinearLayout {
-    private LinearLayout container;
-    private ImageView icon;
-    private ImageView addEvent;
-    private TextView name;
+
+    private final FrLogicListItemComponentEventBinding binding;
 
     public ComponentEventButton(Context context) {
         this(context, null);
@@ -24,38 +22,30 @@ public class ComponentEventButton extends LinearLayout {
 
     public ComponentEventButton(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        initialize(context);
-    }
-
-    private void initialize(Context context) {
-        wB.a(context, this, R.layout.fr_logic_list_item_component_event);
-        container = findViewById(R.id.container);
-        addEvent = findViewById(R.id.add_event);
-        icon = findViewById(R.id.icon);
-        name = findViewById(R.id.name);
+        binding = FrLogicListItemComponentEventBinding.inflate(LayoutInflater.from(context), this, true);
     }
 
     public void onEventAdded() {
-        addEvent.setVisibility(GONE);
-        icon.setColorFilter(MaterialColors.getColor(name, com.google.android.material.R.attr.colorOnSurface));
-        name.setTextColor(MaterialColors.getColor(name, com.google.android.material.R.attr.colorOnSurface));
+        binding.addEvent.setVisibility(GONE);
+        binding.icon.setColorFilter(MaterialColors.getColor(binding.name, com.google.android.material.R.attr.colorOnSurface));
+        binding.name.setTextColor(MaterialColors.getColor(binding.name, com.google.android.material.R.attr.colorOnSurface));
     }
 
     public void setClickListener(View.OnClickListener onClickListener) {
-        container.setOnClickListener(onClickListener);
+        binding.container.setOnClickListener(onClickListener);
     }
 
     public void onEventAvailableToAdd() {
-        addEvent.setVisibility(VISIBLE);
-        icon.setColorFilter(MaterialColors.getColor(name, com.google.android.material.R.attr.colorOutline));
-        name.setTextColor(MaterialColors.getColor(name, com.google.android.material.R.attr.colorOutline));
+        binding.addEvent.setVisibility(VISIBLE);
+        binding.icon.setColorFilter(MaterialColors.getColor(binding.name, com.google.android.material.R.attr.colorOutline));
+        binding.name.setTextColor(MaterialColors.getColor(binding.name, com.google.android.material.R.attr.colorOutline));
     }
 
     public ImageView getIcon() {
-        return icon;
+        return binding.icon;
     }
 
     public TextView getName() {
-        return name;
+        return binding.name;
     }
 }
