@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <HorizontalScrollView
@@ -294,19 +294,16 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_margin="8dp"
                 android:text="Custom Parameter"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:orientation="horizontal">
@@ -318,10 +315,14 @@
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:hint="Parameter"
-                    app:placeholderText="m.name (without % sign)"
                     app:counterEnabled="true"
                     app:counterMaxLength="100"
-                    app:endIconMode="clear_text">
+                    app:endIconMode="clear_text"
+                    app:helperTextEnabled="true"
+                    app:helperText="m.name (without % sign)"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/parameter"
@@ -334,14 +335,20 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_variable"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:hint="Variable name"
                     app:counterEnabled="true"
+                    android:layout_marginTop="8dp"
                     app:counterMaxLength="100"
-                    app:endIconMode="clear_text">
+                    app:endIconMode="clear_text"
+                    app:layout_constraintEnd_toStartOf="@id/add"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ti_parameter">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/name"
@@ -358,9 +365,13 @@
                     style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     app:cornerRadius="14dp"
-                    app:icon="@drawable/ic_add_white_24dp" />
-            </LinearLayout>
+                    app:icon="@drawable/ic_add_white_24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ti_variable"
+                    app:layout_constraintTop_toTopOf="@id/ti_variable" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
