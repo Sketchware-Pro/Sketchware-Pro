@@ -1,0 +1,1583 @@
+import pygame, sys
+from pygame.locals import QUIT, KEYDOWN, K_UP, K_DOWN, K_LEFT, K_RIGHT, K_w, K_a, K_s, K_d, K_SPACE, K_1, K_2, K_3, K_4, K_5, K_6, K_RETURN, K_LSHIFT, K_RSHIFT
+import random
+import math
+
+# Variables
+hantu = "elara"
+hewan = "octimus"
+
+# Characters
+karakter = ["nohan", "dirga", "faqih", "rifqie", "shanum", "agasi"]
+
+pygame.init()
+DISPLAYSURF = pygame.display.set_mode((800, 600))
+pygame.display.set_caption('Escape Mansion - 7 Chapters')
+clock = pygame.time.Clock()
+
+# Colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BLUE = (0, 100, 255)
+GREEN = (0, 200, 0)
+RED = (255, 0, 0)
+YELLOW = (255, 200, 0)
+GRAY = (100, 100, 100)
+BROWN = (139, 69, 19)
+GOLD = (255, 215, 0)
+DARK_GRAY = (50, 50, 50)
+DARK_BLUE = (0, 0, 50)
+PURPLE = (128, 0, 128)
+ORANGE = (255, 165, 0)
+
+# Font
+font = pygame.font.Font(None, 36)
+small_font = pygame.font.Font(None, 24)
+tiny_font = pygame.font.Font(None, 18)
+big_font = pygame.font.Font(None, 48)
+
+# Chapter system
+current_chapter = 1
+max_chapters = 7
+
+chapter_names = [
+    "Chapter 1: Rumah Terbengkalai", "Chapter 2: Peringatan Faqih",
+    "Chapter 3: Mansion Gelap", "Chapter 4: Cari Kunci",
+    "Chapter 5: Hantu Elara", "Chapter 6: Waktu Terbatas",
+    "Chapter 7: Pelarian Terakhir"
+]
+
+chapter_descriptions = [
+    "6 orang tertidur di rumah tua...", "Faqih menemukan kertas peringatan!",
+    "Jelajahi mansion yang gelap...", "Temukan kunci untuk Octimus!",
+    "Hindari hantu Elara!", "Waktu semakin cepat!", "Selamatkan semua orang!"
+]
+
+# Game state
+game_state = "intro"  # intro, chapter_intro, playing, story_cutscene, story_dirga, chapter_complete, won
+intro_phase = 0
+story_shown = False  # Track if Faqih's story has been shown
+dirga_story_shown = False  # Track if Dirga's story has been shown
+
+# Table with paper (near the clock)
+table_x = 320
+table_y = 380
+
+# Player
+selected_char = 0
+player_x = 100
+player_y = 500
+player_speed = 4
+sprint_speed = 7
+
+# Stamina system
+max_stamina = 100
+stamina = max_stamina
+stamina_drain_rate = 30  # per second when sprinting
+stamina_regen_rate = 20  # per second when not sprinting
+is_sprinting = False
+
+# Timer - changes per chapter
+time_limits = [90, 75, 60, 50, 45, 40, 35]  # Time for each chapter
+time_left = time_limits[0]
+time_limit = time_limits[0]
+last_tick = pygame.time.get_ticks()
+
+# Big clock position
+clock_x = 400
+clock_y = 300
+clock_radius = 80
+
+# Key location (random each game)
+key_x = random.randint(200, 600)
+key_y = random.randint(200, 500)
+key_collected = False
+
+# Octimus (helper) - locked at start
+octimus_x = 700
+octimus_y = 100
+octimus_locked = True
+
+# Elara (hantu) - enemy that moves, speed increases per chapter
+elara_x = 400
+elara_y = 300
+elara_speeds = [1.5, 2, 2.5, 3, 3.5, 4, 4.5]  # Speed per chapter
+elara_speed = elara_speeds[0]
+elara_dir_x = random.choice([-1, 1])
+elara_dir_y = random.choice([-1, 1])
+
+# Exit door
+exit_x = 750
+exit_y = 50
+exit_size = 50
+
+# Game state
+escaped = []
+game_over = False
+won = False
+time_up = False
+
+while True:
+
+    if game_state == "intro":
+        DISPLAYSURF.fill(DARK_BLUE)
+
+        if intro_phase == 0:
+            # Scene 1: Abandoned house
+            title = big_font.render("MALAM YANG KELAM", True, WHITE)
+            DISPLAYSURF.blit(title, (200, 100))
+
+            # Draw abandoned house
+            pygame.draw.rect(DISPLAYSURF, BROWN, (300, 250, 200, 150))
+            pygame.draw.polygon(DISPLAYSURF, RED, [(300, 250), (400, 180),
+                                                   (500, 250)])
+
+            story1 = small_font.render("6 orang sedang tidur di", True, WHITE)
+            story2 = small_font.render("rumah terbengkalai...", True, WHITE)
+
+            DISPLAYSURF.blit(story1, (270, 450))
+            DISPLAYSURF.blit(story2, (270, 480))
+
+            # Show characters sleeping
+            names = tiny_font.render(f"{', '.join(karakter)}", True, YELLOW)
+            DISPLAYSURF.blit(names, (200, 520))
+
+            next_text = tiny_font.render("Tekan ENTER untuk lanjut", True,
+                                         GREEN)
+            DISPLAYSURF.blit(next_text, (300, 560))
+
+        elif intro_phase == 1:
+            # Scene 2: Teleportation
+            title = big_font.render("TELEPORTASI!", True, RED)
+            DISPLAYSURF.blit(title, (250, 100))
+
+            # Swirl effect
+            for i in range(5):
+                pygame.draw.circle(DISPLAYSURF, YELLOW, (400, 300),
+                                   50 + i * 20, 3)
+
+            story1 = small_font.render("Setelah tidur...", True, WHITE)
+            story2 = small_font.render("Mereka bertelePOR ke", True, WHITE)
+            story3 = small_font.render("sebuah MANSION misterius!", True, RED)
+            story4 = small_font.render("7 CHAPTER menanti mereka!", True,
+                                       YELLOW)
+
+            DISPLAYSURF.blit(story1, (290, 400))
+            DISPLAYSURF.blit(story2, (260, 430))
+            DISPLAYSURF.blit(story3, (220, 460))
+            DISPLAYSURF.blit(story4, (220, 490))
+
+            next_text = tiny_font.render("Tekan ENTER untuk mulai Chapter 1",
+                                         True, GREEN)
+            DISPLAYSURF.blit(next_text, (260, 560))
+
+        # Handle intro events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_RETURN:
+                    if intro_phase == 0:
+                        intro_phase = 1
+                    elif intro_phase == 1:
+                        game_state = "chapter_intro"
+                        current_chapter = 1
+
+    elif game_state == "chapter_intro":
+        DISPLAYSURF.fill(PURPLE)
+
+        # Chapter title
+        chapter_title = big_font.render(chapter_names[current_chapter - 1],
+                                        True, WHITE)
+        DISPLAYSURF.blit(chapter_title, (100, 200))
+
+        # Chapter description
+        chapter_desc = small_font.render(
+            chapter_descriptions[current_chapter - 1], True, YELLOW)
+        DISPLAYSURF.blit(chapter_desc, (220, 280))
+
+        # Chapter info
+        if current_chapter == 1:
+            info = tiny_font.render("Pelajari kontrol dan mekanisme game",
+                                    True, WHITE)
+        elif current_chapter == 2:
+            info = tiny_font.render("Waktu berkurang! Bergerak cepat!", True,
+                                    WHITE)
+        elif current_chapter == 3:
+            info = tiny_font.render("Mansion semakin gelap dan berbahaya",
+                                    True, WHITE)
+        elif current_chapter == 4:
+            info = tiny_font.render("Kunci muncul di tempat acak!", True,
+                                    WHITE)
+        elif current_chapter == 5:
+            info = tiny_font.render("Elara bergerak lebih cepat!", True, WHITE)
+        elif current_chapter == 6:
+            info = tiny_font.render("Waktu sangat terbatas!", True, WHITE)
+        else:
+            info = tiny_font.render("Chapter terakhir! Selamatkan semua!",
+                                    True, WHITE)
+
+        DISPLAYSURF.blit(info, (200, 340))
+
+        # Time limit info
+        time_info = small_font.render(
+            f"Waktu: {time_limits[current_chapter - 1]} detik", True, GREEN)
+        DISPLAYSURF.blit(time_info, (300, 400))
+
+        next_text = tiny_font.render("Tekan ENTER untuk mulai", True, GREEN)
+        DISPLAYSURF.blit(next_text, (300, 560))
+
+        # Handle chapter intro events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_RETURN:
+                    game_state = "playing"
+                    # Reset for new chapter
+                    time_limit = time_limits[current_chapter - 1]
+                    time_left = time_limit
+                    elara_speed = elara_speeds[current_chapter - 1]
+                    last_tick = pygame.time.get_ticks()
+                    stamina = max_stamina
+
+    elif game_state == "playing":
+        DISPLAYSURF.fill(GRAY)
+
+        # Draw mansion walls
+        pygame.draw.rect(DISPLAYSURF, BROWN, (20, 20, 760, 560), 5)
+
+        # Draw BIG CLOCK in center of mansion
+        pygame.draw.circle(DISPLAYSURF, WHITE, (clock_x, clock_y),
+                           clock_radius, 5)
+
+        # Clock hands based on time left
+        angle = (time_left / time_limit) * 360 - 90  # Start from top
+        hand_x = clock_x + clock_radius * 0.7 * math.cos(math.radians(angle))
+        hand_y = clock_y + clock_radius * 0.7 * math.sin(math.radians(angle))
+        pygame.draw.line(DISPLAYSURF, RED, (clock_x, clock_y),
+                         (hand_x, hand_y), 4)
+
+        # Time display on clock
+        time_text = big_font.render(str(int(time_left)), True, RED)
+        time_rect = time_text.get_rect(center=(clock_x, clock_y))
+        DISPLAYSURF.blit(time_text, time_rect)
+
+        # Clock label
+        clock_label = tiny_font.render("JAM BESAR", True, BLACK)
+        DISPLAYSURF.blit(clock_label,
+                         (clock_x - 40, clock_y + clock_radius + 10))
+
+        # Draw exit door
+        pygame.draw.rect(DISPLAYSURF, GREEN,
+                         (exit_x, exit_y, exit_size, exit_size))
+        exit_text = tiny_font.render("EXIT", True, BLACK)
+        DISPLAYSURF.blit(exit_text, (exit_x + 5, exit_y + 15))
+
+        # Draw key if not collected
+        if not key_collected:
+            pygame.draw.circle(DISPLAYSURF, GOLD, (key_x, key_y), 15)
+            key_text = tiny_font.render("KUNCI", True, BLACK)
+            DISPLAYSURF.blit(key_text, (key_x - 20, key_y - 30))
+
+        # Octimus - locked or unlocked
+        if octimus_locked:
+            pygame.draw.circle(DISPLAYSURF, DARK_GRAY, (octimus_x, octimus_y),
+                               20)
+            octimus_text = tiny_font.render(hewan, True, WHITE)
+            DISPLAYSURF.blit(octimus_text, (octimus_x - 25, octimus_y - 35))
+            locked_text = tiny_font.render("(TERKUNCI)", True, RED)
+            DISPLAYSURF.blit(locked_text, (octimus_x - 40, octimus_y + 25))
+        else:
+            pygame.draw.circle(DISPLAYSURF, YELLOW, (octimus_x, octimus_y), 20)
+            octimus_text = tiny_font.render(hewan, True, BLACK)
+            DISPLAYSURF.blit(octimus_text, (octimus_x - 25, octimus_y - 35))
+            helper_label = tiny_font.render("(Helper)", True, GREEN)
+            DISPLAYSURF.blit(helper_label, (octimus_x - 30, octimus_y + 25))
+
+        # Elara (hantu) - enemy that moves
+        elara_x += elara_dir_x * elara_speed
+        elara_y += elara_dir_y * elara_speed
+
+        # Elara bounces off walls
+        if elara_x < 50 or elara_x > 750:
+            elara_dir_x *= -1
+        if elara_y < 50 or elara_y > 550:
+            elara_dir_y *= -1
+
+        pygame.draw.circle(DISPLAYSURF, RED, (int(elara_x), int(elara_y)), 25)
+        elara_text = tiny_font.render(hantu, True, WHITE)
+        DISPLAYSURF.blit(elara_text, (int(elara_x) - 20, int(elara_y) - 40))
+
+        # Draw table with paper (only in Chapter 1 if Dirga hasn't seen it)
+        if current_chapter == 1 and not dirga_story_shown:
+            # Table
+            pygame.draw.rect(DISPLAYSURF, BROWN, (table_x, table_y, 80, 60))
+            # Paper on table
+            pygame.draw.rect(DISPLAYSURF, WHITE,
+                             (table_x + 15, table_y + 10, 50, 40))
+            paper_hint = tiny_font.render("?", True, BLACK)
+            DISPLAYSURF.blit(paper_hint, (table_x + 35, table_y + 22))
+
+        # Draw player if not escaped
+        if karakter[
+                selected_char] not in escaped and not game_over and not time_up:
+            player_color = ORANGE if is_sprinting else BLUE
+            pygame.draw.circle(DISPLAYSURF, player_color,
+                               (int(player_x), int(player_y)), 25)
+            player_text = tiny_font.render(karakter[selected_char], True,
+                                           WHITE)
+            text_rect = player_text.get_rect(center=(int(player_x),
+                                                     int(player_y)))
+            DISPLAYSURF.blit(player_text, text_rect)
+
+        # Instructions
+        controls = [
+            "WASD/Arrows = Gerak", "SHIFT = Sprint (Stamina)",
+            f"Chapter {current_chapter}/7", "Hindari Elara!"
+        ]
+        y = 10
+        for line in controls:
+            text = tiny_font.render(line, True, WHITE)
+            DISPLAYSURF.blit(text, (10, y))
+            y += 20
+
+        # Stamina bar
+        stamina_bar_x = 600
+        stamina_bar_y = 20
+        stamina_bar_width = 180
+        stamina_bar_height = 20
+
+        # Background bar
+        pygame.draw.rect(DISPLAYSURF, DARK_GRAY,
+                         (stamina_bar_x, stamina_bar_y, stamina_bar_width,
+                          stamina_bar_height))
+
+        # Stamina fill
+        stamina_fill = (stamina / max_stamina) * stamina_bar_width
+        stamina_color = GREEN if stamina > 50 else (
+            YELLOW if stamina > 20 else RED)
+        pygame.draw.rect(
+            DISPLAYSURF, stamina_color,
+            (stamina_bar_x, stamina_bar_y, stamina_fill, stamina_bar_height))
+
+        # Stamina border
+        pygame.draw.rect(DISPLAYSURF, WHITE,
+                         (stamina_bar_x, stamina_bar_y, stamina_bar_width,
+                          stamina_bar_height), 2)
+
+        # Stamina label
+        stamina_label = tiny_font.render(f"Stamina: {int(stamina)}", True,
+                                         WHITE)
+        DISPLAYSURF.blit(stamina_label,
+                         (stamina_bar_x + 40, stamina_bar_y + 2))
+
+        # Status
+        status_text = small_font.render(f'Selamat: {len(escaped)}/6', True,
+                                        GREEN)
+        DISPLAYSURF.blit(status_text, (10, 520))
+
+        key_status = small_font.render(
+            f'Kunci: {"✓" if key_collected else "✗"}', True,
+            GOLD if key_collected else RED)
+        DISPLAYSURF.blit(key_status, (10, 550))
+
+        # Current character
+        char_display = small_font.render(
+            f'Karakter: {karakter[selected_char]}', True, BLUE)
+        DISPLAYSURF.blit(char_display, (250, 550))
+
+        # Timer warning
+        if time_left < 10:
+            warning = small_font.render("CEPAT! WAKTU HAMPIR HABIS!", True,
+                                        RED)
+            DISPLAYSURF.blit(warning, (480, 550))
+
+        # Update timer
+        current_time = pygame.time.get_ticks()
+        if current_time - last_tick >= 1000 and not game_over and not time_up and karakter[
+                selected_char] not in escaped:
+            time_left -= 1
+            last_tick = current_time
+
+            if time_left <= 0:
+                time_up = True
+
+        # Update stamina
+        dt = clock.get_time() / 1000.0  # Delta time in seconds
+
+        if is_sprinting and stamina > 0:
+            stamina -= stamina_drain_rate * dt
+            if stamina < 0:
+                stamina = 0
+                is_sprinting = False
+        elif not is_sprinting and stamina < max_stamina:
+            stamina += stamina_regen_rate * dt
+            if stamina > max_stamina:
+                stamina = max_stamina
+
+        # Check if player touched key
+        if not key_collected and not game_over and not time_up:
+            dist_key = (player_x - key_x)*2 + (player_y - key_y)*0.5
+            if dist_key < 40:
+                key_collected = True
+                octimus_locked = False
+                # Special story for Faqih in Chapter 1
+                if current_chapter == 1 and karakter[
+                        selected_char] == "faqih" and not story_shown:
+                    game_state = "story_cutscene"
+
+        # Check if Dirga near table in Chapter 1
+        if current_chapter == 1 and karakter[
+                selected_char] == "dirga" and not dirga_story_shown:
+            dist_table = ((player_x - (table_x + 40))**2 +
+                          (player_y - (table_y + 30))*2)*0.5
+            if dist_table < 60:
+                game_state = "story_dirga"
+
+        # Check if player touched elara (game over for this character)
+        if not game_over and not time_up:
+            dist_elara = ((player_x - elara_x)**2 +
+                          (player_y - elara_y)*2)*0.5
+            if dist_elara < 50:
+                game_over = True
+
+        # Check if near octimus and exit (only if unlocked)
+        if not octimus_locked and not time_up:
+            dist_octimus = ((player_x - octimus_x)**2 +
+                            (player_y - octimus_y)*2)*0.5
+            dist_exit = ((player_x - exit_x - 25)**2 +
+                         (player_y - exit_y - 25)*2)*0.5
+
+            if dist_octimus < 60 and dist_exit < 80:
+                if karakter[selected_char] not in escaped:
+                    escaped.append(karakter[selected_char])
+                    # Switch to next character
+                    for i in range(6):
+                        if karakter[i] not in escaped:
+                            selected_char = i
+                            player_x = 100
+                            player_y = 500
+                            game_over = False
+                            time_up = False
+                            # Reset for next character
+                            key_collected = False
+                            octimus_locked = True
+                            key_x = random.randint(150, 650)
+                            key_y = random.randint(150, 500)
+                            time_left = time_limit
+                            last_tick = pygame.time.get_ticks()
+                            stamina = max_stamina
+                            is_sprinting = False
+                            break
+
+        # Check if all 6 escaped in this chapter
+        if len(escaped) == 6:
+            if current_chapter < max_chapters:
+                game_state = "chapter_complete"
+            else:
+                game_state = "won"
+
+        # Time up message
+        if time_up:
+            tu_text = small_font.render(
+                f"{karakter[selected_char]} kehabisan waktu!", True, RED)
+            DISPLAYSURF.blit(tu_text, (250, 180))
+            reset_text = tiny_font.render("Tekan SPACE untuk coba lagi", True,
+                                          WHITE)
+            DISPLAYSURF.blit(reset_text, (270, 210))
+
+        # Game over message
+        if game_over:
+            go_text = small_font.render(
+                f"{karakter[selected_char]} tertangkap!", True, RED)
+            DISPLAYSURF.blit(go_text, (280, 180))
+            reset_text = tiny_font.render("Tekan SPACE untuk coba lagi", True,
+                                          WHITE)
+            DISPLAYSURF.blit(reset_text, (270, 210))
+
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_1:
+                    selected_char = 0
+                    player_x = 100
+                    player_y = 500
+                    game_over = False
+                    time_up = False
+                    time_left = time_limit
+                    last_tick = pygame.time.get_ticks()
+                    stamina = max_stamina
+                elif event.key == K_2:
+                    selected_char = 1
+                    player_x = 100
+                    player_y = 500
+                    game_over = False
+                    time_up = False
+                    time_left = time_limit
+                    last_tick = pygame.time.get_ticks()
+                    stamina = max_stamina
+                elif event.key == K_3:
+                    selected_char = 2
+                    player_x = 100
+                    player_y = 500
+                    game_over = False
+                    time_up = False
+                    time_left = time_limit
+                    last_tick = pygame.time.get_ticks()
+                    stamina = max_stamina
+                elif event.key == K_4:
+                    selected_char = 3
+                    player_x = 100
+                    player_y = 500
+                    game_over = False
+                    time_up = False
+                    time_left = time_limit
+                    last_tick = pygame.time.get_ticks()
+                    stamina = max_stamina
+                elif event.key == K_5:
+                    selected_char = 4
+                    player_x = 100
+                    player_y = 500
+                    game_over = False
+                    time_up = False
+                    time_left = time_limit
+                    last_tick = pygame.time.get_ticks()
+                    stamina = max_stamina
+                elif event.key == K_6:
+                    selected_char = 5
+                    player_x = 100
+                    player_y = 500
+                    game_over = False
+                    time_up = False
+                    time_left = time_limit
+                    last_tick = pygame.time.get_ticks()
+                    stamina = max_stamina
+                elif event.key == K_SPACE:
+                    player_x = 100
+                    player_y = 500
+                    game_over = False
+                    time_up = False
+                    time_left = time_limit
+                    last_tick = pygame.time.get_ticks()
+                    stamina = max_stamina
+
+        # Handle movement
+        if not game_over and not time_up and karakter[
+                selected_char] not in escaped:
+            keys = pygame.key.get_pressed()
+
+            # Check if sprinting (shift pressed and has stamina)
+            if (keys[K_LSHIFT] or keys[K_RSHIFT]) and stamina > 0:
+                is_sprinting = True
+                current_speed = sprint_speed
+            else:
+                is_sprinting = False
+                current_speed = player_speed
+
+            if keys[K_UP] or keys[K_w]:
+                player_y -= current_speed
+            if keys[K_DOWN] or keys[K_s]:
+                player_y += current_speed
+            if keys[K_LEFT] or keys[K_a]:
+                player_x -= current_speed
+            if keys[K_RIGHT] or keys[K_d]:
+                player_x += current_speed
+
+            # Keep player in bounds
+            player_x = max(40, min(760, player_x))
+            player_y = max(40, min(560, player_y))
+
+    elif game_state == "story_cutscene":
+        DISPLAYSURF.fill(BLACK)
+
+        # Faqih finding the paper story
+        title = big_font.render("PENEMUAN FAQIH", True, RED)
+        DISPLAYSURF.blit(title, (220, 80))
+
+        # Draw paper
+        pygame.draw.rect(DISPLAYSURF, WHITE, (250, 180, 300, 200))
+        pygame.draw.rect(DISPLAYSURF, BLACK, (250, 180, 300, 200), 3)
+
+        # Paper text
+        paper_title = small_font.render("PERINGATAN!", True, RED)
+        DISPLAYSURF.blit(paper_title, (330, 210))
+
+        warning1 = tiny_font.render("HATI HATI!", True, BLACK)
+        warning2 = tiny_font.render("DISINI ADA HANTU", True, BLACK)
+        warning3 = tiny_font.render("YG BERNAMA", True, BLACK)
+        warning4 = font.render("ELARA", True, RED)
+
+        DISPLAYSURF.blit(warning1, (320, 260))
+        DISPLAYSURF.blit(warning2, (300, 285))
+        DISPLAYSURF.blit(warning3, (310, 310))
+        DISPLAYSURF.blit(warning4, (330, 335))
+
+        # Faqih comment
+        faqih_text = small_font.render(
+            'Faqih: "Hantu Elara? Kita harus hati-hati!"', True, YELLOW)
+        DISPLAYSURF.blit(faqih_text, (180, 430))
+
+        continue_text = tiny_font.render("Tekan ENTER untuk lanjut", True,
+                                         GREEN)
+        DISPLAYSURF.blit(continue_text, (300, 560))
+
+        # Handle cutscene events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_RETURN:
+                    story_shown = True
+                    game_state = "playing"
+
+    elif game_state == "story_dirga":
+        DISPLAYSURF.fill(BLACK)
+
+        # Dirga finding the paper on table story
+        title = big_font.render("DIRGA MENEMUKAN MEJA", True, YELLOW)
+        DISPLAYSURF.blit(title, (180, 80))
+
+        # Draw table
+        pygame.draw.rect(DISPLAYSURF, BROWN, (250, 200, 120, 90))
+
+        # Draw paper on table
+        pygame.draw.rect(DISPLAYSURF, WHITE, (280, 220, 80, 60))
+        pygame.draw.rect(DISPLAYSURF, BLACK, (280, 220, 80, 60), 2)
+
+        # Paper text
+        paper_text1 = tiny_font.render("Mansion ini", True, BLACK)
+        paper_text2 = tiny_font.render("terkutuk...", True, BLACK)
+        paper_text3 = tiny_font.render("Cari jalan", True, BLACK)
+        paper_text4 = tiny_font.render("keluar!", True, RED)
+
+        DISPLAYSURF.blit(paper_text1, (290, 230))
+        DISPLAYSURF.blit(paper_text2, (290, 245))
+        DISPLAYSURF.blit(paper_text3, (290, 260))
+        DISPLAYSURF.blit(paper_text4, (295, 275))
+
+        # Dirga comment
+        dirga_text1 = small_font.render('Dirga: "Ada kertas di atas meja..."',
+                                        True, YELLOW)
+        dirga_text2 = small_font.render(
+            '"Mansion terkutuk? Kita harus keluar!"', True, YELLOW)
+        DISPLAYSURF.blit(dirga_text1, (200, 380))
+        DISPLAYSURF.blit(dirga_text2, (180, 410))
+
+        continue_text = tiny_font.render("Tekan ENTER untuk lanjut", True,
+                                         GREEN)
+        DISPLAYSURF.blit(continue_text, (300, 560))
+
+        # Handle cutscene events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_RETURN:
+                    dirga_story_shown = True
+                    game_state = "playing"
+
+    elif game_state == "chapter_complete":
+        DISPLAYSURF.fill(GREEN)
+
+        complete_text = big_font.render(f"CHAPTER {current_chapter} SELESAI!",
+                                        True, WHITE)
+        DISPLAYSURF.blit(complete_text, (150, 200))
+
+        congrats = small_font.render("Semua karakter selamat!", True, YELLOW)
+        DISPLAYSURF.blit(congrats, (250, 300))
+
+        next_chapter = small_font.render(
+            f"Siap untuk Chapter {current_chapter + 1}?", True, WHITE)
+        DISPLAYSURF.blit(next_chapter, (230, 360))
+
+        next_text = tiny_font.render("Tekan ENTER untuk lanjut", True, BLACK)
+        DISPLAYSURF.blit(next_text, (300, 560))
+
+        # Handle chapter complete events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_RETURN:
+                    current_chapter += 1
+                    game_state = "chapter_intro"
+                    # Reset for next chapter
+                    escaped = []
+                    selected_char = 0
+                    player_x = 100
+                    player_y = 500
+                    game_over = False
+                    time_up = False
+                    key_collected = False
+                    octimus_locked = True
+                    key_x = random.randint(150, 650)
+                    key_y = random.randint(150, 500)
+                    elara_x = 400
+                    elara_y = 300
+                    stamina = max_stamina
+                    is_sprinting = False
+
+    elif game_state == "won":
+        DISPLAYSURF.fill(DARK_BLUE)
+
+        win_text = big_font.render("GAME SELESAI!", True, GOLD)
+        DISPLAYSURF.blit(win_text, (220, 150))
+
+        all_chapters = small_font.render("7 CHAPTER BERHASIL DISELESAIKAN!",
+                                         True, GREEN)
+        DISPLAYSURF.blit(all_chapters, (180, 250))
+
+        story1 = small_font.render("6 orang berhasil kabur dari mansion!",
+                                   True, WHITE)
+        story2 = small_font.render("Terima kasih kepada Octimus!", True,
+                                   YELLOW)
+
+        DISPLAYSURF.blit(story1, (180, 320))
+        DISPLAYSURF.blit(story2, (200, 360))
+
+        survivors = tiny_font.render(f"Pahlawan: {', '.join(karakter)}", True,
+                                     GREEN)
+        DISPLAYSURF.blit(survivors, (230, 420))
+
+        # Handle win screen events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+    pygame.display.update()
+    clock.tick(60)
+
+
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>The Mansion of Elara — Chapter 1 (Interaktif, Revisi)</title>
+<style>
+:root{--bg:#07090b;--card:#0f1518;--accent:#78baff;--muted:#9fb0b8}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;color:#e9f6ff;background:linear-gradient(180deg,#030407 0%,#071018 100%)}
+    .wrap{max-width:1000px;margin:28px auto;padding:22px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 10px 40px rgba(0,0,0,0.7)}
+    header{display:flex;gap:14px;align-items:center}
+    .logo{width:64px;height:64px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#8a6cff);display:grid;place-items:center;font-weight:800;color:#02121a}
+    h1{margin:0;font-size:20px}
+    .lead{color:var(--muted);margin-top:6px}
+
+    .layout{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:18px}
+    .main{background:rgba(255,255,255,0.02);padding:16px;border-radius:10px;min-height:540px;position:relative}
+    .side{padding:14px;border-radius:10px;background:rgba(255,255,255,0.01)}
+
+    .story{white-space:pre-wrap;line-height:1.6;font-size:15px}
+    .log{margin-top:12px;background:rgba(0,0,0,0.45);padding:10px;border-radius:8px;color:var(--muted);min-height:140px;overflow:auto}
+
+    .controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    button{padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.05);background:transparent;color:#eaf8ff;cursor:pointer}
+    .primary{background:linear-gradient(90deg,var(--accent),#a18bff);border:none;color:#02121a;font-weight:700}
+
+    .inventory{margin-top:12px}
+    .item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02)}
+
+    .fog{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle at 10% 10%, rgba(120,186,255,0.06), transparent 6%), radial-gradient(circle at 90% 80%, rgba(138,108,255,0.03), transparent 8%)}
+    .orb{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle, rgba(120,186,255,0.95), rgba(120,186,255,0.22));box-shadow:0 8px 34px rgba(120,186,255,0.18)}
+
+    @media(max-width:880px){.layout{grid-template-columns:1fr}.side{order:2}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">EL</div>
+      <div>
+        <h1>The Mansion of Elara — Chapter 1</h1>
+        <div class="lead">Kebangkitan di Ruangan 228 — versi interaktif (revisi): cerita lebih sinematik & kerja sama tim.</div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <main class="main" id="main">
+        <div class="fog"></div>
+        <h2 id="title">Malam di Mansion</h2>
+        <div class="story" id="story">
+Malam itu, udara di sekitar mansion tua terasa lebih dingin dari biasanya.
+Langit malam seolah menahan napas, dan kabut tipis melingkari atap yang retak.
+
+Dirga berjalan cepat di koridor yang sunyi. Di tangannya, selembar kertas lusuh berlipat — kata-kata di dalamnya hanya satu baris:
+
+"Di ruangan 228... ada Octimus yang terkunci."
+
+Ia berhenti sejenak. Di seberang dinding, secercah cahaya biru muncul, membentuk angka <strong>228</strong> yang berpendar.
+
+Tanpa menanti lama, Dirga memanggil teman-temannya: Nohan, Faqih, Rifqie, Kutako, Shanum, dan Agasi. Mereka berkumpul di aula besar, saling bertukar tatap.
+
+"Ini bukan kertas biasa," kata Nohan tenang. "Kita harus hati-hati — tapi kita lakukan ini bareng." 
+
+Sebelum berangkat, Nohan menyerahkan sebuah pulpen yang bisa menembakkan tinta bercahaya pada Dirga. "Pakailah ini untuk menandai jalur yang sudah aman."
+
+Rencana mereka sederhana: bergerak berpasangan, saling menjaga.
+
+(Klik tombol untuk menjalankan adegan dan berinteraksi dengan cerita.)
+        </div>
+
+        <div class="controls">
+          <button id="btnStart" class="primary">Mulai Petualangan</button>
+          <button id="btnSearch">Telusuri Koridor</button>
+          <button id="btnLocker">Periksa Loker</button>
+          <button id="btnReturn">Kembali ke Aula</button>
+          <button id="btnUseKey">Menuju Ruang 228</button>
+          <button id="btnTalk">Bicara pada Octimus</button>
+          <button id="btnHints">Petunjuk</button>
+        </div>
+
+        <div class="log" id="log"></div>
+      </main>
+
+      <aside class="side">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong>Kelompok</strong>
+            <div style="color:var(--muted);font-size:13px">Dirga · Nohan · Faqih · Rifqie · Kutako · Shanum · Agasi</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="orb" id="orb"></div>
+          </div>
+        </div>
+
+        <div class="inventory">
+          <h3 style="margin:10px 0 6px 0">Inventaris</h3>
+          <div id="items"></div>
+        </div>
+
+        <div style="margin-top:14px;color:var(--muted);font-size:13px">
+          <strong>Catatan Tim</strong>
+          <ul>
+            <li>Gerak berpasangan — saling jaga.</li>
+            <li>Tandai ruangan dengan tinta biru bila sudah diperiksa.</li>
+            <li>Kumpulkan 7 tanda cahaya untuk membuka jalan keluar.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <footer style="margin-top:16px;color:var(--muted);font-size:13px">File ini adalah demo interaktif. Boleh dikembangkan jadi visual novel atau game teks lebih lengkap.</footer>
+  </div>
+
+  <script>
+    const state = {
+      started:false,
+      foundKey:false,
+      markedRoom:false,
+      doorOpen:false,
+      metOctimus:false,
+      keyId:'228'
+    };
+
+    const logEl = document.getElementById('log');
+    const storyEl = document.getElementById('story');
+    const itemsEl = document.getElementById('items');
+    const orbEl = document.getElementById('orb');
+
+    function log(text){
+      const d = document.createElement('div'); d.textContent = text; logEl.prepend(d);
+    }
+
+    function renderItems(){
+      itemsEl.innerHTML = '';
+      // glowing pen always present after start
+      if(state.started){
+        const pen = document.createElement('div'); pen.className='item'; pen.innerHTML = '<div style="font-weight:700">🖊 Pulpen Bercahaya</div><div style="color:var(--muted);font-size:13px">Gunakan untuk menandai ruangan yang aman</div>';
+        itemsEl.appendChild(pen);
+      }
+      if(state.foundKey){
+        const k = document.createElement('div'); k.className='item'; k.innerHTML = '<div style="font-weight:700">🔑 Kunci 228</div><div style="color:var(--muted);font-size:13px">Kunci kecil berukir angka 228</div>';
+        itemsEl.appendChild(k);
+      }
+      if(!state.started){ const ph = document.createElement('div'); ph.className='item'; ph.style.color='var(--muted)'; ph.textContent='(Belum memulai petualangan)'; itemsEl.appendChild(ph);}    }
+
+    // initial
+    renderItems();
+    log('Dirga menemukan selembar kertas bertuliskan: "Di ruangan 228... ada Octimus yang terkunci."');
+
+    document.getElementById('btnStart').onclick = ()=>{
+      if(state.started){ log('Petualangan sudah dimulai.'); return; }
+      state.started = true; renderItems();
+      log('Kelompok membagi tugas dan bergerak berpasangan. Nohan memberikan pulpen bercahaya kepada Dirga.');
+      storyEl.textContent = Dirga dan Faqih berjalan menyusuri lorong yang sunyi. Lampu-lampu tua berkedip. Mereka tiba di sebuah ruangan dengan bercak darah di dinding.\n\n"Kita masuk?" tanya Faqih. Dirga mengangguk.;
+    }
+
+    document.getElementById('btnSearch').onclick = ()=>{
+      if(!state.started){ log('Mulai petualangan dulu dengan tombol "Mulai Petualangan".'); return; }
+      log('Mereka menelusuri koridor. Suasana semakin dingin, dan kabut seperti menutup jalan di belakang mereka.');
+      storyEl.textContent = Koridor panjang mereka lalui dalam diam. Di dalam ruangan itu terlihat beberapa loker tua.\n\n(Periksa loker untuk mencari kunci.);
+    }
+
+    document.getElementById('btnLocker').onclick = ()=>{
+      if(!state.started){ log('Belum mulai.'); return; }
+      log('Mereka membuka loker satu per satu...');
+      setTimeout(()=>{ log('Loker pertama kosong. Loker kedua berisi kertas robek dengan noda tinta.'); },500);
+      setTimeout(()=>{
+        log('Loker ketiga berkilau. Faqih menemukan sebuah kunci kecil berukir angka 228.');
+        state.foundKey = true; renderItems();
+      },1200);
+    }
+
+    document.getElementById('btnReturn').onclick = ()=>{
+      if(!state.started){ log('Belum mulai.'); return; }
+      log('Mereka kembali ke aula dan berkumpul. Semua menatap kunci 228. Kutako ragu, tetapi Shanum menguatkan: "Kita keluar bersama."');
+      storyEl.textContent = Kembali di aula, Dirga memperlihatkan kunci. Mereka saling menguatkan satu sama lain, lalu bergerak menuju ruangan 228 secara berkelompok.;
+    }
+
+    document.getElementById('btnUseKey').onclick = ()=>{
+      if(!state.foundKey){ log('Kunci belum ditemukan. Periksa loker dulu.'); return; }
+      if(state.doorOpen){ log('Pintu sudah terbuka.'); return; }
+      state.doorOpen = true; state.metOctimus = true;
+      // mark as used pen
+      state.markedRoom = true;
+      log('Dirga memasukkan kunci 228 ke pintu besi ruangan 228. Klik. Pintu berderit, membuka sebuah ruangan yang dipenuhi kabut ungu.');
+      storyEl.textContent = Pintu terbuka, udara dingin menyeruak keluar. Di tengah ruangan berdiri sosok besar, tubuhnya diselimuti kabut ungu dan matanya bersinar biru lembut.;
+      setTimeout(()=>{ log('Sebuah suara bergema: "Kalian... membebaskanku..."'); },700);
+      setTimeout(()=>{ animateOrb(); log('Octimus memperkenalkan diri: "Aku Octimus, penjaga yang dikurung oleh Elara."'); },1300);
+    }
+
+    document.getElementById('btnTalk').onclick = ()=>{
+      if(!state.metOctimus){ log('Tidak ada yang merespons. Buka ruangan 228 terlebih dahulu.'); return; }
+      log('Dirga: "Kalau begitu... bantu kami, Octimus. Tunjukkan jalan keluar."');
+      setTimeout(()=>{ log('Octimus: "Jalan keluar hanya bisa dibuka dengan tujuh tanda cahaya. Tapi Elara akan mencoba menghentikan kalian..."'); animateOrb(2); },700);
+    }
+
+    document.getElementById('btnHints').onclick = ()=>{
+      log('Petunjuk: 1) Tandai ruangan yang sudah diperiksa. 2) Cari tanda cahaya di ruangan lain. 3) Bergerak berpasangan, jangan terpisah.');
+    }
+
+    function animateOrb(level){
+      if(!level) level = state.metOctimus?1:0;
+      if(level===0){ orbEl.style.transform='scale(1)'; orbEl.style.boxShadow='0 6px 24px rgba(120,186,255,0.06)'; }
+      if(level===1){ orbEl.style.transform='scale(1.15)'; orbEl.style.boxShadow='0 14px 50px rgba(120,186,255,0.18)'; }
+      if(level===2){ orbEl.style.transform='scale(1.35)'; orbEl.style.boxShadow='0 20px 80px rgba(120,186,255,0.26)'; }
+    }
+
+    // keyboard shortcuts
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='s') document.getElementById('btnStart').click();
+      if(e.key==='1') document.getElementById('btnSearch').click();
+      if(e.key==='2') document.getElementById('btnLocker').click();
+      if(e.key==='3') document.getElementById('btnReturn').click();
+      if(e.key==='4') document.getElementById('btnUseKey').click();
+      if(e.key==='5') document.getElementById('btnTalk').click();
+      if(e.key==='h') document.getElementById('btnHints').click();
+    });
+
+  </script>
+</body>
+</html>
+
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Mansion of Elara — Tanda Cahaya Pertama</title>
+  <style>
+    :root{--bg:#05080a;--muted:#9fb0b8;--accent:#6ec8ff}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;color:#eaf8ff;background:linear-gradient(180deg,#020305 0%,#071018 100%)}
+    .wrap{max-width:980px;margin:28px auto;padding:20px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 12px 46px rgba(0,0,0,0.6)}
+    header{display:flex;gap:14px;align-items:center}
+    .logo{width:60px;height:60px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#8a6cff);display:grid;place-items:center;font-weight:800;color:#02121a}
+    h1{margin:0;font-size:20px}
+    .lead{color:var(--muted);margin-top:6px}
+
+    .layout{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:16px}
+    .main{padding:16px;border-radius:10px;min-height:520px;position:relative;background:rgba(255,255,255,0.01)}
+    .side{padding:14px;border-radius:10px;background:rgba(255,255,255,0.01)}
+
+    .story{white-space:pre-wrap;line-height:1.6;font-size:15px;color:#e6f7ff}
+    .log{margin-top:12px;background:rgba(0,0,0,0.45);padding:10px;border-radius:8px;color:var(--muted);min-height:140px;overflow:auto}
+
+    .controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    button{padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.05);background:transparent;color:#eaf8ff;cursor:pointer}
+    .primary{background:linear-gradient(90deg,var(--accent),#a18bff);border:none;color:#02121a;font-weight:700}
+
+    .inventory{margin-top:14px}
+    .item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02)}
+
+    .canvas-lukisan{width:100%;height:220px;border-radius:8px;background-image:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));display:grid;place-items:center;color:var(--muted);}
+    .symbol{font-size:44px;color:rgba(110,200,255,0.9);text-shadow:0 6px 30px rgba(110,200,255,0.08)}
+
+    .pen-glow{display:inline-block;width:18px;height:18px;border-radius:4px;margin-right:8px;vertical-align:middle}
+
+    @media(max-width:880px){.layout{grid-template-columns:1fr}.side{order:2}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">EL</div>
+      <div>
+        <h1>The Mansion of Elara — Tanda Cahaya Pertama</h1>
+        <div class="lead">Adegan lanjutan: koridor, lukisan Elara, dan penemuan Tanda Cahaya Pertama.</div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <main class="main">
+        <h2>Koridor Menuju Ruang 228</h2>
+        <div class="story" id="story">
+Koridor panjang di depan ruangan 228 terasa lebih sunyi dari sebelumnya.
+Setiap langkah mereka memantul di dinding, seolah-olah ada langkah lain yang mengikutinya dari belakang.
+
+Dirga berjalan paling depan, menyorotkan cahaya pulpen bercahaya biru. Di belakangnya, Nohan membuka peta kuno yang sekarang menampilkan garis-garis cahaya samar.
+
+"Peta ini... nggak kayak tadi," gumam Nohan. Faqih menunduk melihatnya. "Mungkin efek dari yang Elara bilang... tanda cahaya."
+
+Mereka melewati deretan lukisan — semua menampilkan wajah Elara dalam berbagai usia.
+        </div>
+
+        <div style="margin-top:12px" class="canvas-lukisan" id="lukisan">
+          <div style="text-align:center">
+            <div style="font-weight:700">Lukisan Elara</div>
+            <div style="margin-top:12px;color:var(--muted);font-size:13px">(Klik tombol <em>Periksa Lukisan</em> untuk melihat lebih dekat)</div>
+            <div id="symbolArea" style="margin-top:12px"></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="btnInspect" class="primary">Periksa Lukisan</button>
+          <button id="btnTouch" >Sentuh Genangan</button>
+          <button id="btnAbsorb">Serap Cahaya (pulpen)</button>
+          <button id="btnContinue">Lanjutkan</button>
+        </div>
+
+        <div class="log" id="log"></div>
+
+      </main>
+
+      <aside class="side">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong>Kelompok</strong>
+            <div style="color:var(--muted);font-size:13px">Dirga · Nohan · Faqih · Rifqie · Kutako · Shanum · Agasi</div>
+          </div>
+          <div id="penDisplay">
+            <div style="font-size:13px;color:var(--muted)">Pulpen:</div>
+            <div style="margin-top:6px"><span class="pen-glow" id="penGlow" style="background:linear-gradient(90deg,#7fbfff,#9b7bff)"></span><span id="penLabel">Bercahaya (Biru)</span></div>
+          </div>
+        </div>
+
+        <div class="inventory">
+          <h3 style="margin:10px 0 6px 0">Inventaris</h3>
+          <div id="items"></div>
+        </div>
+
+        <div style="margin-top:14px;color:var(--muted);font-size:13px">
+          <strong>Petunjuk</strong>
+          <ul>
+            <li>Periksa lukisan untuk menemukan simbol.</li>
+            <li>Sentuh genangan yang terbentuk untuk mengaktifkan tanda.</li>
+            <li>Serap cahaya ke dalam pulpen untuk memperkuat tinta.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <footer style="margin-top:16px;color:var(--muted);font-size:13px">Tekan tombol sesuai urutan: Periksa → Sentuh → Serap → Lanjutkan.</footer>
+  </div>
+
+  <script>
+    const state = {
+      inspected:false,
+      poolExists:false,
+      touched:false,
+      penColor:'Biru',
+      absorbed:false,
+      foundSymbol:false
+    };
+
+    const logEl = document.getElementById('log');
+    const symbolArea = document.getElementById('symbolArea');
+    const itemsEl = document.getElementById('items');
+    const penGlow = document.getElementById('penGlow');
+    const penLabel = document.getElementById('penLabel');
+
+    function log(t){ const d=document.createElement('div'); d.textContent=t; logEl.prepend(d); }
+    function renderItems(){ itemsEl.innerHTML=''; if(state.absorbed){ const it=document.createElement('div'); it.className='item'; it.innerHTML='<div style="font-weight:700">🔶 Tanda Cahaya (1)</div><div style="color:var(--muted);font-size:13px">Tersimpan pada pulpen</div>'; itemsEl.appendChild(it);} else { const ph=document.createElement('div'); ph.className='item'; ph.style.color='var(--muted)'; ph.textContent='(Belum ada tanda yang disimpan)'; itemsEl.appendChild(ph); } }
+    renderItems();
+
+    document.getElementById('btnInspect').onclick = ()=>{
+      if(state.inspected){ log('Lukisan sudah diperiksa. Simbol semakin terang.'); return; }
+      state.inspected = true;
+      // show symbol and whisper
+      symbolArea.innerHTML = '<div class="symbol">👁</div><div style="color:var(--muted);margin-top:8px">"Jejak pertama... adalah air mata yang tak pernah jatuh."</div>';
+      log('Shanum menunjuk retakan pada lukisan — retakan itu membentuk simbol seperti mata. Cahaya di pulpen Dirga bergetar.');
+      // create pool
+      setTimeout(()=>{
+        log('Dari lukisan muncul tetesan air bening yang jatuh ke lantai dan membentuk genangan kecil yang bersinar.');
+        state.poolExists = true;
+        // indicate pool in story area
+        const s = document.getElementById('story'); s.textContent += '\n\nDi bawah lukisan, genangan kecil bercahaya terbentuk.';
+      },800);
+    }
+
+    document.getElementById('btnTouch').onclick = ()=>{
+      if(!state.poolExists){ log('Belum ada genangan untuk disentuh. Periksa lukisan dulu.'); return; }
+      if(state.touched){ log('Genangan sudah disentuh. Simbol cahaya terbentuk.'); return; }
+      state.touched = true;
+      log('Dirga berlutut dan menyentuh genangan dengan ujung jarinya. Genangan menyebar, membentuk simbol bercahaya di lantai — Tanda Cahaya Pertama.');
+      // visual cue
+      symbolArea.innerHTML += '<div style="margin-top:10px;color:rgba(155,123,255,0.9);font-weight:700">Tanda Cahaya Pertama terbentuk</div>';
+    }
+
+    document.getElementById('btnAbsorb').onclick = ()=>{
+      if(!state.touched){ log('Sentuh genangan dulu untuk mengaktifkan tanda.'); return; }
+      if(state.absorbed){ log('Pulpen sudah menyerap cahaya. Warnanya berubah.'); return; }
+      state.absorbed = true;
+      state.penColor = 'Ungu-Kebiruan';
+      penGlow.style.background = 'linear-gradient(90deg,#9b7bff,#6ec8ff)';
+      penLabel.textContent = 'Bercahaya (Ungu-Kebiruan)';
+      log('Cahaya dari simbol meresap ke dalam pulpen Dirga. Tinta pulpen kini berpendar ungu-kebiruan, lebih kuat.');
+      // update items
+      renderItems();
+      // effect: orb in previous scenes could grow — simulate by adding note
+      setTimeout(()=>{ log('Kekuatan pulpen terasa berbeda — seolah ada jejak energi yang baru terbuka di mansion ini.'); },700);
+    }
+
+    document.getElementById('btnContinue').onclick = ()=>{
+      if(!state.absorbed){ log('Sebaiknya serap cahaya ke pulpen dulu sebelum melanjutkan.'); return; }
+      log('Simbol cahaya di lantai meresap sepenuhnya dan menuntun peta Nohan menampilkan jalur baru. Kelompok bersiap untuk mencari tanda berikutnya.');
+      const s = document.getElementById('story'); s.textContent += '\n\n"Kita dapat satu tanda," kata Dirga. "Enam lagi menantimu."';
+      // mark found
+      state.foundSymbol = true;
+      // disable buttons to indicate progression
+      document.getElementById('btnInspect').disabled = true;
+      document.getElementById('btnTouch').disabled = true;
+      document.getElementById('btnAbsorb').disabled = true;
+    }
+
+    // keyboard shortcuts
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='i') document.getElementById('btnInspect').click();
+      if(e.key==='t') document.getElementById('btnTouch').click();
+      if(e.key==='a') document.getElementById('btnAbsorb').click();
+      if(e.key==='c') document.getElementById('btnContinue').click();
+    });
+
+    // initial log
+    log('Mereka berjalan di koridor; peta Nohan menunjukkan garis cahaya samar. Siap menemukan tanda pertama. (Tekan i,t,a,c atau klik tombol)');
+  </script>
+</body>
+</html>
+
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TANDA CAHAYA — Episode 3–7 (Prototype)</title>
+  <style>
+    :root{--bg:#0b0b0f;--panel:#111217;--accent:#62b7ff;--danger:#ff6b6b;--muted:#a6a6a6}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#050506 0%,#0d0d11 100%);font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    #game{width:100%;height:100vh;display:flex;align-items:center;justify-content:center}
+    .wrap{width:980px;max-width:95%;height:640px;background:var(--panel);border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.6);overflow:hidden;display:grid;grid-template-columns:1fr 360px}
+    .viewport{position:relative;padding:28px;color:#e9eef8}
+    h1{margin:0 0 8px;font-size:20px}
+    .scene-text{white-space:pre-wrap;line-height:1.5;font-size:15px;color:#dfe9ff;max-height:360px;overflow:auto;padding-right:8px}
+    .hud{position:absolute;right:28px;top:28px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:12px;border-radius:8px;width:300px}
+    .inventory{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .item{background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:6px;font-size:13px;color:var(--muted)}
+    .controls{padding:20px;border-left:1px solid rgba(255,255,255,0.02);display:flex;flex-direction:column;gap:12px}
+    .choices{display:flex;flex-direction:column;gap:8px}
+    button.choice{background:#0e1720;border:none;color:#e9eef8;padding:12px;border-radius:8px;text-align:left;cursor:pointer;font-size:14px}
+    button.choice:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.5)}
+    .status{font-size:13px;color:var(--muted)}
+    .meter{height:10px;background:rgba(255,255,255,0.04);border-radius:6px;overflow:hidden;margin-top:8px}
+    .meter > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#7be0ff);width:0%}
+    .danger{color:var(--danger)}
+    footer{position:absolute;left:28px;bottom:18px;color:var(--muted);font-size:12px}
+    .topbar{position:absolute;left:28px;top:18px;color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+  <div id="game">
+    <div class="wrap">
+      <div class="viewport">
+        <div class="topbar">Chapter 1 — Episodes 3 → 7 (Prototype)</div>
+        <h1 id="scene-title">Loading...</h1>
+        <div class="scene-text" id="scene-text">--</div>
+        <div class="hud">
+          <div class="status">Inventaris</div>
+          <div class="inventory" id="inventory"></div>
+          <div class="status">Energi Tinta</div>
+          <div class="meter" title="energi"><i id="ink-meter"></i></div>
+        </div>
+        <footer id="footer-note">Tip: Pilihan memengaruhi pacing & resource tinta.</footer>
+      </div>
+      <div class="controls">
+        <div class="status">Pilihan</div>
+        <div class="choices" id="choices"></div>
+        <div class="status">Episode Progress</div>
+        <div id="progress">Episode: <b id="epnum">3</b> / 7</div>
+        <div style="flex:1"></div>
+        <div style="display:flex;gap:8px">
+          <button id="btn-save" class="choice">Simpan (local)</button>
+          <button id="btn-reset" class="choice">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// Simple narrative prototype engine for Episode 3-7
+// Data-driven scenes. No assets required.
+
+const state = {
+  episode: 3,
+  ink: 100, // resource
+  inventory: [],
+  flags: {},
+};
+
+const scenes = {
+  3: {
+    title: 'Episode 3 — Bayangan di Sayap Barat',
+    text: Kalian tiba di sayap barat. Lorong dipenuhi cermin tua; setiap pantulan terasa salah.\n\nTujuan: Cari tanda kedua yang tersembunyi di salah satu cermin.,
+    choices: [
+      {text:'Periksa cermin dekat pintu', action:()=>pickup('Tanda II', -10, 'found_sign_2')},
+      {text:'Periksa rak arsip', action:()=>goto(4)},
+      {text:'Jalan perlahan, hindari pantulan', action:()=>spendInk(-5,'Hindari pantulan, tapi waktu terbuang.')}
+    ]
+  },
+  4: {
+    title: 'Episode 4 — Lorong yang Tidak Pernah Sama',
+    text: Lorong berubah; dinding menutup dan terbuka seperti napas. Di dinding tertulis, 'KALIAN MENULIS NAMAKU'.\n\nRasa bahwa kalian dicermati makin kuat.,
+    choices: [
+      {text:'Ikuti jejak tinta ke lorong bawah', action:()=>goto(5)},
+      {text:'Ambil sampel tinta dari dinding (gunakan alat Nohan)', action:()=>pickup('Sampel Tinta', -15,'sample_taken')},
+      {text:'Tandai dinding dan mundur', action:()=>spendInk(-8,'Menandai untuk referensi')}
+    ]
+  },
+  5: {
+    title: 'Episode 5 — Bayangan Ketujuh',
+    text: Ruang arsip menunjukan jurnal Elara. 'Tinta bereaksi pada niat penulis.' Bayangan di rak meniru gerakan kalian, terlambat.,
+    choices: [
+      {text:'Baca jurnal Elara (analisa niat)', action:()=>goto(6)},
+      {text:'Ambil potongan jurnal dan pergi', action:()=>pickup('Halaman Jurnal', -10,'journal')},
+      {text:'Matikan semua lampu sebentar', action:()=>spendInk(-12,'Gelap memicu ingatan, berbahaya')}
+    ]
+  },
+  6: {
+    title: 'Episode 6 — Pantulan yang Bernapas',
+    text: Kalian mencapai ruang inti cahaya. Mesin tua berdenyut; suara Elara berbisik 'Kalian menulis namaku dengan cahaya... dan membangunkan bayanganku.',
+    choices: [
+      {text:'Stabilisasi resonator #1 (butuh tinta 20)', action:()=>stabilize(1,20)},
+      {text:'Stabilisasi resonator #2 (butuh tinta 25)', action:()=>stabilize(2,25)},
+      {text:'Cari jalur bypass (risiko: kehilangan waktu)', action:()=>spendInk(-10,'Bypass mencari solusi alternatif')}
+    ]
+  },
+  7: {
+    title: 'Episode 7 — Saat Cahaya Terakhir Padam',
+    text: Reaktor cahaya berdenyut. Kalian harus memutuskan: matikan inti atau pertahankan sistem. Keputusan menentukan akhir Chapter 1.,
+    choices: [
+      {text:'Matikan inti (pilihan berisiko, mungkin mengunci mansion selamanya)', action:()=>ending('off')},
+      {text:'Pertahankan sistem (selamat, tapi ada konsekuensi)', action:()=>ending('on')}
+    ]
+  }
+};
+
+// Utility
+function render(){
+  const s = scenes[state.episode];
+  document.getElementById('scene-title').textContent = s.title;
+  document.getElementById('scene-text').textContent = s.text + "\n\n" + logState();
+  const choices = document.getElementById('choices'); choices.innerHTML='';
+  s.choices.forEach((c,idx)=>{
+    const b = document.createElement('button'); b.className='choice'; b.textContent=c.text; b.onclick = ()=>{ c.action(); render(); };
+    choices.appendChild(b);
+  });
+  document.getElementById('inventory').innerHTML = state.inventory.map(i=><div class="item">${i}</div>).join('')||'<div class="item">(kosong)</div>';
+  document.getElementById('epnum').textContent = state.episode;
+  const meter = document.getElementById('ink-meter'); meter.style.width = Math.max(0,Math.min(100,state.ink)) + '%';
+}
+
+function goto(ep){ state.episode = ep; }
+function pickup(name, cost=0, flag){ if(cost) state.ink = Math.max(0, state.ink + cost); state.inventory.push(name); if(flag) state.flags[flag]=true; render(); }
+function spendInk(amount, note){ state.ink = Math.max(0, state.ink + amount); // amount negative to spend
+  // small consequence
+  if(state.ink<=0){ alert('Energi tinta habis — konsekuensi: beberapa opsi nanti terkunci.'); }
+}
+function stabilize(id, cost){ if(state.ink<cost){ alert('Tinta tidak cukup.'); return; } state.ink -= cost; state.flags['res_'+id]=true; alert('Resonator #' + id + ' distabilkan.'); if(state.flags['res_1'] && state.flags['res_2']){ // advance
+    goto(7);
+  } else {
+    // if only one stabilized, go to next scene
+    goto(6);
+  }
+}
+function ending(mode){ if(mode==='off'){ scenes[7].text += '\n\nENDING: Kalian mematikan inti. Kegelapan menelan mansion — harga kebebasan tidak pasti.'; state.flags['ending']='off'; } else { scenes[7].text += '\n\nENDING: Kalian mempertahankan sistem. Mansion tetap hidup; keselamatan berbayar dengan perubahan.'; state.flags['ending']='on'; }
+  // freeze choices
+  scenes[7].choices = [];
+  render();
+}
+
+function logState(){
+  return `Tinta: ${state.ink}% | Inventaris: ${state.inventory.join(', ') || '-'}\nFlags: ${Object.keys(state.flags).join(', ') || '-'} `;
+}
+
+// Save / Reset
+document.getElementById('btn-save').onclick = ()=>{ localStorage.setItem('tanda_state', JSON.stringify(state)); alert('Disimpan ke localStorage.'); };
+document.getElementById('btn-reset').onclick = ()=>{ if(confirm('Reset progres?')){ location.reload(); } };
+
+// Initialize
+render();
+
+</script>
+</body>
+</html>
+
+128 BIT
+Gravis: NVIDIA GeForce RTX 5090 (8GB VRAM)
+AMD RADEON RX 7900 XTX (24GB VRAM)
+144 FPS
+
+python nama_file_game . py
+
+from vpython import  *
+ floor = box (pos=vector(0,  -0.5,  0), size=vector(10, 0.2, 10), color=color.green)
+# Dinding depan
+wall_front = box(pos=vector(0, 1, -5), size=vector(10, 2, 0.2), color=color.gray(0.5))
+
+# Dinding belakang
+wall_back = box(pos=vector(0, 1, 5), size=vector(10, 2, 0.2), color=color.gray(0.5))
+
+# Dinding kiri
+wall_left = box(pos=vector(-5, 1, 0), size=vector(0.2, 2, 10), color=color.gray(0.5))
+
+# Dinding kanan
+wall_right = box(pos=vector(5, 1, 0), size=vector(0.2, 2, 10), color=color.gray(0.5))
+from vpython import *
+
+# Lantai
+floor = box(pos=vector(0, -0.5, 0), size=vector(10, 0.2, 10), color=color.green)
+
+# Dinding depan dengan lubang untuk pintu
+# Bagian kiri dinding
+wall_left_part = box(pos=vector(-3, 1, -5), size=vector(4, 2, 0.2), color=color.gray(0.5))
+# Bagian kanan dinding
+wall_right_part = box(pos=vector(3, 1, -5), size=vector(4, 2, 0.2), color=color.gray(0.5))
+
+# Pintu (objek terpisah, bisa nanti digerakkan)
+door = box(pos=vector(0, 1, -5.1), size=vector(2, 2, 0.1), color=color.brown)
+
+using UnityEngine;
+
+[RequireComponent(typeof(CharacterController))]
+public class PlayerController : MonoBehaviour
+{
+    public float walkSpeed = 4f;
+    public float runSpeed = 7f;
+    public float jumpHeight = 1.2f;
+    public float gravity = -9.81f;
+    public Transform cameraTransform;
+
+    CharacterController cc;
+    Vector3 velocity;
+    bool isGrounded;
+
+    void Start()
+    {
+        cc = GetComponent<CharacterController>();
+        if (cameraTransform == null && Camera.main != null)
+            cameraTransform = Camera.main.transform;
+    }
+
+    void Update()
+    {
+        // Ground check (using CharacterController.isGrounded)
+        isGrounded = cc.isGrounded;
+        if (isGrounded && velocity.y < 0)
+            velocity.y = -2f;
+
+        // Input
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+        Vector3 input = new Vector3(h, 0, v);
+        input = Vector3.ClampMagnitude(input, 1f);
+
+        // Move relative to camera
+        Vector3 forward = cameraTransform.forward; forward.y = 0; forward.Normalize();
+        Vector3 right = cameraTransform.right; right.y = 0; right.Normalize();
+        Vector3 move = forward * input.z + right * input.x;
+
+        float speed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+        cc.Move(move * speed * Time.deltaTime);
+
+        // Jump
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+
+        // Gravity
+        velocity.y += gravity * Time.deltaTime;
+        cc.Move(velocity * Time.deltaTime);
+    }
+}
+
+using UnityEngine;
+using System.Collections;
+
+public class DoorOpen : MonoBehaviour
+{
+    public bool isOpen = false;
+    public float openAngle = 90f;
+    public float openSpeed = 3f;
+    public float interactDistance = 2.5f;
+
+    Quaternion closedRot;
+    Quaternion openRot;
+
+    void Start()
+    {
+        closedRot = transform.rotation;
+        openRot = Quaternion.Euler(transform.eulerAngles + new Vector3(0, openAngle, 0));
+    }
+
+    void Update()
+    {
+        // optional: smooth lerp rotation
+        transform.rotation = Quaternion.Lerp(transform.rotation, isOpen ? openRot : closedRot, Time.deltaTime * openSpeed);
+    }
+
+    // dipanggil dari player ketika menekan E di dekat pintu
+    public void ToggleDoor()
+    {
+        isOpen = !isOpen;
+    }
+}
+
+using UnityEngine;
+using UnityEngine.AI;
+
+public class SimpleGhost : MonoBehaviour
+{
+    public Transform[] patrolPoints;
+    public float chaseDistance = 3f;
+    public Transform playerTransform;
+
+    NavMeshAgent agent;
+    int idx = 0;
+
+    void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        if (patrolPoints.Length > 0)
+            agent.SetDestination(patrolPoints[0].position);
+    }
+
+    void Update()
+    {
+        if (playerTransform != null)
+        {
+            float d = Vector3.Distance(transform.position, playerTransform.position);
+            if (d < chaseDistance)
+            {
+                agent.SetDestination(playerTransform.position);
+                return;
+            }
+        }
+
+        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        {
+            idx = (idx + 1) % Mathf.Max(1, patrolPoints.Length);
+            if (patrolPoints.Length > 0)
+                agent.SetDestination(patrolPoints[idx].position);
+        }
+    }
+}
+
+start nama_game.exe = ghost the time and mansion
+
+import pygame
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+running = True
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    screen.fill((0, 0, 0))  # Warna hitam
+    pygame.display.flip()
+
+pygame.quit()
+
+
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    public float moveSpeed = 5f;
+
+    void Update()
+    {
+        float moveX = Input.GetAxis("Horizontal");
+        float moveY = Input.GetAxis("Vertical");
+
+        Vector2 move = new Vector2(moveX, moveY);
+        transform.Translate(move * moveSpeed * Time.deltaTime);
+    }
+}
+using UnityEngine;
+
+public class CarController : MonoBehaviour
+{
+    public float speed = 10f;
+    public float rotationSpeed = 100f;
+    private bool isDriving = false;
+
+    void Update()
+    {
+        if (isDriving)
+        {
+            float move = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+            float rotate = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
+            transform.Translate(Vector3.up * move);
+            transform.Rotate(Vector3.forward, -rotate);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            isDriving = !isDriving;
+        }
+    }
+}
+using UnityEngine;
+
+public class CameraFollow : MonoBehaviour
+{
+    public Transform target;
+    public float smoothSpeed = 0.125f;
+    public Vector3 offset;
+
+    void LateUpdate()
+    {
+        Vector3 desiredPosition = target.position + offset;
+        Vector3 smoothed = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        transform.position = smoothed;
+    }
+}
+// DayNightCycle.cs
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
+
+[ExecuteAlways]
+public class DayNightCycle : MonoBehaviour
+{
+    [Range(0f,24f)] public float timeOfDay = 12f; // jam 0-24
+    public Light sunLight;
+    public Volume skyVolume; // Volume yang punya HDRP Visual Environment & Sky
+    public float dayIntensity = 20
