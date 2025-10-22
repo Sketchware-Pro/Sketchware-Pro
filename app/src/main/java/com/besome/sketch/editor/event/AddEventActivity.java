@@ -318,9 +318,6 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        binding.addButton.setText(R.string.common_word_add);
-        binding.cancelButton.setText(R.string.common_word_cancel);
-        binding.emptyMessage.setText(R.string.event_message_no_avail_events);
         moreBlockView.setFuncNameValidator(jC.a(sc_id).a(projectFile));
     }
 
