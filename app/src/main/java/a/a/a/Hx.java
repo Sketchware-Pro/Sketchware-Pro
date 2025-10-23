@@ -368,6 +368,7 @@ public class Hx {
                     case "Gyroscope":
                     case "FragmentAdapter":
                     case "WebView":
+                    case "MapView":
                     case "InterstitialAd":
                     case "RequestNetwork":
                     case "BluetoothConnect":
