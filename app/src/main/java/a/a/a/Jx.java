@@ -983,15 +983,15 @@ public class Jx {
      */
     private void addDrawerComponentInitializer() {
         ArrayList<ViewBean> viewBeans = projectDataManager.d(projectFileBean.getXmlName());
-        if (!isViewBindingEnabled) {
-            for (ViewBean viewBean : viewBeans) {
-                if (!viewBean.convert.equals("include")) {
-                    Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
-                    if (!toNotAdd.contains("android:id")) {
-                        initializeMethodCode.add(getViewInitializer(viewBean));
-                    }
+        for (ViewBean viewBean : viewBeans) {
+            if (!viewBean.convert.equals("include")) {
+                Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
+                if (!toNotAdd.contains("android:id")) {
+                    initializeMethodCode.add(getViewInitializer(viewBean));
                 }
             }
+        }
+        if (!isViewBindingEnabled) {
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                 ArrayList<ViewBean> drawerBeans = projectDataManager.d(projectFileBean.getDrawerXmlName());
                 for (ViewBean viewBean : drawerBeans) {
