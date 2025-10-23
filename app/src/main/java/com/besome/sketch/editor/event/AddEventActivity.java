@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -39,6 +40,7 @@ import a.a.a.mB;
 import a.a.a.oq;
 import a.a.a.rs;
 import a.a.a.wB;
+import dev.chrisbanes.insetter.Insetter;
 import pro.sketchware.R;
 import pro.sketchware.databinding.LogicPopupAddEventBinding;
 
@@ -271,6 +273,11 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         binding = LogicPopupAddEventBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Insetter.builder()
+                .marginBottom(WindowInsetsCompat.Type.ime(), false)
+                .applyToView(binding.contentRoot);
+
         Intent intent = getIntent();
         if (savedInstanceState == null) {
             sc_id = intent.getStringExtra("sc_id");
