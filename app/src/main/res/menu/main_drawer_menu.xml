@@ -24,6 +24,14 @@
         android:id="@+id/app_settings"
         android:icon="@drawable/ic_mtrl_settings"
         android:title="Settings" />
+    <item android:title="Apps">
+        <menu>
+            <item
+                android:id="@+id/app_sw_assist"
+                android:icon="@drawable/swassist_logo"
+                android:title="SwAssist" />
+        </menu>
+    </item>
 
     <item android:title="Related links">
         <menu>

@@ -2286,6 +2286,7 @@ Please try again later"</string>
     <string name="save_to_collection">Save to collection</string>
     <string name="unknown_attr">Unknown Attribute</string>
     <string name="attr_already_exist">This attribute already exists</string>
+    <string name="link_sw_assist">https://play.google.com/store/apps/details?id=com.w3wide.swassist</string>
 
 
 </resources>
