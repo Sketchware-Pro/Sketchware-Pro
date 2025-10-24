@@ -1,0 +1,123 @@
+[versions]
+activity = "1.11.0"
+appcompat = "1.7.1"
+desugar_jdk_libs_nio = "2.1.5"
+firebaseBom = "34.3.0"
+sora-editor = "0.23.5"
+bundletool = "1.18.2"
+cardview = "1.0.0"
+circleimageview = "3.1.0"
+coil = "2.0.0"
+coilSvg = "2.0.0"
+markwon = "4.6.2"
+coreSplashscreen = "1.0.1"
+libsu = "5.0.4"
+dependencyresolver = "05ec26af0b"
+ecj = "3.26.0"
+exifinterface = "1.4.1"
+filepicker = "74526bea66"
+flexbox = "3.0.0"
+glide = "5.0.4"
+gson = "2.13.1"
+insetter = "0.6.1"
+javaparserSymbolSolver = "3.25.3"
+kotlincForSketchware = "2.1.21_rc3"
+kotlinCompiler = "2.1.21"
+lottie = "6.6.7"
+material = "1.14.0-alpha05"
+nbJavacAndroid = "17.0.0.3"
+okhttp = "4.12.0"
+okio = "3.16.0"
+preference = "1.2.1"
+proguardCore = "9.0.2"
+protobufJava = "3.19.2"
+r8 = "8.11.18"
+recyclerview = "1.4.0"
+scpkixJdk15on = "1.47.0.2"
+sdklib = "25.3.0"
+staxApi = "1.0-2"
+swiperefreshlayout = "1.1.0"
+viewpager = "1.1.0"
+woodstoxCore = "7.1.1"
+zipalignJava = "1.2.2"
+
+[libraries]
+androidx-activity = { module = "androidx.activity:activity", version.ref = "activity" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
+androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version.ref = "exifinterface" }
+androidx-preference = { module = "androidx.preference:preference", version.ref = "preference" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
+androidx-viewpager = { module = "androidx.viewpager:viewpager", version.ref = "viewpager" }
+
+desugar_jdk_libs_nio = { module = "com.android.tools:desugar_jdk_libs_nio", version.ref = "desugar_jdk_libs_nio" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+
+flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+
+sora-editor = { module = "io.github.Rosemoe.sora-editor:bom", version.ref = "sora-editor" }
+editor = { module = "io.github.Rosemoe.sora-editor:editor" }
+language-java = { module = "io.github.Rosemoe.sora-editor:language-java" }
+language-textmate = { module = "io.github.Rosemoe.sora-editor:language-textmate" }
+
+bundletool = { module = "com.android.tools.build:bundletool", version.ref = "bundletool" }
+
+circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-kt-coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coilSvg" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+
+insetter = { module = "dev.chrisbanes.insetter:insetter", version.ref = "insetter" }
+
+javaparser-symbol-solver = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaparserSymbolSolver" }
+libsu = { module = "com.github.topjohnwu.libsu:core", version.ref = "libsu" }
+dependencyresolver = { module = "com.github.Cosmic-Ide:DependencyResolver", version.ref = "dependencyresolver" }
+filepicker = { module = "com.github.PranavPurwar:filepicker", version.ref = "filepicker" }
+
+markwon = { module = "io.noties.markwon:core", version.ref = "markwon" }
+
+ecj = { module = "org.eclipse.jdt:ecj", version.ref = "ecj" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
+kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler", version.ref = "kotlinCompiler" }
+kotlinc-for1-sketchware = { module = "com.github.waelchateur:kotlinc-for-sketchware", version.ref = "kotlincForSketchware" }
+
+nb-javac-android = { module = "io.github.itsaky:nb-javac-android", version.ref = "nbJavacAndroid" }
+
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+
+proguard-core = { module = "com.guardsquare:proguard-core", version.ref = "proguardCore" }
+
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobufJava" }
+r8 = { module = "com.android.tools:r8", version.ref = "r8" }
+
+scpkix-jdk15on = { module = "com.madgag:scpkix-jdk15on", version.ref = "scpkixJdk15on" }
+
+sdklib = { module = "com.android.tools:sdklib", version.ref = "sdklib" }
+
+stax-api = { module = "javax.xml.stream:stax-api", version.ref = "staxApi" }
+
+woodstox-core = { module = "com.fasterxml.woodstox:woodstox-core", version.ref = "woodstoxCore" }
+
+zipalign-java = { module = "com.github.Iyxan23:zipalign-java", version.ref = "zipalignJava" }
+
+[bundles]
+ui = ["androidx-activity", "androidx-appcompat", "androidx-splashscreen", "androidx-recyclerview",
+    "androidx-cardview", "androidx-viewpager", "androidx-swiperefreshlayout", "material", "lottie",
+    "flexbox", "androidx-exifinterface", "androidx-preference"]
+image = ["glide", "circleimageview"]
+coil = ["coil", "coil-kt-coil-svg"]
+networking = ["okhttp", "okio"]
+bundletool = ["bundletool", "protobuf-java"]
+shrinker = ["r8", "proguard-core"]
+kotlin_compiler = ["kotlinc-for1-sketchware", "nb-javac-android", "woodstox-core"]
+editor_and_lang = ["editor", "language-java", "language-textmate"]
+firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-messaging"]
