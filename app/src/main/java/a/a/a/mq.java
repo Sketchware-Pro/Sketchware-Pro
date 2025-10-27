@@ -132,7 +132,7 @@ public class mq {
     public static String b(String name) {
         return switch (name) {
             case "intent", "Intent" -> "Intent";
-            case "file", "File", "File (Shared Preferences)" -> "SharedPreferences";
+            case "file", "File (Shared Preferences)" -> "SharedPreferences";
             case "calendar", "Calendar" -> "Calendar";
             case "vibrator", "Vibrator" -> "Vibrator";
             case "Timer" -> "Timer";
