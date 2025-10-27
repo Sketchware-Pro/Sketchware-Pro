@@ -37,27 +37,46 @@ public class DesignDrawer extends LinearLayout {
         if (!(activity instanceof DesignActivity designActivity)) return;
         int id = v.getId();
 
-        switch (id) {
-            case R.id.item_library_manager -> designActivity.toLibraryManager();
-            case R.id.item_view_manager -> designActivity.toViewManager();
-            case R.id.item_image_manager -> designActivity.toImageManager();
-            case R.id.item_sound_manager -> designActivity.toSoundManager();
-            case R.id.item_font_manager -> designActivity.toFontManager();
-            case R.id.item_java_manager -> designActivity.toJavaManager();
-            case R.id.item_resource_manager -> designActivity.toResourceManager();
-            case R.id.item_resource_editor -> designActivity.toResourceEditor();
-            case R.id.item_assets_manager -> designActivity.toAssetManager();
-            case R.id.item_permission_manager -> designActivity.toPermissionManager();
-            case R.id.item_appcompat_manager -> designActivity.toAppCompatInjectionManager();
-            case R.id.item_manifest_manager -> designActivity.toAndroidManifestManager();
-            case R.id.item_used_custom_blocks -> designActivity.toCustomBlocksViewer();
-            case R.id.item_code_shrinking_manager -> designActivity.toProguardManager();
-            case R.id.item_stringfog_manager -> designActivity.toStringFogManager();
-            case R.id.item_show_src -> designActivity.toSourceCodeViewer();
-            case R.id.item_xml_command_manager -> designActivity.toXMLCommandManager();
-            case R.id.item_logcat_reader -> designActivity.toLogReader();
-            case R.id.item_collection_manager -> designActivity.toCollectionManager();
-            default -> throw new IllegalArgumentException("Invalid item id: " + id);
+        if (id == R.id.item_library_manager) {
+            designActivity.toLibraryManager();
+        } else if (id == R.id.item_view_manager) {
+            designActivity.toViewManager();
+        } else if (id == R.id.item_image_manager) {
+            designActivity.toImageManager();
+        } else if (id == R.id.item_sound_manager) {
+            designActivity.toSoundManager();
+        } else if (id == R.id.item_font_manager) {
+            designActivity.toFontManager();
+        } else if (id == R.id.item_java_manager) {
+            designActivity.toJavaManager();
+        } else if (id == R.id.item_resource_manager) {
+            designActivity.toResourceManager();
+        } else if (id == R.id.item_resource_editor) {
+            designActivity.toResourceEditor();
+        } else if (id == R.id.item_assets_manager) {
+            designActivity.toAssetManager();
+        } else if (id == R.id.item_permission_manager) {
+            designActivity.toPermissionManager();
+        } else if (id == R.id.item_appcompat_manager) {
+            designActivity.toAppCompatInjectionManager();
+        } else if (id == R.id.item_manifest_manager) {
+            designActivity.toAndroidManifestManager();
+        } else if (id == R.id.item_used_custom_blocks) {
+            designActivity.toCustomBlocksViewer();
+        } else if (id == R.id.item_code_shrinking_manager) {
+            designActivity.toProguardManager();
+        } else if (id == R.id.item_stringfog_manager) {
+            designActivity.toStringFogManager();
+        } else if (id == R.id.item_show_src) {
+            designActivity.toSourceCodeViewer();
+        } else if (id == R.id.item_xml_command_manager) {
+            designActivity.toXMLCommandManager();
+        } else if (id == R.id.item_logcat_reader) {
+            designActivity.toLogReader();
+        } else if (id == R.id.item_collection_manager) {
+            designActivity.toCollectionManager();
+        } else {
+            throw new IllegalArgumentException("Invalid item id: " + id);
         }
     };
 
