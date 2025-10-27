@@ -625,7 +625,7 @@ public class Jx {
             viewType = viewBean.getClassInfo().getClassName();
         }
         addImports(mq.getImportsByTypeName(projectDataManager.a, viewType, null));
-        return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
+        return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE, isViewBindingEnabled);
     }
 
     /**
