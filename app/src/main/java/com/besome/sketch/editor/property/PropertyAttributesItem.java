@@ -69,6 +69,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
             "android:layout_alignLeft",
             "android:layout_alignTop",
             "android:layout_alignEnd",
+            "android:layout_alignRight",
             "android:layout_alignBottom",
             "android:layout_alignBaseline",
             "android:layout_toStartOf",
