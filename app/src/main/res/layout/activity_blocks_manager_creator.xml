@@ -89,7 +89,10 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Type"
                                 android:maxLength="10"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:cursorVisible="false" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <ImageView

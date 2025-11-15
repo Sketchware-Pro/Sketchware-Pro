@@ -10,7 +10,7 @@
     android:paddingLeft="32dp"
     android:paddingTop="56dp"
     android:paddingRight="32dp"
-    android:paddingBottom="80dp"
+    android:paddingBottom="64dp"
     tools:background="#80000000">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -23,6 +23,7 @@
         tools:orientation="horizontal" />
 
     <LinearLayout
+        android:id="@+id/contentRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bottom_corner_surface"
@@ -51,9 +52,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:gravity="center"
+                android:text="@string/event_message_no_avail_events"
                 android:textSize="12sp"
-                android:visibility="gone"
-                tools:text="@string/event_message_no_avail_events" />
+                android:visibility="gone" />
 
             <ScrollView
                 android:id="@+id/moreblock_layout"
@@ -111,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_weight="1"
-                    tools:text="@string/common_word_cancel" />
+                    android:text="@string/common_word_cancel" />
 
                 <Button
                     android:id="@+id/add_button"
@@ -119,7 +120,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    tools:text="@string/common_word_add" />
+                    android:text="@string/common_word_add" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

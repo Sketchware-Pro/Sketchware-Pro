@@ -1,13 +1,9 @@
 def secrets = System.getenv("GOOGLE_SERVICES_JSON")
-def analyticsEnabled = secrets != null
 
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
-
-if (analyticsEnabled) {
-    apply plugin: "com.google.gms.google-services"
-    apply plugin: "com.google.firebase.crashlytics"
-}
+apply plugin: "com.google.gms.google-services"
+apply plugin: "com.google.firebase.crashlytics"
 
 android {
     compileSdk = 36
@@ -83,80 +79,94 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
 
-    implementation "androidx.appcompat:appcompat:1.7.1"
-    implementation "androidx.core:core-splashscreen:1.0.1"
-    implementation "androidx.activity:activity:1.11.0"
-    implementation "androidx.recyclerview:recyclerview:1.4.0"
-    implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.viewpager:viewpager:1.1.0"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "com.google.android.material:material:1.14.0-alpha05"
-    implementation "com.airbnb.android:lottie:6.6.7"
-    implementation "com.google.android.flexbox:flexbox:3.0.0"
+    implementation libs.bundles.ui
 
-    implementation "com.github.bumptech.glide:glide:5.0.4"
+    implementation libs.bundles.image
 
-    implementation 'androidx.exifinterface:exifinterface:1.4.1'
-    implementation "androidx.preference:preference:1.2.1"
+    implementation platform(libs.sora.editor)
+    implementation libs.bundles.editor.and.lang
 
-    def editorGroupId = "io.github.Rosemoe.sora-editor"
-    implementation platform("$editorGroupId:bom:0.23.5")
-    implementation "$editorGroupId:editor"
-    implementation "$editorGroupId:language-java"
-    implementation "$editorGroupId:language-textmate"
+    implementation libs.bundles.coil
 
-    implementation "de.hdodenhof:circleimageview:3.1.0"
-
-    implementation 'io.coil-kt:coil:2.0.0'
-    implementation 'io.coil-kt:coil-svg:2.0.0'
-
-    implementation "com.android.tools.build:bundletool:1.18.2"
-
-    //noinspection GradleDependency copied from above dependency for not just runtime access
-    implementation "com.google.protobuf:protobuf-java:3.19.2"
-    //noinspection GradleDependency
-    implementation("com.android.tools:sdklib:25.3.0") {
+    implementation libs.bundles.bundletool
+    implementation(libs.sdklib) {
         exclude group: "com.intellij", module: "annotations"
     }
 
-    implementation "com.android.tools:r8:8.11.18"
-    implementation "com.github.Iyxan23:zipalign-java:1.2.2"
+    implementation libs.bundles.shrinker
+    implementation libs.zipalign.java
 
-    implementation "com.google.code.gson:gson:2.13.1"
-    implementation "com.madgag:scpkix-jdk15on:1.47.0.2"
+    implementation libs.gson
+    implementation libs.scpkix.jdk15on
 
-    implementation 'io.noties.markwon:core:4.6.2'
+    implementation libs.markwon
 
-    implementation "com.squareup.okhttp3:okhttp:4.12.0"
-    implementation "com.squareup.okio:okio:3.16.0"
+    implementation libs.bundles.networking
 
-    implementation "org.eclipse.jdt:ecj:3.26.0"
-    implementation 'javax.xml.stream:stax-api:1.0-2'
+    implementation libs.ecj
+    implementation libs.stax.api
 
-    implementation "com.github.waelchateur:kotlinc-for-sketchware:2.1.21_rc3"
-    compileOnly "org.jetbrains.kotlin:kotlin-compiler:2.1.21"
-    implementation 'io.github.itsaky:nb-javac-android:17.0.0.3'
-    implementation 'com.fasterxml.woodstox:woodstox-core:7.1.1'
+    implementation libs.bundles.kotlin.compiler
+    compileOnly libs.kotlin.compiler
 
-    implementation "com.github.Cosmic-Ide:DependencyResolver:05ec26af0b"
-    implementation "com.github.PranavPurwar:filepicker:74526bea66"
+    implementation libs.dependencyresolver
+    implementation libs.filepicker
 
-    implementation 'com.guardsquare:proguard-core:9.0.2'
+    implementation libs.libsu
+    implementation libs.insetter
 
-    implementation "com.github.topjohnwu.libsu:core:5.0.4"
-    implementation "dev.chrisbanes.insetter:insetter:0.6.1"
-
-    implementation("com.github.javaparser:javaparser-symbol-solver-core:3.25.3") {
+    implementation(libs.javaparser.symbol.solver) {
         exclude group: "com.google.guava", module: "guava"
     }
 
-    // Analytics and Crashlytics
-    if (analyticsEnabled) {
-        new File("$projectDir/google-services.json").text = secrets
-    }
-    implementation platform("com.google.firebase:firebase-bom:34.3.0")
-    implementation "com.google.firebase:firebase-crashlytics"
-    implementation "com.google.firebase:firebase-analytics"
-    implementation "com.google.firebase:firebase-messaging"
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.1.5"
+    implementation platform(libs.firebase.bom)
+    implementation libs.bundles.firebase
+
+    coreLibraryDesugaring libs.desugar.jdk.libs.nio
 }
+
+tasks.register('createMockGoogleServices') {
+    doLast {
+        if (secrets != null) {
+            new File("$projectDir/google-services.json").text = secrets
+            return
+        }
+        def mockFile = file("src/debug/google-services.json")
+        if (!mockFile.exists()) {
+            mockFile.parentFile.mkdirs()
+            def mockContent = """{
+  "project_info": {
+    "project_number": "123456789000",
+    "firebase_url": "https://mock-project-default-rtdb.firebaseio.com",
+    "project_id": "mock-project",
+    "storage_bucket": "mock-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123456789000:android:mockappid123456",
+        "android_client_info": {
+          "package_name": "${android.defaultConfig.applicationId}"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "mock_AIzaSyBQJCUXVKUjD38-u5pWkqMtesIfFvxAcvs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}"""
+            mockFile.text = mockContent
+        }
+    }
+}
+
+preBuild.dependsOn createMockGoogleServices

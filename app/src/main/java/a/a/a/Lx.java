@@ -1091,6 +1091,14 @@ public class Lx {
         return code.toString();
     }
 
+    public static String getBindingOrViewName(String name, boolean isViewBinding) {
+        if (isViewBinding) {
+            return "binding." + ViewBindingBuilder.generateParameterFromId(name);
+        } else {
+            return name;
+        }
+    }
+
     /**
      * @return Initializer of a View to be added to _initialize(Bundle)
      */
@@ -1098,11 +1106,7 @@ public class Lx {
         String initializer = "";
 
         if (!type.equals("include") && !type.equals("#")) {
-            if (viewBinding) {
-                initializer = name + " = " +
-                        "binding." +
-                        ViewBindingBuilder.generateParameterFromId(name) + ";";
-            } else {
+            if (!viewBinding) {
                 initializer = name + " = " +
                         (isInFragment ? "_view.findViewById(R.id." : "findViewById(R.id.") +
                         name + ");";
@@ -1111,15 +1115,15 @@ public class Lx {
 
         return switch (type) {
             case "WebView" -> initializer + "\r\n" +
-                    name + ".getSettings().setJavaScriptEnabled(true);\r\n" +
-                    name + ".getSettings().setSupportZoom(true);";
+                    getBindingOrViewName(name, viewBinding) + ".getSettings().setJavaScriptEnabled(true);\r\n" +
+                    getBindingOrViewName(name, viewBinding) + ".getSettings().setSupportZoom(true);";
             case "MapView" -> initializer + "\r\n" +
-                    name + ".onCreate(_savedInstanceState);\r\n";
+                    getBindingOrViewName(name, viewBinding) + ".onCreate(_savedInstanceState);\r\n";
             case "VideoView" -> {
                 String mediaControllerName = name + "_controller";
                 yield initializer + "\r\n" +
                         "MediaController " + mediaControllerName + " = new MediaController(this);\r\n" +
-                        name + ".setMediaController(" + mediaControllerName + ");";
+                        getBindingOrViewName(name, viewBinding) + ".setMediaController(" + mediaControllerName + ");";
             }
             default -> initializer;
         };
@@ -1128,7 +1132,8 @@ public class Lx {
     /**
      * @return Initializer for a Component that'd appear in <code>_initialize(Bundle)</code>
      */
-    public static String getComponentInitializerCode(String componentNameId, String componentName, String... parameters) {
+    public static String getComponentInitializerCode(String componentNameId, String
+            componentName, String... parameters) {
         switch (componentNameId) {
             case "SharedPreferences":
                 String preferenceFilename = "";
@@ -1578,7 +1583,8 @@ public class Lx {
     /**
      * @return A generated top-level <code>build.gradle</code> file, with indentation
      */
-    public static String c(String androidGradlePluginVersion, String googleMobileServicesVersion) {
+    public static String c(String androidGradlePluginVersion, String
+            googleMobileServicesVersion) {
         return "// Top-level build file where you can add configuration options common to all sub-projects/modules.\r\n" +
                 "buildscript {\r\n" +
                 "    repositories {\r\n" +
@@ -1608,7 +1614,8 @@ public class Lx {
     /**
      * @return A single line to initialize a drawer view.
      */
-    public static String getDrawerViewInitializer(String type, String viewName, String viewContainerName) {
+    public static String getDrawerViewInitializer(String type, String viewName, String
+            viewContainerName) {
         String initializer = "";
         if (!type.equals("include") && !type.equals("#")) {
             initializer = "_drawer_" + viewName + " = " + viewContainerName + ".findViewById(R.id." + viewName + ");";
@@ -1633,7 +1640,8 @@ public class Lx {
         };
     }
 
-    public static String getListenerCode(String eventName, String componentName, String eventLogic) {
+    public static String getListenerCode(String eventName, String componentName, String
+            eventLogic) {
         return switch (eventName) {
             case "onClickListener" ->
                     componentName + ".setOnClickListener(new View.OnClickListener() {\r\n" +
@@ -3230,7 +3238,9 @@ public class Lx {
         }
     }
 
-    public static String pagerAdapter(Ox ox, String pagerName, String pagerItemLayoutName, ArrayList<ViewBean> pagerItemViews, String onBindCustomViewLogic, boolean isViewBindingEnabled) {
+    public static String pagerAdapter(Ox ox, String pagerName, String
+                                              pagerItemLayoutName, ArrayList<ViewBean> pagerItemViews, String onBindCustomViewLogic,
+                                      boolean isViewBindingEnabled) {
         String adapterName = a(pagerName, isViewBindingEnabled);
 
         String viewsInitializer = "";
@@ -3318,7 +3328,9 @@ public class Lx {
                 "}\r\n";
     }
 
-    public static String recyclerViewAdapter(Ox ox, String recyclerViewName, String itemLayoutName, ArrayList<ViewBean> itemViews, String onBindCustomViewLogic, boolean isViewBindingEnabled) {
+    public static String recyclerViewAdapter(Ox ox, String recyclerViewName, String
+                                                     itemLayoutName, ArrayList<ViewBean> itemViews, String onBindCustomViewLogic,
+                                             boolean isViewBindingEnabled) {
         String adapterName = a(recyclerViewName, isViewBindingEnabled);
         String viewsInitializer = "";
         StringBuilder viewInitBuilder = new StringBuilder(viewsInitializer);

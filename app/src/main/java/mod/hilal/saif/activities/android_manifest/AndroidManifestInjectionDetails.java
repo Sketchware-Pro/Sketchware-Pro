@@ -111,18 +111,16 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
 
         if (!str.equals("Attributes for all activities") && !str.equals("Application Attributes") && !str.equals("Application Permissions")) {
             binding.toolbar.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.asd_components:
-                        Intent intent = new Intent(this, SrcCodeEditor.class);
-                        intent.putExtra(SrcCodeEditor.FLAG_FROM_ANDROID_MANIFEST, true);
-                        intent.putExtra("title", activityName + " Components");
-                        intent.putExtra("sc_id", src_id);
-                        intent.putExtra("activity_name", activityName);
-                        startActivity(intent);
-                        return true;
-                    default:
-                        return false;
+                if (item.getItemId() == R.id.asd_components) {
+                    Intent intent = new Intent(this, SrcCodeEditor.class);
+                    intent.putExtra(SrcCodeEditor.FLAG_FROM_ANDROID_MANIFEST, true);
+                    intent.putExtra("title", activityName + " Components");
+                    intent.putExtra("sc_id", src_id);
+                    intent.putExtra("activity_name", activityName);
+                    startActivity(intent);
+                    return true;
                 }
+                return false;
             });
         } else {
             binding.toolbar.getMenu().clear();

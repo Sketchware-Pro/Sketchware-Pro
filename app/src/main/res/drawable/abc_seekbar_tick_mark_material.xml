@@ -1,7 +1,0 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <size
-        android:width="@dimen/abc_progress_bar_height_material"
-        android:height="@dimen/abc_progress_bar_height_material" />
-    <solid android:color="@android:color/white" />
-</shape>

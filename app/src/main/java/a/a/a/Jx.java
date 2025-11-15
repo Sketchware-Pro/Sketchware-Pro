@@ -625,7 +625,7 @@ public class Jx {
             viewType = viewBean.getClassInfo().getClassName();
         }
         addImports(mq.getImportsByTypeName(projectDataManager.a, viewType, null));
-        return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
+        return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE, isViewBindingEnabled);
     }
 
     /**
@@ -983,15 +983,15 @@ public class Jx {
      */
     private void addDrawerComponentInitializer() {
         ArrayList<ViewBean> viewBeans = projectDataManager.d(projectFileBean.getXmlName());
-        if (!isViewBindingEnabled) {
-            for (ViewBean viewBean : viewBeans) {
-                if (!viewBean.convert.equals("include")) {
-                    Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
-                    if (!toNotAdd.contains("android:id")) {
-                        initializeMethodCode.add(getViewInitializer(viewBean));
-                    }
+        for (ViewBean viewBean : viewBeans) {
+            if (!viewBean.convert.equals("include")) {
+                Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
+                if (!toNotAdd.contains("android:id")) {
+                    initializeMethodCode.add(getViewInitializer(viewBean));
                 }
             }
+        }
+        if (!isViewBindingEnabled) {
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                 ArrayList<ViewBean> drawerBeans = projectDataManager.d(projectFileBean.getDrawerXmlName());
                 for (ViewBean viewBean : drawerBeans) {

@@ -114,6 +114,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
             }
         });
 
+        binding.type.setOnClickListener(view -> binding.selectType.performClick());
         binding.selectType.setOnClickListener(v -> {
             List<String> types = Arrays.asList(
                     "regular", "c", "e", "s", "b",
