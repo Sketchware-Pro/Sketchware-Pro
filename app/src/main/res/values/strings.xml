@@ -1400,6 +1400,11 @@ Do you want to continue?"</string>
     <string name="logic_block_favorites_save_title">Save Block to My Collection</string>
     <string name="logic_button_explore_shared_more_block">Shared More Block</string>
     <string name="logic_button_import_more_block">Import From Collection</string>
+    <string name="logic_search_events">Search events…</string>
+    <string name="logic_sort_menu">Sort options</string>
+    <string name="logic_sort_default">Default</string>
+    <string name="logic_sort_alphabetical">A-Z</string>
+    <string name="logic_sort_type">By Widget</string>
     <string name="logic_editor_component_firebaseauth_title_select_firebase_auth">Select Firebase Auth component</string>
     <string name="logic_editor_hint_enter_variable_name">Enter variable name (Case-sensitive)</string>
     <string name="logic_editor_message_currently_used_block">"Selected block is currently used

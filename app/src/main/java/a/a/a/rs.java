@@ -3,15 +3,19 @@ package a.a.a;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -38,6 +42,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigationrail.NavigationRailView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -63,6 +68,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     private TextView noEvents;
     private MaterialButton importMoreBlockFromCollection;
     private String sc_id;
+    private EditText searchInput;
+    private ImageView sortMenuIcon;
+    private View searchContainer;
     private final ActivityResultLauncher<Intent> addEventLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> refreshEvents());
     private final ActivityResultLauncher<Intent> openEvent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -188,6 +196,20 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             if (eventAdapter != null) {
                 eventAdapter.a(events.get(getPaletteIndex()));
                 eventAdapter.notifyDataSetChanged();
+                restoreSearchState();
+            }
+        }
+    }
+
+    private void restoreSearchState() {
+        if (eventAdapter != null && searchInput != null) {
+            String currentQuery = eventAdapter.getCurrentSearchQuery();
+            if (!currentQuery.isEmpty() && searchContainer != null) {
+                searchInput.setText(currentQuery);
+                searchInput.setSelection(currentQuery.length());
+                if (searchContainer.getVisibility() != View.VISIBLE) {
+                    searchContainer.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
@@ -199,8 +221,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             jC.a(sc_id).n(currentActivity.getJavaName(), moreBlock.targetId);
             bB.a(requireContext(), getString(R.string.common_message_complete_delete), 0).show();
             events.get(getPaletteIndex()).remove(position);
-            eventAdapter.notifyItemRemoved(position);
-            eventAdapter.notifyItemRangeChanged(position, eventAdapter.getItemCount());
+            eventAdapter.refreshAfterDelete();
         }
     }
 
@@ -218,6 +239,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     private void initialize(ViewGroup parent) {
         noEvents = parent.findViewById(R.id.tv_no_events);
         RecyclerView eventList = parent.findViewById(R.id.event_list);
+        searchInput = parent.findViewById(R.id.search_events);
+        sortMenuIcon = parent.findViewById(R.id.sort_menu);
+        searchContainer = parent.findViewById(R.id.search_container);
         paletteView = parent.findViewById(R.id.palette);
         paletteView.setOnItemSelectedListener(
                 item -> {
@@ -252,6 +276,62 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         importMoreBlockFromCollection = parent.findViewById(R.id.tv_import);
         importMoreBlockFromCollection.setText(R.string.logic_button_import_more_block);
         importMoreBlockFromCollection.setOnClickListener(v -> showImportMoreBlockFromCollectionsDialog());
+        setupSearchAndSort(parent);
+    }
+
+    private void setupSearchAndSort(ViewGroup parent) {
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (eventAdapter != null) {
+                    eventAdapter.filterEvents(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        sortMenuIcon.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(requireContext(), sortMenuIcon);
+            popup.getMenuInflater().inflate(R.menu.logic_sort_menu, popup.getMenu());
+            popup.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.sort_default) {
+                    if (eventAdapter != null) eventAdapter.setSortMode(0);
+                    return true;
+                } else if (id == R.id.sort_alphabetical) {
+                    if (eventAdapter != null) eventAdapter.setSortMode(1);
+                    return true;
+                }
+                return false;
+            });
+            popup.show();
+        });
+    }
+
+    public void toggleSearchBar() {
+        if (searchContainer == null) return;
+        
+        if (searchContainer.getVisibility() == View.VISIBLE) {
+            searchContainer.setVisibility(View.GONE);
+            searchInput.setText("");
+            searchInput.clearFocus();
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(searchInput.getWindowToken(), 0);
+            }
+        } else {
+            searchContainer.setVisibility(View.VISIBLE);
+            searchInput.requestFocus();
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(searchInput, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }
     }
 
     private void showSaveMoreBlockToCollectionsDialog(int moreBlockPosition) {
@@ -302,8 +382,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         EventBean.deleteEvent(sc_id, event, currentActivity);
         bB.a(requireContext(), getString(R.string.common_message_complete_delete), 0).show();
         events.get(getPaletteIndex()).remove(position);
-        eventAdapter.notifyItemRemoved(position);
-        eventAdapter.notifyItemRangeChanged(position, eventAdapter.getItemCount());
+        eventAdapter.refreshAfterDelete();
     }
 
     private void initializeEvents(ArrayList<EventBean> events) {
@@ -375,15 +454,22 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     private class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
         private ArrayList<EventBean> currentCategoryEvents = new ArrayList<>();
+        private ArrayList<EventBean> filteredEvents = new ArrayList<>();
+        private String searchQuery = "";
+        private int sortMode = 0;
 
         @Override
         public int getItemCount() {
-            return currentCategoryEvents.size();
+            return getActiveList().size();
+        }
+
+        private ArrayList<EventBean> getActiveList() {
+            return searchQuery.isEmpty() ? currentCategoryEvents : filteredEvents;
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            EventBean eventBean = currentCategoryEvents.get(position);
+            EventBean eventBean = getActiveList().get(position);
             holder.targetType.setVisibility(View.VISIBLE);
             holder.previewContainer.setVisibility(View.VISIBLE);
             holder.preview.setVisibility(View.VISIBLE);
@@ -456,12 +542,77 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         public void a(ArrayList<EventBean> arrayList) {
-            if (arrayList.isEmpty()) {
+            currentCategoryEvents = arrayList;
+            String previousQuery = searchQuery;
+            searchQuery = "";
+            filteredEvents.clear();
+            
+            if (!previousQuery.isEmpty()) {
+                searchQuery = previousQuery;
+                applyFilterAndSort();
+            } else {
+                applySorting();
+                updateEmptyState();
+            }
+        }
+
+        public void filterEvents(String query) {
+            searchQuery = query.toLowerCase().trim();
+            applyFilterAndSort();
+        }
+
+        public String getCurrentSearchQuery() {
+            return searchQuery;
+        }
+
+        public void setSortMode(int mode) {
+            sortMode = mode;
+            applyFilterAndSort();
+        }
+
+        public void refreshAfterDelete() {
+            if (!searchQuery.isEmpty()) {
+                applyFilterAndSort();
+            } else {
+                updateEmptyState();
+                notifyDataSetChanged();
+            }
+        }
+
+        private void applyFilterAndSort() {
+            filteredEvents.clear();
+
+            if (!searchQuery.isEmpty()) {
+                for (EventBean event : currentCategoryEvents) {
+                    String eventName = event.eventName.toLowerCase();
+                    String targetId = event.targetId.toLowerCase();
+                    if (eventName.contains(searchQuery) || targetId.contains(searchQuery)) {
+                        filteredEvents.add(event);
+                    }
+                }
+            }
+
+            applySorting();
+            updateEmptyState();
+            notifyDataSetChanged();
+        }
+
+        private void applySorting() {
+            ArrayList<EventBean> listToSort = getActiveList();
+            if (listToSort.isEmpty()) return;
+
+            if (sortMode == 1) {
+                Collections.sort(listToSort, (a, b) -> 
+                    a.eventName.compareToIgnoreCase(b.eventName));
+            }
+        }
+
+        private void updateEmptyState() {
+            if (getActiveList().isEmpty()) {
                 noEvents.setVisibility(View.VISIBLE);
             } else {
                 noEvents.setVisibility(View.GONE);
             }
-            currentCategoryEvents = arrayList;
         }
 
         @Override
@@ -500,7 +651,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 optionsLayout = itemView.findViewById(R.id.event_option);
                 optionsLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
-                        EventBean eventBean = events.get(getPaletteIndex()).get(getLayoutPosition());
+                        EventBean eventBean = getActiveList().get(getLayoutPosition());
                         if (v instanceof CollapsibleButton button) {
                             setAnimateNextTransformation(true);
                             int id = button.getButtonId();
@@ -529,10 +680,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                                     notifyItemChanged(getLayoutPosition());
                                 } else if (eventBean.buttonPressed == 1) {
                                     eventBean.isConfirmation = false;
+                                    int originalPosition = currentCategoryEvents.indexOf(eventBean);
                                     if (getPaletteIndex() != 4) {
-                                        deleteEvent(eventBean, getLayoutPosition());
+                                        deleteEvent(eventBean, originalPosition);
                                     } else {
-                                        deleteMoreBlock(eventBean, getLayoutPosition());
+                                        deleteMoreBlock(eventBean, originalPosition);
                                     }
                                 }
                                 fab.show();
@@ -543,7 +695,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 onDoneInitializingViews();
                 root.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        EventBean eventBean = events.get(getPaletteIndex()).get(getLayoutPosition());
+                        EventBean eventBean = getActiveList().get(getLayoutPosition());
                         openEvent(eventBean.targetId, eventBean.eventName, Helper.getText(description));
                     }
                 });
@@ -551,12 +703,12 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             @Override
             protected boolean isCollapsed() {
-                return events.get(getPaletteIndex()).get(getLayoutPosition()).isCollapsed;
+                return getActiveList().get(getLayoutPosition()).isCollapsed;
             }
 
             @Override
             protected void setIsCollapsed(boolean isCollapsed) {
-                events.get(getPaletteIndex()).get(getLayoutPosition()).isCollapsed = isCollapsed;
+                getActiveList().get(getLayoutPosition()).isCollapsed = isCollapsed;
             }
 
             @NonNull
