@@ -2,6 +2,8 @@ package com.besome.sketch.editor.manage.library;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Objects;
+
 
 import a.a.a.yB;
 
@@ -14,17 +16,26 @@ public class ProjectComparator implements Comparator<HashMap<String, Object>> {
     public static final int DEFAULT = SORT_BY_ID | SORT_ORDER_DESCENDING;
 
     private int sortBy = 0;
+    private String pinned_scid;
 
     public ProjectComparator() {
     }
 
-    public ProjectComparator(int sortBy) {
+    public ProjectComparator(int sortBy, String pinned_scid) {
         this.sortBy = sortBy;
+        this.pinned_scid = pinned_scid;
     }
 
     @Override
     public int compare(HashMap<String, Object> first, HashMap<String, Object> second) {
         boolean isSortOrderAscending = (sortBy & SORT_ORDER_ASCENDING) == SORT_ORDER_ASCENDING;
+
+        if (Objects.equals(pinned_scid, yB.c(first, "sc_id"))) {
+            return -1;
+        } else if (Objects.equals(pinned_scid, yB.c(second, "sc_id"))) {
+            return 1;
+        }
+
         if ((sortBy & SORT_BY_ID) == SORT_BY_ID) {
             return Integer.compare(
                     Integer.parseInt(yB.c(first, "sc_id")),

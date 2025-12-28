@@ -222,7 +222,7 @@ public class ProjectsFragment extends DA {
 
         executorService.execute(() -> {
             List<HashMap<String, Object>> loadedProjects = lC.a();
-            loadedProjects.sort(new ProjectComparator(preference.d("sortBy")));
+            loadedProjects.sort(new ProjectComparator(preference.d("sortBy"),preference.a("pinnedProject", "-1")));
 
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProjectDiffCallback(projectsList, loadedProjects));
 
