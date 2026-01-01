@@ -235,6 +235,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                             command.get("input") != null ? command.get("input").toString() : ""));
             binding.reference.setText(command.get("reference").toString());
             binding.command.setText(command.get("command").toString());
+            binding.onclick.setText(command.get("onclick").toString());
             binding.distance.setText(getIntValue(command.get("distance").toString()));
             binding.front.setText(getIntValue(command.get("after").toString()));
             binding.backend.setText(getIntValue(command.get("before").toString()));
@@ -257,6 +258,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                     var xmlName = Helper.getText(binding.xmlName);
                     var reference = Helper.getText(binding.reference);
                     var command = Helper.getText(binding.command);
+                    var onclick = Helper.getText(binding.onclick);
                     if (TextUtils.isEmpty(xmlName)) {
                         SketchwareUtil.toastError("XML name is required");
                         return;
@@ -270,7 +272,8 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                     map.put("distance", Integer.parseInt(Helper.getText(binding.distance)));
                     map.put("after", Integer.parseInt(Helper.getText(binding.front)));
                     map.put("before", Integer.parseInt(Helper.getText(binding.backend)));
-                    map.put("command", Helper.getText(binding.command));
+                    map.put("command", command);
+                    map.put("onclick", onclick);
                     String inputBuilder = ">" + xmlName + "\n" +
                             Helper.getText(binding.changes);
                     map.put("input", inputBuilder);

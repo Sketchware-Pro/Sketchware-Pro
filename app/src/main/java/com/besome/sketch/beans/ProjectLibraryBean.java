@@ -36,6 +36,12 @@ public class ProjectLibraryBean implements Parcelable {
     public static final int PROJECT_LIB_TYPE_NATIVE_LIB = 5;
     public static final int PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES = 6;
     public static final int PROJECT_LIB_TYPE_MATERIAL3 = 7;
+    public static final int PROJECT_LIB_TYPE_JAR = 8;
+    public static final int PROJECT_LIB_TYPE_AAR = 9;
+    public static final int PROJECT_LIB_TYPE_DEX = 10;
+    public static final int PROJECT_LIB_TYPE_SO = 11;
+    public static final int PROJECT_LIB_TYPE_JAVA = 12;
+    public static final int PROJECT_LIB_TYPE_XML = 13;
 
     @Expose
     public String appId;
@@ -99,6 +105,7 @@ public class ProjectLibraryBean implements Parcelable {
             case 3 -> R.drawable.ic_mtrl_map;
             case 4 -> R.drawable.ic_mtrl_box;
             case 5 -> R.drawable.ic_mtrl_settings_input;
+            case 8, 9, 10, 11, 12, 13 -> R.drawable.ic_mtrl_box;
             default -> 0;
         };
     }
@@ -111,6 +118,12 @@ public class ProjectLibraryBean implements Parcelable {
             case 3 -> R.string.design_library_description_google_map;
             case 4 -> R.string.text_subtitle_menu_local_library;
             case 5 -> R.string.design_drawer_menu_nativelibs_subtitle;
+            case 8 -> R.string.text_subtitle_menu_local_library;
+            case 9 -> R.string.text_subtitle_menu_local_library;
+            case 10 -> R.string.text_subtitle_menu_local_library;
+            case 11 -> R.string.text_subtitle_menu_local_library;
+            case 12 -> R.string.text_subtitle_menu_local_library;
+            case 13 -> R.string.text_subtitle_menu_local_library;
             default -> 0;
         };
     }
@@ -123,6 +136,12 @@ public class ProjectLibraryBean implements Parcelable {
             case 3 -> R.string.design_library_google_map_title;
             case 4 -> R.string.text_title_menu_local_library;
             case 5 -> R.string.design_drawer_menu_nativelibs;
+            case 8 -> R.string.text_title_menu_local_library;
+            case 9 -> R.string.text_title_menu_local_library;
+            case 10 -> R.string.text_title_menu_local_library;
+            case 11 -> R.string.text_title_menu_local_library;
+            case 12 -> R.string.text_title_menu_local_library;
+            case 13 -> R.string.text_title_menu_local_library;
             default -> 0;
         };
     }

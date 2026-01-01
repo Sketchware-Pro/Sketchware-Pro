@@ -65,6 +65,8 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_VIBRATOR));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_TIMERTASK));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_DIALOG));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_CUSTOM_DIALOG));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_BOTTOM_SHEET));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_MEDIAPLAYER));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_SOUNDPOOL));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR));

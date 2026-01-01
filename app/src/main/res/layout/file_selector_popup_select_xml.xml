@@ -21,7 +21,7 @@
 
         <Button
             android:id="@+id/option_view"
-            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -29,11 +29,19 @@
 
         <Button
             android:id="@+id/option_custom_view"
-            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/common_word_custom_view" />
+
+        <Button
+            android:id="@+id/option_fragment"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Fragment" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -61,7 +69,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/shadow_gradient_bottom_top"
-        android:gravity="center_horizontal|bottom">
+        android.gravity="center_horizontal|bottom">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/createNewView"

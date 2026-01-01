@@ -35,6 +35,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
     private final int[] x = new int[19];
     private final int TAB_ACTIVITY = ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY;
     private final int TAB_CUSTOM_VIEW = ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW;
+    private final int TAB_FRAGMENT = 3;
     private ViewSelectorAdapter viewSelectorAdapter;
     private String sc_id;
     private ProjectFileBean projectFile;
@@ -205,8 +206,13 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             if (isChecked) {
                 if (checkedId == R.id.option_view) {
                     selectedTab = TAB_ACTIVITY;
+                    binding.createNewView.setText("Create new view");
                 } else if (checkedId == R.id.option_custom_view) {
                     selectedTab = TAB_CUSTOM_VIEW;
+                    binding.createNewView.setText("Create new custom view");
+                } else if (checkedId == R.id.option_fragment) {
+                    selectedTab = TAB_FRAGMENT;
+                    binding.createNewView.setText("Create new fragment");
                 }
                 viewSelectorAdapter.notifyDataSetChanged();
                 binding.emptyMessage.setVisibility(viewSelectorAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
@@ -224,6 +230,11 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     intent.putStringArrayListExtra("screen_names", getScreenNames());
                     startActivityForResult(intent, 266);
 
+                } else if (selectedTab == TAB_FRAGMENT) {
+                    Intent intent = new Intent(getApplicationContext(), AddViewActivity.class);
+                    intent.putStringArrayListExtra("screen_names", getScreenNames());
+                    intent.putExtra("request_code", 264);
+                    startActivityForResult(intent, 264);
                 }
             }
         });
@@ -321,43 +332,70 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         private int selectedItem = -1;
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (selectedTab == TAB_ACTIVITY) {
-                viewHolder.itemBinding.tvFilename.setVisibility(View.VISIBLE);
-                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.VISIBLE);
+                holder.itemBinding.tvFilename.setVisibility(View.VISIBLE);
+                holder.itemBinding.tvLinkedFilename.setVisibility(View.VISIBLE);
+
                 ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
-                String xmlName = projectFileBean.getXmlName();
-                if (currentXml.equals(xmlName)) {
-                    viewHolder.itemBinding.cardView.setStrokeColor(
-                            ThemeUtils.getColor(ViewSelectorActivity.this, R.attr.colorPrimary));
-                    viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(3f));
-                } else {
-                    viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(0f));
+                if (projectFileBean == null) {
+                    return;
                 }
-                String javaName = projectFileBean.getJavaName();
-                viewHolder.itemBinding.imgEdit.setVisibility(View.VISIBLE);
-                viewHolder.itemBinding.imgView.setImageResource(getViewIcon(projectFileBean.options));
-                viewHolder.itemBinding.tvFilename.setText(xmlName);
-                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.VISIBLE);
-                viewHolder.itemBinding.tvLinkedFilename.setText(javaName);
-            } else if (selectedTab == TAB_CUSTOM_VIEW) {
-                viewHolder.itemBinding.imgEdit.setVisibility(View.GONE);
-                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.GONE);
-                ProjectFileBean customView = jC.b(sc_id).c().get(position);
-                if (currentXml.equals(customView.getXmlName())) {
-                    viewHolder.itemBinding.cardView.setStrokeColor(
+
+                holder.itemBinding.tvFilename.setText(projectFileBean.getXmlName());
+                holder.itemBinding.imgEdit.setVisibility(View.VISIBLE);
+                holder.itemBinding.imgView.setImageResource(getViewIcon(projectFileBean.options));
+                holder.itemBinding.tvLinkedFilename.setText(projectFileBean.getJavaName());
+
+                if (currentXml != null && currentXml.equals(projectFileBean.getXmlName())) {
+                    holder.itemBinding.cardView.setStrokeColor(
                             ThemeUtils.getColor(ViewSelectorActivity.this, R.attr.colorPrimary));
-                    viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(3f));
+                    holder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(3f));
                 } else {
-                    viewHolder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(0f));
+                    holder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(0f));
+                }
+            } else if (selectedTab == TAB_CUSTOM_VIEW) {
+                holder.itemBinding.imgEdit.setVisibility(View.GONE);
+                holder.itemBinding.tvLinkedFilename.setVisibility(View.GONE);
+                ProjectFileBean customView = jC.b(sc_id).c().get(position);
+
+                if (customView == null) {
+                    return;
+                }
+
+                if (currentXml.equals(customView.getXmlName())) {
+                    holder.itemBinding.cardView.setStrokeColor(
+                            ThemeUtils.getColor(ViewSelectorActivity.this, R.attr.colorPrimary));
+                    holder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(3f));
+                } else {
+                    holder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(0f));
                 }
                 if (customView.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
-                    viewHolder.itemBinding.imgView.setImageResource(getViewIcon(4));
-                    viewHolder.itemBinding.tvFilename.setText(customView.fileName.substring(1));
+                    holder.itemBinding.imgView.setImageResource(getViewIcon(4));
+                    holder.itemBinding.tvFilename.setText(customView.fileName.substring(1));
                 } else {
-                    viewHolder.itemBinding.imgView.setImageResource(getViewIcon(3));
-                    viewHolder.itemBinding.tvFilename.setText(customView.getXmlName());
+                    holder.itemBinding.imgView.setImageResource(getViewIcon(3));
+                    holder.itemBinding.tvFilename.setText(customView.getXmlName());
                 }
+            } else if (selectedTab == TAB_FRAGMENT) {
+                holder.itemBinding.imgEdit.setVisibility(View.GONE);
+                holder.itemBinding.tvLinkedFilename.setVisibility(View.GONE);
+                String name = jC.b(sc_id).d().get(position);
+                ProjectFileBean fragment = jC.b(sc_id).b(name);
+
+                if (fragment == null) {
+                    fragment = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_FRAGMENT, name);
+                }
+
+                if (currentXml.equals(fragment.getXmlName())) {
+                    holder.itemBinding.cardView.setStrokeColor(
+                            ThemeUtils.getColor(ViewSelectorActivity.this, R.attr.colorPrimary));
+                    holder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(3f));
+                } else {
+                    holder.itemBinding.cardView.setStrokeWidth(SketchwareUtil.dpToPx(0f));
+                }
+                holder.itemBinding.imgView.setImageResource(getViewIcon(3));
+                holder.itemBinding.tvFilename.setText(fragment.getXmlName());
             }
         }
 
@@ -373,9 +411,10 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         public int getItemCount() {
             binding.emptyMessage.setVisibility(View.GONE);
             hC hC = jC.b(sc_id);
-            ArrayList<ProjectFileBean> list = switch (selectedTab) {
+            ArrayList<?> list = switch (selectedTab) {
                 case TAB_ACTIVITY -> hC.b();
                 case TAB_CUSTOM_VIEW -> hC.c();
+                case TAB_FRAGMENT -> hC.d();
                 default -> null;
             };
             int size = list != null ? list.size() : 0;
@@ -395,13 +434,21 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     if (!mB.a()) {
                         selectedItem = getLayoutPosition();
                         hC hC = jC.b(sc_id);
-                        ArrayList<ProjectFileBean> list = switch (selectedTab) {
-                            case TAB_ACTIVITY -> hC.b();
-                            case TAB_CUSTOM_VIEW -> hC.c();
-                            default -> null;
-                        };
-                        if (list != null) {
-                            projectFile = list.get(getLayoutPosition());
+                        if (selectedTab == TAB_FRAGMENT) {
+                            String name = hC.d().get(getLayoutPosition());
+                            projectFile = hC.b(name);
+                            if (projectFile == null) {
+                                projectFile = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_FRAGMENT, name);
+                            }
+                        } else {
+                            ArrayList<ProjectFileBean> list = switch (selectedTab) {
+                                case TAB_ACTIVITY -> hC.b();
+                                case TAB_CUSTOM_VIEW -> hC.c();
+                                default -> null;
+                            };
+                            if (list != null) {
+                                projectFile = list.get(getLayoutPosition());
+                            }
                         }
                         Intent intent = new Intent();
                         intent.putExtra("project_file", projectFile);

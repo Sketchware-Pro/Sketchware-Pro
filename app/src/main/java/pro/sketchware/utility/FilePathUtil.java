@@ -100,4 +100,8 @@ public class FilePathUtil {
     public String getManifestService(String sc_id) {
         return new File(SKETCHWARE_DATA, sc_id + "/service").getAbsolutePath();
     }
+
+    public String getPathLayout(String sc_id) {
+        return new File(getPathResource(sc_id), "layout").getAbsolutePath();
+    }
 }

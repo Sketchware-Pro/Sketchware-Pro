@@ -418,14 +418,17 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         a(a(arrayList, true), true);
                     }
                 } else if (currentTouchedView instanceof IconBase icon) {
-                    ViewBean bean = icon.getBean();
-                    bean.id = generateWidgetId(bean);
-                    viewPane.updateViewBeanProperties(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
-                    jC.a(a).a(b, bean);
-                    if (bean.type == 3 && projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
-                        jC.a(a).a(projectFileBean.getJavaName(), 1, bean.type, bean.id, "onClick");
+                    Object beanObj = icon.getBean();
+                    if (beanObj instanceof ViewBean) {
+                        ViewBean bean = (ViewBean) beanObj;
+                        bean.id = generateWidgetId(bean);
+                        viewPane.updateViewBeanProperties(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
+                        jC.a(a).a(b, bean);
+                        if (bean.type == 3 && projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
+                            jC.a(a).a(projectFileBean.getJavaName(), 1, bean.type, bean.id, "onClick");
+                        }
+                        a(a(bean, true), true);
                     }
-                    a(a(bean, true), true);
                 } else if (currentTouchedView instanceof ItemView sy) {
                     ViewBean bean = sy.getBean();
                     viewPane.updateViewBeanProperties(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());

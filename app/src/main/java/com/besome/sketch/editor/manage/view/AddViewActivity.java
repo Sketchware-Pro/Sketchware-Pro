@@ -269,7 +269,16 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
     private void handleCreateFile() {
         String fileName = Helper.getText(binding.edName) + getSuffix(binding.viewTypeSelector);
-        ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, fileName, getSelectedButtonIndex(binding.screenOrientationSelector), getSelectedButtonIndex(binding.keyboardSettingsSelector), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
+        int fileType = ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY;
+        int selectedTypeIndex = getSelectedButtonIndex(binding.viewTypeSelector);
+        if (selectedTypeIndex == VIEW_TYPE_FRAGMENT) {
+            fileType = ProjectFileBean.PROJECT_FILE_TYPE_FRAGMENT;
+        } else if (selectedTypeIndex == VIEW_TYPE_DIALOG_FRAGMENT) {
+            fileType = ProjectFileBean.PROJECT_FILE_TYPE_DIALOG_FRAGMENT;
+        } else if (selectedTypeIndex == VIEW_TYPE_BOTTOM_DIALOG_FRAGMENT) {
+            fileType = ProjectFileBean.PROJECT_FILE_TYPE_SHEET;
+        }
+        ProjectFileBean projectFileBean = new ProjectFileBean(fileType, fileName, getSelectedButtonIndex(binding.screenOrientationSelector), getSelectedButtonIndex(binding.keyboardSettingsSelector), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
         Intent intent = new Intent();
         intent.putExtra("project_file", projectFileBean);
         if (presetName != null) {

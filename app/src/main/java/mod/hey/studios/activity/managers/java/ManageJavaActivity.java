@@ -276,28 +276,41 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
 
         var inputText = dialogBinding.inputText;
         var renameOccurrencesCheckBox = dialogBinding.renameOccurrencesCheckBox;
+        var renameXmlCheckBox = dialogBinding.renameXmlCheckBox;
 
-        var dialog = new MaterialAlertDialogBuilder(this).setTitle("Rename " + filesAdapter.getFileName(position)).setView(dialogBinding.getRoot()).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).setPositiveButton("Rename", (dialogInterface, i) -> {
-            if (!Helper.getText(inputText).isEmpty()) {
-                if (!filesAdapter.isFolder(position)) {
-                    if (frc.getJavaManifestList().contains(filesAdapter.getFullName(position))) {
-                        frc.getJavaManifestList().remove(filesAdapter.getFullName(position));
-                        FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
-                        SketchwareUtil.toast("NOTE: Removed Activity from manifest");
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setTitle("Rename " + filesAdapter.getFileName(position))
+                .setView(dialogBinding.getRoot())
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Rename", (dialogInterface, i) -> {
+                    if (!Helper.getText(inputText).isEmpty()) {
+                        if (!filesAdapter.isFolder(position)) {
+                            if (frc.getJavaManifestList().contains(filesAdapter.getFullName(position))) {
+                                frc.getJavaManifestList().remove(filesAdapter.getFullName(position));
+                                FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
+                                SketchwareUtil.toast("NOTE: Removed Activity from manifest");
+                            }
+
+                            if (renameOccurrencesCheckBox.isChecked()) {
+                                String fileContent = FileUtil.readFile(filesAdapter.getItem(position));
+                                FileUtil.writeFile(filesAdapter.getItem(position), fileContent.replaceAll(filesAdapter.getFileNameWoExt(position), FileUtil.getFileNameNoExtension(Helper.getText(inputText))));
+                            }
+
+                            if (renameXmlCheckBox.isChecked()) {
+                                String xmlPath = fpu.getPathLayout(sc_id) + File.separator + filesAdapter.getFileNameWoExt(position).toLowerCase() + ".xml";
+                                if (FileUtil.isExistFile(xmlPath)) {
+                                    FileUtil.renameFile(xmlPath, fpu.getPathLayout(sc_id) + File.separator + FileUtil.getFileNameNoExtension(Helper.getText(inputText)).toLowerCase() + ".xml");
+                                }
+                            }
+                        }
+
+                        FileUtil.renameFile(filesAdapter.getItem(position), new File(current_path, Helper.getText(inputText)).getAbsolutePath());
+                        refresh();
+                        SketchwareUtil.toast("Renamed successfully");
                     }
-
-                    if (renameOccurrencesCheckBox.isChecked()) {
-                        String fileContent = FileUtil.readFile(filesAdapter.getItem(position));
-                        FileUtil.writeFile(filesAdapter.getItem(position), fileContent.replaceAll(filesAdapter.getFileNameWoExt(position), FileUtil.getFileNameNoExtension(Helper.getText(inputText))));
-                    }
-                }
-
-                FileUtil.renameFile(filesAdapter.getItem(position), new File(current_path, Helper.getText(inputText)).getAbsolutePath());
-                refresh();
-                SketchwareUtil.toast("Renamed successfully");
-            }
-            dialogInterface.dismiss();
-        }).create();
+                    dialogInterface.dismiss();
+                })
+                .create();
 
         inputText.setText(filesAdapter.getFileName(position));
         boolean isFolder = filesAdapter.isFolder(position);
@@ -307,6 +320,8 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
         if (!isFolder) {
             renameOccurrencesCheckBox.setVisibility(View.VISIBLE);
             renameOccurrencesCheckBox.setText("Rename occurrences of \"" + filesAdapter.getFileNameWoExt(position) + "\" in file");
+            renameXmlCheckBox.setVisibility(View.VISIBLE);
+            renameXmlCheckBox.setText("Rename associated XML file");
         }
         dialog.show();
 

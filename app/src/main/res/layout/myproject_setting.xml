@@ -108,6 +108,13 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/code_mode_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Code Mode"/>
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -219,7 +226,7 @@
 
                         <Button
                             android:id="@+id/btnReset"
-                            style="@style/Widget.Material3Expressive.Button.IconButton.Tonal"
+                            style="@style/Widget.Material3.Button.TonalButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
@@ -341,11 +348,11 @@
         android:background="?attr/colorSurface"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp">
+        android.paddingVertical="12dp">
 
         <Button
             android:id="@+id/cancel"
-            style="@style/Widget.Material3Expressive.Button.TonalButton"
+            style="@style/Widget.Material3.Button.TonalButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -354,7 +361,7 @@
 
         <Button
             android:id="@+id/ok_button"
-            style="@style/Widget.Material3Expressive.Button"
+            style="@style/Widget.Material3.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -2,7 +2,7 @@
 activity = "1.11.0"
 appcompat = "1.7.1"
 desugar_jdk_libs_nio = "2.1.5"
-firebaseBom = "34.3.0"
+firebaseBom = "34.7.0"
 sora-editor = "0.23.5"
 bundletool = "1.18.2"
 cardview = "1.0.0"
@@ -87,7 +87,7 @@ ecj = { module = "org.eclipse.jdt:ecj", version.ref = "ecj" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler", version.ref = "kotlinCompiler" }
-kotlinc-for1-sketchware = { module = "com.github.waelchateur:kotlinc-for-sketchware", version.ref = "kotlincForSketchware" }
+kotlinc-for-sketchware = { module = "com.github.waelchateur:kotlinc-for-sketchware", version.ref = "kotlincForSketchware" }
 
 nb-javac-android = { module = "io.github.itsaky:nb-javac-android", version.ref = "nbJavacAndroid" }
 
@@ -118,6 +118,6 @@ coil = ["coil", "coil-kt-coil-svg"]
 networking = ["okhttp", "okio"]
 bundletool = ["bundletool", "protobuf-java"]
 shrinker = ["r8", "proguard-core"]
-kotlin_compiler = ["kotlinc-for1-sketchware", "nb-javac-android", "woodstox-core"]
+kotlin_compiler = ["kotlinc-for-sketchware", "nb-javac-android", "woodstox-core"]
 editor_and_lang = ["editor", "language-java", "language-textmate"]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-messaging"]

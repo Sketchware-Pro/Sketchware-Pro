@@ -88,6 +88,19 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_onclick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/onclick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="onClick" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

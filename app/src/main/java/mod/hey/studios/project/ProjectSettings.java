@@ -60,6 +60,8 @@ public class ProjectSettings {
      * Setting to use new xml command
      */
     public static final String SETTING_NEW_XML_COMMAND = "xml_command";
+    public static final String MANUAL_ANDROID_MANIFEST = "manual_android_manifest";
+    public static final String SETTING_CODE_MODE = "code_mode";
     public static final String SETTING_GENERIC_VALUE_TRUE = "true";
     public static final String SETTING_GENERIC_VALUE_FALSE = "false";
     private static final String TAG = "ProjectSettings";
@@ -124,11 +126,14 @@ public class ProjectSettings {
             String key = (String) v.getTag();
             String value;
 
-            if (v instanceof EditText editText) {
+            if (v instanceof EditText) {
+                EditText editText = (EditText) v;
                 value = Helper.getText(editText);
-            } else if (v instanceof Checkable checkable) {
+            } else if (v instanceof Checkable) {
+                Checkable checkable = (Checkable) v;
                 value = Boolean.toString(checkable.isChecked());
-            } else if (v instanceof RadioGroup radioGroup) {
+            } else if (v instanceof RadioGroup) {
+                RadioGroup radioGroup = (RadioGroup) v;
                 value = getCheckedRbValue(radioGroup);
             } else {
                 return;

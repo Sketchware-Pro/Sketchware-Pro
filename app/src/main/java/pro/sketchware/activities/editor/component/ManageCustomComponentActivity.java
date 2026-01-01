@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -271,6 +272,20 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
         dialog.show();
     }
 
+    private void share(int position) {
+        String componentName = componentsList.get(position).get("name").toString();
+        String fileName = componentName + ".json";
+        String filePath = new File(COMPONENT_EXPORT_DIR, fileName).getAbsolutePath();
+        FileUtil.writeFile(filePath, getGson().toJson(List.of(componentsList.get(position))));
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("application/json");
+        intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", new File(filePath)));
+        intent.putExtra(Intent.EXTRA_SUBJECT, componentName);
+        intent.putExtra(Intent.EXTRA_TEXT, "Sharing component: " + componentName);
+        startActivity(Intent.createChooser(intent, "Share Component"));
+    }
+
     public class ComponentsAdapter extends RecyclerView.Adapter<ComponentsAdapter.ViewHolder> {
         private final List<HashMap<String, Object>> components;
         private final List<Boolean> collapse;
@@ -361,6 +376,8 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
                             confirmation.set(lastSelectedItem, false);
                         } else if (id == 1) {
                             confirmation.set(lastSelectedItem, true);
+                        } else if (id == 2) {
+                            share(lastSelectedItem);
                         } else {
                             return;
                         }

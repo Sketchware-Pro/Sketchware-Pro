@@ -230,6 +230,7 @@ public class PaletteWidget extends LinearLayout {
             case "CardView" -> new IconCardView(context);
             case "TextInputLayout" -> new IconTextInputLayout(context);
             case "RelativeLayout" -> new IconRelativeLayout(context);
+            case "FrameLayout" -> new IconFrameLayout(context);
             default -> new IconBase(context);
         };
         if (tag != null && !tag.isEmpty()) {

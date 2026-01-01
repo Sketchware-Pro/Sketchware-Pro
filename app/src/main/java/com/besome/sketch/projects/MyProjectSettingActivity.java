@@ -227,7 +227,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         } else if (id == R.id.ok_button) {
             mB.a(v);
             if (isInputValid()) {
-                new SaveProjectAsyncTask(getApplicationContext()).execute();
+                new SaveProjectAsyncTask(getApplicationContext(), binding.codeModeSwitch.isChecked()).execute();
                 if (icon != null) saveBitmapTo(icon, getCustomIconPath());
             }
         } else if (id == R.id.cancel) {
@@ -500,8 +500,11 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
     private class SaveProjectAsyncTask extends MA {
 
-        public SaveProjectAsyncTask(Context context) {
+        private final boolean codeMode;
+
+        public SaveProjectAsyncTask(Context context, boolean codeMode) {
             super(context);
+            this.codeMode = codeMode;
             addTask(this);
             k();
         }
@@ -552,6 +555,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 ProjectSettings projectSettings = new ProjectSettings(sc_id);
                 projectSettings.setValue(ProjectSettings.SETTING_NEW_XML_COMMAND, ProjectSettings.SETTING_GENERIC_VALUE_TRUE);
                 projectSettings.setValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, ProjectSettings.SETTING_GENERIC_VALUE_TRUE);
+                projectSettings.setValue(ProjectSettings.SETTING_CODE_MODE, codeMode ? ProjectSettings.SETTING_GENERIC_VALUE_TRUE : ProjectSettings.SETTING_GENERIC_VALUE_FALSE);
 
             }
             try {

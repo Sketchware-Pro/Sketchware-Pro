@@ -132,9 +132,9 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
             SketchwareUtil.copySafDocumentToTempFile(intentData, this, filenameExtension, tempFontFile -> {
                 fontUri = Uri.fromFile(tempFontFile);
                 try {
-                    Typeface typeface = Typeface.createFromFile(tempFontFile);
+                    Typeface typeface = Typeface.createFromFile(tempFontFile.getAbsolutePath());
                     if (typeface.equals(Typeface.DEFAULT)) {
-                        SketchwareUtil.toastError("Warning: Font doesn't seem to be valid");
+                        SketchwareUtil.toastError("Warning: Font doesn\'t seem to be valid");
                         return;
                     }
                     validFontPicked = true;
@@ -149,7 +149,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
                     e.printStackTrace();
                     validFontPicked = false;
                     binding.fontPreviewView.setVisibility(View.GONE);
-                    SketchwareUtil.toast("Couldn't load font: " + e.getMessage());
+                    SketchwareUtil.toast("Couldn\'t load font: " + e.getMessage());
                     LogUtil.e("AddFontActivity", "Failed to load font", e);
                 }
             }, e -> {

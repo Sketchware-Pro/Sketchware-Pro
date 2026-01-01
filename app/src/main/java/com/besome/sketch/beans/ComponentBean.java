@@ -53,6 +53,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
     public static final int COMPONENT_TYPE_FIREBASE_AUTH_PHONE = 28;
     public static final int COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE = 30;
     public static final int COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN = 31;
+    public static final int COMPONENT_TYPE_CUSTOM_DIALOG = 32;
+    public static final int COMPONENT_TYPE_BOTTOM_SHEET = 33;
 
     public Gx classInfo;
     @Expose
@@ -185,6 +187,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> "PhoneAuth";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "Cloud Message";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "Google Login";
+            case COMPONENT_TYPE_CUSTOM_DIALOG -> "Custom Dialog";
+            case COMPONENT_TYPE_BOTTOM_SHEET -> "Bottom Sheet";
             default -> ComponentsHandler.name(type);
         };
     }
@@ -221,6 +225,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case "FirebasePhoneAuth" -> COMPONENT_TYPE_FIREBASE_AUTH_PHONE;
             case "FirebaseCloudMessage" -> COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE;
             case "FirebaseGoogleLogin" -> COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN;
+            case "CustomDialog" -> COMPONENT_TYPE_CUSTOM_DIALOG;
+            case "BottomSheet" -> COMPONENT_TYPE_BOTTOM_SHEET;
             default -> ComponentsHandler.id(typeName);
         };
     }
@@ -257,6 +263,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> "FirebasePhoneAuth";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "FirebaseGoogleLogin";
+            case COMPONENT_TYPE_CUSTOM_DIALOG -> "CustomDialog";
+            case COMPONENT_TYPE_BOTTOM_SHEET -> "BottomSheet";
             default -> ComponentsHandler.typeName(type);
         };
     }
@@ -275,6 +283,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE ->
                     R.string.design_library_firebase_description_about_firebase;
             case COMPONENT_TYPE_DIALOG -> R.string.component_description_dialog;
+            case COMPONENT_TYPE_CUSTOM_DIALOG -> R.string.component_description_dialog;
+            case COMPONENT_TYPE_BOTTOM_SHEET -> R.string.component_description_dialog;
             case COMPONENT_TYPE_MEDIAPLAYER -> R.string.component_description_mediaplayer;
             case COMPONENT_TYPE_SOUNDPOOL -> R.string.component_description_soundpool;
             case COMPONENT_TYPE_OBJECTANIMATOR -> R.string.component_description_objectanimator;
@@ -317,6 +327,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_STORAGE -> R.drawable.ic_mtrl_firebase_storage;
             case COMPONENT_TYPE_FIREBASE -> R.drawable.ic_mtrl_firebase_rtdb;
             case COMPONENT_TYPE_DIALOG -> R.drawable.ic_mtrl_dialog;
+            case COMPONENT_TYPE_CUSTOM_DIALOG -> R.drawable.ic_mtrl_dialog;
+            case COMPONENT_TYPE_BOTTOM_SHEET -> R.drawable.ic_mtrl_bottom_navigation;
             case COMPONENT_TYPE_MEDIAPLAYER -> R.drawable.ic_mtrl_video;
             case COMPONENT_TYPE_SOUNDPOOL -> R.drawable.ic_mtrl_volume;
             case COMPONENT_TYPE_OBJECTANIMATOR -> R.drawable.ic_mtrl_animation;
@@ -376,6 +388,8 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> "FirebasePhoneAuth";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "FirebaseGoogleLogin";
+            case COMPONENT_TYPE_CUSTOM_DIALOG -> "CustomDialog";
+            case COMPONENT_TYPE_BOTTOM_SHEET -> "BottomSheet";
             default -> ComponentsHandler.c(type);
         };
         classInfo = new Gx(typeName);
