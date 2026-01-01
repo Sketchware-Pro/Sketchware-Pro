@@ -136,6 +136,11 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                 languageId = 2;
                 break;
 
+            case 3:
+                ed.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_JSON));
+                languageId = 3;
+                break;
+
             default:
                 ed.setEditorLanguage(new JavaLanguage());
                 languageId = 0;
@@ -266,7 +271,8 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         CharSequence[] languagesList = {
                 "Java",
                 "Kotlin",
-                "XML"
+                "XML",
+                "JSON"
         };
 
         new MaterialAlertDialogBuilder(activity)
@@ -324,6 +330,14 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                 binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
             }
             languageId = 2;
+        } else if (title.endsWith(".json")) {
+            binding.editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_JSON));
+            if (ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
+                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+            } else {
+                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+            }
+            languageId = 3;
         }
 
         loadCESettings(this, binding.editor, "act", true);

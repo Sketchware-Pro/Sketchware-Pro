@@ -17,6 +17,12 @@
       "name": "xml",
       "scopeName": "text.xml",
       "languageConfiguration": "textmate/xml/language-configuration.json"
+    },
+    {
+      "grammar": "textmate/json/syntaxes/JSON.tmLanguage.json",
+      "name": "json",
+      "scopeName": "source.json",
+      "languageConfiguration": "textmate/json/language-configuration.json"
     }
   ]
 }
