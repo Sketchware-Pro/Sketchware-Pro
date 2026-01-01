@@ -403,7 +403,7 @@ public class Gx {
                 break;
 
             default:
-                classInfos = ComponentsHandler.c(className);
+                classInfos = ComponentsHandler.getClassByTypeName(className);
         }
 
         classPath = classInfos.split("\\.");

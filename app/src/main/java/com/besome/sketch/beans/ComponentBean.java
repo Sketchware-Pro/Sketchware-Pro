@@ -376,7 +376,7 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> "FirebasePhoneAuth";
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "FirebaseGoogleLogin";
-            default -> ComponentsHandler.c(type);
+            default -> ComponentsHandler.getBuildClassById(type);
         };
         classInfo = new Gx(typeName);
     }
