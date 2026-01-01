@@ -121,7 +121,6 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
 
     public static void selectLanguage(CodeEditor ed, int which) {
         switch (which) {
-            default:
             case 0:
                 ed.setEditorLanguage(new JavaLanguage());
                 languageId = 0;
@@ -135,6 +134,11 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             case 2:
                 ed.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
                 languageId = 2;
+                break;
+
+            default:
+                ed.setEditorLanguage(new JavaLanguage());
+                languageId = 0;
                 break;
         }
 
@@ -202,7 +206,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                         String tagName = trimmed.substring(1, tagEnd);
                         String attrPart = trimmed.substring(tagEnd + 1)
                                 .replaceAll("/?>$", "").trim();
-                        String[] attrs = attrPart.split("\\s+(?=[^=]+\\=)");
+                        String[] attrs = attrPart.split("\\s+(?=[^=]+=)");
 
                         formatted.append(baseIndent).append("<").append(tagName).append("\n");
                         for (String attr : attrs) {
@@ -402,6 +406,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Select theme");
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Go to Line");
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Text Size");
+            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Select All");
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Share");
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete").setCheckable(true).setChecked(local_pref.getBoolean("act_ac", true));
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete symbol pair").setCheckable(true).setChecked(local_pref.getBoolean("act_acsp", true));
@@ -421,8 +426,15 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                         save();
                         break;
 
+                    case "Select All":
+                        binding.editor.selectAll();
+                        break;
+
                     case "Pretty print":
-                        if (getIntent().hasExtra("java")) {
+                        boolean isJava = getIntent().hasExtra("java") || (getIntent().getStringExtra("title") != null && getIntent().getStringExtra("title").endsWith(".java"));
+                        boolean isXml = getIntent().hasExtra("xml") || (getIntent().getStringExtra("title") != null && getIntent().getStringExtra("title").endsWith(".xml"));
+
+                        if (isJava) {
                             StringBuilder b = new StringBuilder();
 
                             for (String line : binding.editor.getText().toString().split("\n")) {
@@ -445,7 +457,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
 
                             if (!err) binding.editor.setText(ss);
 
-                        } else if (getIntent().hasExtra("xml")) {
+                        } else if (isXml) {
                             String format = prettifyXml(binding.editor.getText().toString(), 4, getIntent());
 
                             if (format != null) {
