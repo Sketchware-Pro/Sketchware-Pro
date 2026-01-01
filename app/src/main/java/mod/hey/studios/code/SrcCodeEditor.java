@@ -400,6 +400,9 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Pretty print");
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Select language");
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Select theme");
+            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Go to Line");
+            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Text Size");
+            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Share");
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete").setCheckable(true).setChecked(local_pref.getBoolean("act_ac", true));
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete symbol pair").setCheckable(true).setChecked(local_pref.getBoolean("act_acsp", true));
 
@@ -475,6 +478,22 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                         });
                         break;
 
+                    case "Go to Line":
+                        showGoToLineDialog();
+                        break;
+
+                    case "Text Size":
+                        showTextSizeDialog();
+                        break;
+
+                    case "Share":
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, binding.editor.getText().toString());
+                        sendIntent.setType("text/plain");
+                        startActivity(Intent.createChooser(sendIntent, "Share Code"));
+                        break;
+
                     case "Word wrap":
                         item.setChecked(!item.isChecked());
                         binding.editor.setWordwrap(item.isChecked());
@@ -508,6 +527,60 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         }
     }
 
+    private void showGoToLineDialog() {
+        final android.widget.EditText input = new android.widget.EditText(this);
+        input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        input.setHint("Line number");
+
+        // Add padding
+        int padding = (int) (16 * getResources().getDisplayMetrics().density);
+        input.setPadding(padding, padding, padding, padding);
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Go to Line")
+                .setView(input)
+                .setPositiveButton("Go", (dialog, which) -> {
+                    String text = input.getText().toString();
+                    if (!text.isEmpty()) {
+                        try {
+                            int line = Integer.parseInt(text) - 1; // 0-indexed
+                            if (line >= 0 && line < binding.editor.getLineCount()) {
+                                binding.editor.setSelection(line, 0);
+                            } else {
+                                SketchwareUtil.toastError("Invalid line number");
+                            }
+                        } catch (NumberFormatException e) {
+                            SketchwareUtil.toastError("Invalid number");
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void showTextSizeDialog() {
+        String[] sizes = {"10", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30"};
+        int currentSize = (int) (binding.editor.getTextSizePx() / getResources().getDisplayMetrics().scaledDensity);
+        int currentIndex = -1;
+        for (int i = 0; i < sizes.length; i++) {
+            if (Integer.parseInt(sizes[i]) == currentSize) {
+                currentIndex = i;
+                break;
+            }
+        }
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Text Size")
+                .setSingleChoiceItems(sizes, currentIndex, (dialog, which) -> {
+                    int size = Integer.parseInt(sizes[which]);
+                    binding.editor.setTextSize(size);
+                    pref.edit().putInt("act_ts", size).apply();
+                    dialog.dismiss();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -535,3 +608,4 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         startActivity(intent);
     }
 }
+
