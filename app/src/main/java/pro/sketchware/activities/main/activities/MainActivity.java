@@ -328,7 +328,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             transaction.add(binding.container.getId(), projectsFragment, PROJECTS_FRAGMENT_TAG);
         }
         if (shouldShow) transaction.show(projectsFragment);
-        transaction.commit();
+        transaction.commitNow();
 
         activeFragment = projectsFragment;
         currentNavItemId = R.id.item_projects;
@@ -350,7 +350,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             transaction.add(binding.container.getId(), projectsStoreFragment, PROJECTS_STORE_FRAGMENT_TAG);
         }
         if (shouldShow) transaction.show(projectsStoreFragment);
-        transaction.commit();
+        transaction.commitNow();
 
         activeFragment = projectsStoreFragment;
         currentNavItemId = R.id.item_sketchub;

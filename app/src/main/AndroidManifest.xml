@@ -251,20 +251,29 @@
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="mod.hilal.saif.activities.tools.BlocksManager"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="mod.hilal.saif.activities.tools.BlocksManagerCreatorActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="mod.hilal.saif.activities.tools.BlocksManagerDetailsActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="mod.hilal.saif.activities.tools.ConfigActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.SketchwarePro.SmallToolbar" />
         <activity
             android:name="mod.hilal.saif.activities.tools.AppSettings"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.SketchwarePro.SmallToolbar" />
+        <activity
+            android:name="mod.hilal.saif.activities.tools.BackupRestoreActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.SketchwarePro.SmallToolbar" />
+        <activity
+            android:name="mod.hilal.saif.activities.tools.BlocksManager"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.SketchwarePro.SmallToolbar" />
+        <activity
+            android:name="mod.hilal.saif.activities.tools.BlocksManagerCreatorActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.SketchwarePro.SmallToolbar" />
+        <activity
+            android:name="mod.hilal.saif.activities.tools.BlocksManagerDetailsActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.SketchwarePro.SmallToolbar" />
         <activity
             android:name="pro.sketchware.activities.about.AboutActivity"
             android:configChanges="orientation|screenSize" />

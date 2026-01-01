@@ -99,6 +99,17 @@ public class MainDrawer extends NavigationView {
             Intent intent = new Intent(activity, ProgramInfoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             activity.startActivityForResult(intent, 105);
+        } else if (id == R.id.system_info) {
+            String info = "Android Version: " + android.os.Build.VERSION.RELEASE + "\n" +
+                          "SDK Level: " + android.os.Build.VERSION.SDK_INT + "\n" +
+                          "Device: " + android.os.Build.DEVICE + "\n" +
+                          "Model: " + android.os.Build.MODEL + "\n" +
+                          "Product: " + android.os.Build.PRODUCT;
+            new android.app.AlertDialog.Builder(activity)
+                    .setTitle("System Info")
+                    .setMessage(info)
+                    .setPositiveButton("OK", null)
+                    .show();
         } else if (id == R.id.app_settings) {
             Intent intent = new Intent(activity, AppSettings.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

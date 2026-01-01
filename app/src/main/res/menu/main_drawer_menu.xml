@@ -16,6 +16,11 @@
         android:title="App information" />
 
     <item
+        android:id="@+id/system_info"
+        android:icon="@drawable/ic_mtrl_info"
+        android:title="System Info" />
+
+    <item
         android:id="@+id/create_release_keystore"
         android:icon="@drawable/ic_mtrl_key"
         android:title="Create keystore" />
