@@ -128,11 +128,11 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
 
     private void getViewsById() {
         binding.btnSave.setOnClickListener(this);
-        binding.pick.setOnClickListener(this);
+        binding.tilComponentIcon.setEndIconOnClickListener(v -> showIconSelectorDialog());
     }
 
     private void initializeHelper() {
-        binding.componentName.addTextChangedListener(new ComponentHelper(new EditText[]{binding.componentBuildClass, binding.componentVarTypeName, binding.componentTypeName, binding.componentTypeClass}, binding.componentTypeClass));
+        binding.componentName.addTextChangedListener(new ComponentHelper(new EditText[]{binding.componentBuildClass, binding.componentVariableName, binding.componentTypeName, binding.componentTypeClass}, binding.componentTypeClass));
     }
 
     @Override
@@ -149,8 +149,6 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
             } else {
                 SketchwareUtil.toastError(Helper.getResString(R.string.invalid_required_fields));
             }
-        } else if (id == R.id.pick) {
-            showIconSelectorDialog();
         }
     }
 
@@ -158,10 +156,10 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
         binding.componentName.setText((String) map.get("name"));
         binding.componentId.setText((String) map.get("id"));
         binding.componentIcon.setText((String) map.get("icon"));
-        binding.componentVarTypeName.setText((String) map.get("varName"));
+        binding.componentVariableName.setText((String) map.get("varName"));
         binding.componentTypeName.setText((String) map.get("typeName"));
-        binding.componentBuildClass.setText((String) map.get("class"));
-        binding.componentTypeClass.setText((String) map.get("buildClass"));
+        binding.componentBuildClass.setText((String) map.get("buildClass"));
+        binding.componentTypeClass.setText((String) map.get("class"));
         binding.componentDescription.setText((String) map.get("description"));
         binding.componentDocUrl.setText((String) map.get("url"));
         binding.componentAddVar.setText((String) map.get("additionalVar"));
@@ -178,7 +176,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
                 || Helper.getText(binding.componentId).isEmpty()
                 || Helper.getText(binding.componentIcon).isEmpty()
                 || Helper.getText(binding.componentTypeName).isEmpty()
-                || Helper.getText(binding.componentVarTypeName).isEmpty()
+                || Helper.getText(binding.componentVariableName).isEmpty()
                 || Helper.getText(binding.componentTypeClass).isEmpty()
                 || Helper.getText(binding.componentBuildClass).isEmpty();
     }
@@ -195,7 +193,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
         map.put("name", Helper.getText(binding.componentName));
         map.put("id", Helper.getText(binding.componentId));
         map.put("icon", Helper.getText(binding.componentIcon));
-        map.put("varName", Helper.getText(binding.componentVarTypeName));
+        map.put("varName", Helper.getText(binding.componentVariableName));
         map.put("typeName", Helper.getText(binding.componentTypeName));
         map.put("buildClass", Helper.getText(binding.componentBuildClass));
         map.put("class", Helper.getText(binding.componentTypeClass));

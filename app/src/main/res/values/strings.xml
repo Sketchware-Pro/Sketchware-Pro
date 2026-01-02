@@ -1288,16 +1288,16 @@ You must enter the API key to operate the map normally."</string>
     <string name="developer_tools_component_add_var">Additional Variables</string>
     <string name="developer_tools_component_build_class">Build Class</string>
     <string name="developer_tools_component_define_add_var">Define Additional Variables</string>
-    <string name="developer_tools_component_description">Description</string>
+    <string name="developer_tools_component_description">Description (Optional)</string>
     <string name="developer_tools_component_description_guide_add_component">"If you add a component here
  You can use it in Logic Editor"</string>
-    <string name="developer_tools_component_url">Document URL</string>
-    <string name="developer_tools_component_id">Component ID</string>
-    <string name="developer_tools_component_icon">Component Icon</string>
+    <string name="developer_tools_component_url">Document URL (Optional)</string>
+    <string name="developer_tools_component_id">Component ID (Required)</string>
+    <string name="developer_tools_component_icon">Component Icon (Required)</string>
     <string name="developer_tools_component_imports">Imports</string>
     <string name="developer_tools_component_manager">Component manager</string>
     <string name="developer_tools_component_message_export">Are you sure you want to export %s?</string>
-    <string name="developer_tools_component_name">Component Name</string>
+    <string name="developer_tools_component_name">Component Name (Required)</string>
     <string name="developer_tools_component_success_message_export">Successfully exported component to:\n%s</string>
     <string name="developer_tools_component_type_class">Type Class</string>
     <string name="developer_tools_component_type_name">Type Name</string>
