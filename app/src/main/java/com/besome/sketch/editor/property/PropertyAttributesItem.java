@@ -42,41 +42,35 @@ import pro.sketchware.utility.relativelayout.CircularDependencyDetector;
 public class PropertyAttributesItem extends LinearLayout implements View.OnClickListener {
     private static final String[] PARENT_RELATIVE = {
             "android:layout_centerInParent",
-            "android:layout_centerVertical",
-            "android:layout_centerHorizontal",
-            "android:layout_toStartOf",
-            "android:layout_toLeftOf",
-            "android:layout_toRightOf",
-            "android:layout_toEndOf",
-            "android:layout_above",
-            "android:layout_below",
-            "android:layout_alignStart",
-            "android:layout_alignLeft",
-            "android:layout_alignTop",
-            "android:layout_alignEnd",
-            "android:layout_alignRight",
-            "android:layout_alignBottom",
-            "android:layout_alignParentStart",
-            "android:layout_alignParentLeft",
-            "android:layout_alignParentTop",
-            "android:layout_alignParentEnd",
-            "android:layout_alignParentRight",
-            "android:layout_alignParentBottom",
+
+            "android:layout_centerVertical", "android:layout_centerHorizontal",
+
+            "android:layout_toStartOf", "android:layout_toEndOf",
+            "android:layout_toLeftOf", "android:layout_toRightOf",
+
+            "android:layout_above", "android:layout_below",
+            "android:layout_alignStart", "android:layout_alignEnd",
+            "android:layout_alignLeft", "android:layout_alignRight",
+            "android:layout_alignTop", "android:layout_alignBottom",
+
+            "android:layout_alignParentStart", "android:layout_alignParentEnd",
+            "android:layout_alignParentLeft", "android:layout_alignParentRight",
+            "android:layout_alignParentTop", "android:layout_alignParentBottom",
+
             "android:layout_alignBaseline"
     };
     public static List<String> RELATIVE_IDS = Arrays.asList(
-            "android:layout_alignStart",
-            "android:layout_alignLeft",
-            "android:layout_alignTop",
-            "android:layout_alignEnd",
-            "android:layout_alignBottom",
+            "android:layout_alignStart", "android:layout_alignEnd",
+            "android:layout_alignLeft", "android:layout_alignRight",
+            "android:layout_alignTop", "android:layout_alignBottom",
+
             "android:layout_alignBaseline",
-            "android:layout_toStartOf",
-            "android:layout_toLeftOf",
-            "android:layout_toEndOf",
-            "android:layout_toRightOf",
-            "android:layout_above",
-            "android:layout_below");
+
+            "android:layout_toStartOf", "android:layout_toEndOf",
+            "android:layout_toLeftOf", "android:layout_toRightOf",
+            "android:layout_above", "android:layout_below"
+    );
+
     private final ArrayList<ViewBean> beans = new ArrayList<>();
     private String key = "";
     private HashMap<String, String> value = new HashMap<>();

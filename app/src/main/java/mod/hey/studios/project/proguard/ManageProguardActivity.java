@@ -26,14 +26,12 @@ public class ManageProguardActivity extends BaseAppCompatActivity
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.ig_toolbar_back) {
-            finish();
-        } else if (id == R.id.ln_pg_rules) {
+        if (id == binding.lnPgRules.getId()) {
             Intent intent = new Intent(this, SrcCodeEditor.class);
             intent.putExtra("title", "proguard-rules.pro");
             intent.putExtra("content", pg.getCustomProguardRules());
             startActivity(intent);
-        } else if (id == R.id.ln_pg_fm) {
+        } else if (id == binding.lnPgFm.getId()) {
             fmDialog();
         }
     }
