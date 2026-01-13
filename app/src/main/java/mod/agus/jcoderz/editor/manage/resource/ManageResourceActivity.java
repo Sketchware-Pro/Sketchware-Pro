@@ -32,7 +32,7 @@ import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
 import dev.pranav.filepicker.FilePickerOptions;
 import dev.pranav.filepicker.SelectionMode;
-import mod.bobur.XmlToSvgConverter;
+import mod.bobur.VectorDrawableLoader;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -386,7 +386,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                     if (FileUtil.isImageFile(path)) {
                         Glide.with(ManageResourceActivity.this).load(new File(path)).into(binding.icon);
                     } else if (path.endsWith(".xml") && "drawable".equals(getLastDirectory(path))) {
-                        new XmlToSvgConverter().setImageVectorFromFile(binding.icon, path);
+                        new VectorDrawableLoader().setImageVectorFromFile(binding.icon, path);
                     } else {
                         binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                     }

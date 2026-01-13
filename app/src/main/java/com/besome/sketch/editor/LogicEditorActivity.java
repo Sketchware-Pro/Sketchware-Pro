@@ -111,7 +111,7 @@ import a.a.a.wB;
 import a.a.a.xB;
 import a.a.a.yq;
 import dev.aldi.sayuti.block.ExtraPaletteBlock;
-import mod.bobur.XmlToSvgConverter;
+import mod.bobur.VectorDrawableLoader;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
@@ -558,8 +558,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     }
                 } else {
                     try {
-                        XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
-                        xmlToSvgConverter.setImageVectorFromFile(imageView, xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, str));
+                        VectorDrawableLoader vectorDrawableLoader = new VectorDrawableLoader();
+                        vectorDrawableLoader.setImageVectorFromFile(imageView, vectorDrawableLoader.getVectorFullPath(DesignActivity.sc_id, str));
                     } catch (Exception e) {
                         crashlytics.log("Converting SVG to XML.");
                         crashlytics.recordException(e);
@@ -726,7 +726,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ArrayList<String> images = jC.d(scId).m();
-        images.addAll(new XmlToSvgConverter().getVectorDrawables(DesignActivity.sc_id));
+        images.addAll(new VectorDrawableLoader().getVectorDrawables(DesignActivity.sc_id));
         if (selectingImage) {
             images.add(0, "default_image");
         } else if (selectingBackgroundImage) {
