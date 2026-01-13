@@ -53,6 +53,16 @@
                         app:tint="?attr/colorOnSurfaceVariant"
                         android:background="?attr/selectableItemBackgroundBorderless" 
                         android:contentDescription="History"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_settings"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_settings_black_24dp"
+                        app:tint="?attr/colorOnSurfaceVariant"
+                        android:background="?attr/selectableItemBackgroundBorderless" 
+                        android:contentDescription="Settings"/>
                 </LinearLayout>
 
             </com.google.android.material.appbar.MaterialToolbar>

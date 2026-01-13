@@ -21,7 +21,8 @@ import okhttp3.Response;
 
 public class QwenService implements AIService {
     // DashScope API Key
-    private static final String API_KEY = "your qwen-plus api key"; // User must replace this with their DashScope API Key
+    private static final String DEFAULT_API_KEY = ""; // User must provide their own key via Settings 
+    
     // OpenAI compatible endpoint for DashScope
     private static final String BASE_URL = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions";
     // Default model - can be changed to qwen-max, qwen-turbo, etc.
@@ -30,8 +31,10 @@ public class QwenService implements AIService {
     private final OkHttpClient client;
     private final Gson gson;
     private final Handler mainHandler;
+    private final android.content.Context context;
 
-    public QwenService() {
+    public QwenService(android.content.Context context) {
+        this.context = context;
         this.client = new OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
@@ -39,6 +42,11 @@ public class QwenService implements AIService {
             .build();
         this.gson = new Gson();
         this.mainHandler = new Handler(Looper.getMainLooper());
+    }
+
+    private String getApiKey() {
+        android.content.SharedPreferences prefs = context.getSharedPreferences("ai_settings", android.content.Context.MODE_PRIVATE);
+        return prefs.getString("api_key", DEFAULT_API_KEY);
     }
 
     private String systemContext = "";
@@ -146,10 +154,16 @@ public class QwenService implements AIService {
 
     // Extracted method to avoid duplication between generic chat and block gen
     private void sendRequest(JsonObject json, Consumer<String> onSuccess, Consumer<Throwable> onError) {
+        String apiKey = getApiKey();
+        if (apiKey.isEmpty()) {
+            mainHandler.post(() -> onError.accept(new IllegalStateException("API Key is missing. Please set it in Settings.")));
+            return;
+        }
+
         RequestBody body = RequestBody.create(json.toString(), MediaType.get("application/json"));
         Request request = new Request.Builder()
                 .url(BASE_URL)
-                .addHeader("Authorization", "Bearer " + API_KEY.trim())
+                .addHeader("Authorization", "Bearer " + getApiKey().trim())
                 .addHeader("Content-Type", "application/json")
                 .post(body)
                 .build();
@@ -250,10 +264,16 @@ public class QwenService implements AIService {
 
         json.add("messages", messages);
 
+        String apiKey = getApiKey();
+        if (apiKey.isEmpty()) {
+            mainHandler.post(() -> onError.accept(new IllegalStateException("API Key is missing. Please set it in Settings.")));
+            return;
+        }
+
         RequestBody body = RequestBody.create(json.toString(), MediaType.get("application/json"));
         Request request = new Request.Builder()
                 .url(BASE_URL)
-                .addHeader("Authorization", "Bearer " + API_KEY.trim())
+                .addHeader("Authorization", "Bearer " + getApiKey().trim())
                 .addHeader("Content-Type", "application/json")
                 .post(body)
                 .build();

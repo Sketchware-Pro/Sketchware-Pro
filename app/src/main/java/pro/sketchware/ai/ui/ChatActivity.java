@@ -108,7 +108,9 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Setup AI Service
-        aiService = new QwenService();
+        aiService = new QwenService(this);
+        
+        findViewById(R.id.btn_settings).setOnClickListener(v -> showSettingsDialog());
 
         // Image Picker Initialization
         imagePickerLauncher = registerForActivityResult(
@@ -707,5 +709,41 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             adapter.addMessage(new ChatMessage(response, false));
         }
+    }
+
+    private void showSettingsDialog() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("AI Settings");
+
+        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
+        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        layout.setPadding(50, 40, 50, 10);
+
+        final android.widget.EditText input = new android.widget.EditText(this);
+        input.setHint("Enter API Key (Optional)");
+        
+        android.content.SharedPreferences prefs = getSharedPreferences("ai_settings", MODE_PRIVATE);
+        String currentKey = prefs.getString("api_key", "");
+        input.setText(currentKey);
+        
+        layout.addView(input);
+        
+        android.widget.TextView note = new android.widget.TextView(this);
+        note.setText("Leave empty to use default key.");
+        note.setTextSize(12);
+        note.setPadding(0, 10, 0, 0);
+        layout.addView(note);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String apiKey = input.getText().toString().trim();
+            prefs.edit().putString("api_key", apiKey).apply();
+            android.widget.Toast.makeText(this, "Settings Saved", android.widget.Toast.LENGTH_SHORT).show();
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 }

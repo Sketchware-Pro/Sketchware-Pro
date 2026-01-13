@@ -24,7 +24,7 @@ public abstract class BlockGeneratorDialog extends Dialog {
 
     public BlockGeneratorDialog(@NonNull Context context) {
         super(context);
-        aiService = new QwenService();
+        aiService = new QwenService(context);
     }
 
     @Override

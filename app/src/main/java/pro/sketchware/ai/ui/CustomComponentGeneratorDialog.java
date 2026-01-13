@@ -22,7 +22,7 @@ public abstract class CustomComponentGeneratorDialog extends Dialog {
 
     public CustomComponentGeneratorDialog(@NonNull Context context) {
         super(context);
-        aiService = new QwenService();
+        aiService = new QwenService(context);
     }
 
     @Override
