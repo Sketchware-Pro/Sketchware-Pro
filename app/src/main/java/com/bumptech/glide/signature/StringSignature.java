@@ -7,7 +7,7 @@ import com.bumptech.glide.load.Key;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
-public class StringSignature implements Key {
+public class StringSignature implements Key { 
 
     public final String signature;
 
