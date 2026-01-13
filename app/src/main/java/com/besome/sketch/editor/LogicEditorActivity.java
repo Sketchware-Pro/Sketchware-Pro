@@ -168,6 +168,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private final Runnable longPressed = this::r;
     private Boolean isViewBindingEnabled;
 
+    private SvgUtils svgUtils;
+    private final FilePathUtil fpu = new FilePathUtil();
+
     public static ArrayList<String> getAllJavaFileNames(String projectScId) {
         ArrayList<String> javaFileNames = new ArrayList<>();
         for (ProjectFileBean projectFile : jC.b(projectScId).b()) {
@@ -534,41 +537,46 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return a2;
     }
 
-    private ImageView setImageViewContent(String str) {
-        Uri fromFile;
-        float a2 = wB.a(this, 1.0f);
+    private ImageView setImageViewContent(String name) {
+        float dp = wB.a(this, 1.0f);
+        int size = (int) (dp * 48);
         ImageView imageView = new ImageView(this);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(size, size));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        int i = (int) (a2 * 48.0f);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(i, i));
-        if (!"NONE".equals(str)) {
-            if (str.equals("default_image")) {
-                imageView.setImageResource(getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
+        imageView.setBackgroundResource(R.drawable.bg_outline);
+
+        if ("NONE".equals(name)) {
+            return imageView;
+        }
+
+        if ("default_image".equals(name)) {
+            int resId = getResources().getIdentifier(name, "drawable", getPackageName());
+            if (resId != 0) imageView.setImageResource(resId);
+            return imageView;
+        }
+
+        File imageFile = new File(jC.d(scId).f(name));
+        if (imageFile.exists()) {
+            String path = imageFile.getAbsolutePath();
+            Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".provider", imageFile);
+
+            if (path.endsWith(".xml")) {
+                svgUtils.loadImage(imageView, fpu.getSvgFullPath(scId, name));
             } else {
-                File file = new File(jC.d(scId).f(str));
-                if (file.exists()) {
-                    Context context = getContext();
-                    fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
-                    if (file.getAbsolutePath().endsWith(".xml")) {
-                        SvgUtils svgUtils = new SvgUtils(this);
-                        FilePathUtil fpu = new FilePathUtil();
-                        svgUtils.loadImage(imageView, fpu.getSvgFullPath(scId, str));
-                    } else {
-                        Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
-                    }
-                } else {
-                    try {
-                        VectorDrawableLoader vectorDrawableLoader = new VectorDrawableLoader();
-                        vectorDrawableLoader.setImageVectorFromFile(imageView, vectorDrawableLoader.getVectorFullPath(DesignActivity.sc_id, str));
-                    } catch (Exception e) {
-                        crashlytics.log("Converting SVG to XML.");
-                        crashlytics.recordException(e);
-                        imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
-                    }
-                }
+                Glide.with(this)
+                        .load(uri)
+                        .signature(kC.n())
+                        .error(R.drawable.ic_remove_grey600_24dp)
+                        .into(imageView);
+            }
+        } else {
+            try {
+                new VectorDrawableLoader().setImageVectorFromFile(imageView, new VectorDrawableLoader().getVectorFullPath(DesignActivity.sc_id, name));
+            } catch (Exception e) {
+                imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
             }
         }
-        imageView.setBackgroundResource(R.drawable.bg_outline);
+
         return imageView;
     }
 
@@ -1947,6 +1955,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         O = findViewById(R.id.right_drawer);
         findViewById(R.id.search_header).setOnClickListener(v -> paletteSelector.showSearchDialog());
         extraPaletteBlock = new ExtraPaletteBlock(this, isViewBindingEnabled);
+
+        svgUtils = new SvgUtils(this);
     }
 
     @Override
