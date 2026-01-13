@@ -448,7 +448,55 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         getMenuInflater().inflate(R.menu.manage_collection_menu, menu);
         menu.findItem(R.id.menu_collection_delete).setVisible(!selectingToBeDeletedItems);
 
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true;
+            }
+        });
+
         return true;
+    }
+
+    private void filter(String text) {
+        ArrayList<SelectableBean> filteredList = new ArrayList<>();
+        ArrayList<? extends SelectableBean> currentList = switch (currentItemId) {
+            case 0 -> images;
+            case 1 -> sounds;
+            case 2 -> fonts;
+            case 3 -> widgets;
+            case 4 -> blocks;
+            default -> moreBlocks;
+        };
+
+        if (currentList != null) {
+            for (SelectableBean bean : currentList) {
+                String name = "";
+                if (bean instanceof ProjectResourceBean) {
+                    name = ((ProjectResourceBean) bean).resName;
+                } else if (bean instanceof WidgetCollectionBean) {
+                    name = ((WidgetCollectionBean) bean).name;
+                } else if (bean instanceof BlockCollectionBean) {
+                    name = ((BlockCollectionBean) bean).name;
+                } else if (bean instanceof MoreBlockCollectionBean) {
+                    name = ((MoreBlockCollectionBean) bean).name;
+                }
+
+                if (name.toLowerCase().contains(text.toLowerCase())) {
+                    filteredList.add(bean);
+                }
+            }
+            collectionAdapter.setData(filteredList);
+            collectionAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

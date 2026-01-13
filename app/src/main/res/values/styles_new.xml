@@ -141,4 +141,9 @@
     <style name="ThemeOverlay.SketchwarePro.Chip.ProjectPreview" parent="">
         <item name="chipStyle">@style/Widget.SketchwarePro.Chip.ProjectPreview</item>
     </style>
+
+    <style name="Theme.SketchwarePro.NoActionBar" parent="Theme.SketchwarePro">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

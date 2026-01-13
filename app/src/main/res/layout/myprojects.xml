@@ -29,9 +29,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <include
-                        android:id="@+id/special_action"
-                        layout="@layout/myprojects_item_special" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include
+                            android:id="@+id/special_action"
+                            layout="@layout/myprojects_item_special" />
+                    </LinearLayout>
                 </FrameLayout>
 
                 <LinearLayout

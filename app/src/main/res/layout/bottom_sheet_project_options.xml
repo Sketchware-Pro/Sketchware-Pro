@@ -104,6 +104,36 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/project_github_push"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_github"
+            app:tint="?attr/colorPrimary"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="center_vertical"
+            android:text="Push to GitHub"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="?attr/colorPrimary"
+            app:drawableEndCompat="@drawable/ic_mtrl_arrow_right" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/project_config"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

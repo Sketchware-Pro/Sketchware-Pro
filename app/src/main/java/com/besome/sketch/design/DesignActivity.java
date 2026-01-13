@@ -623,6 +623,11 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
             saveProject();
+        } else if (itemId == R.id.menu_ai_chat) {
+            Intent intent = new Intent(this, pro.sketchware.ai.ui.ChatActivity.class);
+            intent.putExtra("sc_id", sc_id);
+            startActivity(intent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

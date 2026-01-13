@@ -259,6 +259,13 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
             projectOptionsBSD.dismiss();
         });
 
+        binding.projectGithubPush.setOnClickListener(v -> {
+            Intent intent = new Intent(activity, com.besome.sketch.export.GitHubPushActivity.class);
+            intent.putExtra("sc_id", yB.c(projectMap, "sc_id"));
+            activity.startActivity(intent);
+            projectOptionsBSD.dismiss();
+        });
+
         binding.projectConfig.setOnClickListener(v -> {
             showProjectSettingDialog(projectMap);
             projectOptionsBSD.dismiss();

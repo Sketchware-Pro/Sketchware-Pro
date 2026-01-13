@@ -9,5 +9,9 @@
         android:id="@+id/item_sketchub"
         android:icon="@drawable/sketchub_letter_logo"
         android:title="Store" />
+    <item
+        android:id="@+id/menu_ai_chat"
+        android:icon="@drawable/ic_robot"
+        android:title="AI Chat" />
 
 </menu>

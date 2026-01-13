@@ -289,6 +289,48 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         return textView;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        menu.add(0, 99, 0, "AI Gen")
+            .setIcon(pro.sketchware.R.drawable.ic_robot)
+            .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        if (item.getItemId() == 99) {
+            new pro.sketchware.ai.ui.CustomBlockGeneratorDialog(this) {
+                @Override
+                public void onBlockGenerated(String jsonResponse) {
+                    try {
+                        com.google.gson.JsonObject json = com.google.gson.JsonParser.parseString(jsonResponse).getAsJsonObject();
+                        
+                        if (json.has("name")) binding.name.setText(json.get("name").getAsString());
+                        if (json.has("spec")) binding.spec.setText(json.get("spec").getAsString());
+                        if (json.has("code")) binding.code.setText(json.get("code").getAsString());
+                        if (json.has("color")) binding.colour.setText(json.get("color").getAsString());
+                        if (json.has("imports")) binding.customImport.setText(json.get("imports").getAsString());
+                        
+                        if (json.has("type")) {
+                             String type = json.get("type").getAsString();
+                             if (type.equals(" ")) type = "regular";
+                             binding.type.setText(type);
+                        }
+                        
+                    } catch (Exception e) {
+                        SketchwareUtil.toastError("Failed to parse AI response: " + e.getMessage());
+                    }
+                }
+            }.show();
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void inputProperties() {
         binding.name.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         binding.name.setMaxLines(1);
@@ -300,6 +342,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         binding.spec.setMaxLines(1);
         binding.colour.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         binding.colour.setMaxLines(1);
+
         binding.spec2.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         binding.spec2.setMaxLines(1);
         binding.spec2Layout.setVisibility(View.GONE);

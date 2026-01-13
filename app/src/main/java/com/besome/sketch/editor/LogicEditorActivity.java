@@ -1954,14 +1954,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         getMenuInflater().inflate(R.menu.logic_menu, menu);
         menu.findItem(R.id.menu_logic_redo).setEnabled(M != null && bC.d(scId).g(s()));
         menu.findItem(R.id.menu_logic_undo).setEnabled(M != null && bC.d(scId).h(s()));
+        // menu.add(0, 14, 0, "Paste");
+        // menu.add(0, 99, 0, "AI Gen");
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
         int itemId = menuItem.getItemId();
-
-        if (itemId == R.id.menu_block_helper) {
+        if (itemId == 14) {
+            // Handle paste logic here if needed
+            return true;
+        } else if (itemId == R.id.menu_block_helper) {
             e(false);
             g(!ia);
         } else if (itemId == R.id.menu_logic_redo) {

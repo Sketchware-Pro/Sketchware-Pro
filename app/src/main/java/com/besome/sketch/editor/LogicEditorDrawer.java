@@ -8,6 +8,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import com.google.android.material.textfield.TextInputEditText;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.lib.ui.CustomScrollView;
@@ -56,6 +59,22 @@ public class LogicEditorDrawer extends LinearLayout {
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             getContext().startActivity(intent);
         });
+
+        TextInputEditText searchInput = findViewById(R.id.et_search);
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
     }
 
     public void a() {
@@ -84,6 +103,25 @@ public class LogicEditorDrawer extends LinearLayout {
             if ((childAt instanceof Us) && ((Us) childAt).T.equals(str)) {
                 favorite.removeViewAt(i + 1);
                 favorite.removeViewAt(i);
+            }
+        }
+    }
+
+    private void filter(String query) {
+        String lowerQuery = query.toLowerCase().trim();
+        for (int i = 0; i < favorite.getChildCount(); i++) {
+            View child = favorite.getChildAt(i);
+            if (child instanceof Us) {
+                Us item = (Us) child;
+                boolean match = item.T != null && item.T.toLowerCase().contains(lowerQuery);
+                item.setVisibility(match ? View.VISIBLE : View.GONE);
+                
+                if (i + 1 < favorite.getChildCount()) {
+                     View divider = favorite.getChildAt(i + 1);
+                     if (!(divider instanceof Us)) {
+                         divider.setVisibility(match ? View.VISIBLE : View.GONE);
+                     }
+                }
             }
         }
     }

@@ -276,6 +276,9 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             } else if (id == R.id.item_sketchub) {
                 navigateToSketchubFragment();
                 return true;
+            } else if (id == R.id.menu_ai_chat) {
+                startActivity(new Intent(this, pro.sketchware.ai.ui.ChatActivity.class));
+                return false; // Don't select the tab, just launch activity
             }
             return false;
         });
@@ -379,6 +382,9 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        } else if (item.getItemId() == R.id.menu_ai_chat) {
+            startActivity(new Intent(this, pro.sketchware.ai.ui.ChatActivity.class));
             return true;
         } else {
             return super.onOptionsItemSelected(item);

@@ -506,6 +506,41 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                 return true;
             });
         }
+
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!fromAndroidManifest) {
+            String path = getIntent().getStringExtra("content");
+            if (FileUtil.isExistFile(path)) {
+                String diskContent = FileUtil.readFile(path);
+                // Check if disk has changed compared to what we last loaded/saved
+                if (!diskContent.equals(beforeContent)) {
+                    // Disk has changed
+                    if (binding.editor.getText().toString().equals(beforeContent)) {
+                        // User hasn't changed anything, safe to reload automatically
+                        beforeContent = diskContent; // Update base reference
+                        binding.editor.setText(diskContent);
+                        Toast.makeText(this, "Reloaded file (changed externally)", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // User has unsaved changes, ask them
+                         new MaterialAlertDialogBuilder(this)
+                            .setTitle("File Changed")
+                            .setMessage("The file has been modified on disk (likely by AI). Reload and overwrite your current changes?")
+                            .setPositiveButton("Reload", (d, w) -> {
+                                beforeContent = diskContent;
+                                binding.editor.setText(diskContent);
+                            })
+                            .setNegativeButton("Keep My Changes", null)
+                            .show();
+                    }
+                }
+            }
+        }
     }
 
     @Override

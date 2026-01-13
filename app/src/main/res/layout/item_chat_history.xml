@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?attr/selectableItemBackground"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/history_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#202124"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:text="New Chat" />
+
+    <TextView
+        android:id="@+id/history_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#5F6368"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"
+        android:text="Today" />
+
+</LinearLayout>

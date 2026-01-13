@@ -115,6 +115,16 @@
             android:layout_marginBottom="20dp"
             android:src="@drawable/ic_mtrl_delete" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sendToAgentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:tooltipText="Send to Agent"
+            android:src="@drawable/ic_robot" />
+
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

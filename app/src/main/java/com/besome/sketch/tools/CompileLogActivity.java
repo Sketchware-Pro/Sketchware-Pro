@@ -24,6 +24,8 @@ import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 import pro.sketchware.databinding.CompileLogBinding;
 import pro.sketchware.utility.SketchwareUtil;
+import android.content.Intent;
+import pro.sketchware.ai.ui.ChatActivity;
 
 public class CompileLogActivity extends BaseAppCompatActivity {
 
@@ -86,6 +88,18 @@ public class CompileLogActivity extends BaseAppCompatActivity {
         options.getMenu().add(wrapTextLabel).setCheckable(true).setChecked(getWrappedTextPreference());
         options.getMenu().add(monospacedFontLabel).setCheckable(true).setChecked(getMonospacedFontPreference());
         options.getMenu().add(fontSizeLabel);
+
+        binding.sendToAgentButton.setOnClickListener(v -> {
+            String logText = binding.tvCompileLog.getText().toString();
+            if (logText.isEmpty() || logText.equals("Errors will show up here")) {
+                SketchwareUtil.toast("No error log to send.");
+                return;
+            }
+            Intent intent = new Intent(this, ChatActivity.class);
+            intent.putExtra("error_log", logText);
+            intent.putExtra("sc_id", getIntent().getStringExtra("sc_id"));
+            startActivity(intent);
+        });
 
         options.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getTitle().toString()) {

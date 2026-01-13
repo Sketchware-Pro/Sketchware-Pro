@@ -9,6 +9,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/menu_ai_chat"
+        android:icon="@drawable/ic_robot"
+        android:title="AI Chat"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/design_actionbar_titleopen_drawer"
         android:icon="@drawable/selector_ic_more_tinted_24"
         android:orderInCategory="110"
