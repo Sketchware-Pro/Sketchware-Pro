@@ -100,7 +100,7 @@ import mod.agus.jcoderz.editor.view.item.ItemRadioButton;
 import mod.agus.jcoderz.editor.view.item.ItemRatingBar;
 import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
-import mod.bobur.XmlToSvgConverter;
+import mod.bobur.VectorDrawableLoader;
 import mod.hey.studios.util.ProjectFile;
 import pro.sketchware.R;
 import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
@@ -427,14 +427,14 @@ public class ViewPane extends RelativeLayout {
                             }
                         } else {
                             crashlytics.log("ViewPane: converting XML to SVG for FAB");
-                            XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
+                            VectorDrawableLoader vectorDrawableLoader = new VectorDrawableLoader();
                             ImageView tempImageView = new AppCompatImageView(getContext()) {
                                 @Override
                                 public void setImageDrawable(android.graphics.drawable.Drawable drawable) {
                                     fab.setImageDrawable(drawable);
                                 }
                             };
-                            xmlToSvgConverter.setImageVectorFromFile(tempImageView, xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
+                            vectorDrawableLoader.setImageVectorFromFile(tempImageView, vectorDrawableLoader.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                         }
                     }
                 } catch (Exception exception) {
@@ -530,12 +530,12 @@ public class ViewPane extends RelativeLayout {
                             ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
                         }
                     } else {
-                        XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
-                        xmlToSvgConverter.setImageVectorFromFile((ImageView) view, xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
+                        VectorDrawableLoader vectorDrawableLoader = new VectorDrawableLoader();
+                        vectorDrawableLoader.setImageVectorFromFile((ImageView) view, vectorDrawableLoader.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                     }
                 } catch (Exception unused2) {
                     crashlytics.recordException(unused2);
-                    FileUtil.deleteFile(new XmlToSvgConverter().getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
+                    FileUtil.deleteFile(new VectorDrawableLoader().getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                     viewBean.image.resName = "default_image";
                     ((ImageView) view).setImageResource(R.drawable.default_image);
                 }
