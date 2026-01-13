@@ -3,7 +3,9 @@ package com.besome.sketch.editor.property;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
+import android.text.Editable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,6 +17,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.design.DesignActivity;
@@ -23,6 +27,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import a.a.a.Kw;
 import a.a.a.jC;
@@ -32,12 +38,17 @@ import a.a.a.wB;
 import mod.bobur.VectorDrawableLoader;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ImagePickerItemBinding;
+import pro.sketchware.databinding.SearchWithRecyclerViewBinding;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.SvgUtils;
 
 public class PropertyResourceItem extends RelativeLayout implements View.OnClickListener {
+
     private final SvgUtils svgUtils;
     private final FilePathUtil fpu = new FilePathUtil();
+    private final Map<String, View> imageCache = new HashMap<>();
+
     public String a;
     public String b;
     public String c;
@@ -90,7 +101,6 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
     }
 
     public void setValue(String str) {
-
         Uri fromFile;
         if (str != null && !str.equalsIgnoreCase("NONE")) {
             c = str;
@@ -102,7 +112,6 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
                 g.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
                 return;
             } else {
-
                 File file = new File(jC.d(a).f(str));
                 if (file.exists()) {
                     Context context = getContext();
@@ -159,119 +168,147 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
         k = findViewById(R.id.property_item);
         l = findViewById(R.id.property_menu_item);
         d = z2;
-//        if (z) {
-//            l.setOnClickListener(this);
-//            l.setSoundEffectsEnabled(true);
-//        }
     }
 
     public final void a() {
-        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(getContext());
-        aBVar.setTitle(Helper.getText(e));
-        aBVar.setIcon(m);
-        View a3 = wB.a(getContext(), R.layout.property_popup_selector_color);
-        ScrollView scrollView = a3.findViewById(R.id.scroll_view);
-        i = a3.findViewById(R.id.rg);
-        j = a3.findViewById(R.id.content);
-        ArrayList<String> m = jC.d(a).m();
-        ArrayList<String> vectors = new VectorDrawableLoader().getVectorDrawables(DesignActivity.sc_id);
-        m.addAll(vectors);
-        m.add(0, d ? "default_image" : "NONE");
-        RadioButton radioButton = null;
-        for (String next : m) {
-            RadioButton a4 = a(next);
-            i.addView(a4);
-            if (next.equals(c)) {
-                a4.setChecked(true);
-                radioButton = a4;
+        SearchWithRecyclerViewBinding binding = SearchWithRecyclerViewBinding.inflate(LayoutInflater.from(getContext()));
+
+        ArrayList<String> images = jC.d(a).m();
+        images.addAll(new VectorDrawableLoader().getVectorDrawables(DesignActivity.sc_id));
+        images.add(0, d ? "default_image" : "NONE");
+
+        ImagePickerAdapter adapter = new ImagePickerAdapter(images, c);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(adapter);
+
+        binding.searchInput.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int st, int c, int a) {}
+            @Override public void onTextChanged(CharSequence s, int st, int b, int c) {}
+            @Override public void afterTextChanged(Editable s) {
+                adapter.filter(s.toString().toLowerCase());
             }
-            LinearLayout a2 = a(next, next.equals("default_image"));
-            a2.setOnClickListener(v -> ((RadioButton) i.getChildAt(j.indexOfChild(v))).setChecked(true));
-            j.addView(a2);
-        }
-        if (radioButton == null) {
-            radioButton = (RadioButton) i.getChildAt(0);
-            radioButton.setChecked(true);
-        }
-        aBVar.setView(a3);
-        aBVar.setPositiveButton(R.string.common_word_select, (v, which) -> {
-            for (int i = 0; i < this.i.getChildCount(); i++) {
-                RadioButton child = (RadioButton) this.i.getChildAt(i);
-                if (child.isChecked()) {
-                    setValue(child.getTag().toString());
-                    if (n != null) {
-                        n.a(b, c);
+        });
+
+        new MaterialAlertDialogBuilder(getContext())
+                .setTitle(Helper.getText(e))
+                .setIcon(m)
+                .setView(binding.getRoot())
+                .setPositiveButton(R.string.common_word_select, (v, which) -> {
+                    String selected = adapter.getSelected();
+                    if (!selected.isEmpty()) {
+                        setValue(selected);
+                        if (n != null) {
+                            n.a(b, selected);
+                        }
                     }
-                    break;
+                })
+                .setNegativeButton(R.string.common_word_cancel, null)
+                .show();
+    }
+
+    private class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.ViewHolder> {
+
+        private final ArrayList<String> allImages;
+        private final ArrayList<String> filteredImages = new ArrayList<>();
+        private String selectedImage;
+
+        ImagePickerAdapter(ArrayList<String> images, String selectedImage) {
+            this.allImages = images;
+            this.selectedImage = selectedImage;
+            this.filteredImages.addAll(images);
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            ImagePickerItemBinding binding = ImagePickerItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new ViewHolder(binding);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            String image = filteredImages.get(position);
+            holder.binding.textView.setText(image);
+            holder.binding.radioButton.setChecked(image.equals(selectedImage));
+
+            View imageView = imageCache.get(image);
+            if (imageView == null) {
+                imageView = setImageViewContent(image);
+                imageCache.put(image, imageView);
+            }
+
+            if (imageView.getParent() != null) {
+                ((ViewGroup) imageView.getParent()).removeView(imageView);
+            }
+
+            holder.binding.layoutImg.removeAllViews();
+            holder.binding.layoutImg.addView(imageView);
+
+            holder.binding.transparentOverlay.setOnClickListener(v -> {
+                selectedImage = image;
+                notifyDataSetChanged();
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return filteredImages.size();
+        }
+
+        public void filter(String query) {
+            filteredImages.clear();
+            for (String s : allImages) {
+                if (s.toLowerCase().contains(query)) {
+                    filteredImages.add(s);
                 }
             }
-            v.dismiss();
-        });
-        aBVar.setNegativeButton(R.string.common_word_cancel, null);
-        RadioButton finalRadioButton = radioButton;
+            notifyDataSetChanged();
+        }
 
-        var dialog = aBVar.create();
-        dialog.setOnShowListener(dialogInterface -> scrollView.smoothScrollTo(0, (int) finalRadioButton.getY()));
-        dialog.show();
+        public String getSelected() {
+            return selectedImage;
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            ImagePickerItemBinding binding;
+            ViewHolder(ImagePickerItemBinding b) {
+                super(b.getRoot());
+                this.binding = b;
+            }
+        }
     }
 
-    public final RadioButton a(String str) {
-        RadioButton radioButton = new RadioButton(getContext());
-        radioButton.setText("");
-        radioButton.setTag(str);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) (wB.a(getContext(), 1.0f) * 60.0f));
-        radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
-        radioButton.setLayoutParams(layoutParams);
-        return radioButton;
-    }
-
-    public final LinearLayout a(String str, boolean z) {
-        Uri fromFile;
-        float a2 = wB.a(getContext(), 1.0f);
-        LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (60.0f * a2)));
-        linearLayout.setGravity(Gravity.CENTER | Gravity.LEFT);
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        TextView textView = new TextView(getContext());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.weight = 1.0f;
-        layoutParams.rightMargin = (int) (8.0f * a2);
-        textView.setLayoutParams(layoutParams);
-        textView.setText(str);
-        linearLayout.addView(textView);
+    private View setImageViewContent(String image) {
         ImageView imageView = new ImageView(getContext());
+        int size = (int) (48 * wB.a(getContext(), 1f));
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(size, size));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        int i = (int) (a2 * 48.0f);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(i, i));
-        if (!str.equalsIgnoreCase("NONE")) {
-            if (z) {
-                imageView.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
+        imageView.setBackgroundResource(R.drawable.bg_outline);
+
+        try {
+            if ("default_image".equals(image)) {
+                imageView.setImageResource(getResources().getIdentifier(image, "drawable", getContext().getPackageName()));
             } else {
-                File file = new File(jC.d(a).f(str));
+                File file = new File(jC.d(a).f(image));
                 if (file.exists()) {
-                    Context context = getContext();
-                    fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
-
+                    Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".provider", file);
                     if (file.getAbsolutePath().endsWith(".xml")) {
-                        svgUtils.loadImage(imageView, fpu.getSvgFullPath(a, str));
-
+                        svgUtils.loadImage(imageView, fpu.getSvgFullPath(a, image));
                     } else {
-                        Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
+                        Glide.with(getContext())
+                                .load(uri)
+                                .signature(kC.n())
+                                .error(R.drawable.ic_remove_grey600_24dp)
+                                .into(imageView);
                     }
                 } else {
-                    try {
-                        VectorDrawableLoader vectorDrawableLoader = new VectorDrawableLoader();
-                        vectorDrawableLoader.setImageVectorFromFile(imageView, vectorDrawableLoader.getVectorFullPath(DesignActivity.sc_id, str));
-                    } catch (Exception e) {
-                        imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
-                    }
+                    VectorDrawableLoader vectorDrawableLoader = new VectorDrawableLoader();
+                    vectorDrawableLoader.setImageVectorFromFile(imageView, vectorDrawableLoader.getVectorFullPath(DesignActivity.sc_id, image));
                 }
             }
-            imageView.setBackgroundResource(R.drawable.bg_outline);
-        } else {
-            imageView.setBackgroundResource(R.drawable.bg_outline);
+        } catch (Exception e) {
+            imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
         }
-        linearLayout.addView(imageView);
-        return linearLayout;
+
+        return imageView;
     }
 }
