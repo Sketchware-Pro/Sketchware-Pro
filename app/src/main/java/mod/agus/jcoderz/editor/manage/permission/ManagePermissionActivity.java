@@ -1,11 +1,10 @@
 package mod.agus.jcoderz.editor.manage.permission;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +22,7 @@ import dev.chrisbanes.insetter.Insetter;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManagePermissionBinding;
 import pro.sketchware.databinding.ViewItemPermissionBinding;
+import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileResConfig;
 import pro.sketchware.utility.FileUtil;
@@ -51,9 +51,18 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
         initViews();
         setupRecyclerView();
         loadAndSortData();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                FileUtil.writeFile(new FilePathUtil().getPathPermission(numProj), new Gson().toJson(frc.getPermissionList()));
+                finish();
+            }
+        });
     }
+
     private void initViews() {
-        binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        binding.toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         binding.toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_reset) showResetDialog();
             return true;
@@ -62,9 +71,7 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
         Insetter.builder().margin(WindowInsetsCompat.Type.navigationBars())
                 .applyToView(binding.scrollToTopButton);
 
-        binding.searchInput.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void afterTextChanged(Editable s) {}
+        binding.searchInput.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 filterList(s.toString());
@@ -77,6 +84,7 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
             binding.recyclerView.smoothScrollToPosition(0);
         });
     }
+
     private void setupRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.recyclerView.setLayoutManager(layoutManager);
@@ -89,11 +97,15 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
         binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView rv, int dx, int dy) {
-                if (dy > 0 && !binding.scrollToTopButton.isShown()) binding.scrollToTopButton.show();
-                else if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) binding.scrollToTopButton.hide();
+                if (dy > 0 && !binding.scrollToTopButton.isShown()) {
+                    binding.scrollToTopButton.show();
+                } else if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                    binding.scrollToTopButton.hide();
+                }
             }
         });
     }
+
     private void loadAndSortData() {
         arrayList = ListPermission.getPermissions();
         sortList(arrayList);
@@ -101,10 +113,12 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
         filteredList.addAll(arrayList);
         adapter.notifyDataSetChanged();
     }
+
     private void sortList(ArrayList<String> list) {
         list.sort(Comparator.comparing((String s) -> !frc.getPermissionList().contains(s))
                 .thenComparing(String.CASE_INSENSITIVE_ORDER));
     }
+
     private void filterList(String query) {
         String lowerCaseQuery = query.toLowerCase();
         ArrayList<String> filtered = new ArrayList<>();
@@ -120,6 +134,7 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
         filteredList.addAll(filtered);
         adapter.notifyDataSetChanged();
     }
+
     private void showResetDialog() {
         new MaterialAlertDialogBuilder(this)
                 .setTitle("Reset permissions")
@@ -133,19 +148,15 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
                 .show();
     }
 
-    @Override
-    public void onBackPressed() {
-        FileUtil.writeFile(new FilePathUtil().getPathPermission(numProj), new Gson().toJson(frc.getPermissionList()));
-        super.onBackPressed();
-    }
-
     private class PermissionsAdapter extends RecyclerView.Adapter<PermissionsAdapter.ViewHolder> {
         private final ArrayList<String> displayList;
+
         public PermissionsAdapter(ArrayList<String> list) {
-            this.displayList = list;
+            displayList = list;
         }
 
-        @NonNull @Override
+        @NonNull
+        @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(ViewItemPermissionBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
@@ -172,10 +183,18 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
             });
         }
 
-        @Override public int getItemCount() { return displayList.size(); }
+        @Override
+        public int getItemCount() {
+            return displayList.size();
+        }
+
         static class ViewHolder extends RecyclerView.ViewHolder {
             ViewItemPermissionBinding binding;
-            ViewHolder(ViewItemPermissionBinding b) { super(b.getRoot()); binding = b; }
+
+            ViewHolder(ViewItemPermissionBinding b) {
+                super(b.getRoot());
+                binding = b;
+            }
         }
     }
 }
