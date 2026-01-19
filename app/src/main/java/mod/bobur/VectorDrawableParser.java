@@ -261,16 +261,14 @@ public class VectorDrawableParser {
             return resolveColorForSvg(strokeColor);
         }
 
-        public String getEffectiveResolvedFillColor() {
-            String t = getResolvedTint();
-            if (!isEmpty(t)) return t;
-            return getResolvedFillColor();
+        public boolean hasFill() {
+            String f = getResolvedFillColor();
+            return !isEmpty(f) && !"none".equalsIgnoreCase(f);
         }
 
-        public String getEffectiveResolvedStrokeColor() {
-            String t = getResolvedTint();
-            if (!isEmpty(t)) return t;
-            return getResolvedStrokeColor();
+        public boolean hasStroke() {
+            String s = getResolvedStrokeColor();
+            return !isEmpty(s) && !"none".equalsIgnoreCase(s);
         }
     }
 
@@ -426,106 +424,9 @@ public class VectorDrawableParser {
         return s == null || s.isEmpty();
     }
 
-    public String getWidth() {
-        return width;
-    }
-
-    public void setWidth(String v) {
-        width = v == null ? "" : v;
-    }
-
-    public String getHeight() {
-        return height;
-    }
-
-    public void setHeight(String v) {
-        height = v == null ? "" : v;
-    }
-
-    public String getViewportWidth() {
-        return viewportWidth;
-    }
-
-    public void setViewportWidth(String v) {
-        viewportWidth = v == null ? "" : v;
-    }
-
-    public String getViewportHeight() {
-        return viewportHeight;
-    }
-
-    public void setViewportHeight(String v) {
-        viewportHeight = v == null ? "" : v;
-    }
-
-    public String getTint() {
-        return tint;
-    }
-
-    public void setTint(String v) {
-        tint = v == null ? "" : v;
-    }
-
-    public String getTintMode() {
-        return tintMode;
-    }
-
-    public void setTintMode(String v) {
-        tintMode = v == null ? "" : v;
-    }
-
-    public String getAlpha() {
-        return alpha;
-    }
-
-    public void setAlpha(String v) {
-        alpha = v == null ? "" : v;
-    }
-
-    public String getAutoMirrored() {
-        return autoMirrored;
-    }
-
-    public void setAutoMirrored(String v) {
-        autoMirrored = v == null ? "" : v;
-    }
-
-    public ArrayList<Group> getGroups() {
-        return groups;
-    }
-
-    public ArrayList<Path> getPaths() {
-        return paths;
-    }
-
-    public ArrayList<ClipPath> getClipPaths() {
-        return clipPaths;
-    }
-
-    public int getPathCount() {
-        return paths.size();
-    }
-
-    public Path getPath(int index) {
-        return paths.get(index);
-    }
-
     public String getResolvedTint() {
         if (isEmpty(tint)) return "";
         return resolveColorForSvg(tint);
-    }
-
-    public boolean isValidVector(String xml) {
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(new ByteArrayInputStream(xml.getBytes()));
-            Element root = doc.getDocumentElement();
-            if (root == null) return false;
-            return "vector".equals(root.getTagName());
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     private int dpToPx(int dp) {
@@ -544,7 +445,6 @@ public class VectorDrawableParser {
 
         String w = width.isEmpty() ? "150" : dpToPx(width);
         String h = height.isEmpty() ? "150" : dpToPx(height);
-
         String vw = viewportWidth.isEmpty() ? "100" : viewportWidth;
         String vh = viewportHeight.isEmpty() ? "100" : viewportHeight;
 
@@ -562,55 +462,23 @@ public class VectorDrawableParser {
                 .append(vh)
                 .append("\">\n");
 
-        for (Group g : groups) {
-            svg.append("<g");
-
-            boolean hasTransform = !g.getTranslateX().isEmpty() || !g
-                    .getTranslateY()
-                    .isEmpty() || !g.getScaleX().isEmpty() || !g.getScaleY().isEmpty() || !g
-                    .getRotation()
-                    .isEmpty();
-
-            if (hasTransform) {
-                svg.append(" transform=\"");
-
-                if (!g.getTranslateX().isEmpty() || !g.getTranslateY().isEmpty()) {
-                    svg
-                            .append("translate(")
-                            .append(g.getTranslateX().isEmpty() ? "0" : g.getTranslateX())
-                            .append(",")
-                            .append(g.getTranslateY().isEmpty() ? "0" : g.getTranslateY())
-                            .append(") ");
-                }
-
-                if (!g.getScaleX().isEmpty() || !g.getScaleY().isEmpty()) {
-                    svg
-                            .append("scale(")
-                            .append(g.getScaleX().isEmpty() ? "1" : g.getScaleX())
-                            .append(",")
-                            .append(g.getScaleY().isEmpty() ? "1" : g.getScaleY())
-                            .append(") ");
-                }
-
-                if (!g.getRotation().isEmpty()) {
-                    svg.append("rotate(").append(g.getRotation());
-                    if (!g.getPivotX().isEmpty() && !g.getPivotY().isEmpty()) {
-                        svg.append(" ").append(g.getPivotX()).append(" ").append(g.getPivotY());
-                    }
-                    svg.append(") ");
-                }
-
-                svg.append("\"");
-            }
-
-            svg.append(">\n");
-        }
-
         for (Path p : paths) {
             svg.append("<path d=\"").append(p.getPathData()).append("\" ");
 
-            String fill = p.getEffectiveResolvedFillColor();
-            if (!fill.isEmpty()) {
+            String tint = getResolvedTint();
+
+            String fill;
+            String stroke;
+
+            if (!isEmpty(tint)) {
+                fill = p.hasFill() ? tint : "none";
+                stroke = p.hasStroke() ? tint : "";
+            } else {
+                fill = p.getResolvedFillColor();
+                stroke = p.getResolvedStrokeColor();
+            }
+
+            if (!isEmpty(fill) && !"none".equals(fill)) {
                 svg.append("fill=\"").append(fill).append("\" ");
                 if (!p.getFillAlpha().isEmpty()) {
                     svg.append("fill-opacity=\"").append(p.getFillAlpha()).append("\" ");
@@ -619,8 +487,7 @@ public class VectorDrawableParser {
                 svg.append("fill=\"none\" ");
             }
 
-            String stroke = p.getEffectiveResolvedStrokeColor();
-            if (!stroke.isEmpty()) {
+            if (!isEmpty(stroke)) {
                 svg.append("stroke=\"").append(stroke).append("\" ");
                 if (!p.getStrokeWidth().isEmpty()) {
                     svg
@@ -654,11 +521,19 @@ public class VectorDrawableParser {
             svg.append("/>\n");
         }
 
-        for (int i = 0; i < groups.size(); i++) {
-            svg.append("</g>\n");
-        }
-
         svg.append("</svg>");
         return svg.toString();
+    }
+
+    public boolean isValidVector(String xml) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new ByteArrayInputStream(xml.getBytes()));
+            Element root = doc.getDocumentElement();
+            return root != null && "vector".equals(root.getTagName());
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
