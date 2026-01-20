@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.AdUnitBean;
 import com.besome.sketch.beans.ComponentBean;
@@ -256,9 +258,10 @@ public class ExtraMenuBean {
                 menus = getVarMenus(VARIABLE_TYPE_BOOLEAN);
                 break;
 
+            case "String":
             case "varStr":
                 title = logicEditor.getString(R.string.logic_editor_title_select_variable_string);
-                menus = getVarMenus(VARIABLE_TYPE_STRING);
+                menus = getStringMenus();
                 break;
 
             case "varMap":
@@ -723,6 +726,20 @@ public class ExtraMenuBean {
 
     private ArrayList<String> getVarMenus(int type) {
         return projectDataManager.e(javaName, type);
+    }
+
+    @NonNull
+    private ArrayList<String> getStringMenus() {
+        ArrayList<String> menus = new ArrayList<>(projectDataManager.e(javaName, VARIABLE_TYPE_STRING));
+
+        for (String variable : projectDataManager.e(javaName, 6)) {
+            String variableType = CustomVariableUtil.getVariableType(variable);
+            String variableName = CustomVariableUtil.getVariableName(variable);
+            if ("String".equals(variableType)) {
+                menus.add(variableName);
+            }
+        }
+        return menus;
     }
 
     private ArrayList<String> getListMenus(int type) {
