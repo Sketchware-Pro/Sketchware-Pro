@@ -175,11 +175,24 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
 
         binding.excludeLibrary.setOnClickListener(v -> showSelectBuiltInLibrariesDialog());
         binding.layoutSwitchCard.setOnClickListener(v -> binding.libSwitch.setChecked(!binding.libSwitch.isChecked()));
+
+        if (savedInstanceState == null) {
+            isExcludingEnabled = isExcludingEnabled(sc_id);
+            excludedLibraries = getExcludedLibraries(sc_id);
+        } else {
+            isExcludingEnabled = savedInstanceState.getBoolean("isExcludingEnabled");
+            excludedLibraries = savedInstanceState.getParcelableArrayList("excludedLibraryNames");
+            if (excludedLibraries == null) {
+                excludedLibraries = new ArrayList<>();
+            }
+        }
+
         binding.libSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             isExcludingEnabled = isChecked;
             refresh();
         });
-        config = readConfig(sc_id);
+        
+        refresh();
     }
 
     @Override
@@ -233,20 +246,6 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
         outState.putBoolean("isExcludingEnabled", isExcludingEnabled);
         outState.putParcelableArrayList("excludedLibraryNames", new ArrayList<>(excludedLibraries));
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        if (savedInstanceState == null) {
-            isExcludingEnabled = isExcludingEnabled(sc_id);
-            excludedLibraries = getExcludedLibraries(sc_id);
-        } else {
-            isExcludingEnabled = savedInstanceState.getBoolean("isExcludingEnabled");
-            excludedLibraries = savedInstanceState.getParcelableArrayList("excludedLibraryNames");
-        }
-
-        refresh();
     }
 
     private void refresh() {
