@@ -604,6 +604,15 @@ public class Jx {
             code = code.replaceAll("getFragmentManager", "getSupportFragmentManager");
         }
 
+        // Handle dynamic class name and context placeholders
+        code = code.replaceAll("\\$className", projectFileBean.getActivityName())
+                .replaceAll("\\$context", isFragment ? "getContext()" : projectFileBean.getActivityName() + ".this");
+
+        if (isFragment) {
+            // Also replace ClassName.this with getContext() for compatibility with code blocks using ActivityName.this
+            code = code.replaceAll(projectFileBean.getActivityName() + "\\.this", "getContext()");
+        }
+
         return CommandBlock.CB(Lx.j(code, false));
     }
 
