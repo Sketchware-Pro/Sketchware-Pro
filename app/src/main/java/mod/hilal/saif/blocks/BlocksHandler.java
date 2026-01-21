@@ -1383,7 +1383,7 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "fabIcon");
         hashMap.put("type", " ");
-        hashMap.put("code", "_fab.setImageResource(R.drawable.%s);");
+        hashMap.put("code", "");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "FAB set icon %m.resource");
@@ -1392,7 +1392,7 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "fabSize");
         hashMap.put("type", " ");
-        hashMap.put("code", "_fab.setSize(FloatingActionButton.SIZE_%s);");
+        hashMap.put("code", "");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "FAB setSize %m.fabsize");
@@ -1401,7 +1401,7 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "fabVisibility");
         hashMap.put("type", " ");
-        hashMap.put("code", "_fab.%s();");
+        hashMap.put("code", "");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "FAB setVisibility %m.fabvisible");

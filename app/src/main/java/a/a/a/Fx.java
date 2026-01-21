@@ -1402,6 +1402,20 @@ public class Fx {
             case "locationManagerRemoveUpdates":
                 opcode = params.get(0) + ".removeUpdates(_" + params.get(0) + "_location_listener);";
                 break;
+
+            case "fabIcon":
+                name = params.get(0).replaceAll("\\.9", "");
+                opcode = String.format("%s.setImageResource(R.drawable.%s);", isViewBindingEnabled ? "binding.Fab" : "_fab", name);
+                break;
+
+            case "fabSize":
+                opcode = String.format("%s.setSize(FloatingActionButton.SIZE_%s);", isViewBindingEnabled ? "binding.Fab" : "_fab", params.get(0));
+                break;
+
+            case "fabVisibility":
+                opcode = String.format("%s.%s();", isViewBindingEnabled ? "binding.Fab" : "_fab", params.get(0));
+                break;
+
             default:
                 opcode = getCodeExtraBlock(bean, "\"\"");
         }
