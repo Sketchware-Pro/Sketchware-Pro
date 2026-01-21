@@ -1,5 +1,7 @@
 package mod.hilal.saif.components;
 
+import static mod.hilal.saif.events.EventsHandler.capitalize;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -504,12 +506,15 @@ public class ComponentsHandler {
                     if (name.equals(componentTypeName)) {
                         Object componentAdditionalVar = component.get("additionalVar");
 
-                        if (componentAdditionalVar instanceof String) {
-                            if (TextUtils.isEmpty((String) componentAdditionalVar)) {
+                        if (componentAdditionalVar instanceof String addVar) {
+                            if (TextUtils.isEmpty(addVar)) {
                                 return code;
                             } else {
                                 return code + "\r\n" +
-                                        ((String) componentAdditionalVar).replace("###", varName);
+                                        addVar.replace("###", varName).
+                                                replace("$name", varName).
+                                                replace("$Name", capitalize(varName)).
+                                                replace("$NAME", varName.toUpperCase());
                             }
                         } else {
                             SketchwareUtil.toastError("Invalid additional variable entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
@@ -541,11 +546,14 @@ public class ComponentsHandler {
                     if (name.equals(componentTypeName)) {
                         Object componentDefineAdditionalVar = component.get("defineAdditionalVar");
 
-                        if (componentDefineAdditionalVar instanceof String) {
-                            if (TextUtils.isEmpty((String) componentDefineAdditionalVar)) {
+                        if (componentDefineAdditionalVar instanceof String defAddVar) {
+                            if (TextUtils.isEmpty(defAddVar)) {
                                 break;
                             } else {
-                                return ((String) componentDefineAdditionalVar).replace("###", varName);
+                                return defAddVar.replace("###", varName).
+                                        replace("$name", varName).
+                                        replace("$Name", capitalize(varName)).
+                                        replace("$NAME", varName.toUpperCase());
                             }
                         } else {
                             SketchwareUtil.toastError("Invalid additional variable entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
