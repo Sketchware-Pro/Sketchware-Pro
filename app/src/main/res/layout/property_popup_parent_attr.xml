@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="16dp"
+        tools:ignore="PrivateResource">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -25,7 +26,7 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Parent attributes"
+                android:text="Custom attributes"
                 android:textAppearance="?attr/textAppearanceTitleLarge" />
 
             <TextView
@@ -38,25 +39,30 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/shortcuts"
+            android:layout_width="@dimen/mtrl_min_touch_target_size"
+            android:layout_height="@dimen/mtrl_min_touch_target_size"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_mtrl_bookmark" />
+
+        <ImageView
             android:id="@+id/add"
             android:layout_width="@dimen/mtrl_min_touch_target_size"
             android:layout_height="@dimen/mtrl_min_touch_target_size"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_mtrl_add"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="centerInside"
-            tools:ignore="PrivateResource" />
+            android:src="@drawable/ic_mtrl_add" />
 
         <ImageView
             android:id="@+id/source_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="@dimen/mtrl_min_touch_target_size"
+            android:layout_height="@dimen/mtrl_min_touch_target_size"
+            android:background="?selectableItemBackgroundBorderless"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_mtrl_code"
             android:visibility="gone"
-            android:background="?selectableItemBackgroundBorderless"/>
+            tools:visibility="visible" />
 
     </LinearLayout>
 

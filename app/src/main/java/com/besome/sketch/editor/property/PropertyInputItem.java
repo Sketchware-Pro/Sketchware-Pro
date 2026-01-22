@@ -67,6 +67,7 @@ import pro.sketchware.databinding.PropertyInputItemBinding;
 import pro.sketchware.databinding.PropertyPopupHybridBinding;
 import pro.sketchware.databinding.PropertyPopupInputTextBinding;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
+import pro.sketchware.databinding.StyleEditorAddAttrBinding;
 import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.lib.highlighter.SyntaxScheme;
 import pro.sketchware.lib.validator.PropertyNameValidator;
@@ -644,7 +645,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
         binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
 
-        binding.edInput.setInputType((minValue < 0)
+        binding.edInput.setInputType(minValue < 0
                 ? InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL
                 : InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
@@ -847,23 +848,84 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
      */
     private List<String> populateAttributes() {
         List<String> attrs = new ArrayList<>();
-        attrs.add("android:elevation");
+        AttributeShortcutsManager shortcutsManager = new AttributeShortcutsManager();
+
+        // Add saved shortcuts
+        for (AttributeShortcutsManager.ShortcutItem item : shortcutsManager.getShortcuts()) {
+            attrs.add(item.name);
+        }
+
         if (bean != null) {
-            var simpleName = getSimpleName(bean);
             var classInfo = bean.getClassInfo();
+
+            // View attributes (common to all)
+            attrs.addAll(Arrays.asList(
+                    "android:background", "android:backgroundTint", "android:alpha", "android:visibility",
+                    "android:padding", "android:layout_margin", "android:elevation", "android:rotation",
+                    "android:scaleX", "android:scaleY", "android:translationX", "android:translationY"
+            ));
+
+            if (classInfo.a("TextView")) {
+                attrs.addAll(Arrays.asList(
+                        "android:text", "android:textSize", "android:textColor", "android:textStyle",
+                        "android:fontFamily", "android:typeface", "android:lines", "android:maxLines",
+                        "android:singleLine", "android:gravity", "android:ellipsize", "android:hint",
+                        "android:textColorHint", "android:inputType", "android:imeOptions",
+                        "android:drawableLeft", "android:drawableTop", "android:drawableRight", "android:drawableBottom",
+                        "android:drawablePadding", "android:drawableTint"
+                ));
+            }
+
+            if (classInfo.a("ImageView")) {
+                attrs.addAll(Arrays.asList(
+                        "android:src", "android:scaleType", "android:tint",
+                        "android:adjustViewBounds", "android:cropToPadding"
+                ));
+            }
+
+            if (classInfo.a("LinearLayout")) {
+                attrs.addAll(Arrays.asList(
+                        "android:orientation", "android:gravity", "android:weightSum",
+                        "android:baselineAligned"
+                ));
+            }
+
+            if (classInfo.a("ViewGroup")) {
+                attrs.addAll(Arrays.asList(
+                        "android:clipChildren", "android:clipToPadding", "android:animateLayoutChanges"
+                ));
+            }
+
+            if (classInfo.a("ProgressBar")) {
+                attrs.addAll(Arrays.asList(
+                        "android:max", "android:progress", "android:indeterminate",
+                        "android:indeterminateTint", "android:progressTint"
+                ));
+            }
+
+            if (classInfo.a("CompoundButton")) {
+                attrs.addAll(Arrays.asList(
+                        "android:checked", "android:button", "android:buttonTint"
+                ));
+            }
+
             if (classInfo.b("CardView")) {
-                attrs.add("app:cardBackgroundColor");
-                attrs.add("app:cardElevation");
-                attrs.add("app:cardCornerRadius");
-                attrs.add("app:cardUseCompatPadding");
-                if (simpleName.equals("MaterialCardView")) {
-                    attrs.add("app:strokeColor");
-                    attrs.add("app:strokeWidth");
-                }
+                attrs.addAll(Arrays.asList(
+                        "app:cardBackgroundColor", "app:cardCornerRadius", "app:cardElevation",
+                        "app:cardMaxElevation", "app:cardUseCompatPadding", "app:cardPreventCornerOverlap",
+                        "app:contentPadding", "app:strokeColor", "app:strokeWidth"
+                ));
+            }
+
+            if (classInfo.b("MaterialButton")) {
+                attrs.addAll(Arrays.asList(
+                        "app:icon", "app:iconTint", "app:iconGravity", "app:iconPadding",
+                        "app:strokeColor", "app:strokeWidth", "app:cornerRadius", "app:rippleColor"
+                ));
             }
         }
-        // Add more attributes here based on the view type
-        return attrs;
+
+        return attrs.stream().distinct().sorted().collect(Collectors.toList());
     }
 
     private String getSimpleName(ViewBean bean) {
@@ -877,6 +939,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.show();
 
         binding.title.setText(Helper.getText(tvName));
+        binding.viewId.setText(bean.id);
 
         var adapter = new AttributesAdapter();
         adapter.setOnItemClickListener(
@@ -927,6 +990,88 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                     showTextInputDialog(9999, true);
                     dialog.dismiss();
                 });
+        binding.shortcuts.setVisibility(View.VISIBLE);
+        binding.shortcuts.setOnClickListener(v -> showShortcutsDialog(attributes, dialog));
+    }
+
+    private void showShortcutsDialog(LinkedHashMap<String, String> currentAttributes, BottomSheetDialog parentDialog) {
+        AttributeShortcutsManager manager = new AttributeShortcutsManager();
+        BottomSheetDialog dialog = new BottomSheetDialog(getContext());
+        var binding = PropertyPopupParentAttrBinding.inflate(LayoutInflater.from(getContext()));
+        dialog.setContentView(binding.getRoot());
+
+        binding.title.setText("Shortcuts");
+        binding.viewId.setVisibility(View.GONE);
+        binding.sourceCode.setVisibility(View.GONE);
+        binding.shortcuts.setVisibility(View.GONE);
+
+        var adapter = new AttributesAdapter();
+        LinkedHashMap<String, String> shortcutsMap = new LinkedHashMap<>();
+        for (AttributeShortcutsManager.ShortcutItem item : manager.getShortcuts()) {
+            shortcutsMap.put(item.name, item.value);
+        }
+
+        adapter.setAttributes(shortcutsMap);
+        adapter.submitList(new ArrayList<>(shortcutsMap.keySet()));
+
+        adapter.setOnItemClickListener(new AttributesAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(LinkedHashMap<String, String> attributes, String attr) {
+                currentAttributes.put(attr, attributes.get(attr));
+                saveAttributes(currentAttributes);
+                dialog.dismiss();
+                parentDialog.dismiss();
+            }
+
+            @Override
+            public void onItemLongClick(LinkedHashMap<String, String> attributes, String attr) {
+                new MaterialAlertDialogBuilder(getContext())
+                        .setTitle("Delete Shortcut")
+                        .setMessage("Delete " + attr + "?")
+                        .setPositiveButton("Delete", (d, w) -> {
+                            manager.removeShortcut(attr);
+                            attributes.remove(attr);
+                            adapter.submitList(new ArrayList<>(attributes.keySet()));
+                            adapter.notifyDataSetChanged();
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            }
+        });
+
+        binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        binding.add.setOnClickListener(v -> showAddShortcutDialog(manager, adapter));
+
+        dialog.show();
+    }
+
+    private void showAddShortcutDialog(AttributeShortcutsManager manager, AttributesAdapter adapter) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle("Add Shortcut");
+
+        StyleEditorAddAttrBinding binding = StyleEditorAddAttrBinding.inflate(LayoutInflater.from(getContext()));
+        builder.setView(binding.getRoot());
+
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String name = binding.attrName.getText().toString().trim();
+            String value = binding.attrValue.getText().toString().trim();
+
+            if (!name.isEmpty()) {
+                manager.addShortcut(name, value);
+                LinkedHashMap<String, String> shortcutsMap = new LinkedHashMap<>();
+                for (AttributeShortcutsManager.ShortcutItem item : manager.getShortcuts()) {
+                    shortcutsMap.put(item.name, item.value);
+                }
+                adapter.setAttributes(shortcutsMap);
+                adapter.submitList(new ArrayList<>(shortcutsMap.keySet()));
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 
     private void addNewAttribute(Map<String, String> attributes) {
@@ -990,19 +1135,33 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         PropertyPopupInputTextBinding binding =
                 PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
 
-        var input = binding.edInput;
-        if (attributes.containsKey(attr)) {
-            input.setText(attributes.get(attr));
+        EditText input = binding.edInput;
+        String currentValue = attributes.getOrDefault(attr, "");
+        input.setText(currentValue);
+
+        List<String> suggestions = getAttributeValueSuggestions(attr);
+        if (!suggestions.isEmpty()) {
+            binding.tiInput.setVisibility(View.GONE);
+            binding.tiAutoCompleteInput.setVisibility(View.VISIBLE);
+            binding.edTiAutoCompleteInput.setText(currentValue);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, suggestions);
+            binding.edTiAutoCompleteInput.setAdapter(adapter);
+            binding.edTiAutoCompleteInput.setThreshold(0);
+            binding.edTiAutoCompleteInput.setOnFocusChangeListener((v, hasFocus) -> {
+                if (hasFocus) binding.edTiAutoCompleteInput.showDropDown();
+            });
+            input = binding.edTiAutoCompleteInput;
         }
 
         binding.tiInput.setHint(
                 String.format(Helper.getResString(R.string.property_enter_value), attr));
 
         builder.setView(binding.getRoot());
+        EditText finalInput = input;
         builder.setPositiveButton(
                 R.string.common_word_save,
                 (d, w) -> {
-                    var inputValue = Helper.getText(input).trim();
+                    var inputValue = Helper.getText(finalInput).trim();
                     if (!inputValue.isEmpty()) {
                         attributes.put(attr, inputValue);
                         saveAttributes(attributes);
@@ -1012,12 +1171,13 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                 });
         builder.setNegativeButton(R.string.common_word_cancel, null);
         var dialog = builder.create();
+        EditText finalInput1 = input;
         dialog.setOnShowListener(
                 d -> {
                     var positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setEnabled(!Helper.getText(input).trim().isEmpty());
+                    positiveButton.setEnabled(!Helper.getText(finalInput1).trim().isEmpty());
 
-                    input.addTextChangedListener(
+                    finalInput1.addTextChangedListener(
                             new BaseTextWatcher() {
                                 @Override
                                 public void onTextChanged(
@@ -1026,12 +1186,38 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                                         int before,
                                         int after) {
                                     positiveButton.setEnabled(
-                                            !Helper.getText(input).trim().isEmpty());
+                                            !Helper.getText(finalInput1).trim().isEmpty());
                                 }
                             });
                 });
         dialog.show();
         dialog.setOnDismissListener(d -> showInjectDialog());
+    }
+
+    private List<String> getAttributeValueSuggestions(String attr) {
+        List<String> suggestions = new ArrayList<>();
+        String name = attr.contains(":") ? attr.substring(attr.indexOf(":") + 1) : attr;
+
+        if (name.startsWith("layout_align") || name.startsWith("layout_center") || name.startsWith("layout_to")) {
+            suggestions.addAll(Arrays.asList("true", "false", "@id/"));
+        }
+
+        switch (name) {
+            case "visibility" -> suggestions.addAll(Arrays.asList("visible", "invisible", "gone"));
+            case "orientation" -> suggestions.addAll(Arrays.asList("horizontal", "vertical"));
+            case "layout_width", "layout_height" ->
+                    suggestions.addAll(Arrays.asList("match_parent", "wrap_content"));
+            case "textStyle" -> suggestions.addAll(Arrays.asList("normal", "bold", "italic"));
+            case "typeface" ->
+                    suggestions.addAll(Arrays.asList("normal", "sans", "serif", "monospace"));
+            case "ellipsize" ->
+                    suggestions.addAll(Arrays.asList("none", "start", "middle", "end", "marquee"));
+            case "focusable", "clickable", "enabled", "longClickable", "focusableInTouchMode",
+                 "checked", "selected", "duplicateParentState", "saveEnabled",
+                 "filterTouchesWhenObscured", "fitsSystemWindows", "clipToPadding",
+                 "clipChildren" -> suggestions.addAll(Arrays.asList("true", "false"));
+        }
+        return suggestions;
     }
 
     private void saveAttributes(Map<String, String> attributes) {
@@ -1082,13 +1268,11 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                         return true;
                     }
                 };
-
+        private LinkedHashMap<String, String> attributes;
+        private ItemClickListener listener;
         public AttributesAdapter() {
             super(DIFF_CALLBACK);
         }
-
-        private LinkedHashMap<String, String> attributes;
-        private ItemClickListener listener;
 
         public void setAttributes(LinkedHashMap<String, String> attributes) {
             this.attributes = attributes;
@@ -1108,6 +1292,13 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.bind(getItem(position));
+        }
+
+        public interface ItemClickListener {
+
+            void onItemClick(LinkedHashMap<String, String> attributes, String item);
+
+            void onItemLongClick(LinkedHashMap<String, String> attributes, String item);
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -1135,13 +1326,6 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                             return true;
                         });
             }
-        }
-
-        public interface ItemClickListener {
-
-            void onItemClick(LinkedHashMap<String, String> attributes, String item);
-
-            void onItemLongClick(LinkedHashMap<String, String> attributes, String item);
         }
     }
 }
