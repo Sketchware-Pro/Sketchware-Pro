@@ -209,7 +209,8 @@
                     android:text="Delete project"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorError"
-                    app:drawableEndCompat="@drawable/ic_mtrl_arrow_right" />
+                    app:drawableEndCompat="@drawable/ic_mtrl_arrow_right"
+                    app:drawableTint="?attr/colorError" />
 
             </LinearLayout>
 
