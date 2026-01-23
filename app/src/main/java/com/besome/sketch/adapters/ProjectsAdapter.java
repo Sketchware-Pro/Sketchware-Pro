@@ -269,7 +269,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         BottomSheetProjectOptionsBinding binding = BottomSheetProjectOptionsBinding.inflate(LayoutInflater.from(activity));
         projectOptionsBSD.setContentView(binding.getRoot());
 
-        binding.title.setText(yB.c(projectMap, "my_ws_name") + " settings");
+        binding.title.setText(yB.c(projectMap, "my_ws_name"));
+        binding.tvProjectId.setText(yB.c(projectMap, "sc_id"));
 
         binding.projectSettings.setOnClickListener(v -> {
             toProjectSettingOrRequestPermission(projectMap, position);
