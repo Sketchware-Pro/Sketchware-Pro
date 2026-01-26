@@ -52,6 +52,7 @@ public class DefaultExtraMenuBean {
             case "cv_theme" -> "Theme";
             case "cv_language" -> "Language";
             case "import" -> "Import";
+            case "permissions" -> "Permissions";
             default -> menuName;
         };
     }
