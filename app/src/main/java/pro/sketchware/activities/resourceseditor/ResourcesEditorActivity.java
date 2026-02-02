@@ -20,7 +20,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import org.json.JSONArray;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -567,7 +567,6 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
             initializeBackgroundTask(variants.get(selectedChoice.get()).replace("values", ""));
         }
     }
-
 private void saveVariantFn(ResourcesVariantSelectorDialogBinding binding, ArrayList<String> variants, AtomicInteger selectedChoice) {
     currentTabPosition = this.binding.viewPager.getCurrentItem();
     String newVariant = Objects.requireNonNull(binding.input.getText()).toString().trim();
@@ -606,10 +605,6 @@ private void saveVariantFn(ResourcesVariantSelectorDialogBinding binding, ArrayL
         initializeBackgroundTask(variantName);
     }
 }
-
-
-
-
     public ArrayList<String> extractVariants(ArrayList<String> resourcesDir) {
         ArrayList<String> variants = new ArrayList<>();
         for (String dir : resourcesDir) {

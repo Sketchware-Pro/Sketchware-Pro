@@ -77,8 +77,6 @@ public class TranslationString {
         String line;
         while ((line = in.readLine()) != null) response.append(line);
         in.close();
-
-        // Parseo seguro con org.json
         JSONArray jsonArray = new JSONArray(response.toString());
         JSONArray sentences = jsonArray.getJSONArray(0);
         StringBuilder result = new StringBuilder();
@@ -97,7 +95,6 @@ public class TranslationString {
         }
         xml.append("</resources>");
 
-        // Asegurar que la carpeta existe antes de escribir
         String dir = path.substring(0, path.lastIndexOf("/"));
         if (!FileUtil.isExistFile(dir)) FileUtil.makeDir(dir);
         FileUtil.writeFile(path, xml.toString());
