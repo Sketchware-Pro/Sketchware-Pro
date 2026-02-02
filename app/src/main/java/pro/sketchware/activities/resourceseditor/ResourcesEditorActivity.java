@@ -1,5 +1,6 @@
 package pro.sketchware.activities.resourceseditor;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,8 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +38,7 @@ import a.a.a.yq;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.activities.resourceseditor.components.TranslationString;
 import pro.sketchware.activities.resourceseditor.components.adapters.EditorsAdapter;
 import pro.sketchware.activities.resourceseditor.components.fragments.ArraysEditor;
 import pro.sketchware.activities.resourceseditor.components.fragments.ColorsEditor;
@@ -537,8 +541,18 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
             }
         });
 
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (d, which) -> saveVariant(binding, variants, selectedChoice));
-    }
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!binding.fntranslate.isChecked()) {
+                    saveVariant(binding, variants, selectedChoice);
+                } else {
+                    saveVariantFn(binding, variants, selectedChoice);
+                }
+            }
+            });
+
+        }
 
     private void saveVariant(ResourcesVariantSelectorDialogBinding binding, ArrayList<String> variants, AtomicInteger selectedChoice) {
         currentTabPosition = this.binding.viewPager.getCurrentItem();
@@ -553,6 +567,48 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
             initializeBackgroundTask(variants.get(selectedChoice.get()).replace("values", ""));
         }
     }
+
+private void saveVariantFn(ResourcesVariantSelectorDialogBinding binding, ArrayList<String> variants, AtomicInteger selectedChoice) {
+    currentTabPosition = this.binding.viewPager.getCurrentItem();
+    String newVariant = Objects.requireNonNull(binding.input.getText()).toString().trim();
+    String variantName = newVariant.replace("values", "");
+
+    // Si es un idioma (ej: values-pt), disparamos la clase nueva
+    if (variantName.startsWith("-") && variantName.length() >= 3) {
+        String langCode = variantName.substring(1, 3);
+        String targetPath = wq.b(sc_id) + "/files/resource/values" + variantName + "/strings.xml";
+
+        TranslationString.translate(stringsEditor.listmap, langCode, targetPath, new TranslationString.TranslationCallback() {
+            private androidx.appcompat.app.AlertDialog progress;
+
+            @Override
+            public void onStart() {
+                progress = new com.google.android.material.dialog.MaterialAlertDialogBuilder(ResourcesEditorActivity.this)
+                        .setTitle("Traduciendo...")
+                        .setMessage("Preparando variante " + variantName)
+                        .setCancelable(false).show();
+            }
+
+            @Override
+            public void onSuccess() {
+                if (progress != null) progress.dismiss();
+                SketchwareUtil.toast("¡Variante creada y traducida!");
+                initializeBackgroundTask(variantName);
+            }
+
+            @Override
+            public void onError(String error) {
+                if (progress != null) progress.dismiss();
+                SketchwareUtil.toastError("Error: " + error);
+            }
+        });
+    } else {
+        initializeBackgroundTask(variantName);
+    }
+}
+
+
+
 
     public ArrayList<String> extractVariants(ArrayList<String> resourcesDir) {
         ArrayList<String> variants = new ArrayList<>();
