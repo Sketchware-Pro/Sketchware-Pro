@@ -314,6 +314,10 @@
             android:configChanges="orientation|screenSize" />
 
         <activity
+            android:name="mod.fnmods.chat.ia.ChatIaActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
             android:name=".activities.editor.view.CodeViewerActivity"
             android:configChanges="orientation|screenSize" />
 

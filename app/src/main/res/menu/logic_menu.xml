@@ -2,6 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_logic_ia"
+        android:icon="@drawable/ic_ia"
+        android:orderInCategory="100"
+        android:title="IA Mode"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_logic_showsource"
         android:icon="@drawable/ic_mtrl_code"
         android:orderInCategory="100"

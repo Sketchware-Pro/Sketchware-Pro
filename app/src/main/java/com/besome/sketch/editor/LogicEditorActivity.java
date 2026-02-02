@@ -112,6 +112,7 @@ import a.a.a.xB;
 import a.a.a.yq;
 import dev.aldi.sayuti.block.ExtraPaletteBlock;
 import mod.bobur.VectorDrawableLoader;
+import mod.fnmods.chat.ia.ChatIaActivity;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
@@ -1980,6 +1981,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             undo();
         } else if (itemId == R.id.menu_logic_showsource) {
             showSourceCode();
+        } else if (itemId == R.id.menu_logic_ia) {
+            Intent intent = new Intent(this, ChatIaActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(menuItem);

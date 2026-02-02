@@ -26,6 +26,12 @@
             android:layout_height="match_parent"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_()-."
             android:singleLine="true" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/fntranslate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:text="Translate Automatic String (Beta)"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>
