@@ -589,6 +589,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         if (!Settings.canDrawOverlays(this)) {
             Intent i = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
             startActivity(i);
+            SketchwareUtil.toast("Please allow overlay permission");
         }
         fProgress = new FloatingProgressWindow();
     }
