@@ -31,8 +31,8 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
     private String content;
 
     public AsdDialog(Activity activity) {
-        super(activity);
-        act = activity;
+        super(activity, R.style.AsdEditorDialogTheme);
+        act = activity; // Apply AsdEditorDialogTheme
     }
 
     @Override
@@ -45,7 +45,6 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         Window window = getWindow();
         if (window != null) {
             window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
         binding.editor.setTypefaceText(EditorUtils.getTypeface(act));
