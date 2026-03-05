@@ -141,4 +141,12 @@
     <style name="ThemeOverlay.SketchwarePro.Chip.ProjectPreview" parent="">
         <item name="chipStyle">@style/Widget.SketchwarePro.Chip.ProjectPreview</item>
     </style>
+    <!-- Theme used by AsdDialog to fix keyboard visibility for find/replace -->
+    <style name="AsdEditorDialogTheme" parent="Theme.SketchwarePro">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">stateVisible|adjustResize</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
 </resources>
