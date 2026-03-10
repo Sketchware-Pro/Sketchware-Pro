@@ -13,6 +13,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -91,6 +92,16 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     public interface onPropertyDeleted {
         void deleteProperty(ViewBean viewBean);
+    }
+
+    public interface onPropertyMoved {
+        void moveProperty(ViewBean viewBean, boolean up);
+    }
+
+    private onPropertyMoved onPropertyMovedListener;
+
+    public void setOnPropertyMoved(onPropertyMoved onPropertyMoved) {
+        onPropertyMovedListener = onPropertyMoved;
     }
 
     public void setOnPropertyDeleted(onPropertyDeleted onPropertyDeleted) {
@@ -292,6 +303,18 @@ public class ViewProperty extends LinearLayout implements Kw {
         });
         imgDelete = binding.imgDelete;
         imgDelete.setOnClickListener(view -> showDeleteViewBeanWidget());
+        ImageButton imgUp = binding.imgUp;
+        imgUp.setOnClickListener(view -> {
+            if (onPropertyMovedListener != null && idsAdapter.getSelectedItemPosition() < projectActivityViews.size()) {
+                onPropertyMovedListener.moveProperty(projectActivityViews.get(idsAdapter.getSelectedItemPosition()), true);
+            }
+        });
+        ImageButton imgDown = binding.imgDown;
+        imgDown.setOnClickListener(view -> {
+            if (onPropertyMovedListener != null && idsAdapter.getSelectedItemPosition() < projectActivityViews.size()) {
+                onPropertyMovedListener.moveProperty(projectActivityViews.get(idsAdapter.getSelectedItemPosition()), false);
+            }
+        });
         spnWidget = binding.spnWidget;
         idsAdapter = new ViewIdsAdapter(context, projectActivityViews);
         spnWidget.setAdapter(idsAdapter);
@@ -318,12 +341,18 @@ public class ViewProperty extends LinearLayout implements Kw {
         if (propertyTargetChangeListener != null) {
             propertyTargetChangeListener.a(viewBean.id);
         }
+        ImageButton imgUp = binding.imgUp;
+        ImageButton imgDown = binding.imgDown;
         if ("_fab".equals(viewBean.id)) {
             imgSave.setVisibility(GONE);
             imgDelete.setVisibility(GONE);
+            imgUp.setVisibility(GONE);
+            imgDown.setVisibility(GONE);
         } else {
             imgSave.setVisibility(VISIBLE);
             imgDelete.setVisibility(VISIBLE);
+            imgUp.setVisibility(VISIBLE);
+            imgDown.setVisibility(VISIBLE);
         }
         viewPropertyItems.setProjectFileBean(projectFile);
         e();
