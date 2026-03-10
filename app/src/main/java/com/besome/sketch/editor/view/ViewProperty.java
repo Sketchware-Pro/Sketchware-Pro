@@ -87,6 +87,16 @@ public class ViewProperty extends LinearLayout implements Kw {
         void deleteProperty(ViewBean viewBean);
     }
 
+    public interface onPropertyMoved {
+        void moveProperty(ViewBean viewBean, boolean up);
+    }
+
+    private onPropertyMoved onPropertyMovedListener;
+
+    public void setOnPropertyMoved(onPropertyMoved onPropertyMoved) {
+        onPropertyMovedListener = onPropertyMoved;
+    }
+
     public void setOnPropertyDeleted(onPropertyDeleted onPropertyDeleted) {
         onPropertyDeletedListener = onPropertyDeleted;
     }
@@ -286,6 +296,18 @@ public class ViewProperty extends LinearLayout implements Kw {
         });
         imgDelete = findViewById(R.id.img_delete);
         imgDelete.setOnClickListener(view -> showDeleteViewBeanWidget());
+        ImageView imgUp = findViewById(R.id.img_up);
+        imgUp.setOnClickListener(view -> {
+            if (onPropertyMovedListener != null && idsAdapter.getSelectedItemPosition() < projectActivityViews.size()) {
+                onPropertyMovedListener.moveProperty(projectActivityViews.get(idsAdapter.getSelectedItemPosition()), true);
+            }
+        });
+        ImageView imgDown = findViewById(R.id.img_down);
+        imgDown.setOnClickListener(view -> {
+            if (onPropertyMovedListener != null && idsAdapter.getSelectedItemPosition() < projectActivityViews.size()) {
+                onPropertyMovedListener.moveProperty(projectActivityViews.get(idsAdapter.getSelectedItemPosition()), false);
+            }
+        });
         spnWidget = findViewById(R.id.spn_widget);
         idsAdapter = new ViewIdsAdapter(context, projectActivityViews);
         spnWidget.setAdapter(idsAdapter);
@@ -312,12 +334,18 @@ public class ViewProperty extends LinearLayout implements Kw {
         if (propertyTargetChangeListener != null) {
             propertyTargetChangeListener.a(viewBean.id);
         }
+        ImageView imgUp = findViewById(R.id.img_up);
+        ImageView imgDown = findViewById(R.id.img_down);
         if ("_fab".equals(viewBean.id)) {
             imgSave.setVisibility(GONE);
             imgDelete.setVisibility(GONE);
+            if (imgUp != null) imgUp.setVisibility(GONE);
+            if (imgDown != null) imgDown.setVisibility(GONE);
         } else {
             imgSave.setVisibility(VISIBLE);
             imgDelete.setVisibility(VISIBLE);
+            if (imgUp != null) imgUp.setVisibility(VISIBLE);
+            if (imgDown != null) imgDown.setVisibility(VISIBLE);
         }
         viewPropertyItems.setProjectFileBean(projectFile);
         e();
