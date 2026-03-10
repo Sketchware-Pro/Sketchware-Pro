@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -286,7 +287,9 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
 
         try {
             if ("default_image".equals(image)) {
-                imageView.setImageResource(getResources().getIdentifier(image, "drawable", getContext().getPackageName()));
+                imageView.setImageResource(R.drawable.default_image);
+            } else if ("NONE".equals(image)) {
+                imageView.setImageDrawable(null);
             } else {
                 File file = new File(jC.d(a).f(image));
                 if (file.exists()) {
