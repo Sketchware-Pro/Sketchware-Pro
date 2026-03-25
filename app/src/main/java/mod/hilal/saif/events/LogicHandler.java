@@ -99,7 +99,7 @@ public class LogicHandler {
                     newStr = newStr.concat("\n").concat(arr2.get(i));
                 }
             }
-            FileUtil.writeFile(newStr, FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/temp/").concat(javaName));
+            FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/temp/").concat(javaName), newStr);
         } catch (Exception ignored) {
         }
     }
