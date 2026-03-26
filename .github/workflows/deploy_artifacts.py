@@ -73,9 +73,11 @@ async def send_file(file_path):
         print(f"Failed to send file: {e}")
 
 async def main():
-    async with client:
+    try:
         await client.start(bot_token=bot_token)
         await send_file(apk_path)
+    finally:
+        await client.disconnect()
 
 if __name__ == "__main__":
     asyncio.run(main())
