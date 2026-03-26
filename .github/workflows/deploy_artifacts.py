@@ -1,6 +1,7 @@
-from telethon import TelegramClient
+import asyncio
 import os
 import subprocess
+from telethon import TelegramClient
 
 def get_git_commit_info():
     commit_author = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%an']).decode('utf-8')
@@ -26,8 +27,8 @@ session_file = "bot_session.session"
 if os.path.exists(session_file):
     os.remove(session_file)
 
-# Create the client with bot token directly
-client = TelegramClient('bot_session', api_id, api_hash).start(bot_token=bot_token)
+# Create the client without starting it immediately
+client = TelegramClient('bot_session', api_id, api_hash)
 client.parse_mode = 'markdown'
 
 def human_readable_size(size, decimal_places=2):
@@ -37,13 +38,11 @@ def human_readable_size(size, decimal_places=2):
         size /= 1024.0
     return f"{size:.{decimal_places}f} {unit}"
 
-
 async def progress(current, total):
     progress_percentage = (current / total) * 100
     uploaded_size_readable = human_readable_size(current)
     total_size_readable = human_readable_size(total)
     print(f"{progress_percentage:.2f}% uploaded - {uploaded_size_readable}/{total_size_readable}", end='\r')
-
 
 async def send_file(file_path):
     if not os.path.exists(file_path):
@@ -60,21 +59,23 @@ async def send_file(file_path):
     )
 
     try:
+        topic_id = os.getenv("TOPIC_ID")
         await client.send_file(
             entity=group_id,
             file=file_path,
             parse_mode='markdown',
             caption=message,
             progress_callback=progress,
-            reply_to=int(os.getenv("TOPIC_ID"))
+            reply_to=int(topic_id) if topic_id else None
         )
         print("\nFile sent successfully")
     except Exception as e:
         print(f"Failed to send file: {e}")
 
-try:
-    with client:
-        client.loop.run_until_complete(send_file(apk_path))
-finally:
-    if client.is_connected():
-        client.loop.run_until_complete(client.disconnect())
+async def main():
+    async with client:
+        await client.start(bot_token=bot_token)
+        await send_file(apk_path)
+
+if __name__ == "__main__":
+    asyncio.run(main())
