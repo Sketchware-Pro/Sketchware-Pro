@@ -7,8 +7,6 @@ import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.content.res.ResourcesCompat;
-
 import com.besome.sketch.beans.BlockBean;
 
 import java.util.ArrayList;
