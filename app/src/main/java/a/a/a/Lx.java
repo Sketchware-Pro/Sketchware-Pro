@@ -1208,6 +1208,7 @@ public class Lx {
                         + "}\r\n"
                         + "else {\r\n"
                         + "_uri_" + componentName + " = Uri.fromFile(file_" + componentName + ");\r\n"
+                        + "}\r\n"
                         + componentName + ".putExtra(MediaStore.EXTRA_OUTPUT, _uri_" + componentName + ");\r\n"
                         + componentName + ".addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);";
 
