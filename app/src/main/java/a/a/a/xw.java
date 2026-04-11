@@ -5,75 +5,70 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.manage.view.ManageViewActivity;
+import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class xw extends qA {
-    public RecyclerView f;
-    public String g;
-    public ArrayList<ProjectFileBean> h;
-    public a i = null;
-    public Boolean j = false;
-    public TextView k;
-    public int[] l = new int[19];
+import pro.sketchware.R;
+import pro.sketchware.databinding.FrManageViewListBinding;
+import pro.sketchware.databinding.ManageViewCustomListItemBinding;
 
-    public final String a(int var1, String var2) {
-        String var3 = wq.b(var1);
-        StringBuilder var4 = new StringBuilder();
-        var4.append(var3);
-        int[] var5 = this.l;
-        int var6 = var5[var1] + 1;
-        var5[var1] = var6;
-        var4.append(var6);
-        String var10 = var4.toString();
-        ArrayList var13 = jC.a(this.g).d(var2);
-        var2 = var10;
+public class xw extends qA {
+
+    public String g;
+    public ArrayList<ProjectFileBean> h = new ArrayList<>();
+    public int[] l = new int[19];
+    private Adapter adapter;
+    private boolean hasSelection = false;
+
+    private FrManageViewListBinding binding;
+
+    private String a(int beanType, String xmlName) {
+        String baseName = wq.b(beanType);
+        StringBuilder nameBuilder = new StringBuilder();
+        nameBuilder.append(baseName);
+        int[] nameCounters = l;
+        int counter = nameCounters[beanType] + 1;
+        nameCounters[beanType] = counter;
+        nameBuilder.append(counter);
+        String newName = nameBuilder.toString();
+        ArrayList<ViewBean> viewBeans = jC.a(g).d(xmlName);
+        xmlName = newName;
 
         while (true) {
-            boolean var7 = false;
-            Iterator var11 = var13.iterator();
-
-            while (true) {
-                var6 = var7;
-                if (!var11.hasNext()) {
-                    break;
-                }
-
-                if (var2.equals(((ViewBean) var11.next()).id)) {
-                    var6 = 1;
+            boolean nameExists = false;
+            for (ViewBean viewBean : viewBeans) {
+                if (xmlName.equals(viewBean.id)) {
+                    nameExists = true;
                     break;
                 }
             }
 
-            if (!var6) {
-                return var2;
+            if (!nameExists) {
+                return xmlName;
             }
 
-            StringBuilder var12 = new StringBuilder();
-            var12.append(var3);
-            int[] var9 = this.l;
-            var6 = var9[var1] + 1;
-            var9[var1] = var6;
-            var12.append(var6);
-            var2 = var12.toString();
+            nameBuilder = new StringBuilder();
+            nameBuilder.append(baseName);
+            counter = nameCounters[beanType] + 1;
+            nameCounters[beanType] = counter;
+            nameBuilder.append(counter);
+            xmlName = nameBuilder.toString();
         }
     }
 
-    public final ArrayList<ViewBean> a(String var1, int var2) {
-        ArrayList var3 = new ArrayList();
-        ArrayList var4;
+    private ArrayList<ViewBean> a(String var1, int var2) {
+        ArrayList<ViewBean> var3 = new ArrayList<>();
+        ArrayList<ViewBean> var4;
         if (var2 != 277) {
             if (var2 != 278) {
                 var4 = var3;
@@ -87,250 +82,269 @@ public class xw extends qA {
         return var4;
     }
 
-    public void a(ProjectFileBean var1) {
-        this.h.add(var1);
-        this.i.notifyDataSetChanged();
+    public void a(ProjectFileBean projectFileBean) {
+        h.add(projectFileBean);
+        adapter.notifyDataSetChanged();
     }
 
-    public void a(String var1) {
-        Iterator var2 = this.h.iterator();
+    public void a(String fileName) {
+        Iterator<ProjectFileBean> projectFiles = h.iterator();
 
-        boolean var4;
+        boolean fileAlreadyExists;
         while (true) {
-            if (var2.hasNext()) {
-                ProjectFileBean var3 = (ProjectFileBean) var2.next();
-                if (var3.fileType != 2 || !var3.fileName.equals(var1)) {
+            if (projectFiles.hasNext()) {
+                ProjectFileBean fileBean = projectFiles.next();
+                if (fileBean.fileType != 2 || !fileBean.fileName.equals(fileName)) {
                     continue;
                 }
-
-                var4 = true;
+                fileAlreadyExists = true;
                 break;
             }
-
-            var4 = false;
+            fileAlreadyExists = false;
             break;
         }
 
-        if (!var4) {
-            this.h.add(new ProjectFileBean(2, var1));
-            this.i.notifyDataSetChanged();
+        if (!fileAlreadyExists) {
+            h.add(new ProjectFileBean(2, fileName));
+            adapter.notifyDataSetChanged();
         }
 
     }
 
     public void a(boolean var1) {
-        this.j = var1;
-        this.e();
-        this.i.notifyDataSetChanged();
+        hasSelection = var1;
+        e();
+        adapter.notifyDataSetChanged();
     }
 
     public void b(String var1) {
-        for (ProjectFileBean var3 : this.h) {
+        for (ProjectFileBean var3 : h) {
             if (var3.fileType == 2 && var3.fileName.equals(var1)) {
-                this.h.remove(var3);
+                h.remove(var3);
                 break;
             }
         }
-
-        this.i.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     public ArrayList<ProjectFileBean> c() {
-        return this.h;
+        return h;
     }
 
     public void d() {
-        ArrayList var1 = jC.b(this.g).c();
-        if (var1 != null) {
-            for (ProjectFileBean var2 : var1) {
-                this.h.add(var2);
-            }
-
+        ArrayList<ProjectFileBean> files = jC.b(g).c();
+        if (files != null) {
+            h.addAll(files);
         }
     }
 
     public final void e() {
-        for (Iterator var1 = this.h.iterator(); var1.hasNext(); ((ProjectFileBean) var1.next()).isSelected = false) {
+        for (ProjectFileBean projectFileBean : h) {
+            projectFileBean.isSelected = false;
         }
-
     }
 
     public void f() {
-        int var1 = this.h.size();
+        int var1 = h.size();
 
         while (true) {
             int var2 = var1 - 1;
             if (var2 < 0) {
-                this.i.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
                 return;
             }
 
             var1 = var2;
-            if (((ProjectFileBean) this.h.get(var2)).isSelected) {
-                this.h.remove(var2);
+            if (h.get(var2).isSelected) {
+                h.remove(var2);
                 var1 = var2;
             }
         }
     }
 
     public void g() {
-        ArrayList var1 = this.h;
-        if (var1 != null) {
-            if (var1.size() == 0) {
-                this.k.setVisibility(0);
-                this.f.setVisibility(8);
+        if (h != null) {
+            if (h.isEmpty()) {
+                binding.tvGuide.setVisibility(View.VISIBLE);
+                binding.listActivities.setVisibility(View.GONE);
             } else {
-                this.k.setVisibility(8);
-                this.f.setVisibility(0);
+                binding.tvGuide.setVisibility(View.GONE);
+                binding.listActivities.setVisibility(View.VISIBLE);
             }
         }
-
     }
 
-    public void onActivityCreated(Bundle var1) {
-        super.onActivityCreated(var1);
-        if (var1 == null) {
-            this.d();
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState == null) {
+            d();
         } else {
-            this.g = var1.getString("sc_id");
-            this.h = var1.getParcelableArrayList("custom_views");
+            g = savedInstanceState.getString("sc_id");
+            h = savedInstanceState.getParcelableArrayList("custom_views");
         }
 
-        this.f.getAdapter().notifyDataSetChanged();
-        this.g();
+        binding.listActivities.getAdapter().notifyDataSetChanged();
+        g();
     }
 
+    @Override
     public void onActivityResult(int var1, int var2, Intent var3) {
         if ((var1 == 277 || var1 == 278) && var2 == -1) {
-            ProjectFileBean var4 = (ProjectFileBean) this.h.get(this.i.c);
-            ArrayList var5 = jC.a(this.g).d(var4.getXmlName());
+            ProjectFileBean var4 = h.get(adapter.layoutPosition);
+            ArrayList<ViewBean> var5 = jC.a(g).d(var4.getXmlName());
 
             for (int var7 = var5.size() - 1; var7 >= 0; --var7) {
-                ViewBean var6 = (ViewBean) var5.get(var7);
-                jC.a(this.g).a(var4, var6);
+                ViewBean var6 = var5.get(var7);
+                jC.a(g).a(var4, var6);
             }
 
-            ArrayList var8 = this.a(((ProjectFileBean) var3.getParcelableExtra("preset_data")).presetName, var1);
-            jC.a(this.g);
+            ArrayList<ViewBean> var8 = a(((ProjectFileBean) var3.getParcelableExtra("preset_data")).presetName, var1);
+            jC.a(g);
 
-            for (ViewBean var9 : eC.a(var8)) {
-                var9.id = this.a(var9.type, var4.getXmlName());
-                jC.a(this.g).a(var4.getXmlName(), var9);
-                if (var9.type == 3 && var4.fileType == 0) {
-                    jC.a(this.g).a(var4.getJavaName(), 1, var9.type, var9.id, "onClick");
+            for (ViewBean viewBean : eC.a(var8)) {
+                viewBean.id = a(viewBean.type, var4.getXmlName());
+                jC.a(g).a(var4.getXmlName(), viewBean);
+                if (viewBean.type == 3 && var4.fileType == 0) {
+                    jC.a(g).a(var4.getJavaName(), 1, viewBean.type, viewBean.id, "onClick");
                 }
             }
 
-            a var10 = this.i;
-            ((RecyclerView.Adapter) var10).notifyItemChanged(var10.c);
+            adapter.notifyItemChanged(adapter.layoutPosition);
         }
 
     }
 
-    public View onCreateView(LayoutInflater var1, ViewGroup var2, Bundle var3) {
-        ViewGroup var4 = (ViewGroup) var1.inflate(2131427442, var2, false);
-        this.h = new ArrayList();
-        this.f = (RecyclerView) var4.findViewById(2131231442);
-        this.f.setHasFixedSize(true);
-        this.f.setLayoutManager(new LinearLayoutManager(((Fragment) this).getContext()));
-        this.i = new a(this.f);
-        this.f.setAdapter(this.i);
-        if (var3 == null) {
-            this.g = ((Fragment) this).getActivity().getIntent().getStringExtra("sc_id");
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FrManageViewListBinding.inflate(inflater, container, false);
+
+        binding.listActivities.setHasFixedSize(true);
+        binding.listActivities.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new Adapter(binding.listActivities);
+        binding.listActivities.setAdapter(adapter);
+        if (savedInstanceState == null) {
+            g = getActivity().getIntent().getStringExtra("sc_id");
         } else {
-            this.g = var3.getString("sc_id");
+            g = savedInstanceState.getString("sc_id");
         }
 
-        this.k = (TextView) var4.findViewById(2131231997);
-        this.k.setText(xB.b().a(((Fragment) this).getActivity(), 2131625291));
-        return var4;
+        binding.tvGuide.setText(xB.b().a(getActivity(), R.string.design_manager_view_description_guide_create_custom_view));
+        return binding.getRoot();
     }
 
+    @Override
     public void onSaveInstanceState(Bundle var1) {
-        var1.putString("sc_id", this.g);
-        var1.putParcelableArrayList("custom_views", this.h);
+        var1.putString("sc_id", g);
+        var1.putParcelableArrayList("custom_views", h);
         super.onSaveInstanceState(var1);
     }
 
-    public class a extends RecyclerView.Adapter<a> {
-        public int c;
-        public final xw d;
+    public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
-        public a(RecyclerView var2) {
-            this.d = xw.this;
-            this.c = -1;
-            if (var2.getLayoutManager() instanceof LinearLayoutManager) {
-                var2.addOnScrollListener(new tw(this, xw.this));
+        public int layoutPosition;
+
+        public Adapter(RecyclerView recyclerView) {
+            layoutPosition = -1;
+            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView rv, int dx, int dy) {
+                        super.onScrolled(rv, dx, dy);
+                        if (dy > 2) {
+                            if (((ManageViewActivity) getActivity()).s.isEnabled()) {
+                                ((ManageViewActivity) getActivity()).s.hide();
+                            }
+                        } else if (dy < -2 && ((ManageViewActivity) getActivity()).s.isEnabled()) {
+                            ((ManageViewActivity) getActivity()).s.show();
+                        }
+                    }
+                });
             }
-
         }
 
+        @Override
         public int getItemCount() {
-            int var1;
-            if (this.d.h != null) {
-                var1 = this.d.h.size();
-            } else {
-                var1 = 0;
-            }
-
-            return var1;
+            return h != null ? h.size() : 0;
         }
 
-        public void onBindViewHolder(a var1, int var2) {
-            if (this.d.j) {
-                var1.x.setVisibility(0);
-                var1.u.setVisibility(8);
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ManageViewCustomListItemBinding itemBinding = holder.itemBinding;
+            if (hasSelection) {
+                itemBinding.deleteImgContainer.setVisibility(View.VISIBLE);
+                itemBinding.imgActivity.setVisibility(View.GONE);
             } else {
-                var1.x.setVisibility(8);
-                var1.u.setVisibility(0);
+                itemBinding.deleteImgContainer.setVisibility(View.GONE);
+                itemBinding.imgActivity.setVisibility(View.VISIBLE);
             }
 
-            ProjectFileBean var3 = (ProjectFileBean) this.d.h.get(var2);
-            var1.u.setImageResource(2131165293);
-            var1.t.setChecked(var3.isSelected);
-            var2 = var3.fileType;
-            if (var2 == 1) {
-                var1.w.setText(var3.getXmlName());
-            } else if (var2 == 2) {
-                var1.t.setVisibility(8);
-                var1.u.setImageResource(2131165283);
-                var1.w.setText(var3.fileName.substring(1));
+            ProjectFileBean fileBean = h.get(position);
+            itemBinding.imgActivity.setImageResource(R.drawable.activity_preset_1);
+            itemBinding.chkSelect.setChecked(fileBean.isSelected);
+            if (fileBean.fileType == 1) {
+                itemBinding.tvScreenName.setText(fileBean.getXmlName());
+            } else if (fileBean.fileType == 2) {
+                itemBinding.chkSelect.setVisibility(View.GONE);
+                itemBinding.imgActivity.setImageResource(R.drawable.activity_0110);
+                itemBinding.tvScreenName.setText(fileBean.fileName.substring(1));
             }
 
-            if (var3.isSelected) {
-                var1.v.setImageResource(2131165707);
+            if (fileBean.isSelected) {
+                itemBinding.imgDelete.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                var1.v.setImageResource(2131165875);
+                itemBinding.imgDelete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
         }
 
-        public a onCreateViewHolder(ViewGroup var1, int var2) {
-            return new a(LayoutInflater.from(var1.getContext()).inflate(2131427570, var1, false));
+        @Override
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(ManageViewCustomListItemBinding.inflate(getLayoutInflater(), parent, false));
         }
 
-        public class a extends RecyclerView.ViewHolder {
-            public CheckBox t;
-            public ImageView u;
-            public ImageView v;
-            public TextView w;
-            public LinearLayout x;
-            public ImageView y;
-            public final a z;
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
-            public a(View var2) {
-                super(var2);
-                this.z = a.this;
-                this.t = (CheckBox) var2.findViewById(2131230893);
-                this.u = (ImageView) var2.findViewById(2131231104);
-                this.w = (TextView) var2.findViewById(2131232144);
-                this.x = (LinearLayout) var2.findViewById(2131230959);
-                this.v = (ImageView) var2.findViewById(2131231132);
-                this.y = (ImageView) var2.findViewById(2131231168);
-                this.t.setVisibility(8);
-                var2.setOnClickListener(new uw(this, a.this));
-                var2.setOnLongClickListener(new vw(this, a.this));
-                this.y.setOnClickListener(new ww(this, a.this));
+            public ManageViewCustomListItemBinding itemBinding;
+
+            public ViewHolder(ManageViewCustomListItemBinding binding) {
+                super(binding.getRoot());
+                itemBinding = binding;
+
+                binding.chkSelect.setVisibility(View.GONE);
+                itemView.setOnClickListener(view -> {
+                    layoutPosition = getLayoutPosition();
+                    if (hasSelection) {
+                        binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
+                        h.get(layoutPosition).isSelected = binding.chkSelect.isChecked();
+                        notifyItemChanged(layoutPosition);
+                    }
+                });
+                itemView.setOnLongClickListener(v -> {
+                    ((ManageViewActivity) getActivity()).a(true);
+                    layoutPosition = getLayoutPosition();
+                    binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
+                    h.get(layoutPosition).isSelected = binding.chkSelect.isChecked();
+                    return true;
+                });
+
+                binding.imgPresetSetting.setOnClickListener(view -> {
+                    if (!mB.a()) {
+                        layoutPosition = getLayoutPosition();
+                        Intent intent = new Intent(getActivity(), PresetSettingActivity.class);
+                        int requestCode;
+                        if (h.get(layoutPosition).fileType == 1) {
+                            requestCode = 277;
+                        } else {
+                            requestCode = 278;
+                        }
+
+                        intent.putExtra("request_code", requestCode);
+                        intent.putExtra("edit_mode", true);
+                        startActivityForResult(intent, requestCode);
+                    }
+                });
             }
         }
     }
