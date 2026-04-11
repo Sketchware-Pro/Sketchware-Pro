@@ -674,7 +674,10 @@ public class ProjectBuilder {
 
         /* Add used built-in libraries' DEX files */
         for (Jp builtInLibrary : builtInLibraryManager.getLibraries()) {
-            dexes.add(BuiltInLibraries.getLibraryDexFile(builtInLibrary.getName()));
+            File dexFile = BuiltInLibraries.getLibraryDexFile(builtInLibrary.getName());
+            if (dexFile.exists()) {
+                dexes.add(dexFile);
+            }
         }
 
         /* Add local libraries' main DEX files */
