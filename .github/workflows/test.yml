@@ -1,10 +1,10 @@
-name: Import External PR (Binary Safe)
+name: Import External PR / Commit
 
 on:
   workflow_dispatch:
     inputs:
-      pr_url:
-        description: "GitHub PR URL"
+      url:
+        description: "GitHub PR or Commit URL"
         required: true
 
 jobs:
@@ -12,48 +12,65 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # important for merges
+          fetch-depth: 0
 
       - name: Setup Git
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-      - name: Parse PR info
+      - name: Parse URL
         id: parse
         run: |
-          URL="${{ github.event.inputs.pr_url }}"
+          URL="${{ github.event.inputs.url }}"
 
-          # Extract owner, repo, PR number
           OWNER=$(echo $URL | cut -d'/' -f4)
           REPO=$(echo $URL | cut -d'/' -f5)
-          PR_NUMBER=$(echo $URL | cut -d'/' -f7)
 
-          BRANCH="import-pr-${PR_NUMBER}-$(date +%s)"
+          if [[ "$URL" == *"/pull/"* ]]; then
+            TYPE="pr"
+            ID=$(echo $URL | cut -d'/' -f7)
+          elif [[ "$URL" == *"/commit/"* ]]; then
+            TYPE="commit"
+            ID=$(echo $URL | cut -d'/' -f7)
+          else
+            echo "❌ Invalid URL"
+            exit 1
+          fi
+
+          BRANCH="import-${TYPE}-${ID}-$(date +%s)"
 
           echo "owner=$OWNER" >> $GITHUB_OUTPUT
           echo "repo=$REPO" >> $GITHUB_OUTPUT
-          echo "pr=$PR_NUMBER" >> $GITHUB_OUTPUT
+          echo "type=$TYPE" >> $GITHUB_OUTPUT
+          echo "id=$ID" >> $GITHUB_OUTPUT
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 
       - name: Add remote
         run: |
           git remote add external https://github.com/${{ steps.parse.outputs.owner }}/${{ steps.parse.outputs.repo }}.git
 
-      - name: Fetch PR branch
+      - name: Fetch
         run: |
-          git fetch external pull/${{ steps.parse.outputs.pr }}/head:external-pr
+          git fetch external
 
-      - name: Create new branch
+      - name: Create branch
         run: |
           git checkout -b ${{ steps.parse.outputs.branch }}
 
-      - name: Merge PR (binary safe)
+      - name: Apply changes
         run: |
-          git merge external-pr --allow-unrelated-histories -m "Merge external PR"
+          if [ "${{ steps.parse.outputs.type }}" = "pr" ]; then
+            echo "🔄 Importing PR..."
+            git fetch external pull/${{ steps.parse.outputs.id }}/head:external-pr
+            git merge external-pr --allow-unrelated-histories -m "Merge external PR #${{ steps.parse.outputs.id }}"
+          else
+            echo "🔄 Importing commit..."
+            git cherry-pick ${{ steps.parse.outputs.id }}
+          fi
 
       - name: Push branch
         run: |
@@ -63,10 +80,10 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           branch: ${{ steps.parse.outputs.branch }}
-          title: "Import PR #${{ steps.parse.outputs.pr }}"
+          title: "Import ${{ steps.parse.outputs.type }}: ${{ steps.parse.outputs.id }}"
           body: |
             Imported from:
-            ${{ github.event.inputs.pr_url }}
+            ${{ github.event.inputs.url }}
 
-            ✅ Binary-safe merge
-            ⚠️ Please review before merging
+            ✅ Binary-safe (PR uses merge, commit uses cherry-pick)
+            ⚠️ Please review changes before merging
