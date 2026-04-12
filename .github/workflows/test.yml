@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -49,15 +49,22 @@ jobs:
           echo "id=$ID" >> $GITHUB_OUTPUT
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 
-      - name: Add remote
+      # ✅ ALWAYS go to base branch first
+      - name: Switch to base branch
+        run: |
+          BASE="${{ github.event.repository.default_branch }}"
+          git checkout $BASE
+          git pull origin $BASE
+
+      - name: Add external remote
         run: |
           git remote add external https://github.com/${{ steps.parse.outputs.owner }}/${{ steps.parse.outputs.repo }}.git
 
-      - name: Fetch
+      - name: Fetch external
         run: |
           git fetch external
 
-      - name: Create branch
+      - name: Create new branch
         run: |
           git checkout -b ${{ steps.parse.outputs.branch }}
 
@@ -79,11 +86,12 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
+          base: ${{ github.event.repository.default_branch }}
           branch: ${{ steps.parse.outputs.branch }}
           title: "Import ${{ steps.parse.outputs.type }}: ${{ steps.parse.outputs.id }}"
           body: |
             Imported from:
             ${{ github.event.inputs.url }}
 
-            ✅ Binary-safe (PR uses merge, commit uses cherry-pick)
-            ⚠️ Please review changes before merging
+            ✅ Binary-safe
+            ⚠️ Please review before merging
