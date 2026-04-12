@@ -27,6 +27,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -232,11 +233,48 @@ public class ExtraMenuBean {
                         pathSelectorMenu(ss);
                         return;
 
+                    case "permissions":
+                        multiSelectMenu(ss);
+                        return;
+
                     default:
                         defaultMenus(ss);
                 }
                 break;
         }
+    }
+
+    private void multiSelectMenu(@NonNull Ss menu) {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
+
+        String currentVal = menu.getArgValue().toString();
+        String[] selectedItems = currentVal.split(Pattern.quote("|"));
+        ArrayList<String> selectedList = new ArrayList<>(Arrays.asList(selectedItems));
+
+        boolean[] checkedItems = new boolean[permission.length];
+        for (int i = 0; i < permission.length; i++) {
+            for (String s : selectedList) {
+                if (s.trim().equals(permission[i])) {
+                    checkedItems[i] = true;
+                    break;
+                }
+            }
+        }
+
+        dialog.setTitle("Select Permissions")
+                .setMultiChoiceItems(permission, checkedItems, (dialogInterface, which, isChecked) ->
+                        checkedItems[which] = isChecked)
+                .setPositiveButton(R.string.common_word_select, (v, which) -> {
+                    StringJoiner joiner = new StringJoiner("|");
+                    for (int i = 0; i < permission.length; i++) {
+                        if (checkedItems[i]) {
+                            joiner.add(permission[i]);
+                        }
+                    }
+                    logicEditor.a(menu, joiner.toString());
+                })
+                .setNegativeButton(R.string.common_word_cancel, null)
+                .show();
     }
 
     @SuppressLint("SetTextI18n")

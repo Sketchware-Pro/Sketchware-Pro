@@ -27,11 +27,15 @@ public class PropertiesUtil {
 
     public static int parseColor(String color) {
         if (color == null) {
-            color = "#FFFFFFFF";
+            return 0xFF008DCD;
         }
-        String hexColor = color.replaceFirst("#", "");
-        String formattedColor = String.format("#%8s", hexColor).replaceAll(" ", "F");
-        return Color.parseColor(formattedColor);
+        try {
+            String hexColor = color.replaceFirst("#", "");
+            String formattedColor = String.format("#%8s", hexColor).replaceAll(" ", "F");
+            return Color.parseColor(formattedColor);
+        } catch (IllegalArgumentException e) {
+            return 0xFF008DCD;
+        }
     }
 
     public static int resolveSize(String value, int defaultValue) {
