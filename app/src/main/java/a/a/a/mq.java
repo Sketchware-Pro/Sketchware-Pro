@@ -89,7 +89,7 @@ public class mq {
                     "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
             case ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> "FirebaseCloudMessage";
             case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "GoogleSignInClient";
-            default -> ComponentsHandler.var(componentId);
+            default -> ComponentsHandler.getTypeName(componentId);
         };
     }
 
@@ -773,7 +773,7 @@ public class mq {
             case "Context" -> "Activity";
             case "ResString", "ResStyle", "ResColor", "ResArray", "ResDimen", "ResBool",
                  "ResInteger", "ResAttr", "ResXml", "Color" -> "int";
-            default -> typeName;
+            default -> ComponentsHandler.getVarName(typeName);
         };
     }
 }

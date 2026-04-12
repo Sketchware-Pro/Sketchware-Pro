@@ -375,7 +375,11 @@ public class ComponentsHandler {
         }
     }
 
-    public static String var(int id) {
+    /**
+     * @param id The Custom Component's ID
+     * @return The Custom Component's {@code typeName}, or "#" for AsyncTask
+     */
+    public static String getTypeName(int id) {
         if (id == 36) {
             return "#";
         }
@@ -390,12 +394,12 @@ public class ComponentsHandler {
                         int componentIdInteger = Integer.parseInt((String) componentId);
 
                         if (componentIdInteger == id) {
-                            Object componentVarName = component.get("varName");
+                            Object componentTypeName = component.get("typeName");
 
-                            if (componentVarName instanceof String) {
-                                return (String) componentVarName;
+                            if (componentTypeName instanceof String) {
+                                return (String) componentTypeName;
                             } else {
-                                SketchwareUtil.toastError("Invalid variable name entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                SketchwareUtil.toastError("Invalid type name entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                                 break;
                             }
                         }
@@ -411,6 +415,37 @@ public class ComponentsHandler {
         }
 
         return "";
+    }
+
+    /**
+     * @param componentTypeName The Custom Component's {@code typeName}
+     * @return The Custom Component's {@code varName}
+     */
+    public static String getVarName(String componentTypeName) {
+        for (int i = 0; i < cachedCustomComponents.size(); i++) {
+            HashMap<String, Object> component = cachedCustomComponents.get(i);
+            if (component != null) {
+                Object typeName = component.get("typeName");
+
+                if (typeName instanceof String) {
+                    if (componentTypeName.equals(typeName)) {
+                        Object varName = component.get("varName");
+
+                        if (varName instanceof String componentVarName) {
+                            return componentVarName;
+                        } else {
+                            SketchwareUtil.toastError("Invalid variable name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        }
+                    }
+                } else {
+                    SketchwareUtil.toastError("Invalid type name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                }
+            } else {
+                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+            }
+        }
+
+        return componentTypeName;
     }
 
     /**
@@ -453,15 +488,20 @@ public class ComponentsHandler {
     /**
      * Used at {@link Lx#a(String, String, Lx.AccessModifier, String...)}
      * to get Custom Components' fields.
+     *
+     * @param name    The Custom Component's {@code typeName}
+     * @param code    The existing code
+     * @param varName The Custom Component's variable name
+     * @return The code with additional variables if any
      */
     public static String extraVar(String name, String code, String varName) {
         for (int i = 0; i < cachedCustomComponents.size(); i++) {
             HashMap<String, Object> component = cachedCustomComponents.get(i);
             if (component != null) {
-                Object componentName = component.get("name");
+                Object componentTypeName = component.get("typeName");
 
-                if (componentName instanceof String) {
-                    if (name.equals(componentName)) {
+                if (componentTypeName instanceof String) {
+                    if (name.equals(componentTypeName)) {
                         Object componentAdditionalVar = component.get("additionalVar");
 
                         if (componentAdditionalVar instanceof String) {
@@ -476,7 +516,7 @@ public class ComponentsHandler {
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid name entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError("Invalid type name entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
             } else {
                 SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
@@ -486,15 +526,19 @@ public class ComponentsHandler {
         return code;
     }
 
-    //√√
+    /**
+     * @param name    The Custom Component's {@code typeName}
+     * @param varName The Custom Component's variable name
+     * @return The code to define additional variables
+     */
     public static String defineExtraVar(String name, String varName) {
         for (int i = 0; i < cachedCustomComponents.size(); i++) {
             HashMap<String, Object> component = cachedCustomComponents.get(i);
             if (component != null) {
-                Object componentName = component.get("name");
+                Object componentTypeName = component.get("typeName");
 
-                if (componentName instanceof String) {
-                    if (name.equals(componentName)) {
+                if (componentTypeName instanceof String) {
+                    if (name.equals(componentTypeName)) {
                         Object componentDefineAdditionalVar = component.get("defineAdditionalVar");
 
                         if (componentDefineAdditionalVar instanceof String) {
@@ -508,7 +552,7 @@ public class ComponentsHandler {
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid name entry in Custom Component #" + (i + 1));
+                    SketchwareUtil.toastError("Invalid type name entry in Custom Component #" + (i + 1));
                 }
             } else {
                 SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
@@ -518,14 +562,18 @@ public class ComponentsHandler {
         return "";
     }
 
+    /**
+     * @param name      The Custom Component's {@code typeName}
+     * @param arrayList The list to add imports to
+     */
     public static void getImports(String name, ArrayList<String> arrayList) {
         for (int i = 0; i < cachedCustomComponents.size(); i++) {
             HashMap<String, Object> component = cachedCustomComponents.get(i);
             if (component != null) {
-                Object componentVarName = component.get("varName");
+                Object componentTypeName = component.get("typeName");
 
-                if (componentVarName instanceof String) {
-                    if (name.equals(componentVarName)) {
+                if (componentTypeName instanceof String) {
+                    if (name.equals(componentTypeName)) {
                         Object componentImports = component.get("imports");
 
                         if (componentImports instanceof String componentImportsString) {
@@ -537,7 +585,7 @@ public class ComponentsHandler {
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid variable name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError("Invalid type name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
             } else {
                 SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
