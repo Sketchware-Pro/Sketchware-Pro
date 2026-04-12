@@ -1,0 +1,88 @@
+name: Import Multiple PR/Commits → Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Enter multiple PR/Commit URLs (one per line)"
+        required: false
+      file:
+        description: "Optional file path (e.g. urls.txt)"
+        required: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+      - name: Prepare URL list
+        id: prep
+        run: |
+          URLS="${{ github.event.inputs.urls }}"
+          FILE="${{ github.event.inputs.file }}"
+
+          > list.txt
+
+          # from input
+          if [ ! -z "$URLS" ]; then
+            echo "$URLS" >> list.txt
+          fi
+
+          # from file
+          if [ ! -z "$FILE" ] && [ -f "$FILE" ]; then
+            cat "$FILE" >> list.txt
+          fi
+
+          echo "Final URL list:"
+          cat list.txt
+
+      - name: Go to base branch
+        run: |
+          BASE="${{ github.event.repository.default_branch }}"
+          git checkout $BASE
+          git pull origin $BASE
+
+      - name: Create branch
+        run: |
+          BRANCH="import-multi-$(date +%s)"
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+          git checkout -b $BRANCH
+
+      - name: Process each URL
+        run: |
+          while read URL; do
+            echo "Processing $URL"
+
+            OWNER=$(echo $URL | cut -d'/' -f4)
+            REPO=$(echo $URL | cut -d'/' -f5)
+
+            git remote remove external 2>/dev/null || true
+            git remote add external https://github.com/$OWNER/$REPO.git
+            git fetch external
+
+            if [[ "$URL" == *"/pull/"* ]]; then
+              ID=$(echo $URL | cut -d'/' -f7)
+              git fetch external pull/$ID/head:external-pr
+              git merge external-pr --allow-unrelated-histories || true
+
+            elif [[ "$URL" == *"/commit/"* ]]; then
+              ID=$(echo $URL | cut -d'/' -f7)
+              git cherry-pick $ID || true
+            fi
+
+          done < list.txt
+
+          git add .
+          git commit -m "Imported multiple PR/Commits" || echo "No changes"
+
+      - name: Push branch
+        run: |
+          git push origin $BRANCH
