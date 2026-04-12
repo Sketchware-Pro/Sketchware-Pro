@@ -1,0 +1,72 @@
+name: Import External PR (Binary Safe)
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_url:
+        description: "GitHub PR URL"
+        required: true
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # important for merges
+
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+      - name: Parse PR info
+        id: parse
+        run: |
+          URL="${{ github.event.inputs.pr_url }}"
+
+          # Extract owner, repo, PR number
+          OWNER=$(echo $URL | cut -d'/' -f4)
+          REPO=$(echo $URL | cut -d'/' -f5)
+          PR_NUMBER=$(echo $URL | cut -d'/' -f7)
+
+          BRANCH="import-pr-${PR_NUMBER}-$(date +%s)"
+
+          echo "owner=$OWNER" >> $GITHUB_OUTPUT
+          echo "repo=$REPO" >> $GITHUB_OUTPUT
+          echo "pr=$PR_NUMBER" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Add remote
+        run: |
+          git remote add external https://github.com/${{ steps.parse.outputs.owner }}/${{ steps.parse.outputs.repo }}.git
+
+      - name: Fetch PR branch
+        run: |
+          git fetch external pull/${{ steps.parse.outputs.pr }}/head:external-pr
+
+      - name: Create new branch
+        run: |
+          git checkout -b ${{ steps.parse.outputs.branch }}
+
+      - name: Merge PR (binary safe)
+        run: |
+          git merge external-pr --allow-unrelated-histories -m "Merge external PR"
+
+      - name: Push branch
+        run: |
+          git push origin ${{ steps.parse.outputs.branch }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: ${{ steps.parse.outputs.branch }}
+          title: "Import PR #${{ steps.parse.outputs.pr }}"
+          body: |
+            Imported from:
+            ${{ github.event.inputs.pr_url }}
+
+            ✅ Binary-safe merge
+            ⚠️ Please review before merging
