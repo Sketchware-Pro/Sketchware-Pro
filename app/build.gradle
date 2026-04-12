@@ -1,4 +1,5 @@
 def secrets = System.getenv("GOOGLE_SERVICES_JSON")
+def swKeyPass = System.getenv("SW_KEY_PASS")
 
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
@@ -12,13 +13,13 @@ android {
     def shortCommitHash = "git rev-parse --short HEAD".execute().text.trim()
 
     defaultConfig {
-        applicationId = "pro.sketchware"
-        namespace = "pro.sketchware"
-        //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
+        applicationId = "bro.sketchware"
+        namespace = "bro.sketchware"
+        //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Bro on Google Play.
         targetSdk = 28
         minSdk = 26
         versionCode = 150
-        versionName = "v7.0.0"
+        versionName = "v7.1.0"
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 
@@ -55,10 +56,10 @@ android {
 
     signingConfigs {
         debug {
-            storeFile = file("../testkey.keystore")
-            storePassword = "testkey"
-            keyAlias = "testkey"
-            keyPassword = "testkey"
+            storeFile = file("../release-key.jks")
+            storePassword = swKeyPass
+            keyAlias = "key0"
+            keyPassword = swKeyPass
         }
     }
 
@@ -144,7 +145,7 @@ tasks.register('createMockGoogleServices') {
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123456789000:android:mockappid123456",
+        "mobilesdk_app_id": "1:123456789777:android:mockappid120000",
         "android_client_info": {
           "package_name": "${android.defaultConfig.applicationId}"
         }
@@ -152,7 +153,7 @@ tasks.register('createMockGoogleServices') {
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "mock_AIzaSyBQJCUXVKUjD38-u5pWkqMtesIfFvxAcvs"
+          "current_key": "mock_AIzaSyPROCUXVKUjD38-u5pWkqRtusIfFvxAcvs"
         }
       ],
       "services": {
