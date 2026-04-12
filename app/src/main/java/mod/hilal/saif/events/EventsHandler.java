@@ -359,8 +359,12 @@ public class EventsHandler {
                             if (name.equals(eventName)) {
                                 Object code = customEvent.get("code");
 
-                                if (code instanceof String) {
-                                    yield String.format(((String) code).replace("###", targetId), param);
+                                if (code instanceof String codeStr) {
+                                    String formattedCode = codeStr.replace("###", targetId)
+                                            .replace("$name", targetId)
+                                            .replace("$Name", capitalize(targetId))
+                                            .replace("$NAME", targetId.toUpperCase());
+                                    yield String.format(formattedCode, param);
                                 } else {
                                     SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
                                 }
@@ -480,8 +484,12 @@ public class EventsHandler {
                         if (name.equals(eventName)) {
                             Object code = customListener.get("code");
 
-                            if (code instanceof String) {
-                                yield String.format(((String) code).replace("###", var), param);
+                            if (code instanceof String codeStr) {
+                                String formattedCode = codeStr.replace("###", var)
+                                        .replace("$name", var)
+                                        .replace("$Name", capitalize(var))
+                                        .replace("$NAME", var.toUpperCase());
+                                yield String.format(formattedCode, param);
                             } else {
                                 SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
                             }
@@ -494,6 +502,14 @@ public class EventsHandler {
                 yield "//no listener code";
             }
         };
+    }
+
+    public static String capitalize(String value) {
+        if (value == null || value.isEmpty()) {
+            return value;
+        }
+        return value.substring(0, 1).toUpperCase() +
+                value.substring(1);
     }
 
     public static void getImports(ArrayList<String> list, String name) {

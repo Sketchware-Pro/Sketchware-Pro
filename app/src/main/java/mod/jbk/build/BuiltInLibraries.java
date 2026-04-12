@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import a.a.a.Jp;
@@ -706,6 +707,19 @@ public class BuiltInLibraries {
 
         public boolean hasResources() {
             return hasResources;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            BuiltInLibrary that = (BuiltInLibrary) o;
+            return name.equals(that.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(name);
         }
 
         @Override

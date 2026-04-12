@@ -3,8 +3,10 @@ package pro.sketchware.util.library;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import a.a.a.Jp;
 import a.a.a.ProjectBuilder;
@@ -17,12 +19,16 @@ import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 
 public class BuiltInLibraryManager {
 
-    private final ArrayList<String> libraryNames = new ArrayList<>();
     private final ArrayList<Jp> libraries = new ArrayList<>();
     private final List<BuiltInLibraries.BuiltInLibrary> excludedLibraries;
+    private final Set<String> processedLibraries = new HashSet<>();
 
     public BuiltInLibraryManager(String projectId) {
-        excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(projectId);
+        if (ExcludeBuiltInLibrariesActivity.isExcludingEnabled(projectId)) {
+            excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(projectId);
+        } else {
+            excludedLibraries = new ArrayList<>();
+        }
     }
 
     /**
@@ -33,22 +39,22 @@ public class BuiltInLibraryManager {
      * @param libraryName The built-in library's name, e.g. material-1.0.0
      */
     public void addLibrary(String libraryName) {
+        if (processedLibraries.contains(libraryName)) {
+            Log.v(ProjectBuilder.TAG, "Didn't add built-in library \"" + libraryName + "\" to project's dependencies again");
+            return;
+        }
+        processedLibraries.add(libraryName);
+
         Optional<BuiltInLibraries.BuiltInLibrary> library = BuiltInLibraries.BuiltInLibrary.ofName(libraryName);
         //noinspection SimplifyOptionalCallChains because #isEmpty() isn't available on Android.
         if (!library.isPresent() || !excludedLibraries.contains(library.get())) {
-            if (!libraryNames.contains(libraryName)) {
-                Log.d(ProjectBuilder.TAG, "Added built-in library \"" + libraryName + "\" to project's dependencies");
-                libraryNames.add(libraryName);
-                libraries.add(new Jp(libraryName));
-                addDependencies(libraryName);
-            } else {
-                Log.v(ProjectBuilder.TAG, "Didn't add built-in library \"" + libraryName + "\" to project's dependencies again");
-            }
+            Log.d(ProjectBuilder.TAG, "Added built-in library \"" + libraryName + "\" to project's dependencies");
+            libraries.add(new Jp(libraryName));
         } else {
             Log.v(ProjectBuilder.TAG, "Didn't add built-in library \"" + libraryName + "\" to project's dependencies as it's excluded");
             Log.v(ProjectBuilder.TAG, "Adding its dependencies though");
-            addDependencies(libraryName);
         }
+        addDependencies(libraryName);
     }
 
     private void addDependencies(String libraryName) {
