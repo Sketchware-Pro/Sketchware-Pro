@@ -230,6 +230,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         c = bean;
         Cx.a().b(c.getClassInfo().getClassName());
         removeAllViews();
+        f.clear();
         if (bean.id.equals("_fab")) {
             b(bean);
         } else {
@@ -476,6 +477,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
     public void e(ViewBean bean) {
         c = bean;
         removeAllViews();
+        f.clear();
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         params.gravity = Gravity.LEFT;
