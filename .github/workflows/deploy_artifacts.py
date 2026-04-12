@@ -56,7 +56,7 @@ async def send_file(file_path):
         f"**Commit by:** {commit_author}\n"
         f"**Commit message:** {commit_message}\n"
         f"**Commit hash:** #{commit_hash_short}\n"
-        f"**Version:** Android >= 8"
+        f"**Version:** Android ≥ 8"
     )
 
     try:
