@@ -1,10 +1,10 @@
-name: Import Multiple PR/Commits → Branch
+name: Import Multiple PR/Commits → One Branch
 
 on:
   workflow_dispatch:
     inputs:
       urls:
-        description: "Enter multiple PR/Commit URLs (one per line)"
+        description: "Multiple PR/Commit URLs (one per line)"
         required: false
       file:
         description: "Optional file path (e.g. urls.txt)"
@@ -24,24 +24,16 @@ jobs:
           git config user.email "actions@github.com"
 
       - name: Prepare URL list
-        id: prep
         run: |
           URLS="${{ github.event.inputs.urls }}"
           FILE="${{ github.event.inputs.file }}"
 
           > list.txt
 
-          # from input
-          if [ ! -z "$URLS" ]; then
-            echo "$URLS" >> list.txt
-          fi
+          [ ! -z "$URLS" ] && echo "$URLS" >> list.txt
+          [ ! -z "$FILE" ] && [ -f "$FILE" ] && cat "$FILE" >> list.txt
 
-          # from file
-          if [ ! -z "$FILE" ] && [ -f "$FILE" ]; then
-            cat "$FILE" >> list.txt
-          fi
-
-          echo "Final URL list:"
+          echo "---- URL LIST ----"
           cat list.txt
 
       - name: Go to base branch
@@ -56,10 +48,12 @@ jobs:
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
           git checkout -b $BRANCH
 
-      - name: Process each URL
+      - name: Apply URLs (skip duplicates)
         run: |
           while read URL; do
-            echo "Processing $URL"
+
+            [ -z "$URL" ] && continue
+            echo "Processing: $URL"
 
             OWNER=$(echo $URL | cut -d'/' -f4)
             REPO=$(echo $URL | cut -d'/' -f5)
@@ -68,20 +62,35 @@ jobs:
             git remote add external https://github.com/$OWNER/$REPO.git
             git fetch external
 
-            if [[ "$URL" == *"/pull/"* ]]; then
+            if [[ "$URL" == *"/commit/"* ]]; then
               ID=$(echo $URL | cut -d'/' -f7)
-              git fetch external pull/$ID/head:external-pr
-              git merge external-pr --allow-unrelated-histories || true
 
-            elif [[ "$URL" == *"/commit/"* ]]; then
+              # ✅ Skip if already applied
+              if git log --all --grep="$ID" | grep -q "$ID"; then
+                echo "⏩ Skipping duplicate commit $ID"
+                continue
+              fi
+
+              git cherry-pick $ID || echo "⚠️ Skipped (conflict or duplicate)"
+
+            elif [[ "$URL" == *"/pull/"* ]]; then
               ID=$(echo $URL | cut -d'/' -f7)
-              git cherry-pick $ID || true
+
+              git fetch external pull/$ID/head:external-pr
+
+              # ✅ Skip if already merged
+              if git merge-base --is-ancestor external-pr HEAD; then
+                echo "⏩ PR already merged $ID"
+                continue
+              fi
+
+              git merge external-pr --allow-unrelated-histories || echo "⚠️ Merge conflict"
             fi
 
           done < list.txt
 
           git add .
-          git commit -m "Imported multiple PR/Commits" || echo "No changes"
+          git commit -m "Imported multiple PR/Commits" || echo "No changes to commit"
 
       - name: Push branch
         run: |
