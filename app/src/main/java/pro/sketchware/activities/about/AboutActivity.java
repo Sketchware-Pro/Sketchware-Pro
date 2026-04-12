@@ -16,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -102,10 +103,13 @@ public class AboutActivity extends BaseAppCompatActivity {
             if (response == null) return;
 
             Gson gson = new Gson();
-            AboutResponseModel aboutResponseModel = gson.fromJson(response, AboutResponseModel.class);
-            aboutAppData.setDiscordInviteLink(aboutResponseModel.getDiscordInviteLink());
-            aboutAppData.setTeamMembers(aboutResponseModel.getTeam());
-            aboutAppData.setChangelog(aboutResponseModel.getChangelog());
+            try {
+                AboutResponseModel aboutResponseModel = gson.fromJson(response, AboutResponseModel.class);
+                aboutAppData.setDiscordInviteLink(aboutResponseModel.getDiscordInviteLink());
+                aboutAppData.setTeamMembers(aboutResponseModel.getTeam());
+                aboutAppData.setChangelog(aboutResponseModel.getChangelog());
+            } catch (JsonSyntaxException ignored) {
+            }
         });
     }
 
