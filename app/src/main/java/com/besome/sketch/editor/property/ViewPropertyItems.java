@@ -829,6 +829,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                     case "property_orientation" ->
                             bean.layout.orientation = selectorItem.getValue();
                     case "property_text_style" -> bean.text.textType = selectorItem.getValue();
+                    case "property_text_size" -> bean.text.textSize = selectorItem.getValue();
                     case "property_input_type" -> bean.text.inputType = selectorItem.getValue();
                     case "property_ime_option" -> bean.text.imeOption = selectorItem.getValue();
                     case "property_spinner_mode" -> bean.spinnerMode = selectorItem.getValue();
