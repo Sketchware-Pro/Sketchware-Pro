@@ -494,6 +494,40 @@ public class ViewPane extends RelativeLayout {
         if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
             updateRelative(view, injectHandler);
         }
+        if (classInfo.a("WaveSideBar")) {
+            ItemWaveSideBar sidebar = (ItemWaveSideBar) view;
+            if (defaultTextColor == 0) {
+                defaultTextColor = sidebar.getTextColors().getDefaultColor();
+            }
+            if (viewBean.text.resTextColor == null) {
+                sidebar.setTextColor(
+                        viewBean.text.textColor == 0xffffff ? defaultTextColor : viewBean.text.textColor
+                );
+            } else {
+                sidebar.setTextColor(PropertiesUtil.parseColor(colorsEditorManager.getColorValue(context, viewBean.text.resTextColor, 3, material3LibraryManager.canUseNightVariantColors())));
+            }
+            sidebar.setTextSize(viewBean.text.textSize);
+
+            // Handle unique WaveSideBar attributes from inject
+            String sidebarMaxOffset = injectHandler.getAttributeValueOf("sidebar_max_offset");
+            if (!sidebarMaxOffset.isEmpty()) {
+                sidebar.setSidebarMaxOffset(PropertiesUtil.resolveSize(sidebarMaxOffset, 0));
+            }
+
+            String sidebarPosition = injectHandler.getAttributeValueOf("sidebar_position");
+            if (!sidebarPosition.isEmpty()) {
+                try {
+                    sidebar.setSidebarPosition(Integer.parseInt(sidebarPosition));
+                } catch (Exception ignored) {}
+            }
+
+            String sidebarTextAlignment = injectHandler.getAttributeValueOf("sidebar_text_alignment");
+            if (!sidebarTextAlignment.isEmpty()) {
+                try {
+                    sidebar.setSidebarTextAlignment(Integer.parseInt(sidebarTextAlignment));
+                } catch (Exception ignored) {}
+            }
+        }
         if (classInfo.a("TextView")) {
             TextView textView = (TextView) view;
             updateTextView(textView, viewBean);

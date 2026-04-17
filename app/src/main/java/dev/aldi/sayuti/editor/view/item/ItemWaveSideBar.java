@@ -80,4 +80,34 @@ public class ItemWaveSideBar extends AppCompatTextView implements ItemView {
     public void setPadding(int left, int top, int right, int bottom) {
         super.setPadding((int) (left * paddingFactor), (int) (top * paddingFactor), (int) (right * paddingFactor), (int) (bottom * paddingFactor));
     }
+
+    public void setSidebarTextAlignment(int alignment) {
+        int gravity = Gravity.CENTER_VERTICAL;
+        switch (alignment) {
+            case 1 -> gravity |= Gravity.LEFT;
+            case 2 -> gravity |= Gravity.RIGHT;
+            default -> gravity |= Gravity.CENTER_HORIZONTAL;
+        }
+        setGravity(gravity);
+    }
+
+    public void setSidebarPosition(int position) {
+        // 0 = right, 1 = left
+        // Standard TextView doesn't have a 'position' attribute, so we simulate it with translation for preview
+        setTranslationX((position == 1 ? -1 : 1) * paddingFactor * 8);
+    }
+
+    public void setSidebarMaxOffset(float offset) {
+        // Map max_offset to horizontal padding for preview
+        int padding = (int) (offset / 2);
+        setPadding(padding, getPaddingTop(), padding, getPaddingBottom());
+    }
+
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        if (text == null || text.length() == 0 || text.toString().equals("none")) {
+            return;
+        }
+        super.setText(text, type);
+    }
 }
