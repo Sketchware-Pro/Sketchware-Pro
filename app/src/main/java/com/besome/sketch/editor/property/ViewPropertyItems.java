@@ -61,7 +61,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         label.setPadding(8, 8, 8, 8);
         label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         label.setText(R.string.design_property_recent_message_nodata);
-        addView(label);
+        if (label.getParent() == null) {
+            addView(label);
+        }
     }
 
     private void setupMarginAndGravityProperties(ViewBean bean) {
@@ -139,14 +141,18 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
     private void addSubheader(String header) {
         var sub = new PropertySubheader(getContext());
         sub.setHeaderName(header);
-        addView(sub);
+        if (sub.getParent() == null) {
+            addView(sub);
+        }
     }
 
     private void setupColorProperty(String name, int value) {
         View cachedItem = f.get(name);
         PropertyColorItem colorItem = cachedItem instanceof PropertyColorItem ? (PropertyColorItem) cachedItem : null;
         if (colorItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             colorItem = new PropertyColorItem(getContext(), !b);
             colorItem.setOrientationItem(getOrientation());
             colorItem.setKey(name);
@@ -158,14 +164,18 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             colorItem.setValue(value);
         }
 
-        addView(colorItem);
+        if (colorItem.getParent() == null) {
+            addView(colorItem);
+        }
     }
 
     private void setupPaddingProperty(String key, int left, int top, int right, int bottom) {
         View cachedItem = f.get(key);
         PropertyIndentItem indentItem = cachedItem instanceof PropertyIndentItem ? (PropertyIndentItem) cachedItem : null;
         if (indentItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             indentItem = new PropertyIndentItem(getContext(), !b);
             indentItem.setOrientationItem(getOrientation());
             indentItem.setKey(key);
@@ -177,14 +187,18 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             indentItem.a(left, top, right, bottom);
         }
 
-        addView(indentItem);
+        if (indentItem.getParent() == null) {
+            addView(indentItem);
+        }
     }
 
     private void setupColorPropertyWithRes(String name, String value, int value2) {
         View cachedItem = f.get(name);
         PropertyColorItem colorItem = cachedItem instanceof PropertyColorItem ? (PropertyColorItem) cachedItem : null;
         if (colorItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             colorItem = new PropertyColorItem(getContext(), !b, sc_id);
             colorItem.setOrientationItem(getOrientation());
             colorItem.setKey(name);
@@ -195,7 +209,10 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         } else {
             colorItem.setValue(value2, value);
         }
-        addView(colorItem);
+
+        if (colorItem.getParent() == null) {
+            addView(colorItem);
+        }
     }
 
     private void setupMeasureProperty(String key, int value, boolean isEnable) {
@@ -209,7 +226,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         }
 
         if (measureItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             measureItem = new PropertyMeasureItem(getContext(), !b);
             measureItem.setOrientationItem(getOrientation());
             measureItem.setItemEnabled(isEnabled);
@@ -223,22 +242,31 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             measureItem.setValue(value);
         }
 
-        addView(measureItem);
+        if (measureItem.getParent() == null) {
+            addView(measureItem);
+        }
     }
 
     private void addSubheaderWithListener(String header, OnClickListener listener) {
         PropertySubheader propertySubheader = new PropertySubheader(getContext());
         propertySubheader.setHeaderName(header);
         propertySubheader.setOnClickListener(listener);
-        addView(propertySubheader);
+        if (propertySubheader.getParent() == null) {
+            addView(propertySubheader);
+        }
     }
 
     public void a(String scId, ViewBean bean) {
         sc_id = scId;
+        boolean isSameView = c != null && c.id.equals(bean.id);
         c = bean;
         Cx.a().b(c.getClassInfo().getClassName());
-        removeAllViews();
-        f.clear();
+        
+        if (!isSameView) {
+            removeAllViews();
+            f.clear();
+        }
+        
         if (bean.id.equals("_fab")) {
             setupBasicAndLayoutProperties(bean);
         } else {
@@ -282,14 +310,19 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
 
         propertyCustomViewItem.setCustomView(jC.b(sc_id).c());
         propertyCustomViewItem.setValue(value);
-        addView(propertyCustomViewItem);
+
+        if (propertyCustomViewItem.getParent() == null) {
+            addView(propertyCustomViewItem);
+        }
     }
 
     private void setupInputProperty(String key, String value, boolean z, String typeView) {
         View cachedItem = f.get(key);
         PropertyInputItem inputItem = cachedItem instanceof PropertyInputItem ? (PropertyInputItem) cachedItem : null;
         if (inputItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             inputItem = new PropertyInputItem(getContext(), !z);
             inputItem.setOrientationItem(getOrientation());
             inputItem.setTypeView(typeView);
@@ -306,7 +339,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         }
         inputItem.setBean(c);
 
-        addView(inputItem);
+        if (inputItem.getParent() == null) {
+            addView(inputItem);
+        }
     }
 
     public void save() {
@@ -329,7 +364,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         View cachedItem = f.get(key);
         PropertyGravityItem gravityItem = cachedItem instanceof PropertyGravityItem ? (PropertyGravityItem) cachedItem : null;
         if (gravityItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             gravityItem = new PropertyGravityItem(getContext(), !b);
             gravityItem.setOrientationItem(getOrientation());
             gravityItem.setKey(key);
@@ -341,7 +378,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             gravityItem.setValue(value);
         }
 
-        addView(gravityItem);
+        if (gravityItem.getParent() == null) {
+            addView(gravityItem);
+        }
     }
 
     private void setupInputProperty(String key, String value) {
@@ -356,7 +395,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         View cachedItem = f.get(key);
         PropertyResourceItem drawableItem = cachedItem instanceof PropertyResourceItem ? (PropertyResourceItem) cachedItem : null;
         if (drawableItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             drawableItem = new PropertyResourceItem(getContext(), !b, sc_id, z);
             drawableItem.setOrientationItem(getOrientation());
             drawableItem.setKey(key);
@@ -367,7 +408,10 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         } else {
             drawableItem.setValue(value);
         }
-        addView(drawableItem);
+
+        if (drawableItem.getParent() == null) {
+            addView(drawableItem);
+        }
     }
 
     private void setupImageAndTransformProperties(ViewBean bean) {
@@ -388,7 +432,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         View cachedItem = f.get(key);
         PropertySelectorItem selectorItem = cachedItem instanceof PropertySelectorItem ? (PropertySelectorItem) cachedItem : null;
         if (selectorItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             selectorItem = new PropertySelectorItem(getContext(), !b);
             selectorItem.setOrientationItem(getOrientation());
             selectorItem.setKey(key);
@@ -400,14 +446,18 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             selectorItem.setValue(value);
         }
 
-        addView(selectorItem);
+        if (selectorItem.getParent() == null) {
+            addView(selectorItem);
+        }
     }
 
     private void setupStringPairSelectorProperty(String key, String value) {
         View cachedItem = f.get(key);
         PropertyStringPairSelectorItem pairSelectorItem = cachedItem instanceof PropertyStringPairSelectorItem ? (PropertyStringPairSelectorItem) cachedItem : null;
         if (pairSelectorItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             pairSelectorItem = new PropertyStringPairSelectorItem(getContext(), !b);
             pairSelectorItem.setOrientationItem(getOrientation());
             pairSelectorItem.setKey(key);
@@ -419,7 +469,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             pairSelectorItem.setValue(value);
         }
 
-        addView(pairSelectorItem);
+        if (pairSelectorItem.getParent() == null) {
+            addView(pairSelectorItem);
+        }
     }
 
     public void setupLayoutAndWeightProperties(ViewBean bean) {
@@ -462,7 +514,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         View cachedItem = f.get(key);
         PropertySizeItem propertySizeItem = cachedItem instanceof PropertySizeItem ? (PropertySizeItem) cachedItem : null;
         if (propertySizeItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             propertySizeItem = new PropertySizeItem(getContext(), !b);
             propertySizeItem.setOrientationItem(getOrientation());
             propertySizeItem.setKey(key);
@@ -474,14 +528,18 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             propertySizeItem.setValue(value);
         }
 
-        addView(propertySizeItem);
+        if (propertySizeItem.getParent() == null) {
+            addView(propertySizeItem);
+        }
     }
 
     private void setupStringSelectorProperty(String key, String value) {
         View cachedItem = f.get(key);
         PropertyStringSelectorItem stringSelectorItem = cachedItem instanceof PropertyStringSelectorItem ? (PropertyStringSelectorItem) cachedItem : null;
         if (stringSelectorItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             stringSelectorItem = new PropertyStringSelectorItem(getContext(), !b);
             stringSelectorItem.setOrientationItem(getOrientation());
             stringSelectorItem.setKey(key);
@@ -493,13 +551,14 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             stringSelectorItem.setValue(value);
         }
 
-        addView(stringSelectorItem);
+        if (stringSelectorItem.getParent() == null) {
+            addView(stringSelectorItem);
+        }
     }
 
     public void setupAllPropertiesFromConfig(ViewBean bean) {
         c = bean;
         removeAllViews();
-        f.clear();
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         params.gravity = Gravity.LEFT;
@@ -520,7 +579,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         PropertySwitchSingleLineItem switchSingleLineItem = cachedItem instanceof PropertySwitchSingleLineItem ? (PropertySwitchSingleLineItem) cachedItem : null;
         boolean isEnabled = false;
         if (switchSingleLineItem == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             switchSingleLineItem = new PropertySwitchSingleLineItem(getContext(), !b);
             switchSingleLineItem.setOrientationItem(getOrientation());
             switchSingleLineItem.setKey(key);
@@ -540,7 +601,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             switchSingleLineItem.setValue(isEnabled);
         }
 
-        addView(switchSingleLineItem);
+        if (switchSingleLineItem.getParent() == null) {
+            addView(switchSingleLineItem);
+        }
     }
 
     private void setupAttributes(String key, HashMap<String, String> value) {
@@ -554,7 +617,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         View cachedItem = f.get(key);
         PropertyAttributesItem item = cachedItem instanceof PropertyAttributesItem ? (PropertyAttributesItem) cachedItem : null;
         if (item == null) {
-            if (cachedItem != null) removeView(cachedItem);
+            if (cachedItem != null && cachedItem.getParent() != null) {
+                ((ViewGroup) cachedItem.getParent()).removeView(cachedItem);
+            }
             item = new PropertyAttributesItem(getContext(), !b);
             item.setOrientationItem(getOrientation());
             item.setKey(key);
@@ -569,7 +634,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         item.setBeans(viewBeans);
         item.setAvailableIds(ids);
 
-        addView(item);
+        if (item.getParent() == null) {
+            addView(item);
+        }
     }
 
     public void setupSpecialWidgetProperties(ViewBean bean) {
