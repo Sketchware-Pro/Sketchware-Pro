@@ -358,331 +358,357 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void updateItemView(View view, ViewBean viewBean) {
-        ImageBean imageBean;
-        String str;
-        var injectHandler = new InjectAttributeHandler(viewBean);
-        if (viewBean.id.charAt(0) == '_') {
-            LayoutParams layoutParams = new LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
-            layoutParams.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
-            layoutParams.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
-            layoutParams.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
-            int layoutGravity = viewBean.layout.layoutGravity;
-            if ((layoutGravity & Gravity.LEFT) == Gravity.LEFT) {
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            }
-            if ((layoutGravity & Gravity.TOP) == Gravity.TOP) {
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            }
-            if ((layoutGravity & Gravity.RIGHT) == Gravity.RIGHT) {
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            }
-            if ((layoutGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            }
-            if ((layoutGravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL) {
-                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            }
-            if ((layoutGravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL) {
-                layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
-            }
-            if ((layoutGravity & Gravity.CENTER) == Gravity.CENTER) {
-                layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-            }
-            view.setLayoutParams(layoutParams);
-            if (viewBean.getClassInfo().b("FloatingActionButton") && (imageBean = viewBean.image) != null && (str = imageBean.resName) != null && !str.isEmpty()) {
-                try {
-                    crashlytics.log("ViewPane: trying to set image to FAB");
-                    FloatingActionButton fab = (FloatingActionButton) view;
-                    if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
-                        int resourceId = getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName());
-                        if (resourceId != 0) {
-                            fab.setImageResource(resourceId);
-                        }
-                    } else if (viewBean.image.resName.equals("default_image")) {
-                        fab.setImageResource(R.drawable.default_image);
-                    } else {
-                        String imagePath = resourcesManager.f(viewBean.image.resName);
-                        File imageFile = new File(imagePath);
+        if (view == null) {
+            Log.e("ViewPaneDiagnostic", "updateItemView called with null view for bean: " + (viewBean != null ? viewBean.id : "null"));
+            return;
+        }
 
-                        if (imageFile.exists()) {
-                            int scaleFactor = Math.round(getResources().getDisplayMetrics().density / 2.0f);
+        // Add identity to the view to help identify it in crash reports or layout inspectors
+        view.setContentDescription("SketchwareItem_" + viewBean.id);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            view.setAccessibilityPaneTitle("ItemView: " + viewBean.id + " (" + viewBean.getClassInfo().toString() + ")");
+        }
 
-                            if (imagePath.endsWith(".xml")) {
-                                crashlytics.log("ViewPane: loading scaled XML/SVG image");
-                                FilePathUtil fpu = new FilePathUtil();
-                                svgUtils.loadScaledSvgIntoImageView(new AppCompatImageView(getContext()) {
-                                    @Override
-                                    public void setImageBitmap(Bitmap bitmap) {
-                                        fab.setImageBitmap(bitmap);
-                                    }
-                                }, fpu.getSvgFullPath(sc_id, viewBean.image.resName), scaleFactor);
-                            } else {
-                                Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-                                if (bitmap != null) {
-                                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(
-                                            bitmap,
-                                            bitmap.getWidth() * scaleFactor,
-                                            bitmap.getHeight() * scaleFactor,
-                                            true
-                                    );
-                                    fab.setImageBitmap(scaledBitmap);
-                                }
-                            }
-                        } else {
-                            crashlytics.log("ViewPane: converting XML to SVG for FAB");
-                            VectorDrawableLoader vectorDrawableLoader = new VectorDrawableLoader();
-                            ImageView tempImageView = new AppCompatImageView(getContext()) {
-                                @Override
-                                public void setImageDrawable(android.graphics.drawable.Drawable drawable) {
-                                    fab.setImageDrawable(drawable);
-                                }
-                            };
-                            vectorDrawableLoader.setImageVectorFromFile(tempImageView, vectorDrawableLoader.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
-                        }
-                    }
-                } catch (Exception exception) {
-                    crashlytics.recordException(exception);
+        try {
+            ImageBean imageBean;
+            String str;
+            var injectHandler = new InjectAttributeHandler(viewBean);
+            if (viewBean.id.charAt(0) == '_') {
+                LayoutParams layoutParams = new LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
+                layoutParams.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
+                layoutParams.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
+                layoutParams.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
+                int layoutGravity = viewBean.layout.layoutGravity;
+                if ((layoutGravity & Gravity.LEFT) == Gravity.LEFT) {
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 }
+                if ((layoutGravity & Gravity.TOP) == Gravity.TOP) {
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                }
+                if ((layoutGravity & Gravity.RIGHT) == Gravity.RIGHT) {
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                }
+                if ((layoutGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                }
+                if ((layoutGravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL) {
+                    layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                }
+                if ((layoutGravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL) {
+                    layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+                }
+                if ((layoutGravity & Gravity.CENTER) == Gravity.CENTER) {
+                    layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                }
+                view.setLayoutParams(layoutParams);
+                if (viewBean.getClassInfo().b("FloatingActionButton") && (imageBean = viewBean.image) != null && (str = imageBean.resName) != null && !str.isEmpty()) {
+                    try {
+                        crashlytics.log("ViewPane: trying to set image to FAB");
+                        FloatingActionButton fab = (FloatingActionButton) view;
+                        if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+                            int resourceId = getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName());
+                            if (resourceId != 0) {
+                                fab.setImageResource(resourceId);
+                            }
+                        } else if (viewBean.image.resName.equals("default_image")) {
+                            fab.setImageResource(R.drawable.default_image);
+                        } else {
+                            String imagePath = resourcesManager.f(viewBean.image.resName);
+                            File imageFile = new File(imagePath);
+
+                            if (imageFile.exists()) {
+                                int scaleFactor = Math.round(getResources().getDisplayMetrics().density / 2.0f);
+
+                                if (imagePath.endsWith(".xml")) {
+                                    crashlytics.log("ViewPane: loading scaled XML/SVG image");
+                                    FilePathUtil fpu = new FilePathUtil();
+                                    svgUtils.loadScaledSvgIntoImageView(new AppCompatImageView(getContext()) {
+                                        @Override
+                                        public void setImageBitmap(Bitmap bitmap) {
+                                            fab.setImageBitmap(bitmap);
+                                        }
+                                    }, fpu.getSvgFullPath(sc_id, viewBean.image.resName), scaleFactor);
+                                } else {
+                                    Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                                    if (bitmap != null) {
+                                        Bitmap scaledBitmap = Bitmap.createScaledBitmap(
+                                                bitmap,
+                                                bitmap.getWidth() * scaleFactor,
+                                                bitmap.getHeight() * scaleFactor,
+                                                true
+                                        );
+                                        fab.setImageBitmap(scaledBitmap);
+                                    }
+                                }
+                            } else {
+                                crashlytics.log("ViewPane: converting XML to SVG for FAB");
+                                VectorDrawableLoader vectorDrawableLoader = new VectorDrawableLoader();
+                                ImageView tempImageView = new AppCompatImageView(getContext()) {
+                                    @Override
+                                    public void setImageDrawable(android.graphics.drawable.Drawable drawable) {
+                                        fab.setImageDrawable(drawable);
+                                    }
+                                };
+                                vectorDrawableLoader.setImageVectorFromFile(tempImageView, vectorDrawableLoader.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
+                            }
+                        }
+                    } catch (Exception exception) {
+                        crashlytics.recordException(exception);
+                    }
+                }
+                view.setRotation(viewBean.image.rotate);
+                view.setAlpha(viewBean.alpha);
+                view.setTranslationX(wB.a(getContext(), viewBean.translationX));
+                view.setTranslationY(wB.a(getContext(), viewBean.translationY));
+                view.setScaleX(viewBean.scaleX);
+                view.setScaleY(viewBean.scaleY);
+                view.setVisibility(View.VISIBLE);
+                return;
             }
+            updateLayout(view, viewBean);
             view.setRotation(viewBean.image.rotate);
             view.setAlpha(viewBean.alpha);
             view.setTranslationX(wB.a(getContext(), viewBean.translationX));
             view.setTranslationY(wB.a(getContext(), viewBean.translationY));
             view.setScaleX(viewBean.scaleX);
             view.setScaleY(viewBean.scaleY);
-            view.setVisibility(View.VISIBLE);
-            return;
-        }
-        updateLayout(view, viewBean);
-        view.setRotation(viewBean.image.rotate);
-        view.setAlpha(viewBean.alpha);
-        view.setTranslationX(wB.a(getContext(), viewBean.translationX));
-        view.setTranslationY(wB.a(getContext(), viewBean.translationY));
-        view.setScaleX(viewBean.scaleX);
-        view.setScaleY(viewBean.scaleY);
-        String backgroundResource = viewBean.layout.backgroundResource;
-        if (backgroundResource != null) {
-            try {
-                if (resourcesManager.h(backgroundResource) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
-                    view.setBackgroundResource(getContext().getResources().getIdentifier(viewBean.layout.backgroundResource, "drawable", getContext().getPackageName()));
-                } else {
-                    String backgroundRes = resourcesManager.f(viewBean.layout.backgroundResource);
-                    if (backgroundRes.endsWith(".9.png")) {
-                        Bitmap decodedBitmap = zB.a(backgroundRes);
-                        byte[] ninePatchChunk = decodedBitmap.getNinePatchChunk();
-                        if (NinePatch.isNinePatchChunk(ninePatchChunk)) {
-                            view.setBackground(new NinePatchDrawable(getResources(), decodedBitmap, ninePatchChunk, new Rect(), null));
-                        } else {
-                            view.setBackground(new BitmapDrawable(getResources(), backgroundRes));
-                        }
+            String backgroundResource = viewBean.layout.backgroundResource;
+            if (backgroundResource != null) {
+                try {
+                    if (resourcesManager.h(backgroundResource) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+                        view.setBackgroundResource(getContext().getResources().getIdentifier(viewBean.layout.backgroundResource, "drawable", getContext().getPackageName()));
                     } else {
-                        Bitmap decodeFile2 = BitmapFactory.decodeFile(backgroundRes);
-                        int round2 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
-                        view.setBackground(new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(decodeFile2, decodeFile2.getWidth() * round2, decodeFile2.getHeight() * round2, true)));
-                    }
-                }
-            } catch (Exception e) {
-                Log.e("DEBUG", e.getMessage(), e);
-            }
-        }
-        Gx classInfo = viewBean.getClassInfo();
-        if (classInfo.a("LinearLayout")) {
-            LinearLayout linearLayout = (LinearLayout) view;
-            linearLayout.setOrientation(viewBean.layout.orientation);
-            linearLayout.setWeightSum(viewBean.layout.weightSum);
-            if (view instanceof ItemLinearLayout) {
-                ((ItemLinearLayout) view).setLayoutGravity(viewBean.layout.gravity);
-            }
-        }
-        if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
-            updateRelative(view, injectHandler);
-        }
-        if (classInfo.a("WaveSideBar")) {
-            ItemWaveSideBar sidebar = (ItemWaveSideBar) view;
-            if (defaultTextColor == 0) {
-                defaultTextColor = sidebar.getTextColors().getDefaultColor();
-            }
-            if (viewBean.text.resTextColor == null) {
-                sidebar.setTextColor(
-                        viewBean.text.textColor == 0xffffff ? defaultTextColor : viewBean.text.textColor
-                );
-            } else {
-                sidebar.setTextColor(PropertiesUtil.parseColor(colorsEditorManager.getColorValue(context, viewBean.text.resTextColor, 3, material3LibraryManager.canUseNightVariantColors())));
-            }
-            sidebar.setTextSize(viewBean.text.textSize);
-
-            // Handle unique WaveSideBar attributes from inject
-            String sidebarMaxOffset = injectHandler.getAttributeValueOf("sidebar_max_offset");
-            if (!sidebarMaxOffset.isEmpty()) {
-                sidebar.setSidebarMaxOffset(PropertiesUtil.resolveSize(sidebarMaxOffset, 0));
-            }
-
-            String sidebarPosition = injectHandler.getAttributeValueOf("sidebar_position");
-            if (!sidebarPosition.isEmpty()) {
-                try {
-                    sidebar.setSidebarPosition(Integer.parseInt(sidebarPosition));
-                } catch (Exception ignored) {}
-            }
-
-            String sidebarTextAlignment = injectHandler.getAttributeValueOf("sidebar_text_alignment");
-            if (!sidebarTextAlignment.isEmpty()) {
-                try {
-                    sidebar.setSidebarTextAlignment(Integer.parseInt(sidebarTextAlignment));
-                } catch (Exception ignored) {}
-            }
-        }
-        if (classInfo.a("TextView")) {
-            TextView textView = (TextView) view;
-            updateTextView(textView, viewBean);
-            if (!classInfo.b("Button") && !classInfo.b("Switch")) {
-                textView.setGravity(viewBean.layout.gravity);
-            } else {
-                int gravity = viewBean.layout.gravity;
-                if (gravity == LayoutBean.GRAVITY_NONE) {
-                    textView.setGravity(Gravity.CENTER);
-                } else {
-                    textView.setGravity(gravity);
-                }
-            }
-        }
-        if (classInfo.a("EditText")) {
-            updateEditText((EditText) view, viewBean);
-        }
-        if (classInfo.a("ImageView")) {
-            if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
-                ((ImageView) view).setImageResource(getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName()));
-            } else if (viewBean.image.resName.equals("default_image")) {
-                ((ImageView) view).setImageResource(R.drawable.default_image);
-            } else {
-                try {
-                    String imagelocation = resourcesManager.f(viewBean.image.resName);
-                    File file = new File(imagelocation);
-                    if (file.exists() && file.length() > 0) {
-                        int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
-                        if (imagelocation.endsWith(".xml")) {
-                            FilePathUtil fpu = new FilePathUtil();
-                            svgUtils.loadScaledSvgIntoImageView((ImageView) view, fpu.getSvgFullPath(sc_id, viewBean.image.resName), round3);
+                        String backgroundRes = resourcesManager.f(viewBean.layout.backgroundResource);
+                        if (backgroundRes.endsWith(".9.png")) {
+                            Bitmap decodedBitmap = zB.a(backgroundRes);
+                            byte[] ninePatchChunk = decodedBitmap.getNinePatchChunk();
+                            if (NinePatch.isNinePatchChunk(ninePatchChunk)) {
+                                view.setBackground(new NinePatchDrawable(getResources(), decodedBitmap, ninePatchChunk, new Rect(), null));
+                            } else {
+                                view.setBackground(new BitmapDrawable(getResources(), backgroundRes));
+                            }
                         } else {
-                            Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
-                            ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
-                        }
-                    } else {
-                        VectorDrawableLoader vectorDrawableLoader = new VectorDrawableLoader();
-                        vectorDrawableLoader.setImageVectorFromFile((ImageView) view, vectorDrawableLoader.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
-                    }
-                } catch (Exception unused2) {
-                    crashlytics.recordException(unused2);
-                    FileUtil.deleteFile(new VectorDrawableLoader().getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
-                    viewBean.image.resName = "default_image";
-                    ((ImageView) view).setImageResource(R.drawable.default_image);
-                }
-            }
-            if (classInfo.b("CircleImageView")) {
-                updateCircleImageView((ItemCircleImageView) view, injectHandler);
-            } else {
-                ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
-            }
-        }
-        if (classInfo.a("CompoundButton")) {
-            ((CompoundButton) view).setChecked(viewBean.checked != 0);
-        }
-        if (classInfo.b("SeekBar")) {
-            SeekBar seekBar = (SeekBar) view;
-            seekBar.setProgress(viewBean.progress);
-            seekBar.setMax(viewBean.max);
-        }
-        if (classInfo.b("ProgressBar")) {
-            ((ItemProgressBar) view).setProgressBarStyle(viewBean.progressStyle);
-        }
-        if (classInfo.b("CalendarView")) {
-            ((CalendarView) view).setFirstDayOfWeek(viewBean.firstDayOfWeek);
-        }
-        if (classInfo.b("AdView")) {
-            ((ItemAdView) view).setAdSize(viewBean.adSize);
-        }
-        if (classInfo.b("CardView")) {
-            var cardView = (ItemCardView) view;
-            cardView.setContentPadding(
-                    viewBean.layout.paddingLeft,
-                    viewBean.layout.paddingTop,
-                    viewBean.layout.paddingRight,
-                    viewBean.layout.paddingBottom);
-            updateCardView(cardView, injectHandler);
-        }
-        if (classInfo.b("TabLayout")) {
-            updateTabLayout((ItemTabLayout) view, injectHandler);
-        }
-        if (classInfo.b("MaterialButton")) {
-            updateMaterialButton((ItemMaterialButton) view, injectHandler);
-        }
-        if (classInfo.b("SignInButton")) {
-            ItemSignInButton button = (ItemSignInButton) view;
-            boolean hasButtonSize = false;
-            boolean hasColorScheme = false;
-            for (String line : viewBean.inject.split("\n")) {
-                if (line.contains("buttonSize")) {
-                    String buttonSize = extractAttrValue(line, "app:buttonSize");
-                    if (!buttonSize.startsWith("@")) {
-                        hasButtonSize = true;
-                        switch (buttonSize) {
-                            case "icon_only":
-                                button.setSize(ItemSignInButton.ButtonSize.ICON_ONLY);
-                                break;
-                            case "wide":
-                                button.setSize(ItemSignInButton.ButtonSize.WIDE);
-                                break;
-                            case "standard":
-                            default:
-                                button.setSize(ItemSignInButton.ButtonSize.STANDARD);
-                                break;
+                            Bitmap decodeFile2 = BitmapFactory.decodeFile(backgroundRes);
+                            int round2 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
+                            view.setBackground(new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(decodeFile2, decodeFile2.getWidth() * round2, decodeFile2.getHeight() * round2, true)));
                         }
                     }
+                } catch (Exception e) {
+                    Log.e("DEBUG", e.getMessage(), e);
                 }
-                if (line.contains("colorScheme")) {
-                    String colorScheme = extractAttrValue(line, "app:colorScheme");
-                    if (!colorScheme.startsWith("@")) {
-                        hasColorScheme = true;
-                        switch (colorScheme) {
-                            case "dark":
-                                button.setColorScheme(ItemSignInButton.ColorScheme.DARK);
-                                break;
-                            case "auto":
-                            case "light":
-                            default:
-                                button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
-                                break;
-                        }
-                    }
+            }
+            Gx classInfo = viewBean.getClassInfo();
+            if (classInfo.a("LinearLayout")) {
+                LinearLayout linearLayout = (LinearLayout) view;
+                linearLayout.setOrientation(viewBean.layout.orientation);
+                linearLayout.setWeightSum(viewBean.layout.weightSum);
+                if (view instanceof ItemLinearLayout) {
+                    ((ItemLinearLayout) view).setLayoutGravity(viewBean.layout.gravity);
                 }
-                if (!hasButtonSize) button.setSize(ItemSignInButton.ButtonSize.STANDARD);
-                if (!hasColorScheme) button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
             }
-        }
-        var elevation = injectHandler.getAttributeValueOf("elevation");
-        if (!elevation.isEmpty()) {
-            view.setElevation(PropertiesUtil.resolveSize(elevation, 0));
-        }
-        view.setVisibility(VISIBLE);
-        if (view instanceof EditorListItem listItem) {
-            String listitem = injectHandler.getAttributeValueOf("listitem");
-            String itemCount = injectHandler.getAttributeValueOf("itemCount");
-            if (!TextUtils.isEmpty(listitem)) {
-                //lmao use simple_list_item_1 for now
-                listItem.setListItem(android.R.layout.simple_list_item_1);
+            if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
+                updateRelative(view, injectHandler);
             }
-            crashlytics.log("ViewPane: setting item count to EditorListItem");
-            if (!TextUtils.isEmpty(itemCount)) {
-                if (TextUtils.isEmpty(listitem)) {
+            if (classInfo.a("WaveSideBar")) {
+                ItemWaveSideBar sidebar = (ItemWaveSideBar) view;
+                if (defaultTextColor == 0) {
+                    defaultTextColor = sidebar.getTextColors().getDefaultColor();
+                }
+                if (viewBean.text.resTextColor == null) {
+                    sidebar.setTextColor(
+                            viewBean.text.textColor == 0xffffff ? defaultTextColor : viewBean.text.textColor
+                    );
+                } else {
+                    sidebar.setTextColor(PropertiesUtil.parseColor(colorsEditorManager.getColorValue(context, viewBean.text.resTextColor, 3, material3LibraryManager.canUseNightVariantColors())));
+                }
+                sidebar.setTextSize(viewBean.text.textSize);
+
+                // Handle unique WaveSideBar attributes from inject
+                String sidebarMaxOffset = injectHandler.getAttributeValueOf("sidebar_max_offset");
+                if (!sidebarMaxOffset.isEmpty()) {
+                    sidebar.setSidebarMaxOffset(PropertiesUtil.resolveSize(sidebarMaxOffset, 0));
+                }
+
+                String sidebarPosition = injectHandler.getAttributeValueOf("sidebar_position");
+                if (!sidebarPosition.isEmpty()) {
                     try {
-                        listItem.setItemCount(Integer.parseInt(itemCount));
-                    } catch (Exception exception) {
-                        crashlytics.recordException(exception);
+                        sidebar.setSidebarPosition(Integer.parseInt(sidebarPosition));
+                    } catch (Exception ignored) {
+                    }
+                }
+
+                String sidebarTextAlignment = injectHandler.getAttributeValueOf("sidebar_text_alignment");
+                if (!sidebarTextAlignment.isEmpty()) {
+                    try {
+                        sidebar.setSidebarTextAlignment(Integer.parseInt(sidebarTextAlignment));
+                    } catch (Exception ignored) {
                     }
                 }
             }
+            if (classInfo.a("TextView")) {
+                TextView textView = (TextView) view;
+                updateTextView(textView, viewBean);
+                if (!classInfo.b("Button") && !classInfo.b("Switch")) {
+                    textView.setGravity(viewBean.layout.gravity);
+                } else {
+                    int gravity = viewBean.layout.gravity;
+                    if (gravity == LayoutBean.GRAVITY_NONE) {
+                        textView.setGravity(Gravity.CENTER);
+                    } else {
+                        textView.setGravity(gravity);
+                    }
+                }
+            }
+            if (classInfo.a("EditText")) {
+                updateEditText((EditText) view, viewBean);
+            }
+            if (classInfo.a("ImageView")) {
+                if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+                    ((ImageView) view).setImageResource(getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName()));
+                } else if (viewBean.image.resName.equals("default_image")) {
+                    ((ImageView) view).setImageResource(R.drawable.default_image);
+                } else {
+                    try {
+                        String imagelocation = resourcesManager.f(viewBean.image.resName);
+                        File file = new File(imagelocation);
+                        if (file.exists() && file.length() > 0) {
+                            int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
+                            if (imagelocation.endsWith(".xml")) {
+                                FilePathUtil fpu = new FilePathUtil();
+                                svgUtils.loadScaledSvgIntoImageView((ImageView) view, fpu.getSvgFullPath(sc_id, viewBean.image.resName), round3);
+                            } else {
+                                Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
+                                ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                            }
+                        } else {
+                            VectorDrawableLoader vectorDrawableLoader = new VectorDrawableLoader();
+                            vectorDrawableLoader.setImageVectorFromFile((ImageView) view, vectorDrawableLoader.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
+                        }
+                    } catch (Exception unused2) {
+                        crashlytics.recordException(unused2);
+                        FileUtil.deleteFile(new VectorDrawableLoader().getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
+                        viewBean.image.resName = "default_image";
+                        ((ImageView) view).setImageResource(R.drawable.default_image);
+                    }
+                }
+                if (classInfo.b("CircleImageView")) {
+                    updateCircleImageView((ItemCircleImageView) view, injectHandler);
+                } else {
+                    ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
+                }
+            }
+            if (classInfo.a("CompoundButton")) {
+                ((CompoundButton) view).setChecked(viewBean.checked != 0);
+            }
+            if (classInfo.b("SeekBar")) {
+                SeekBar seekBar = (SeekBar) view;
+                seekBar.setProgress(viewBean.progress);
+                seekBar.setMax(viewBean.max);
+            }
+            if (classInfo.b("ProgressBar")) {
+                ((ItemProgressBar) view).setProgressBarStyle(viewBean.progressStyle);
+            }
+            if (classInfo.b("CalendarView")) {
+                ((CalendarView) view).setFirstDayOfWeek(viewBean.firstDayOfWeek);
+            }
+            if (classInfo.b("AdView")) {
+                ((ItemAdView) view).setAdSize(viewBean.adSize);
+            }
+            if (classInfo.b("CardView")) {
+                var cardView = (ItemCardView) view;
+                cardView.setContentPadding(
+                        viewBean.layout.paddingLeft,
+                        viewBean.layout.paddingTop,
+                        viewBean.layout.paddingRight,
+                        viewBean.layout.paddingBottom);
+                updateCardView(cardView, injectHandler);
+            }
+            if (classInfo.b("TabLayout")) {
+                updateTabLayout((ItemTabLayout) view, injectHandler);
+            }
+            if (classInfo.b("MaterialButton")) {
+                updateMaterialButton((ItemMaterialButton) view, injectHandler);
+            }
+            if (classInfo.b("SignInButton")) {
+                ItemSignInButton button = (ItemSignInButton) view;
+                boolean hasButtonSize = false;
+                boolean hasColorScheme = false;
+                for (String line : viewBean.inject.split("\n")) {
+                    if (line.contains("buttonSize")) {
+                        String buttonSize = extractAttrValue(line, "app:buttonSize");
+                        if (!buttonSize.startsWith("@")) {
+                            hasButtonSize = true;
+                            switch (buttonSize) {
+                                case "icon_only":
+                                    button.setSize(ItemSignInButton.ButtonSize.ICON_ONLY);
+                                    break;
+                                case "wide":
+                                    button.setSize(ItemSignInButton.ButtonSize.WIDE);
+                                    break;
+                                case "standard":
+                                default:
+                                    button.setSize(ItemSignInButton.ButtonSize.STANDARD);
+                                    break;
+                            }
+                        }
+                    }
+                    if (line.contains("colorScheme")) {
+                        String colorScheme = extractAttrValue(line, "app:colorScheme");
+                        if (!colorScheme.startsWith("@")) {
+                            hasColorScheme = true;
+                            switch (colorScheme) {
+                                case "dark":
+                                    button.setColorScheme(ItemSignInButton.ColorScheme.DARK);
+                                    break;
+                                case "auto":
+                                case "light":
+                                default:
+                                    button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
+                                    break;
+                            }
+                        }
+                    }
+                    if (!hasButtonSize) button.setSize(ItemSignInButton.ButtonSize.STANDARD);
+                    if (!hasColorScheme) button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
+                }
+            }
+            var elevation = injectHandler.getAttributeValueOf("elevation");
+            if (!elevation.isEmpty()) {
+                view.setElevation(PropertiesUtil.resolveSize(elevation, 0));
+            }
+            view.setVisibility(VISIBLE);
+            if (view instanceof EditorListItem listItem) {
+                String listitem = injectHandler.getAttributeValueOf("listitem");
+                String itemCount = injectHandler.getAttributeValueOf("itemCount");
+                if (!TextUtils.isEmpty(listitem)) {
+                    //lmao use simple_list_item_1 for now
+                    listItem.setListItem(android.R.layout.simple_list_item_1);
+                }
+                crashlytics.log("ViewPane: setting item count to EditorListItem");
+                if (!TextUtils.isEmpty(itemCount)) {
+                    if (TextUtils.isEmpty(listitem)) {
+                        try {
+                            listItem.setItemCount(Integer.parseInt(itemCount));
+                        } catch (Exception exception) {
+                            crashlytics.recordException(exception);
+                        }
+                    }
+                }
+            }
+        } catch (ClassCastException e) {
+            String details = "ClassCastException in updateItemView!\n" +
+                    "View ID: " + (view.getTag() != null ? view.getTag().toString() : "null") + "\n" +
+                    "View Class: " + view.getClass().getName() + "\n" +
+                    "Bean ID: " + viewBean.id + "\n" +
+                    "Bean Type: " + viewBean.type + "\n" +
+                    "Bean Class: " + viewBean.getClassInfo().toString();
+            Log.e("ViewPaneDiagnostic", details, e);
+            crashlytics.log(details);
+            crashlytics.recordException(e);
+            throw new RuntimeException(details, e);
         }
     }
 

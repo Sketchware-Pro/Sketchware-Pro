@@ -742,6 +742,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public ItemView createAndAddView(ViewBean viewBean) {
         View itemView = viewPane.createItemView(viewBean);
+        itemView.setContentDescription("SketchwareItem_" + viewBean.id);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            itemView.setAccessibilityPaneTitle("ItemView: " + viewBean.id);
+        }
+
         viewPane.addViewAndUpdateIndex(itemView);
         String generatedId = wq.b(viewBean.type);
         if (viewBean.id.indexOf(generatedId) == 0 && viewBean.id.length() > generatedId.length()) {
