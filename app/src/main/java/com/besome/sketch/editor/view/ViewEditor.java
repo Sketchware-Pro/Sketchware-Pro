@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
@@ -22,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -499,6 +501,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void initialize(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            setAccessibilityPaneTitle("ViewEditor");
+        }
+        setContentDescription("SketchwarePro_ViewEditor");
+
         wB.a(context, this, R.layout.view_editor);
 
         paletteWidget = findViewById(R.id.palette_widget);
@@ -1105,6 +1112,26 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
         extraWidget.setTag(tagValue);
         extraWidget.setOnTouchListener(this);
+    }
+
+    @Override
+    public void onInitializeAccessibilityNodeInfo(android.view.accessibility.AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(info);
+        info.setClassName(ViewEditor.class.getName());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            info.setPaneTitle("ViewEditor");
+        }
+    }
+
+    @Override
+    public CharSequence getAccessibilityClassName() {
+        return ViewEditor.class.getName();
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "ViewEditor{project=" + a + ", file=" + b + ", screenType=" + screenType + "}";
     }
 
     enum PaletteGroup {

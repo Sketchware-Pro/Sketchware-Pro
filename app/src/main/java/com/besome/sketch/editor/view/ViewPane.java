@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.NinePatchDrawable;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -224,6 +225,11 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void initialize(String sc_id, boolean isPreviewMode) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            setAccessibilityPaneTitle("ViewPane");
+        }
+        setContentDescription("ViewPane");
+
         this.sc_id = sc_id;
         material3LibraryManager = new Material3LibraryManager(getContext(), sc_id);
         colorsEditorManager = new ColorsEditorManager();
@@ -1450,10 +1456,24 @@ public class ViewPane extends RelativeLayout {
         return matcher.find() ? matcher.group(1) : "";
     }
 
+    @Override
+    public void onInitializeAccessibilityNodeInfo(android.view.accessibility.AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(info);
+        info.setClassName(ViewPane.class.getName());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            info.setPaneTitle("ViewPane");
+        }
+    }
+
+    @Override
+    public CharSequence getAccessibilityClassName() {
+        return ViewPane.class.getName();
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return getClass().getName() + "@" + Integer.toHexString(hashCode());
+        return "ViewPane{id=" + sc_id + ", childCount=" + getChildCount() + "}";
     }
 
     private record ViewInfo(Rect rect, View view, int index, int depth) {
