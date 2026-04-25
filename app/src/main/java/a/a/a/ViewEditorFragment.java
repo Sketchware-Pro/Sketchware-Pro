@@ -73,14 +73,14 @@ public class ViewEditorFragment extends qA {
             viewProperty.e();
             invalidateOptionsMenu();
         });
-        viewProperty.setOnPropertyDeleted(viewBean -> {
+        viewProperty.setOnPropertyDeletedListener(viewBean -> {
             viewEditor.deleteWidget(viewBean);
             if (requireActivity() instanceof DesignActivity designActivity) {
                 designActivity.hideViewPropertyView();
             }
             SketchwareUtil.toast(Helper.getResString(R.string.common_word_deleted));
         });
-        viewProperty.setOnPropertyMoved((viewBean, up) -> {
+        viewProperty.setOnPropertyMovedListener((viewBean, up) -> {
             ArrayList<ViewBean> allViews = jC.a(sc_id).d(projectFileBean.getXmlName());
             ArrayList<ViewBean> siblings = new ArrayList<>();
             for(ViewBean child : allViews) {

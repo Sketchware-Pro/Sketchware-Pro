@@ -60,7 +60,7 @@ public class ViewProperty extends LinearLayout implements Kw {
     private ViewEvents viewEvent;
     private Iw propertyListener = null;
     private Lw propertyValueChangedListener;
-    private onPropertyDeleted onPropertyDeletedListener;
+    private OnPropertyDeletedListener onPropertyDeletedListener;
     private LinearLayout layoutPropertyGroup;
     private int selectedGroupId;
     private ImageView imgSave;
@@ -68,6 +68,9 @@ public class ViewProperty extends LinearLayout implements Kw {
     private ObjectAnimator showAllShower;
     private ObjectAnimator showAllHider;
     private boolean showAllVisible = true;
+
+    private OnPropertyMovedListener onPropertyMovedListener;
+    private OnPropertyDeletedListener onPropertyDeletedListener;
 
     public ViewProperty(Context context) {
         super(context);
@@ -83,22 +86,20 @@ public class ViewProperty extends LinearLayout implements Kw {
     public void a(String str, Object obj) {
     }
 
-    public interface onPropertyDeleted {
+    public interface OnPropertyDeletedListener {
         void deleteProperty(ViewBean viewBean);
     }
 
-    public interface onPropertyMoved {
+    public interface OnPropertyMovedListener {
         void moveProperty(ViewBean viewBean, boolean up);
     }
 
-    private onPropertyMoved onPropertyMovedListener;
-
-    public void setOnPropertyMoved(onPropertyMoved onPropertyMoved) {
-        onPropertyMovedListener = onPropertyMoved;
+    public void setOnPropertyMovedListener(OnPropertyMovedListener onPropertyMovedListener) {
+        this.onPropertyMovedListener = onPropertyMovedListenef;
     }
 
-    public void setOnPropertyDeleted(onPropertyDeleted onPropertyDeleted) {
-        onPropertyDeletedListener = onPropertyDeleted;
+    public void setOnPropertyDeletedListener(OnPropertyDeletedListener onPropertyDeletedListener) {
+        this.onPropertyDeletedListener = onPropertyDeletedListener;
     }
 
     public void setOnEventClickListener(Qs onEventClickListener) {
