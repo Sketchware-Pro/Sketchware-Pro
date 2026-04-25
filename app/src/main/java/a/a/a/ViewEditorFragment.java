@@ -26,6 +26,7 @@ import com.besome.sketch.editor.view.ViewProperty;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -72,12 +73,56 @@ public class ViewEditorFragment extends qA {
             viewProperty.e();
             invalidateOptionsMenu();
         });
-        viewProperty.setOnPropertyDeleted(viewBean -> {
+        viewProperty.setOnPropertyDeletedListener(viewBean -> {
             viewEditor.deleteWidget(viewBean);
             if (requireActivity() instanceof DesignActivity designActivity) {
                 designActivity.hideViewPropertyView();
             }
             SketchwareUtil.toast(Helper.getResString(R.string.common_word_deleted));
+        });
+        viewProperty.setOnPropertyMovedListener((viewBean, up) -> {
+            ArrayList<ViewBean> allViews = jC.a(sc_id).d(projectFileBean.getXmlName());
+            ArrayList<ViewBean> siblings = new ArrayList<>();
+            for(ViewBean child : allViews) {
+                if(child.parent != null && child.parent.equals(viewBean.parent)) {
+                    siblings.add(child);
+                }
+            }
+            siblings.sort(Comparator.comparingInt(a -> a.index));
+
+            int myPos = siblings.indexOf(viewBean);
+            ViewBean target = null;
+            if (up && myPos > 0) {
+                target = siblings.get(myPos - 1);
+            } else if (!up && myPos >= 0 && myPos < siblings.size() - 1) {
+                target = siblings.get(myPos + 1);
+            }
+
+            if (target != null) {
+                int temp = viewBean.index;
+                viewBean.index = target.index;
+                target.index = temp;
+
+                viewBean.preIndex = target.index;
+                viewBean.preParent = viewBean.parent;
+                viewBean.preParentType = viewBean.parentType;
+                
+                target.preIndex = viewBean.index;
+                target.preParent = target.parent;
+                target.preParentType = target.parentType;
+
+                cC.c(sc_id).b(projectFileBean.getXmlName(), viewBean);
+                cC.c(sc_id).b(projectFileBean.getXmlName(), target);
+
+                viewEditor.b(target, false);
+                viewEditor.a(viewEditor.b(viewBean, false), true);
+                
+                invalidateOptionsMenu();
+                
+                viewProperty.a(viewBean.id);
+                viewEditor.updateSelection(viewBean.id);
+                viewProperty.e();
+            }
         });
         viewProperty.setOnEventClickListener(eventBean -> toLogicEditorActivity(eventBean.targetId, eventBean.eventName, eventBean.eventName));
         viewProperty.setOnPropertyTargetChangeListener(viewEditor::updateSelection);

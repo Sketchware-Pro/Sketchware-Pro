@@ -60,7 +60,7 @@ public class ViewProperty extends LinearLayout implements Kw {
     private ViewEvents viewEvent;
     private Iw propertyListener = null;
     private Lw propertyValueChangedListener;
-    private onPropertyDeleted onPropertyDeletedListener;
+    private OnPropertyDeletedListener onPropertyDeletedListener;
     private LinearLayout layoutPropertyGroup;
     private int selectedGroupId;
     private ImageView imgSave;
@@ -68,6 +68,9 @@ public class ViewProperty extends LinearLayout implements Kw {
     private ObjectAnimator showAllShower;
     private ObjectAnimator showAllHider;
     private boolean showAllVisible = true;
+
+    private OnPropertyMovedListener onPropertyMovedListener;
+    private OnPropertyDeletedListener onPropertyDeletedListener;
 
     public ViewProperty(Context context) {
         super(context);
@@ -83,12 +86,20 @@ public class ViewProperty extends LinearLayout implements Kw {
     public void a(String str, Object obj) {
     }
 
-    public interface onPropertyDeleted {
+    public interface OnPropertyDeletedListener {
         void deleteProperty(ViewBean viewBean);
     }
 
-    public void setOnPropertyDeleted(onPropertyDeleted onPropertyDeleted) {
-        onPropertyDeletedListener = onPropertyDeleted;
+    public interface OnPropertyMovedListener {
+        void moveProperty(ViewBean viewBean, boolean up);
+    }
+
+    public void setOnPropertyMovedListener(OnPropertyMovedListener onPropertyMovedListener) {
+        this.onPropertyMovedListener = onPropertyMovedListenef;
+    }
+
+    public void setOnPropertyDeletedListener(OnPropertyDeletedListener onPropertyDeletedListener) {
+        this.onPropertyDeletedListener = onPropertyDeletedListener;
     }
 
     public void setOnEventClickListener(Qs onEventClickListener) {
@@ -286,6 +297,18 @@ public class ViewProperty extends LinearLayout implements Kw {
         });
         imgDelete = findViewById(R.id.img_delete);
         imgDelete.setOnClickListener(view -> showDeleteViewBeanWidget());
+        ImageView imgUp = findViewById(R.id.img_up);
+        imgUp.setOnClickListener(view -> {
+            if (onPropertyMovedListener != null && idsAdapter.getSelectedItemPosition() < projectActivityViews.size()) {
+                onPropertyMovedListener.moveProperty(projectActivityViews.get(idsAdapter.getSelectedItemPosition()), true);
+            }
+        });
+        ImageView imgDown = findViewById(R.id.img_down);
+        imgDown.setOnClickListener(view -> {
+            if (onPropertyMovedListener != null && idsAdapter.getSelectedItemPosition() < projectActivityViews.size()) {
+                onPropertyMovedListener.moveProperty(projectActivityViews.get(idsAdapter.getSelectedItemPosition()), false);
+            }
+        });
         spnWidget = findViewById(R.id.spn_widget);
         idsAdapter = new ViewIdsAdapter(context, projectActivityViews);
         spnWidget.setAdapter(idsAdapter);
@@ -312,12 +335,18 @@ public class ViewProperty extends LinearLayout implements Kw {
         if (propertyTargetChangeListener != null) {
             propertyTargetChangeListener.a(viewBean.id);
         }
+        ImageView imgUp = findViewById(R.id.img_up);
+        ImageView imgDown = findViewById(R.id.img_down);
         if ("_fab".equals(viewBean.id)) {
             imgSave.setVisibility(GONE);
             imgDelete.setVisibility(GONE);
+            if (imgUp != null) imgUp.setVisibility(GONE);
+            if (imgDown != null) imgDown.setVisibility(GONE);
         } else {
             imgSave.setVisibility(VISIBLE);
             imgDelete.setVisibility(VISIBLE);
+            if (imgUp != null) imgUp.setVisibility(VISIBLE);
+            if (imgDown != null) imgDown.setVisibility(VISIBLE);
         }
         viewPropertyItems.setProjectFileBean(projectFile);
         e();
