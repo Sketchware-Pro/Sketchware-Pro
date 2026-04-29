@@ -848,6 +848,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     private List<String> populateAttributes() {
         List<String> attrs = new ArrayList<>();
         attrs.add("android:elevation");
+        attrs.add("android:visibility");
         if (bean != null) {
             var simpleName = getSimpleName(bean);
             var classInfo = bean.getClassInfo();
