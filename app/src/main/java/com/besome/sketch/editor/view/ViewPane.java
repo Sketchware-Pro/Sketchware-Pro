@@ -625,7 +625,17 @@ public class ViewPane extends RelativeLayout {
         if (!elevation.isEmpty()) {
             view.setElevation(PropertiesUtil.resolveSize(elevation, 0));
         }
-        view.setVisibility(VISIBLE);
+        String visibility = injectHandler.getAttributeValueOf("visibility");
+        if (TextUtils.isEmpty(visibility) && viewBean.parentAttributes.containsKey("android:visibility")) {
+            visibility = viewBean.parentAttributes.get("android:visibility");
+        }
+        if ("invisible".equals(visibility)) {
+            view.setVisibility(INVISIBLE);
+        } else if ("gone".equals(visibility)) {
+            view.setVisibility(GONE);
+        } else {
+            view.setVisibility(VISIBLE);
+        }
         if (view instanceof EditorListItem listItem) {
             String listitem = injectHandler.getAttributeValueOf("listitem");
             String itemCount = injectHandler.getAttributeValueOf("itemCount");
