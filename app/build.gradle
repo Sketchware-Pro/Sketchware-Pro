@@ -1,7 +1,6 @@
 def secrets = System.getenv("GOOGLE_SERVICES_JSON")
 
 apply plugin: "com.android.application"
-apply plugin: "kotlin-android"
 apply plugin: "com.google.gms.google-services"
 apply plugin: "com.google.firebase.crashlytics"
 
@@ -43,10 +42,6 @@ android {
         coreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
     }
 
     androidResources {
@@ -104,7 +99,6 @@ dependencies {
     implementation libs.bundles.networking
 
     implementation libs.ecj
-    implementation libs.stax.api
 
     implementation libs.bundles.kotlin.compiler
     compileOnly libs.kotlin.compiler
