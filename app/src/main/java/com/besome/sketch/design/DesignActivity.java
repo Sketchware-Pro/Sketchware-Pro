@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
@@ -97,6 +98,7 @@ import a.a.a.zy;
 import dev.chrisbanes.insetter.Insetter;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
+import mod.bobur.FloatingProgressWindow;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
@@ -151,6 +153,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private TextView fileName;
     private String currentJavaFileName;
     private ViewEditorFragment viewTabAdapter;
+    private FloatingProgressWindow fProgress;
     private final ActivityResultLauncher<Intent> openCollectionManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (viewTabAdapter != null) {
@@ -598,6 +601,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             registerReceiver(buildCancelReceiver, filter);
         }
 
+        fProgress = new FloatingProgressWindow();
     }
 
     private boolean isDebugApkExists() {
@@ -622,6 +626,23 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(buildCancelReceiver);
+        fProgress.exit();
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        maybeShowFloatingBuildProgress();
+    }
+
+    private void maybeShowFloatingBuildProgress() {
+        if (currentBuildTask != null
+                && !currentBuildTask.canceled
+                && !currentBuildTask.isBuildFinished
+                && ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_BACKGROUND_BUILDING)
+                && Settings.canDrawOverlays(getApplicationContext())) {
+            fProgress.start(getApplicationContext());
+        }
     }
 
     @Override
@@ -683,6 +704,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         long freeMegabytes = GB.c();
         if (freeMegabytes < 100L && freeMegabytes > 0L) {
             warnAboutInsufficientStorageSpace();
+        }
+
+        if (fProgress != null) {
+            fProgress.stop();
         }
     }
 
@@ -1066,6 +1091,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         public volatile boolean canceled;
         private volatile boolean isBuildFinished;
         private boolean isShowingNotification = false;
+        private FloatingProgressWindow fProgress;
 
         public BuildTask(DesignActivity activity) {
             super(activity);
@@ -1075,6 +1101,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             progressContainer = activity.binding.progressContainer;
             progressText = activity.binding.progressText;
             progressBar = activity.binding.progress;
+            fProgress = activity.fProgress;
         }
 
         public void execute() {
@@ -1273,12 +1300,14 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 progressBar.setProgress(progressInt, true);
                 Log.d("DesignActivity$BuildTask", step + " / " + totalSteps);
             });
+
+            fProgress.updateProgress(step);
         }
 
         private void onPostExecute() {
             DesignActivity activity = getActivity();
             if (activity == null) return;
-
+            fProgress.stop();
             activity.runOnUiThread(() -> {
                 if (!activity.isDestroyed()) {
                     if (isShowingNotification) {
@@ -1306,6 +1335,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     btnRun.setEnabled(false);
                 });
             }
+            fProgress.stop();
         }
 
         private void maybeShowNotification() {

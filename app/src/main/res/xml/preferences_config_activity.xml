@@ -53,4 +53,11 @@
         app:key="backup-filename"
         app:summary="Default is &quot;$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)&quot;"
         app:title="Backup filename format" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:iconSpaceReserved="false"
+        app:key="background-building"
+        app:summary="Show floating build progress when Sketchware Pro is paused. Requires overlay permission."
+        app:title="Background building" />
 </PreferenceScreen>
