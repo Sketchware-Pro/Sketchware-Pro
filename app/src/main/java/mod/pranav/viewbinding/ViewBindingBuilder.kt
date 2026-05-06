@@ -23,8 +23,9 @@ class ViewBindingBuilder(
 
         val content = """
 // Generated file. Do not modify.
-package $packageName;
+package $packageName.databinding;
 
+import $packageName.R;
 ${generateImports(views, rootView)}
 
 public final class $name {
