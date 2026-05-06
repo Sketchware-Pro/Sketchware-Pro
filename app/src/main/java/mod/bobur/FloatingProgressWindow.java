@@ -6,6 +6,7 @@ import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +15,7 @@ import android.view.WindowManager;
 
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
+import pro.sketchware.R;
 import pro.sketchware.databinding.WindowProgressBinding;
 
 public class FloatingProgressWindow {
@@ -35,7 +37,8 @@ public class FloatingProgressWindow {
             if (!Settings.canDrawOverlays(context)) return;
             if (binding == null) {
                 windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-                binding = WindowProgressBinding.inflate(LayoutInflater.from(context));
+                Context themedContext = new ContextThemeWrapper(context, R.style.Theme_SketchwarePro);
+                binding = WindowProgressBinding.inflate(LayoutInflater.from(themedContext));
 
                 CircularProgressIndicator progress = binding.progress;
                 progress.setMax(maxValue);

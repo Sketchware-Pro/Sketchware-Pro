@@ -3,7 +3,10 @@ package mod.hilal.saif.activities.tools;
 import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -53,6 +56,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
     public static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
     public static final String SETTING_USE_ASD_HIGHLIGHTER = "use-asd-highlighter";
     public static final String SETTING_CRITICAL_UPDATE_REMINDER = "critical-update-reminder";
+    public static final String SETTING_BACKGROUND_BUILDING = "background-building";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
 
@@ -136,6 +140,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 SETTING_SHOW_EVERY_SINGLE_BLOCK,
                 SETTING_USE_NEW_VERSION_CONTROL,
                 SETTING_USE_ASD_HIGHLIGHTER,
+                SETTING_BACKGROUND_BUILDING,
                 SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
                 SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH);
 
@@ -151,6 +156,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                  SETTING_ROOT_AUTO_INSTALL_PROJECTS, SETTING_SHOW_BUILT_IN_BLOCKS,
                  SETTING_SHOW_EVERY_SINGLE_BLOCK, SETTING_USE_NEW_VERSION_CONTROL,
                  SETTING_USE_ASD_HIGHLIGHTER -> false;
+            case SETTING_BACKGROUND_BUILDING -> true;
             case SETTING_BACKUP_DIRECTORY -> "/.sketchware/backups/";
             case SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING -> true;
             case SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH ->
@@ -255,6 +261,22 @@ public class ConfigActivity extends BaseAppCompatActivity {
                         }
                     });
                 }
+                return true;
+            });
+
+            SwitchPreferenceCompat backgroundBuilding = findPreference(SETTING_BACKGROUND_BUILDING);
+            assert backgroundBuilding != null;
+            backgroundBuilding.setOnPreferenceChangeListener((preference, newValue) -> {
+                boolean enabled = Boolean.TRUE.equals(newValue);
+                if (enabled && !Settings.canDrawOverlays(requireContext())) {
+                    new MaterialAlertDialogBuilder(requireContext())
+                            .setTitle("Overlay permission required")
+                            .setMessage("Background building needs display over other apps permission to show the floating progress window while Sketchware Pro is paused.")
+                            .setPositiveButton("Grant", (dialog, which) -> startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + requireContext().getPackageName()))))
+                            .setNegativeButton(R.string.common_word_cancel, null)
+                            .show();
+                }
+                getDataStore().putBoolean("P12I3", enabled);
                 return true;
             });
 

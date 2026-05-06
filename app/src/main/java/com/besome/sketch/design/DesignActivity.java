@@ -586,11 +586,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             registerReceiver(buildCancelReceiver, filter);
         }
 
-        if (!Settings.canDrawOverlays(this)) {
-            Intent i = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-            startActivity(i);
-            SketchwareUtil.toast("Please allow overlay permission");
-        }
         fProgress = new FloatingProgressWindow();
     }
 
@@ -622,8 +617,16 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
-        if (currentBuildTask != null && !currentBuildTask.canceled && !currentBuildTask.isBuildFinished) {
-           fProgress.start(this);
+        maybeShowFloatingBuildProgress();
+    }
+
+    private void maybeShowFloatingBuildProgress() {
+        if (currentBuildTask != null
+                && !currentBuildTask.canceled
+                && !currentBuildTask.isBuildFinished
+                && ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_BACKGROUND_BUILDING)
+                && Settings.canDrawOverlays(getApplicationContext())) {
+            fProgress.start(getApplicationContext());
         }
     }
 
