@@ -221,7 +221,7 @@ public class Jx {
             addImport("android.Manifest");
             addImport("android.content.pm.PackageManager");
         }
-        if (isAndroidStudioExport && isViewBindingEnabled) {
+        if (isViewBindingEnabled) {
             addImport(packageName + ".databinding.*");
         }
 
