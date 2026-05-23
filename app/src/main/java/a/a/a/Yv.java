@@ -8,6 +8,9 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -84,6 +87,7 @@ public class Yv extends qA {
 
         actBinding = ((ManageSoundActivity) requireActivity()).binding;
         binding = FrManageSoundListBinding.inflate(inflater, container, false);
+        setHasOptionsMenu(true);
 
         filteredSounds = new ArrayList<>();
 
@@ -168,6 +172,31 @@ public class Yv extends qA {
 
     public boolean isSelecting() {
         return sounds.stream().anyMatch(resource -> resource.isSelected);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.manage_sound_menu, menu);
+        menu.findItem(R.id.menu_sound_delete).setVisible(false);
+        menu.findItem(R.id.menu_sound_select_all).setVisible(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_sound_select_all) {
+            selectAll(true);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void selectAll(boolean select) {
+        for (ProjectResourceBean sound : filteredSounds) {
+            sound.isSelected = select;
+        }
+        updateImportSoundsText();
+        adapter.notifyDataSetChanged();
     }
 
     private void showOrHideNoSoundsText() {

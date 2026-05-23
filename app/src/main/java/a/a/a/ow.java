@@ -131,6 +131,7 @@ public class ow extends qA {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.manage_sound_menu, menu);
         menu.findItem(R.id.menu_sound_delete).setVisible(!isSelecting);
+        menu.findItem(R.id.menu_sound_select_all).setVisible(isSelecting);
     }
 
     @Override
@@ -211,8 +212,17 @@ public class ow extends qA {
             addSound();
         } else if (itemId == R.id.menu_sound_delete) {
             setSelecting(!isSelecting);
+        } else if (itemId == R.id.menu_sound_select_all) {
+            selectAll(true);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void selectAll(boolean select) {
+        for (ProjectResourceBean sound : filteredSounds) {
+            sound.isSelected = select;
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override

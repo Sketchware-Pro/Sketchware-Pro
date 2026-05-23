@@ -466,14 +466,20 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.manage_collection_menu, menu);
         menu.findItem(R.id.menu_collection_delete).setVisible(!selectingToBeDeletedItems);
+        menu.findItem(R.id.menu_collection_select_all).setVisible(selectingToBeDeletedItems);
 
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
-        if (menuItem.getItemId() == R.id.menu_collection_delete) {
+        int itemId = menuItem.getItemId();
+        if (itemId == R.id.menu_collection_delete) {
             changeDeletingItemsState(!selectingToBeDeletedItems);
+        } else if (itemId == R.id.menu_collection_select_all) {
+            if (collectionAdapter != null) {
+                collectionAdapter.selectAll(true);
+            }
         }
 
         return super.onOptionsItemSelected(menuItem);
@@ -693,6 +699,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 noItemsNote.setVisibility(View.VISIBLE);
             } else {
                 noItemsNote.setVisibility(View.GONE);
+            }
+            notifyDataSetChanged();
+        }
+
+        public void selectAll(boolean select) {
+            for (SelectableBean bean : currentCollectionTypeItems) {
+                bean.isSelected = select;
             }
             notifyDataSetChanged();
         }

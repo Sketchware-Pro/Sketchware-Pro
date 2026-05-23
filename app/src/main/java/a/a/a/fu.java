@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -122,6 +125,31 @@ public class fu extends qA implements View.OnClickListener {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.manage_image_menu, menu);
+        menu.findItem(R.id.menu_image_delete).setVisible(false);
+        menu.findItem(R.id.menu_image_select_all).setVisible(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_image_select_all) {
+            selectAll(true);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void selectAll(boolean select) {
+        for (ProjectResourceBean image : filteredImages) {
+            image.isSelected = select;
+        }
+        onItemSelected();
+        adapter.notifyDataSetChanged();
+    }
+
     private void onItemSelected() {
         int count = 0;
         for (ProjectResourceBean image : collectionImages) {
@@ -165,6 +193,7 @@ public class fu extends qA implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FrManageImageListBinding.inflate(inflater, container, false);
+        setHasOptionsMenu(true);
         filteredImages = new ArrayList<>();
         binding.imageList.setHasFixedSize(true);
         binding.imageList.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));

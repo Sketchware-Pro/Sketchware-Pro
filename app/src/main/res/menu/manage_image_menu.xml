@@ -6,6 +6,12 @@
         android:title="@string/common_word_import"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/menu_image_select_all"
+        android:icon="@drawable/ic_mtrl_check"
+        android:title="Select all"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_image_delete"
         android:icon="@drawable/ic_mtrl_delete"
         android:title="@string/common_word_delete"

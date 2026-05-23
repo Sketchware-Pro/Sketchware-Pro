@@ -262,6 +262,7 @@ public class ImportFontFragment extends qA {
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.manage_font_menu, menu);
         menu.findItem(R.id.menu_font_delete).setVisible(!isSelecting);
+        menu.findItem(R.id.menu_font_select_all).setVisible(isSelecting);
     }
 
     @Override
@@ -340,11 +341,21 @@ public class ImportFontFragment extends qA {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_font_delete) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_font_delete) {
             setSelectingMode(!isSelecting);
+        } else if (itemId == R.id.menu_font_select_all) {
+            selectAll(true);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void selectAll(boolean select) {
+        for (ProjectResourceBean bean : filteredResourceBeans) {
+            bean.isSelected = select;
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override

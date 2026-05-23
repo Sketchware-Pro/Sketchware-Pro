@@ -310,6 +310,7 @@ public class pu extends qA {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.manage_image_menu, menu);
         menu.findItem(R.id.menu_image_delete).setVisible(!isSelecting);
+        menu.findItem(R.id.menu_image_select_all).setVisible(isSelecting);
     }
 
     @Override
@@ -373,8 +374,17 @@ public class pu extends qA {
             a(!isSelecting);
         } else if (id == R.id.menu_image_import) {
             openImportIconActivity();
+        } else if (id == R.id.menu_image_select_all) {
+            selectAll(true);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void selectAll(boolean select) {
+        for (ProjectResourceBean bean : filteredImages) {
+            bean.isSelected = select;
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override

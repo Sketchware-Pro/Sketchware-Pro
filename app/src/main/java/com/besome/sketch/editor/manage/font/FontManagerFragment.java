@@ -9,6 +9,9 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -102,6 +105,31 @@ public class FontManagerFragment extends qA {
 
     public boolean isSelecting() {
         return projectResourceBeans.stream().anyMatch(resource -> resource.isSelected);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.manage_font_menu, menu);
+        menu.findItem(R.id.menu_font_delete).setVisible(false);
+        menu.findItem(R.id.menu_font_select_all).setVisible(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_font_select_all) {
+            selectAll(true);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void selectAll(boolean select) {
+        for (ProjectResourceBean font : filteredResourceBeans) {
+            font.isSelected = select;
+        }
+        updateImportButtonVisibility();
+        adapter.notifyDataSetChanged();
     }
 
     public final void updateImportButtonVisibility() {

@@ -8,6 +8,13 @@
         android:visible="false"
         app:showAsAction="always" />
     <item
+        android:id="@+id/menu_font_select_all"
+        android:icon="@drawable/ic_mtrl_check"
+        android:orderInCategory="1"
+        android:title="Select all"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_font_delete"
         android:icon="@drawable/ic_mtrl_delete"
         android:orderInCategory="1"
