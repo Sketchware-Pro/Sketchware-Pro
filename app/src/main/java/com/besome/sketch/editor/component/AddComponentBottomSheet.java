@@ -32,6 +32,7 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
     private ProjectFileBean projectFileBean;
 
     private ArrayList<ComponentBean> componentList;
+    private ArrayList<ComponentBean> originalComponentList;
     private LogicAddComponentBinding binding;
     private OnComponentCreateListener onComponentCreateListener;
 
@@ -94,6 +95,7 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN));
 
         ComponentsHandler.add(componentList);
+        originalComponentList = new ArrayList<>(componentList);
     }
 
     @Nullable
@@ -115,6 +117,19 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
         binding.componentList.setHasFixedSize(true);
         binding.componentList.setAdapter(new ComponentsAdapter());
         binding.componentList.setLayoutManager(flexboxLayoutManager);
+
+        binding.searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true;
+            }
+        });
 
         binding.componentList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -146,6 +161,21 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
 
     private void setOnComponentCreateListener(OnComponentCreateListener onComponentCreateListener) {
         this.onComponentCreateListener = onComponentCreateListener;
+    }
+
+    private void filter(String text) {
+        componentList.clear();
+        if (text.isEmpty()) {
+            componentList.addAll(originalComponentList);
+        } else {
+            for (ComponentBean componentBean : originalComponentList) {
+                String componentName = ComponentBean.getComponentName(requireContext(), componentBean.type);
+                if (componentName.toLowerCase().contains(text.toLowerCase())) {
+                    componentList.add(componentBean);
+                }
+            }
+        }
+        binding.componentList.getAdapter().notifyDataSetChanged();
     }
 
     private void showAddComponentDialog(ComponentBean componentBean) {

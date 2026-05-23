@@ -41,13 +41,34 @@ public class br extends qA implements View.OnClickListener {
     private Adapter adapter;
     private String sc_id;
     private ArrayList<ComponentBean> components = new ArrayList<>();
+    private ArrayList<ComponentBean> originalComponents = new ArrayList<>();
 
     private FrComponentListBinding binding;
 
     public void refreshData() {
         if (projectFile != null && adapter != null) {
-            components = jC.a(sc_id).e(projectFile.getJavaName());
-            adapter.notifyDataSetChanged();
+            originalComponents = jC.a(sc_id).e(projectFile.getJavaName());
+            filter(binding.searchView.getQuery().toString());
+        }
+    }
+
+    private void filter(String query) {
+        components.clear();
+        if (query.isEmpty()) {
+            components.addAll(originalComponents);
+        } else {
+            for (ComponentBean bean : originalComponents) {
+                if (bean.componentId.toLowerCase().contains(query.toLowerCase()) ||
+                        ComponentBean.getComponentName(requireContext(), bean.type).toLowerCase().contains(query.toLowerCase())) {
+                    components.add(bean);
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
+        if (components.isEmpty()) {
+            binding.emptyMessage.setVisibility(View.VISIBLE);
+        } else {
+            binding.emptyMessage.setVisibility(View.GONE);
         }
     }
 
@@ -94,6 +115,19 @@ public class br extends qA implements View.OnClickListener {
         adapter = new Adapter();
         binding.componentList.setAdapter(adapter);
         binding.fab.setOnClickListener(this);
+
+        binding.searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true;
+            }
+        });
     }
 
     public void setProjectFile(ProjectFileBean projectFileBean) {
@@ -131,13 +165,7 @@ public class br extends qA implements View.OnClickListener {
 
         @Override
         public int getItemCount() {
-            int size = components.size();
-            if (size == 0) {
-                binding.emptyMessage.setVisibility(View.VISIBLE);
-            } else {
-                binding.emptyMessage.setVisibility(View.GONE);
-            }
-            return size;
+            return components.size();
         }
 
         private class ViewHolder extends CollapsibleViewHolder {

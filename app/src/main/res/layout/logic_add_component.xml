@@ -14,9 +14,27 @@
         style="?attr/textAppearanceHeadlineSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:gravity="center"
         android:text="@string/component_title_add_component" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/search_card"
+        style="?attr/materialCardViewFilledStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:iconifiedByDefault="false"
+            app:queryHint="Search components"
+            app:searchIcon="@drawable/ic_mtrl_search" />
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider_top"

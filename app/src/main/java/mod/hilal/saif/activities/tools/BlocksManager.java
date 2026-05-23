@@ -68,6 +68,7 @@ public class BlocksManager extends BaseAppCompatActivity {
     private int newPos;
     private Activity activity;
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> original_pallet_listmap = new ArrayList<>();
     private ItemTouchHelper itemTouchHelper;
     private ActivityBlocksManagerBinding binding;
     private DialogPaletteBinding dialogBinding;
@@ -109,6 +110,19 @@ public class BlocksManager extends BaseAppCompatActivity {
         binding.paletteRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
         binding.fab.setOnClickListener(v -> showPaletteDialog(false, null, null, "#ffffff", null));
 
+        binding.searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterPalettes(newText);
+                return true;
+            }
+        });
+
         readSettings();
         refreshList();
         recycleBin(binding.recycleBinCard);
@@ -120,6 +134,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                 newPos = target.getBindingAdapterPosition();
 
                 Collections.swap(pallet_listmap, oldPos, newPos);
+                Collections.swap(original_pallet_listmap, oldPos, newPos);
 
                 Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemMoved(oldPos, newPos);
                 swapRelatedBlocks(oldPos + 9, newPos + 9);
@@ -150,7 +165,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
                 viewHolder.itemView.setAlpha(1f);
                 FileUtil.writeFile(blocks_dir, getGson().toJson(all_blocks_list));
-                FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
+                FileUtil.writeFile(pallet_dir, getGson().toJson(original_pallet_listmap));
             }
 
             @Override
@@ -245,13 +260,14 @@ public class BlocksManager extends BaseAppCompatActivity {
         dialog.setMessage(R.string.common_message_confirm);
         dialog.setPositiveButton(R.string.common_word_yes, (v, which) -> {
             pallet_listmap.remove(position);
+            original_pallet_listmap.remove(position);
             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemRemoved(position);
             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemChanged(position);
             draggedView = null;
             moveRelatedBlocksToRecycleBin(position + 9);
             removeRelatedBlocks(position + 9);
             FileUtil.writeFile(blocks_dir, getGson().toJson(all_blocks_list));
-            FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
+            FileUtil.writeFile(pallet_dir, getGson().toJson(original_pallet_listmap));
             refreshCount();
             v.dismiss();
         });
@@ -296,9 +312,9 @@ public class BlocksManager extends BaseAppCompatActivity {
             String paletteJsonContent;
             if (FileUtil.isExistFile(pallet_dir) && !(paletteJsonContent = FileUtil.readFile(pallet_dir)).isEmpty()) {
                 try {
-                    pallet_listmap = getGson().fromJson(paletteJsonContent, Helper.TYPE_MAP_LIST);
+                    original_pallet_listmap = getGson().fromJson(paletteJsonContent, Helper.TYPE_MAP_LIST);
 
-                    if (pallet_listmap != null) {
+                    if (original_pallet_listmap != null) {
                         break parsePaletteJson;
                     }
                     // fall-through to shared handler
@@ -308,12 +324,28 @@ public class BlocksManager extends BaseAppCompatActivity {
 
                 SketchwareUtil.showFailedToParseJsonDialog(this, new File(pallet_dir), "Custom Block Palettes", v -> refreshList());
             }
-            pallet_listmap = new ArrayList<>();
+            original_pallet_listmap = new ArrayList<>();
         }
 
+        pallet_listmap = new ArrayList<>(original_pallet_listmap);
         binding.paletteRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
         binding.recycleSub.setText("Blocks: " + (long) getN(-1));
         refreshCount();
+    }
+
+    private void filterPalettes(String query) {
+        pallet_listmap.clear();
+        if (query.isEmpty()) {
+            pallet_listmap.addAll(original_pallet_listmap);
+        } else {
+            for (HashMap<String, Object> map : original_pallet_listmap) {
+                String name = Objects.requireNonNull(map.get("name")).toString();
+                if (name.toLowerCase().contains(query.toLowerCase())) {
+                    pallet_listmap.add(map);
+                }
+            }
+        }
+        Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyDataSetChanged();
     }
 
     private double getN(double _p) {
@@ -486,21 +518,21 @@ public class BlocksManager extends BaseAppCompatActivity {
                     map.put("color", colorInput);
 
                     if (insertAtPosition == null) {
-                        pallet_listmap.add(map);
-                        FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
-                        Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(pallet_listmap.size() - 1);
+                        original_pallet_listmap.add(map);
+                        FileUtil.writeFile(pallet_dir, getGson().toJson(original_pallet_listmap));
                         readSettings();
+                        refreshList();
                     } else {
-                        pallet_listmap.add(insertAtPosition, map);
-                        FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
+                        original_pallet_listmap.add(insertAtPosition, map);
+                        FileUtil.writeFile(pallet_dir, getGson().toJson(original_pallet_listmap));
                         readSettings();
-                        Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(insertAtPosition);
+                        refreshList();
                         insertBlocksAt(insertAtPosition + 9);
                     }
                 } else {
-                    pallet_listmap.get(oldPosition).put("name", nameInput);
-                    pallet_listmap.get(oldPosition).put("color", colorInput);
-                    FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
+                    original_pallet_listmap.get(oldPosition).put("name", nameInput);
+                    original_pallet_listmap.get(oldPosition).put("color", colorInput);
+                    FileUtil.writeFile(pallet_dir, getGson().toJson(original_pallet_listmap));
                     readSettings();
                     refreshList();
                 }
@@ -562,13 +594,14 @@ public class BlocksManager extends BaseAppCompatActivity {
         @SuppressLint("ClickableViewAccessibility")
         @Override
         public void onBindViewHolder(@NonNull PaletteAdapter.ViewHolder holder, int position) {
+            int originalIndex = original_pallet_listmap.indexOf(palettes.get(position));
             String paletteColorValue = (String) palettes.get(position).get("color");
             assert paletteColorValue != null;
             int backgroundColor = PropertiesUtil.parseColor(paletteColorValue);
 
             holder.itemView.setVisibility(View.VISIBLE);
-            holder.itemBinding.title.setText(Objects.requireNonNull(pallet_listmap.get(position).get("name")).toString());
-            holder.itemBinding.sub.setText("Blocks: " + (long) getN(position + 9));
+            holder.itemBinding.title.setText(Objects.requireNonNull(palettes.get(position).get("name")).toString());
+            holder.itemBinding.sub.setText("Blocks: " + (long) getN(originalIndex + 9));
             holder.itemBinding.color.setBackgroundColor(backgroundColor);
             holder.itemBinding.dragHandler.setVisibility(View.VISIBLE);
             binding.recycleSub.setText("Blocks: " + (long) getN(-1));
@@ -585,39 +618,42 @@ public class BlocksManager extends BaseAppCompatActivity {
                 menu.add(insert);
                 popup.setOnMenuItemClickListener(item -> {
                     int pos = holder.getAbsoluteAdapterPosition();
+                    int originalPos = original_pallet_listmap.indexOf(palettes.get(pos));
                     switch (Objects.requireNonNull(item.getTitle()).toString()) {
                         case edit:
-                            showPaletteDialog(true, pos,
-                                    Objects.requireNonNull(pallet_listmap.get(pos).get("name")).toString(),
-                                    Objects.requireNonNull(pallet_listmap.get(pos).get("color")).toString(), null);
+                            showPaletteDialog(true, originalPos,
+                                    Objects.requireNonNull(palettes.get(pos).get("name")).toString(),
+                                    Objects.requireNonNull(palettes.get(pos).get("color")).toString(), null);
                             break;
 
                         case delete:
                             new MaterialAlertDialogBuilder(BlocksManager.this)
-                                    .setTitle(Objects.requireNonNull(pallet_listmap.get(pos).get("name")).toString())
+                                    .setTitle(Objects.requireNonNull(palettes.get(pos).get("name")).toString())
                                     .setMessage("Remove all blocks related to this palette?")
                                     .setPositiveButton("Remove permanently", (dialog, which) -> {
                                         palettes.remove(pos);
+                                        original_pallet_listmap.remove(originalPos);
                                         notifyItemRemoved(pos);
-                                        FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
-                                        removeRelatedBlocks(pos + 9);
+                                        FileUtil.writeFile(pallet_dir, getGson().toJson(original_pallet_listmap));
+                                        removeRelatedBlocks(originalPos + 9);
                                         readSettings();
                                         refreshCount();
                                     })
                                     .setNegativeButton(R.string.common_word_cancel, null)
                                     .setNeutralButton(R.string.block_move_to_bin, (dialog, which) -> {
-                                        moveRelatedBlocksToRecycleBin(position + 9);
+                                        moveRelatedBlocksToRecycleBin(originalPos + 9);
                                         palettes.remove(pos);
+                                        original_pallet_listmap.remove(originalPos);
                                         notifyItemRemoved(pos);
-                                        FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
-                                        removeRelatedBlocks(pos + 9);
+                                        FileUtil.writeFile(pallet_dir, getGson().toJson(original_pallet_listmap));
+                                        removeRelatedBlocks(originalPos + 9);
                                         readSettings();
                                         refreshCount();
                                     }).show();
                             break;
 
                         case insert:
-                            showPaletteDialog(false, null, null, null, position);
+                            showPaletteDialog(false, null, null, null, originalPos);
                             break;
 
                         default:
@@ -631,15 +667,20 @@ public class BlocksManager extends BaseAppCompatActivity {
 
             holder.itemBinding.dragHandler.setOnTouchListener((v, event) -> {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    itemTouchHelper.startDrag(holder);
+                    if (pallet_listmap.size() == original_pallet_listmap.size()) {
+                        itemTouchHelper.startDrag(holder);
+                    } else {
+                        SketchwareUtil.toast("Rearranging is disabled while searching");
+                    }
                 }
 
                 return false;
             });
 
             holder.itemBinding.backgroundCard.setOnClickListener(v -> {
+                int currentOriginalIndex = original_pallet_listmap.indexOf(palettes.get(holder.getAbsoluteAdapterPosition()));
                 Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
-                intent.putExtra("position", String.valueOf((long) (holder.getAbsoluteAdapterPosition() + 9)));
+                intent.putExtra("position", String.valueOf((long) (currentOriginalIndex + 9)));
                 intent.putExtra("dirB", blocks_dir);
                 intent.putExtra("dirP", pallet_dir);
                 startActivity(intent);

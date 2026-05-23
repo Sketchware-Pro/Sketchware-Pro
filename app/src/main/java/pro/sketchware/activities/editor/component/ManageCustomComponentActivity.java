@@ -54,6 +54,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
     private static final String COMPONENT_EXPORT_DIR = wq.getExtraDataExport() + "/components/";
     private static final String COMPONENT_DIR = wq.getCustomComponent();
     private List<HashMap<String, Object>> componentsList = new ArrayList<>();
+    private List<HashMap<String, Object>> originalComponentsList = new ArrayList<>();
     private TextView tv_guide;
     private RecyclerView componentView;
 
@@ -77,6 +78,20 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
         findViewById(R.id.fab).setOnClickListener(_view ->
                 startActivity(new Intent(getApplicationContext(), AddCustomComponentActivity.class)));
+
+        androidx.appcompat.widget.SearchView searchView = findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterComponents(newText);
+                return true;
+            }
+        });
 
         {
             View view = findViewById(R.id.content);
@@ -159,8 +174,9 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
     }
 
     private void readComponents(String _path) {
-        componentsList = getGson().fromJson(FileUtil.readFile(_path), Helper.TYPE_MAP_LIST);
-        if (componentsList != null && !componentsList.isEmpty()) {
+        originalComponentsList = getGson().fromJson(FileUtil.readFile(_path), Helper.TYPE_MAP_LIST);
+        if (originalComponentsList != null && !originalComponentsList.isEmpty()) {
+            componentsList = new ArrayList<>(originalComponentsList);
             ComponentsAdapter adapter = new ComponentsAdapter(componentsList);
             Parcelable state = componentView.getLayoutManager().onSaveInstanceState();
             componentView.setAdapter(adapter);
@@ -168,10 +184,27 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
             adapter.notifyDataSetChanged();
             componentView.setVisibility(View.VISIBLE);
             tv_guide.setVisibility(View.GONE);
+            findViewById(R.id.search_card).setVisibility(View.VISIBLE);
             return;
         }
         tv_guide.setVisibility(View.VISIBLE);
         componentView.setVisibility(View.GONE);
+        findViewById(R.id.search_card).setVisibility(View.GONE);
+    }
+
+    private void filterComponents(String query) {
+        componentsList.clear();
+        if (query.isEmpty()) {
+            componentsList.addAll(originalComponentsList);
+        } else {
+            for (HashMap<String, Object> map : originalComponentsList) {
+                String name = (String) map.get("name");
+                if (name != null && name.toLowerCase().contains(query.toLowerCase())) {
+                    componentsList.add(map);
+                }
+            }
+        }
+        componentView.setAdapter(new ComponentsAdapter(componentsList));
     }
 
     private void showFilePickerDialog() {
@@ -226,12 +259,12 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
                 for (int position : selectedPositions) {
                     var component = components.get(position);
                     if (position != -1 && ComponentsHandler.isValidComponent(component)) {
-                        componentsList.add(component);
+                        originalComponentsList.add(component);
                     } else {
                         SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
                     }
                 }
-                FileUtil.writeFile(COMPONENT_DIR, getGson().toJson(componentsList));
+                FileUtil.writeFile(COMPONENT_DIR, getGson().toJson(originalComponentsList));
                 readSettings();
                 v.dismiss();
             });
@@ -240,8 +273,8 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
         } else {
             var component = components.get(0);
             if (ComponentsHandler.isValidComponent(component)) {
-                componentsList.add(component);
-                FileUtil.writeFile(COMPONENT_DIR, getGson().toJson(componentsList));
+                originalComponentsList.add(component);
+                FileUtil.writeFile(COMPONENT_DIR, getGson().toJson(originalComponentsList));
                 readSettings();
             } else {
                 SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
@@ -251,7 +284,8 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
     private void save(HashMap<String, Object> _item) {
         componentsList.remove(_item);
-        FileUtil.writeFile(COMPONENT_DIR, getGson().toJson(componentsList));
+        originalComponentsList.remove(_item);
+        FileUtil.writeFile(COMPONENT_DIR, getGson().toJson(originalComponentsList));
     }
 
     private void export(int position) {
