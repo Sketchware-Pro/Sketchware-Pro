@@ -46,6 +46,26 @@
         android:text="@string/logic_editor_title_block_collection"
         android:textColor="?attr/colorTertiary" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ti_search"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        app:hintEnabled="false"
+        app:startIconDrawable="@drawable/ic_mtrl_search">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search..."
+            android:inputType="text"
+            android:padding="8dp"
+            android:textSize="12sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <com.besome.sketch.lib.ui.CustomScrollView
         android:id="@+id/scv"
         android:layout_width="match_parent"

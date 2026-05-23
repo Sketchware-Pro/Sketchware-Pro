@@ -4,8 +4,11 @@ import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -55,6 +58,33 @@ public class LogicEditorDrawer extends LinearLayout {
             Intent intent = new Intent(getContext(), AppSettings.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             getContext().startActivity(intent);
+        });
+
+        EditText search = findViewById(R.id.et_search);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().toLowerCase();
+                for (int i = 0; i < favorite.getChildCount(); i++) {
+                    View child = favorite.getChildAt(i);
+                    if (child instanceof Us block) {
+                        boolean visible = block.T.toLowerCase().contains(query);
+                        block.setVisibility(visible ? VISIBLE : GONE);
+                        // Also handle the spacer view if it exists
+                        if (i + 1 < favorite.getChildCount()) {
+                            favorite.getChildAt(i + 1).setVisibility(visible ? VISIBLE : GONE);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
