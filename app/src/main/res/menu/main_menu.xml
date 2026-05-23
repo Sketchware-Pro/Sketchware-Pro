@@ -5,9 +5,4 @@
         android:icon="@drawable/ic_mtrl_list"
         android:title="Projects" />
 
-    <item
-        android:id="@+id/item_sketchub"
-        android:icon="@drawable/sketchub_letter_logo"
-        android:title="Store" />
-
 </menu>
