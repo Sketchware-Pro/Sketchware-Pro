@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import com.besome.sketch.beans.ProjectResourceBean;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import a.a.a.Np;
 import a.a.a.oB;
@@ -34,6 +38,7 @@ public class FontManagerFragment extends qA {
     public fontAdapter adapter;
     public String dirPath = "";
     public ArrayList<ProjectResourceBean> projectResourceBeans;
+    private ArrayList<ProjectResourceBean> filteredResourceBeans;
     private FrManageFontListBinding binding;
     private ManageFontBinding actBinding;
 
@@ -61,21 +66,38 @@ public class FontManagerFragment extends qA {
 
     public void loadProjectResources() {
         projectResourceBeans = Np.g().f();
+        Editable text = binding.etSearch.getText();
+        filter(text != null ? text.toString() : "");
+    }
+
+    public final void resetSelection() {
+        projectResourceBeans.forEach(resource -> resource.isSelected = false);
+        Editable text = binding.etSearch.getText();
+        filter(text != null ? text.toString() : "");
+        actBinding.layoutBtnImport.setVisibility(View.GONE);
+    }
+
+    private void filter(String query) {
+        filteredResourceBeans.clear();
+        if (query.isEmpty()) {
+            filteredResourceBeans.addAll(projectResourceBeans);
+        } else {
+            String lowerCaseQuery = query.toLowerCase(Locale.ROOT);
+            for (ProjectResourceBean bean : projectResourceBeans) {
+                if (bean.resName.toLowerCase(Locale.ROOT).contains(lowerCaseQuery)) {
+                    filteredResourceBeans.add(bean);
+                }
+            }
+        }
         adapter.notifyDataSetChanged();
 
-        if (projectResourceBeans.isEmpty()) {
+        if (filteredResourceBeans.isEmpty()) {
             binding.tvGuide.setVisibility(View.VISIBLE);
             binding.fontList.setVisibility(View.GONE);
         } else {
             binding.fontList.setVisibility(View.VISIBLE);
             binding.tvGuide.setVisibility(View.GONE);
         }
-    }
-
-    public final void resetSelection() {
-        projectResourceBeans.forEach(resource -> resource.isSelected = false);
-        adapter.notifyDataSetChanged();
-        actBinding.layoutBtnImport.setVisibility(View.GONE);
     }
 
     public boolean isSelecting() {
@@ -155,6 +177,23 @@ public class FontManagerFragment extends qA {
 
         setHasOptionsMenu(true);
 
+        filteredResourceBeans = new ArrayList<>();
+
+        binding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         binding.fontList.setLayoutManager(new LinearLayoutManager(requireActivity()));
         adapter = new fontAdapter();
         binding.fontList.setAdapter(adapter);
@@ -182,12 +221,12 @@ public class FontManagerFragment extends qA {
 
         @Override
         public int getItemCount() {
-            return projectResourceBeans.size();
+            return filteredResourceBeans.size();
         }
 
         @Override
         public void onBindViewHolder(fontHolder holder, int position) {
-            ProjectResourceBean resource = projectResourceBeans.get(position);
+            ProjectResourceBean resource = filteredResourceBeans.get(position);
 
             String fontPath = wq.a() + File.separator + "font" + File.separator + "data" + File.separator + resource.resFullName;
 
@@ -220,7 +259,7 @@ public class FontManagerFragment extends qA {
                 binding.chkSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     int position = getLayoutPosition();
                     selectedPosition = position;
-                    ProjectResourceBean resource = projectResourceBeans.get(position);
+                    ProjectResourceBean resource = filteredResourceBeans.get(position);
                     resource.isSelected = isChecked;
                     updateImportButtonVisibility();
 

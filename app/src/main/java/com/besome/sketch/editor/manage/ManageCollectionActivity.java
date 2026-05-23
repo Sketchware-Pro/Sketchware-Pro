@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -152,8 +155,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private void openImageDetails(int position) {
-        ProjectResourceBean editTarget = images.get(position);
+    private void openImageDetails(ProjectResourceBean editTarget) {
         Intent intent = new Intent(getApplicationContext(), AddImageCollectionActivity.class);
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
@@ -161,8 +163,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         startActivityForResult(intent, REQUEST_CODE_SHOW_IMAGE_DETAILS);
     }
 
-    private void openSoundDetails(int position) {
-        ProjectResourceBean editTarget = sounds.get(position);
+    private void openSoundDetails(ProjectResourceBean editTarget) {
         collectionAdapter.stopPlayback();
         Intent intent = new Intent(getApplicationContext(), AddSoundCollectionActivity.class);
         intent.putParcelableArrayListExtra("sounds", sounds);
@@ -171,8 +172,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         startActivityForResult(intent, REQUEST_CODE_SHOW_SOUND_DETAILS);
     }
 
-    private void openFontDetails(int position) {
-        ProjectResourceBean editTarget = fonts.get(position);
+    private void openFontDetails(ProjectResourceBean editTarget) {
         Intent intent = new Intent(getApplicationContext(), AddFontCollectionActivity.class);
         intent.putParcelableArrayListExtra("fonts", fonts);
         intent.putExtra("sc_id", sc_id);
@@ -180,23 +180,20 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         startActivityForResult(intent, REQUEST_CODE_SHOW_FONT_DETAILS);
     }
 
-    private void openWidgetDetails(int position) {
-        String widgetName = Rp.h().g().get(position);
+    private void openWidgetDetails(String widgetName) {
         Intent intent = new Intent(getApplicationContext(), ShowWidgetCollectionActivity.class);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("widget_name", widgetName);
         startActivityForResult(intent, REQUEST_CODE_SHOW_WIDGET_DETAILS);
     }
 
-    private void openBlockDetails(int position) {
-        String blockName = Mp.h().g().get(position);
+    private void openBlockDetails(String blockName) {
         Intent intent = new Intent(getApplicationContext(), ShowBlockCollectionActivity.class);
         intent.putExtra("block_name", blockName);
         startActivityForResult(intent, REQUEST_CODE_SHOW_BLOCK_DETAILS);
     }
 
-    private void openMoreBlockDetails(int position) {
-        String blockName = Pp.h().g().get(position);
+    private void openMoreBlockDetails(String blockName) {
         Intent intent = new Intent(getApplicationContext(), ShowMoreBlockCollectionActivity.class);
         intent.putExtra("block_name", blockName);
         startActivityForResult(intent, REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS);
@@ -379,6 +376,28 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             setSelectedIndex(getSelectedIndex(item.getItemId()));
             return true;
         });
+
+        EditText search = findViewById(R.id.et_search);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                applyFilter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void applyFilter(String query) {
+        if (collectionAdapter != null) {
+            collectionAdapter.filter(query);
+        }
     }
 
     @Override
@@ -611,6 +630,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private class CollectionAdapter extends SoundPlayingAdapter<SoundPlayingAdapter.ViewHolder> {
         private int lastSelectedItemPosition;
         private int currentViewType;
+        private ArrayList<? extends SelectableBean> allItems;
         private ArrayList<? extends SelectableBean> currentCollectionTypeItems;
 
         public CollectionAdapter(RecyclerView target) {
@@ -635,11 +655,46 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 }
             });
             currentCollectionTypeItems = new ArrayList<>();
+            allItems = new ArrayList<>();
         }
 
         @Override
         public int getItemCount() {
             return currentCollectionTypeItems.size();
+        }
+
+        private String getBeanName(SelectableBean bean) {
+            if (bean instanceof ProjectResourceBean res) {
+                return res.resName;
+            } else if (bean instanceof WidgetCollectionBean widget) {
+                return widget.name;
+            } else if (bean instanceof BlockCollectionBean block) {
+                return block.name;
+            } else if (bean instanceof MoreBlockCollectionBean moreBlock) {
+                return moreBlock.name;
+            }
+            return "";
+        }
+
+        public void filter(String query) {
+            ArrayList<SelectableBean> filteredList = new ArrayList<>();
+            if (query == null || query.isEmpty()) {
+                filteredList.addAll(allItems);
+            } else {
+                String lowerQuery = query.toLowerCase();
+                for (SelectableBean bean : allItems) {
+                    if (getBeanName(bean).toLowerCase().contains(lowerQuery)) {
+                        filteredList.add(bean);
+                    }
+                }
+            }
+            currentCollectionTypeItems = filteredList;
+            if (currentCollectionTypeItems.size() <= 0) {
+                noItemsNote.setVisibility(View.VISIBLE);
+            } else {
+                noItemsNote.setVisibility(View.GONE);
+            }
+            notifyDataSetChanged();
         }
 
         private void onBindViewHolder(ImageCollectionViewHolder holder, int position) {
@@ -797,12 +852,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         private void setData(ArrayList<? extends SelectableBean> beans) {
-            currentCollectionTypeItems = beans;
-            if (beans.size() <= 0) {
-                noItemsNote.setVisibility(View.VISIBLE);
-            } else {
-                noItemsNote.setVisibility(View.GONE);
-            }
+            allItems = beans;
+            EditText search = findViewById(R.id.et_search);
+            filter(search.getText().toString());
         }
 
         @Override
@@ -886,12 +938,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
                     lastSelectedItemPosition = getLayoutPosition();
+                    BlockCollectionBean bean = (BlockCollectionBean) currentCollectionTypeItems.get(lastSelectedItemPosition);
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
-                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        bean.isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
                     } else {
-                        openBlockDetails(lastSelectedItemPosition);
+                        openBlockDetails(bean.name);
                     }
                 });
                 cardView.setOnLongClickListener(v -> {
@@ -927,12 +980,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
                     lastSelectedItemPosition = getLayoutPosition();
+                    ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(lastSelectedItemPosition);
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
-                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        bean.isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
                     } else {
-                        openFontDetails(lastSelectedItemPosition);
+                        openFontDetails(bean);
                     }
                 });
                 cardView.setOnLongClickListener(v -> {
@@ -964,12 +1018,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 checkBox.setVisibility(View.GONE);
                 image.setOnClickListener(v -> {
                     lastSelectedItemPosition = getLayoutPosition();
+                    ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(lastSelectedItemPosition);
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
-                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        bean.isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
                     } else {
-                        openImageDetails(lastSelectedItemPosition);
+                        openImageDetails(bean);
                     }
                 });
                 image.setOnLongClickListener(v -> {
@@ -1001,12 +1056,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
                     lastSelectedItemPosition = getLayoutPosition();
+                    MoreBlockCollectionBean bean = (MoreBlockCollectionBean) currentCollectionTypeItems.get(lastSelectedItemPosition);
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
-                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        bean.isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
                     } else {
-                        openMoreBlockDetails(lastSelectedItemPosition);
+                        openMoreBlockDetails(bean.name);
                     }
                 });
                 cardView.setOnLongClickListener(v -> {
@@ -1053,12 +1109,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 });
                 cardView.setOnClickListener(v -> {
                     lastSelectedItemPosition = getLayoutPosition();
+                    ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(lastSelectedItemPosition);
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
-                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        bean.isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
                     } else {
-                        openSoundDetails(lastSelectedItemPosition);
+                        openSoundDetails(bean);
                     }
                 });
                 cardView.setOnLongClickListener(v -> {
@@ -1100,12 +1157,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
                     lastSelectedItemPosition = getLayoutPosition();
+                    WidgetCollectionBean bean = (WidgetCollectionBean) currentCollectionTypeItems.get(lastSelectedItemPosition);
                     if (selectingToBeDeletedItems) {
                         checkBox.setChecked(!checkBox.isChecked());
-                        currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
+                        bean.isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
                     } else {
-                        openWidgetDetails(lastSelectedItemPosition);
+                        openWidgetDetails(bean.name);
                     }
                 });
                 cardView.setOnLongClickListener(v -> {

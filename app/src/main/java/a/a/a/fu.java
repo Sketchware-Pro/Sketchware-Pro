@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +57,7 @@ public class fu extends qA implements View.OnClickListener {
 
     private FrManageImageListBinding binding;
     private ArrayList<ProjectResourceBean> collectionImages;
+    private ArrayList<ProjectResourceBean> filteredImages;
     private Adapter adapter;
     private String sc_id;
 
@@ -63,6 +66,21 @@ public class fu extends qA implements View.OnClickListener {
 
     public void refreshData() {
         collectionImages = Op.g().f();
+        filter(binding.etSearch.getText().toString());
+    }
+
+    private void filter(String query) {
+        filteredImages.clear();
+        if (query.isEmpty()) {
+            filteredImages.addAll(collectionImages);
+        } else {
+            String lowerCaseQuery = query.toLowerCase();
+            for (ProjectResourceBean image : collectionImages) {
+                if (image.resName.toLowerCase().contains(lowerCaseQuery)) {
+                    filteredImages.add(image);
+                }
+            }
+        }
         adapter.notifyDataSetChanged();
         updateGuideVisibility();
     }
@@ -71,7 +89,7 @@ public class fu extends qA implements View.OnClickListener {
         for (ProjectResourceBean image : collectionImages) {
             image.isSelected = false;
         }
-        adapter.notifyDataSetChanged();
+        filter(binding.etSearch.getText().toString());
     }
 
     public boolean isSelecting() {
@@ -82,7 +100,7 @@ public class fu extends qA implements View.OnClickListener {
     }
 
     public void updateGuideVisibility() {
-        boolean isEmpty = collectionImages.isEmpty();
+        boolean isEmpty = filteredImages.isEmpty();
         binding.tvGuide.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
         binding.imageList.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
     }
@@ -147,10 +165,27 @@ public class fu extends qA implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FrManageImageListBinding.inflate(inflater, container, false);
+        filteredImages = new ArrayList<>();
         binding.imageList.setHasFixedSize(true);
         binding.imageList.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
         adapter = new Adapter();
         binding.imageList.setAdapter(adapter);
+
+        binding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         binding.tvGuide.setText(R.string.design_manager_image_description_guide_add_image);
         btnImport = requireActivity().findViewById(R.id.btn_import);
         layoutBtnImport = requireActivity().findViewById(R.id.layout_btn_import);
@@ -169,7 +204,7 @@ public class fu extends qA implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean image = collectionImages.get(position);
+            ProjectResourceBean image = filteredImages.get(position);
             holder.binding.chkSelect.setVisibility(View.VISIBLE);
             holder.binding.imgNinePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
             Glide.with(requireActivity())
@@ -190,7 +225,7 @@ public class fu extends qA implements View.OnClickListener {
 
         @Override
         public int getItemCount() {
-            return collectionImages.size();
+            return filteredImages.size();
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
@@ -202,7 +237,7 @@ public class fu extends qA implements View.OnClickListener {
                 binding.chkSelect.setVisibility(View.VISIBLE);
                 binding.img.setOnClickListener(v -> {
                     binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
-                    collectionImages.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
+                    filteredImages.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
                     onItemSelected();
                     notifyItemChanged(getLayoutPosition());
                 });

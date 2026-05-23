@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +39,7 @@ import pro.sketchware.databinding.ManageSoundListItemBinding;
 public class Yv extends qA {
     private String sc_id;
     private ArrayList<ProjectResourceBean> sounds;
+    private ArrayList<ProjectResourceBean> filteredSounds;
     private String dirPath = "";
     private Adapter adapter;
 
@@ -81,6 +85,23 @@ public class Yv extends qA {
         actBinding = ((ManageSoundActivity) requireActivity()).binding;
         binding = FrManageSoundListBinding.inflate(inflater, container, false);
 
+        filteredSounds = new ArrayList<>();
+
+        binding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         binding.soundList.setLayoutManager(new LinearLayoutManager(null, LinearLayoutManager.VERTICAL, false));
         adapter = new Adapter();
         binding.soundList.setAdapter(adapter);
@@ -120,14 +141,29 @@ public class Yv extends qA {
 
     public void loadProjectSounds() {
         sounds = Qp.g().f();
-        adapter.notifyDataSetChanged();
-        showOrHideNoSoundsText();
+        filter(binding.etSearch.getText().toString());
     }
 
     public void resetSelection() {
         sounds.forEach(projectResourceBean -> projectResourceBean.isSelected = false);
-        adapter.notifyDataSetChanged();
+        filter(binding.etSearch.getText().toString());
         actBinding.layoutBtnImport.setVisibility(View.GONE);
+    }
+
+    private void filter(String query) {
+        filteredSounds.clear();
+        if (query.isEmpty()) {
+            filteredSounds.addAll(sounds);
+        } else {
+            String lowerCaseQuery = query.toLowerCase(Locale.ROOT);
+            for (ProjectResourceBean sound : sounds) {
+                if (sound.resName.toLowerCase(Locale.ROOT).contains(lowerCaseQuery)) {
+                    filteredSounds.add(sound);
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
+        showOrHideNoSoundsText();
     }
 
     public boolean isSelecting() {
@@ -135,7 +171,8 @@ public class Yv extends qA {
     }
 
     private void showOrHideNoSoundsText() {
-        if (sounds.isEmpty()) {
+        boolean isEmpty = filteredSounds.isEmpty();
+        if (isEmpty) {
             binding.tvGuide.setVisibility(View.VISIBLE);
             binding.soundList.setVisibility(View.GONE);
         } else {
@@ -165,17 +202,17 @@ public class Yv extends qA {
 
         @Override
         public ProjectResourceBean getData(int position) {
-            return sounds.get(position);
+            return filteredSounds.get(position);
         }
 
         @Override
         public Path getAudio(int position) {
-            return Paths.get(wq.a(), "sound", "data", sounds.get(position).resFullName);
+            return Paths.get(wq.a(), "sound", "data", filteredSounds.get(position).resFullName);
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean bean = sounds.get(position);
+            ProjectResourceBean bean = filteredSounds.get(position);
             holder.binding.chkSelect.setVisibility(View.VISIBLE);
 
             var audioMetadata = holder.audioMetadata;
@@ -207,7 +244,7 @@ public class Yv extends qA {
 
         @Override
         public int getItemCount() {
-            return sounds.size();
+            return filteredSounds.size();
         }
 
         private class ViewHolder extends SoundPlayingAdapter.ViewHolder {
@@ -228,7 +265,7 @@ public class Yv extends qA {
 
                 binding.chkSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     int position = getLayoutPosition();
-                    sounds.get(position).isSelected = isChecked;
+                    filteredSounds.get(position).isSelected = isChecked;
                     updateImportSoundsText();
                     new Handler().post(() -> notifyItemChanged(position));
                 });

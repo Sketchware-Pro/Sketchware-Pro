@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +22,7 @@ import com.besome.sketch.beans.ProjectResourceBean;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import a.a.a.jC;
@@ -40,6 +43,7 @@ public class ImportFontFragment extends qA {
     public String dirPath = "";
     public oB oB;
     public ArrayList<ProjectResourceBean> projectResourceBeans;
+    private ArrayList<ProjectResourceBean> filteredResourceBeans;
     private FrManageFontListBinding binding;
     private fontAdapter adapter;
     private ManageFontBinding actBinding;
@@ -90,7 +94,8 @@ public class ImportFontFragment extends qA {
         } else {
             SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_import_complete));
             projectResourceBeans.addAll(newResourceBeans);
-            adapter.notifyDataSetChanged();
+            Editable text = binding.etSearch.getText();
+            filter(text != null ? text.toString() : "");
         }
 
         toggleEmptyStateVisibility();
@@ -166,7 +171,8 @@ public class ImportFontFragment extends qA {
     }
 
     public final void toggleEmptyStateVisibility() {
-        if (projectResourceBeans.isEmpty()) {
+        boolean isEmpty = filteredResourceBeans.isEmpty();
+        if (isEmpty) {
             binding.tvGuide.setVisibility(View.VISIBLE);
             binding.fontList.setVisibility(View.GONE);
         } else {
@@ -174,6 +180,22 @@ public class ImportFontFragment extends qA {
             binding.tvGuide.setVisibility(View.GONE);
         }
 
+    }
+
+    private void filter(String query) {
+        filteredResourceBeans.clear();
+        if (query.isEmpty()) {
+            filteredResourceBeans.addAll(projectResourceBeans);
+        } else {
+            String lowerCaseQuery = query.toLowerCase(Locale.ROOT);
+            for (ProjectResourceBean bean : projectResourceBeans) {
+                if (bean.resName.toLowerCase(Locale.ROOT).contains(lowerCaseQuery)) {
+                    filteredResourceBeans.add(bean);
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
+        toggleEmptyStateVisibility();
     }
 
     public void toFontActivity() {
@@ -203,7 +225,8 @@ public class ImportFontFragment extends qA {
         }
 
         adapter.notifyDataSetChanged();
-        toggleEmptyStateVisibility();
+        Editable text = binding.etSearch.getText();
+        filter(text != null ? text.toString() : "");
     }
 
     @Override
@@ -213,15 +236,16 @@ public class ImportFontFragment extends qA {
         if (requestCode == 271 && resultCode == Activity.RESULT_OK) {
             resourceBean = intent.getParcelableExtra("resource_bean");
             projectResourceBeans.add(resourceBean);
-            adapter.notifyDataSetChanged();
-            toggleEmptyStateVisibility();
+            Editable text = binding.etSearch.getText();
+            filter(text != null ? text.toString() : "");
             ((ManageFontActivity) requireActivity()).collectionFontsFragment.loadProjectResources();
             SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_add_complete));
         } else if (requestCode == 272 && resultCode == Activity.RESULT_OK) {
             resourceBean = intent.getParcelableExtra("resource_bean");
-            projectResourceBeans.set(adapter.selectedPosition, resourceBean);
-            adapter.notifyDataSetChanged();
-            toggleEmptyStateVisibility();
+            ProjectResourceBean oldBean = filteredResourceBeans.get(adapter.selectedPosition);
+            projectResourceBeans.set(projectResourceBeans.indexOf(oldBean), resourceBean);
+            Editable text = binding.etSearch.getText();
+            filter(text != null ? text.toString() : "");
             ((ManageFontActivity) requireActivity()).collectionFontsFragment.loadProjectResources();
             SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_edit_complete));
         }
@@ -248,6 +272,24 @@ public class ImportFontFragment extends qA {
         setHasOptionsMenu(true);
 
         actBinding = ((ManageFontActivity) requireActivity()).binding;
+
+        filteredResourceBeans = new ArrayList<>();
+
+        binding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         actBinding.btnCancel.setOnClickListener(view -> setSelectingMode(false));
         actBinding.btnDelete.setOnClickListener(view -> {
             if (isSelecting) {
@@ -259,7 +301,8 @@ public class ImportFontFragment extends qA {
                 }
 
                 setSelectingMode(false);
-                toggleEmptyStateVisibility();
+                Editable text = binding.etSearch.getText();
+                filter(text != null ? text.toString() : "");
                 SketchwareUtil.toast(Helper.getResString(R.string.common_message_complete_delete));
                 ((ManageFontActivity) requireActivity()).changeFabState(true);
             }
@@ -321,12 +364,12 @@ public class ImportFontFragment extends qA {
 
         @Override
         public int getItemCount() {
-            return projectResourceBeans.size();
+            return filteredResourceBeans.size();
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean resource = projectResourceBeans.get(position);
+            ProjectResourceBean resource = filteredResourceBeans.get(position);
 
             if (isSelecting) {
                 holder.binding.imgFont.setVisibility(View.GONE);
@@ -378,26 +421,29 @@ public class ImportFontFragment extends qA {
 
                 binding.layoutItem.setOnClickListener(view -> {
                     selectedPosition = getLayoutPosition();
+                    ProjectResourceBean bean = filteredResourceBeans.get(selectedPosition);
 
                     if (isSelecting) {
                         boolean newState = !binding.chkSelect.isChecked();
                         binding.chkSelect.setChecked(newState);
-                        projectResourceBeans.get(selectedPosition).isSelected = newState;
+                        bean.isSelected = newState;
                         notifyItemChanged(selectedPosition);
                     } else {
-                        importFont(projectResourceBeans.get(getLayoutPosition()).resFullName, getResourceFilePath(projectResourceBeans.get(getLayoutPosition())));
+                        importFont(bean.resFullName, getResourceFilePath(bean));
                     }
                 });
 
                 binding.layoutItem.setOnLongClickListener(view -> {
                     setSelectingMode(true);
                     selectedPosition = getLayoutPosition();
+                    ProjectResourceBean bean = filteredResourceBeans.get(selectedPosition);
 
                     boolean newState = !binding.chkSelect.isChecked();
                     binding.chkSelect.setChecked(newState);
-                    projectResourceBeans.get(selectedPosition).isSelected = newState;
+                    bean.isSelected = newState;
+                    notifyItemChanged(selectedPosition);
 
-                    return false;
+                    return true;
                 });
             }
         }

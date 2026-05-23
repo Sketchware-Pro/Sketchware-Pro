@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -63,6 +65,7 @@ public class pu extends qA {
     private FrManageImageListBinding binding;
     private String sc_id;
     private ArrayList<ProjectResourceBean> images;
+    private ArrayList<ProjectResourceBean> filteredImages;
     private MaterialCardView actionButtonContainer;
     private FloatingActionButton fab;
     private String projectImagesDirectory = "";
@@ -96,7 +99,7 @@ public class pu extends qA {
                 addedImages = result.getData().getParcelableArrayListExtra("images");
             }
             images.addAll(addedImages);
-            adapter.notifyItemRangeInserted(images.size() - addedImages.size(), addedImages.size());
+            filter(binding.etSearch.getText().toString());
             updateGuideVisibility();
             ((ManageImageActivity) requireActivity()).l().refreshData();
             bB.a(requireActivity(), getString(R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
@@ -115,10 +118,10 @@ public class pu extends qA {
             for (ProjectResourceBean image : images) {
                 if (image.resName.equals(editedImage.resName)) {
                     image.copy(editedImage);
-                    adapter.notifyItemChanged(images.indexOf(image));
                     break;
                 }
             }
+            filter(binding.etSearch.getText().toString());
             updateGuideVisibility();
             ((ManageImageActivity) requireActivity()).l().refreshData();
             bB.a(requireActivity(), getString(R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
@@ -161,6 +164,7 @@ public class pu extends qA {
                 images.add(next);
             }
         }
+        filteredImages.addAll(images);
     }
 
     private void unselectAll() {
@@ -175,7 +179,7 @@ public class pu extends qA {
                 images.remove(i);
             }
         }
-        adapter.notifyDataSetChanged();
+        filter(binding.etSearch.getText().toString());
     }
 
     public void saveImages() {
@@ -313,10 +317,27 @@ public class pu extends qA {
         binding = FrManageImageListBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
         images = new ArrayList<>();
+        filteredImages = new ArrayList<>();
         binding.imageList.setHasFixedSize(true);
         binding.imageList.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
         adapter = new Adapter(binding.imageList);
         binding.imageList.setAdapter(adapter);
+
+        binding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         binding.tvGuide.setText(R.string.design_manager_image_description_guide_add_image);
         actionButtonContainer = requireActivity().findViewById(R.id.layout_btn_group);
         MaterialButton delete = requireActivity().findViewById(R.id.btn_delete);
@@ -433,8 +454,7 @@ public class pu extends qA {
 
     private void addImage(ProjectResourceBean projectResourceBean) {
         images.add(projectResourceBean);
-        adapter.notifyDataSetChanged();
-        adapter.notifyItemInserted(adapter.getItemCount());
+        filter(binding.etSearch.getText().toString());
         updateGuideVisibility();
     }
 
@@ -449,6 +469,22 @@ public class pu extends qA {
 
     private void addImages(ArrayList<ProjectResourceBean> arrayList) {
         images.addAll(arrayList);
+        filter(binding.etSearch.getText().toString());
+    }
+
+    private void filter(String query) {
+        filteredImages.clear();
+        if (query.isEmpty()) {
+            filteredImages.addAll(images);
+        } else {
+            String lowerCaseQuery = query.toLowerCase();
+            for (ProjectResourceBean image : images) {
+                if (image.resName.toLowerCase().contains(lowerCaseQuery)) {
+                    filteredImages.add(image);
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
@@ -474,7 +510,7 @@ public class pu extends qA {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean image = images.get(position);
+            ProjectResourceBean image = filteredImages.get(position);
 
             holder.binding.deleteImgContainer.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
             holder.binding.imgNinePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
@@ -483,9 +519,10 @@ public class pu extends qA {
             holder.binding.chkSelect.setChecked(image.isSelected);
             holder.binding.tvImageName.setText(image.resName);
 
-            if (colorMap.get(position) != null) {
-                int color = Objects.requireNonNullElse((int) colorMap.get(position).get("color"), 0xFFFFFFFF);
-                Log.d("Applying filter to " + position, String.valueOf(color));
+            if (colorMap.get(images.indexOf(image)) != null) {
+                Map<String, Object> map = colorMap.get(images.indexOf(image));
+                int color = map != null && map.get("color") != null ? (int) map.get("color") : 0xFFFFFFFF;
+                Log.d("Applying filter to " + images.indexOf(image), String.valueOf(color));
                 holder.binding.img.setColorFilter(color, PorterDuff.Mode.SRC_IN);
             } else {
                 holder.binding.img.clearColorFilter();
@@ -505,7 +542,7 @@ public class pu extends qA {
                 Glide.with(requireActivity())
                         .asBitmap()
                         .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
-                                : images.get(position).resFullName)
+                                : image.resFullName)
                         .transform(new BitmapTransformation() {
 
                             final String ID = "my-transformation";
@@ -537,7 +574,7 @@ public class pu extends qA {
 
         @Override
         public int getItemCount() {
-            return images.size();
+            return filteredImages.size();
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
@@ -549,13 +586,13 @@ public class pu extends qA {
 
                 binding.img.setOnClickListener(v -> {
                     if (!isSelecting) {
-                        if (!(images.get(getLayoutPosition()).resFullName.endsWith(".svg") ||
-                                images.get(getLayoutPosition()).resFullName.endsWith(".xml"))) {
-                            showImageDetailsDialog(images.get(getLayoutPosition()));
+                        if (!(filteredImages.get(getLayoutPosition()).resFullName.endsWith(".svg") ||
+                                filteredImages.get(getLayoutPosition()).resFullName.endsWith(".xml"))) {
+                            showImageDetailsDialog(filteredImages.get(getLayoutPosition()));
                         }
                     } else {
                         binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
-                        images.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
+                        filteredImages.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
                         notifyItemChanged(getLayoutPosition());
                     }
                 });
@@ -563,7 +600,7 @@ public class pu extends qA {
                 binding.img.setOnLongClickListener(v -> {
                     a(true);
                     binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
-                    images.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
+                    filteredImages.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
                     return true;
                 });
             }

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,6 +42,7 @@ import pro.sketchware.utility.SketchwareUtil;
 public class ow extends qA {
 
     public ArrayList<ProjectResourceBean> sounds;
+    private ArrayList<ProjectResourceBean> filteredSounds;
     public boolean isSelecting = false;
     private String sc_id;
     private Adapter adapter;
@@ -49,7 +52,8 @@ public class ow extends qA {
     private ManageSoundBinding actBinding;
 
     private void updateNoSoundsTextVisibility() {
-        if (sounds.isEmpty()) {
+        boolean isEmpty = filteredSounds.isEmpty();
+        if (isEmpty) {
             binding.tvGuide.setVisibility(View.VISIBLE);
             binding.soundList.setVisibility(View.GONE);
         } else {
@@ -96,8 +100,7 @@ public class ow extends qA {
             dirPath = savedInstanceState.getString("dir_path");
             sounds = savedInstanceState.getParcelableArrayList("sounds");
         }
-        adapter.notifyDataSetChanged();
-        updateNoSoundsTextVisibility();
+        filter(binding.etSearch.getText().toString());
     }
 
     @Override
@@ -107,14 +110,13 @@ public class ow extends qA {
             sounds.add(data.getParcelableExtra("project_resource"));
             SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_add_complete));
 
-            adapter.notifyDataSetChanged();
-            updateNoSoundsTextVisibility();
+            filter(binding.etSearch.getText().toString());
             ((ManageSoundActivity) requireActivity()).collectionSounds.loadProjectSounds();
         } else if (requestCode == 270 && resultCode == Activity.RESULT_OK) {
-            sounds.set(adapter.lastSelectedSound, data.getParcelableExtra("project_resource"));
+            ProjectResourceBean oldSound = filteredSounds.get(adapter.lastSelectedSound);
+            sounds.set(sounds.indexOf(oldSound), data.getParcelableExtra("project_resource"));
             SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_edit_complete));
-            adapter.notifyDataSetChanged();
-            updateNoSoundsTextVisibility();
+            filter(binding.etSearch.getText().toString());
             ((ManageSoundActivity) requireActivity()).collectionSounds.loadProjectSounds();
         }
     }
@@ -138,6 +140,23 @@ public class ow extends qA {
         actBinding = ((ManageSoundActivity) requireActivity()).binding;
         binding = FrManageSoundListBinding.inflate(inflater, container, false);
 
+        filteredSounds = new ArrayList<>();
+
+        binding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         actBinding.btnDelete.setOnClickListener(view -> {
             if (sounds.isEmpty()) {
                 SketchwareUtil.toast(Helper.getResString(R.string.common_message_no_item_delete));
@@ -149,12 +168,11 @@ public class ow extends qA {
                         sounds.remove(i);
                     }
                 }
-                adapter.notifyDataSetChanged();
+                filter(binding.etSearch.getText().toString());
                 adapter.stopPlayback();
                 SketchwareUtil.toast(Helper.getResString(R.string.common_message_complete_delete));
             }
             setSelecting(false);
-            updateNoSoundsTextVisibility();
         });
 
         actBinding.btnCancel.setOnClickListener(view -> setSelecting(false));
@@ -167,6 +185,22 @@ public class ow extends qA {
             }
         });
         return binding.getRoot();
+    }
+
+    private void filter(String query) {
+        filteredSounds.clear();
+        if (query.isEmpty()) {
+            filteredSounds.addAll(sounds);
+        } else {
+            String lowerCaseQuery = query.toLowerCase(Locale.ROOT);
+            for (ProjectResourceBean sound : sounds) {
+                if (sound.resName.toLowerCase(Locale.ROOT).contains(lowerCaseQuery)) {
+                    filteredSounds.add(sound);
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
+        updateNoSoundsTextVisibility();
     }
 
     @Override
@@ -325,18 +359,18 @@ public class ow extends qA {
 
         @Override
         public ProjectResourceBean getData(int position) {
-            return sounds.get(position);
+            return filteredSounds.get(position);
         }
 
         @Override
         public Path getAudio(int position) {
-            var bean = sounds.get(position);
+            var bean = filteredSounds.get(position);
             return Paths.get(bean.isNew ? bean.resFullName : getFilePathFromResource(bean));
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean bean = sounds.get(position);
+            ProjectResourceBean bean = filteredSounds.get(position);
 
             if (!isSelecting) {
                 var audioMetadata = holder.audioMetadata;
@@ -378,7 +412,7 @@ public class ow extends qA {
 
         @Override
         public int getItemCount() {
-            return sounds.size();
+            return filteredSounds.size();
         }
 
         private class ViewHolder extends SoundPlayingAdapter.ViewHolder {
@@ -406,7 +440,7 @@ public class ow extends qA {
                     }
                     if (isSelecting) {
                         binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
-                        sounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
+                        filteredSounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
                         notifyItemChanged(lastSelectedSound);
                     } else {
                         stopPlayback();
@@ -418,7 +452,7 @@ public class ow extends qA {
                     setSelecting(true);
                     lastSelectedSound = getLayoutPosition();
                     binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
-                    sounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
+                    filteredSounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
                     return true;
                 });
             }
