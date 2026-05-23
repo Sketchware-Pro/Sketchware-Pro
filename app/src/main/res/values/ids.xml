@@ -9,6 +9,7 @@
     <item name="item_sound_manager" type="id" />
     <item name="item_font_manager" type="id" />
     <item name="item_java_manager" type="id" />
+    <item name="item_edit_java_class" type="id" />
     <item name="item_resource_manager" type="id" />
     <item name="item_resource_editor" type="id" />
     <item name="item_assets_manager" type="id" />
