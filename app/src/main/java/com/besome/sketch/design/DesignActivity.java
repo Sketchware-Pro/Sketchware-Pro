@@ -98,7 +98,6 @@ import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
-import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.custom_blocks.CustomBlocksDialog;
 import mod.hey.studios.project.proguard.ManageProguardActivity;
@@ -507,10 +506,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             showCurrentActivitySrcCode();
             return true;
         });
-        bottomMenu.add(Menu.NONE, 8, Menu.NONE, "Edit Java class").setOnMenuItemClickListener(item -> {
-            toJavaEditor();
-            return true;
-        });
         bottomMenu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK").setVisible(false).setOnMenuItemClickListener(item -> {
             if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
                 installBuiltApk();
@@ -604,7 +599,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         if (bottomMenu != null) {
             handler.post(() -> {
                 bottomMenu.findItem(2).setVisible(q != null && FileUtil.isExistFile(q.projectMyscPath));
-                bottomMenu.findItem(8).setVisible(projectFile != null && !projectFile.getJavaName().isEmpty());
                 var isDebugApkExists = isDebugApkExists();
                 bottomMenu.findItem(4).setVisible(isDebugApkExists);
                 bottomMenu.findItem(6).setVisible(isDebugApkExists);
@@ -928,31 +922,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      */
     void toJavaManager() {
         launchActivity(ManageJavaActivity.class, null, new Pair<>("pkgName", q.packageName));
-    }
-
-    /**
-     * Opens {@link SrcCodeEditor} for the current Java file.
-     */
-    void toJavaEditor() {
-        if (projectFile == null) return;
-        String javaName = projectFile.getJavaName();
-        if (javaName.isEmpty()) {
-            SketchwareUtil.toast("This file type does not have a Java class.");
-            return;
-        }
-
-        String filePath = q.javaFilesPath + File.separator + q.packageNameAsFolders + File.separator + javaName;
-        if (!FileUtil.isExistFile(filePath)) {
-            SketchwareUtil.toast("Java file not found. Please build the project first.");
-            return;
-        }
-
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), SrcCodeEditor.class);
-        intent.putExtra("sc_id", sc_id);
-        intent.putExtra("title", javaName);
-        intent.putExtra("content", filePath);
-        startActivity(intent);
     }
 
     /**

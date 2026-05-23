@@ -1397,8 +1397,6 @@ Do you want to continue?"</string>
     <string name="logic_block_favorites_delete_message">Are you sure you want to delete your saved block from My Collection? This action can not be undone.</string>
     <string name="logic_block_favorites_delete_title">Delete from My Collection</string>
     <string name="logic_block_favorites_save_guide">Saved blocks are added to My Collection and are accessible from all the projects.</string>
-    <string name="design_drawer_menu_title_edit_java">Edit current Java class</string>
-    <string name="design_drawer_menu_description_edit_java">Edit the Java source code of this activity</string>
     <string name="logic_block_favorites_save_title">Save Block to My Collection</string>
     <string name="logic_button_explore_shared_more_block">Shared More Block</string>
     <string name="logic_button_import_more_block">Import From Collection</string>
