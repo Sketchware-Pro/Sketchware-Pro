@@ -41,6 +41,11 @@
                 android:id="@+id/social_github"
                 android:icon="@drawable/ic_github"
                 android:title="GitHub" />
+
+            <item
+                android:id="@+id/social_swbhub"
+                android:icon="@drawable/ic_mtrl_web"
+                android:title="SWBHub" />
         </menu>
     </item>
 

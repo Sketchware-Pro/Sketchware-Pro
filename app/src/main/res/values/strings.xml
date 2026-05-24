@@ -2244,6 +2244,7 @@ Please try again later"</string>
     <string name="github_api_error_message">Something went wrong. Please wait and try again.</string>
     <string name="github_api_date_unavailable">Date unavailable</string>
     <string name="link_github_url">https://github.com/Sketchware-Pro/Sketchware-Pro</string>
+    <string name="link_swbhub_url">http://swbhub.web.app/</string>
     <string name="change_launcher_activity_dialog_title">Launcher Activity</string>
     <string name="common_word_add_activtiy">Add Activity</string>
     <string name="delete_custom_activity_dialog_message">All features related to %1$s will be removed. Are you sure?</string>

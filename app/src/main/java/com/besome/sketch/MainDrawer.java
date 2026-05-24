@@ -74,6 +74,8 @@ public class MainDrawer extends NavigationView {
                 url = R.string.link_telegram_invite;
             } else if (id == R.id.social_github) {
                 url = R.string.link_github_url;
+            } else if (id == R.id.social_swbhub) {
+                url = R.string.link_swbhub_url;
             }
 
             if (url != -1) {
