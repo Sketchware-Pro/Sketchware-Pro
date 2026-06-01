@@ -2319,6 +2319,9 @@ Please try again later"</string>
     <string name="code_project_error_project_name">Project name is required</string>
     <string name="code_project_close_tab">Close tab</string>
     <string name="code_project_no_file_open">No file open</string>
+    <string name="code_project_unsaved_changes">Unsaved Changes</string>
+    <string name="code_project_discard_changes">\'%s\' has unsaved changes. Discard?</string>
+    <string name="code_project_discard">Discard</string>
 
 
 </resources>

@@ -237,7 +237,7 @@ public class CodeProjectBuilder {
         }
 
         if (exitCode != ExitCode.OK) {
-            throw new Exception("Kotlin compilation failed");
+            throw new Exception("Kotlin compilation failed: " + collector.getDiagnostics(true));
         }
     }
 

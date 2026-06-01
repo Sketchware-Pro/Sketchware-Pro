@@ -198,6 +198,20 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private void onTabClose(int position) {
         if (position < 0 || position >= openTabs.size()) return;
 
+        OpenFileTab tab = openTabs.get(position);
+        if (tab.isModified()) {
+            new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.code_project_unsaved_changes)
+                    .setMessage(getString(R.string.code_project_discard_changes, tab.getFile().getName()))
+                    .setPositiveButton(R.string.code_project_discard, (dialog, which) -> closeTab(position))
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show();
+        } else {
+            closeTab(position);
+        }
+    }
+
+    private void closeTab(int position) {
         openTabs.remove(position);
 
         if (openTabs.isEmpty()) {
