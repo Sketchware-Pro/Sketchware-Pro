@@ -39,6 +39,13 @@
             android:background="?attr/colorSurfaceContainer"
             android:visibility="gone" />
 
+        <include
+            layout="@layout/panel_search"
+            android:id="@+id/search_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
         <io.github.rosemoe.sora.widget.CodeEditor
             android:id="@+id/editor"
             android:layout_width="match_parent"

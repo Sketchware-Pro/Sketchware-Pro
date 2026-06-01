@@ -2338,5 +2338,24 @@ Please try again later"</string>
     <string name="code_project_file_exists">A file or folder with that name already exists.</string>
     <string name="code_project_operation_failed">Operation failed. Check permissions.</string>
 
+    <!-- Search & Replace -->
+    <string name="code_project_search">Search</string>
+    <string name="code_project_search_in_project">Search in Project</string>
+    <string name="code_project_replace">Replace</string>
+    <string name="code_project_replace_all">Replace All</string>
+    <string name="code_project_no_results">No results</string>
+    <string name="code_project_match_count">%1$d of %2$d</string>
+
+    <!-- Project Settings -->
+    <string name="code_project_settings">Project Settings</string>
+    <string name="code_project_setting_app_name">App Name</string>
+    <string name="code_project_setting_package">Package Name</string>
+    <string name="code_project_setting_version_code">Version Code</string>
+    <string name="code_project_setting_version_name">Version Name</string>
+    <string name="code_project_setting_min_sdk">Min SDK</string>
+    <string name="code_project_settings_saved">Settings saved</string>
+    <string name="code_project_error_version_code">Version code is required</string>
+    <string name="code_project_error_version_name">Version name is required</string>
+
 
 </resources>
