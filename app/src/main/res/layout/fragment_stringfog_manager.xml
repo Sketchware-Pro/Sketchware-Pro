@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:text="StringFog Manager" />
+        android:text="@string/hardcoded_stringfog_manager" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/sw_pg_enabled"
@@ -26,13 +26,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:checked="true"
-        android:text="Activated" />
+        android:text="@string/hardcoded_activated" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="16dp"
-        android:text="Activating StringFog will encrypt the strings in compilation time, which will make your app more difficult to reverse-engineer."
+        android:text="@string/hardcoded_activating_stringfog_will_encrypt_the_strings_in_compilation"
         android:textAppearance="?attr/textAppearanceBodyMedium"
         android:textColor="?attr/colorOnSurfaceVariant"
         app:drawableStartCompat="@drawable/ic_mtrl_info"

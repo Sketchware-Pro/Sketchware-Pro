@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="12dp"
         android:textAppearance="?attr/textAppearanceTitleMedium"
-        android:text="Select Import option" />
+        android:text="@string/hardcoded_select_import_option" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group_import_type"
@@ -34,18 +34,18 @@
             android:id="@+id/chip_merge_and_skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Merge and Skip" />
+            android:text="@string/hardcoded_merge_and_skip" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_merge_and_replace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Merge and Replace" />
+            android:text="@string/hardcoded_merge_and_replace" />
 
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Replace all" />
+            android:text="@string/hardcoded_replace_all" />
 
     </com.google.android.material.chip.ChipGroup>
 

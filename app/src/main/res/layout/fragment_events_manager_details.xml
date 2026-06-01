@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="No events"
+            android:text="@string/hardcoded_no_events"
             android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
 
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="Start by creating a new one"
+            android:text="@string/hardcoded_start_by_creating_a_new_one"
             android:textColor="?attr/colorOnSurface"
             android:textSize="14sp" />
 
@@ -81,7 +81,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
-        android:text="New Event"
+        android:text="@string/hardcoded_new_event"
         app:icon="@drawable/ic_mtrl_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -10,7 +10,7 @@
         android:id="@+id/input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Entre your custom attr"
+        android:hint="@string/hardcoded_entre_your_custom_attr"
         app:placeholderText="R.attr.colorSurface">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -27,7 +27,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="4dp"
         android:padding="8dp"
-        android:text="Color Preview :"
+        android:text="@string/hardcoded_color_preview"
         android:textAppearance="?attr/textAppearanceLabelLarge" />
 
     <include layout="@layout/item_attr" />

@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:text="Add Sound"
+                    android:text="@string/hardcoded_add_sound"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -132,7 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="5dp"
         android:layout_marginTop="14dp"
-        android:hint="Enter sound name"
+        android:hint="@string/hardcoded_enter_sound_name"
         android:importantForAutofill="noExcludeDescendants">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -148,5 +148,5 @@
         android:id="@+id/chk_collection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add to my collection" />
+        android:text="@string/hardcoded_add_to_my_collection" />
 </LinearLayout>

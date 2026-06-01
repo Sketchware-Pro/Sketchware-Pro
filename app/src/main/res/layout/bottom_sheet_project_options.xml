@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Project settings"
+        android:text="@string/hardcoded_project_settings"
         android:textAppearance="?attr/textAppearanceTitleLarge" />
 
     <TextView
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:gravity="center_vertical"
-                    android:text="Pin project"
+                    android:text="@string/hardcoded_pin_project"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     app:drawableEndCompat="@drawable/ic_mtrl_arrow_right" />
 
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:gravity="center_vertical"
-                    android:text="Backup project"
+                    android:text="@string/hardcoded_backup_project"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     app:drawableEndCompat="@drawable/ic_mtrl_arrow_right" />
 
@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:gravity="center_vertical"
-                    android:text="Export/Sign"
+                    android:text="@string/hardcoded_exportsign"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     app:drawableEndCompat="@drawable/ic_mtrl_arrow_right" />
 
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:gravity="center_vertical"
-                    android:text="Change project settings"
+                    android:text="@string/hardcoded_change_project_settings"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     app:drawableEndCompat="@drawable/ic_mtrl_arrow_right" />
 
@@ -177,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:gravity="center_vertical"
-                    android:text="Project configuration"
+                    android:text="@string/hardcoded_project_configuration"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     app:drawableEndCompat="@drawable/ic_mtrl_arrow_right" />
 
@@ -206,7 +206,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:gravity="center_vertical"
-                    android:text="Delete project"
+                    android:text="@string/hardcoded_delete_project"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorError"
                     app:drawableEndCompat="@drawable/ic_mtrl_arrow_right"

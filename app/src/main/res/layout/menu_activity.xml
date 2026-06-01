@@ -41,7 +41,7 @@
                 android:paddingTop="4dp"
                 android:paddingEnd="8dp"
                 android:paddingBottom="6dp"
-                android:text="Title"
+                android:text="@string/hardcoded_title"
                 android:textColor="@color/tool_bar_text_color"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -145,7 +145,7 @@
                     android:paddingLeft="8dp"
                     android:paddingTop="8dp"
                     android:paddingRight="8dp"
-                    android:text="New menu: "
+                    android:text="@string/hardcoded_new_menu"
                     android:textColor="#ff616161"
                     android:textSize="16sp" />
 
@@ -168,7 +168,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
-                            android:hint="Name"
+                            android:hint="@string/hardcoded_name"
                             android:padding="8dp"
                             android:textColor="#ff000000"
                             android:textColorHint="#ff607d8b"
@@ -187,7 +187,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
-                            android:hint="Title"
+                            android:hint="@string/hardcoded_title"
                             android:padding="8dp"
                             android:textColor="#ff000000"
                             android:textColorHint="#ff607d8b"
@@ -209,7 +209,7 @@
                             android:background="#ff008dcd"
                             android:gravity="center"
                             android:padding="8dp"
-                            android:text="cancel"
+                            android:text="@string/hardcoded_cancel_1"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
                             android:textColor="#ffffffff"
                             android:textSize="11sp" />
@@ -223,7 +223,7 @@
                             android:background="#ff008dcd"
                             android:gravity="center"
                             android:padding="8dp"
-                            android:text="save"
+                            android:text="@string/hardcoded_save_1"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
                             android:textColor="#ffffffff"
                             android:textSize="11sp" />
@@ -278,7 +278,7 @@
                         android:layout_weight="1"
                         android:background="#fffafafa"
                         android:gravity="center|left"
-                        android:hint="Value"
+                        android:hint="@string/hardcoded_value_1"
                         android:padding="8dp"
                         android:singleLine="true"
                         android:textColor="#ff000000"

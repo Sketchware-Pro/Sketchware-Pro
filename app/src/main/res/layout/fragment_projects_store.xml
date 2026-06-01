@@ -36,7 +36,7 @@
                     android:drawablePadding="8dp"
                     android:maxLines="3"
                     android:scrollHorizontally="true"
-                    android:text="This is still a basic implementation of the projects store. We're actively working on improving it. Stay tuned!"
+                    android:text="@string/hardcoded_this_is_still_a_basic_implementation_of_the_projects_store_w"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnErrorContainer"
                     app:drawableStartCompat="@drawable/ic_mtrl_info"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:padding="16dp"
-            android:text="Editor\'s Choice"
+            android:text="@string/hardcoded_editors_choice"
             android:textAppearance="?attr/textAppearanceTitleMediumEmphasized"
             android:textSize="20sp" />
 
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="16dp"
-            android:text="New &amp; Updated"
+            android:text="@string/hardcoded_new_amp_updated"
             android:textAppearance="?attr/textAppearanceTitleMediumEmphasized"
             android:textSize="20sp" />
 
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="16dp"
-            android:text="Most downloaded projects"
+            android:text="@string/hardcoded_most_downloaded_projects"
             android:textAppearance="?attr/textAppearanceTitleMediumEmphasized"
             android:textSize="20sp" />
 

@@ -9,7 +9,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Item Name">
+        android:hint="@string/hardcoded_enter_item_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/item_name"
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Enter Item Value">
+        android:hint="@string/hardcoded_enter_item_value">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/item_value"

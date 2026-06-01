@@ -252,6 +252,6 @@
             style="@style/Widget.Material3Expressive.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Import from google-services.json" />
+            android:text="@string/hardcoded_import_from_googleservicesjson" />
     </LinearLayout>
 </LinearLayout>

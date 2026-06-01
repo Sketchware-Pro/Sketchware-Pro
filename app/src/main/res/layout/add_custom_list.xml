@@ -15,7 +15,7 @@
             android:id="@+id/type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Type, e.g. ArrayList&lt;Data&gt;"
+            android:hint="@string/hardcoded_type_eg_arraylistltdatagt"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -29,7 +29,7 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name, e.g. dataList"
+            android:hint="@string/hardcoded_name_eg_datalist"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 

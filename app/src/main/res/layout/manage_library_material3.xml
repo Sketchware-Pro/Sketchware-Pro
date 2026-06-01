@@ -55,7 +55,7 @@
                         android:singleLine="true"
                         android:textColor="?colorControlNormal"
                         android:textSize="18sp"
-                        android:text="Enable Material3" />
+                        android:text="@string/hardcoded_enable_material3" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/lib_switch"
@@ -113,7 +113,7 @@
                         android:textColor="?colorControlNormal"
                         android:textSize="18sp"
                         android:layout_marginVertical="8dp"
-                        android:text="Material3 Theme Preference :" />
+                        android:text="@string/hardcoded_material3_theme_preference" />
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/toggle_group"
@@ -130,7 +130,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="DayNight" />
+                            android:text="@string/hardcoded_daynight" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/select_light"
@@ -138,7 +138,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Light" />
+                            android:text="@string/hardcoded_light" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/select_dark"
@@ -146,7 +146,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Dark" />
+                            android:text="@string/hardcoded_dark" />
 
                     </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -201,7 +201,7 @@
                         android:singleLine="true"
                         android:textColor="?colorControlNormal"
                         android:textSize="18sp"
-                        android:text="Enable Dynamic Colors" />
+                        android:text="@string/hardcoded_enable_dynamic_colors" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/dynamic_colors_switch"

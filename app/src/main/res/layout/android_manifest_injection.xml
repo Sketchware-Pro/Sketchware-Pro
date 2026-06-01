@@ -42,7 +42,7 @@
                     android:layout_marginHorizontal="24dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="4dp"
-                    android:text="Activities"
+                    android:text="@string/hardcoded_activities"
                     android:textAppearance="?attr/textAppearanceBodyMediumEmphasized"
                     android:textColor="?attr/colorPrimary" />
 

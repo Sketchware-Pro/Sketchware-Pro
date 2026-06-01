@@ -29,7 +29,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="16dp"
-        android:hint="Enter icon name"
+        android:hint="@string/hardcoded_enter_icon_name"
         app:hintEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -51,6 +51,6 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="10dp"
-        android:text="This icon is available under the Apache Licence Version 2.0. Press to read more." />
+        android:text="@string/hardcoded_this_icon_is_available_under_the_apache_licence_version_20_p" />
 
 </LinearLayout>

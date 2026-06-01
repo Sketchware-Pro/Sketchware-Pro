@@ -100,7 +100,7 @@
                 android:paddingHorizontal="24dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="16dp"
-                android:text="Screenshots"
+                android:text="@string/hardcoded_screenshots"
                 android:textAppearance="?attr/textAppearanceTitleLargeEmphasized" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -138,7 +138,7 @@
                 android:paddingHorizontal="24dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="16dp"
-                android:text="About this project"
+                android:text="@string/hardcoded_about_this_project"
                 android:textAppearance="?attr/textAppearanceTitleLargeEmphasized" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -319,7 +319,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:text="Comments"
+            android:text="@string/hardcoded_comments"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/btn_download"
             app:layout_constraintStart_toStartOf="parent"
@@ -331,7 +331,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Download"
+            android:text="@string/hardcoded_download"
             app:layout_constraintEnd_toStartOf="@id/btn_like"
             app:layout_constraintStart_toEndOf="@id/btn_comments"
             app:layout_constraintTop_toTopOf="parent" />

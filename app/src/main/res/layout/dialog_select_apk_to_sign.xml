@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Selected APK"
+                android:text="@string/hardcoded_selected_apk"
                 android:textColor="#ff7d7d7d"
                 android:textSize="14sp" />
 
@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="4"
-                android:text="APK path will appear here"
+                android:text="@string/hardcoded_apk_path_will_appear_here"
                 android:textSize="18sp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

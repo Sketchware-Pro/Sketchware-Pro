@@ -3,11 +3,11 @@
     <item
         android:id="@+id/item_projects"
         android:icon="@drawable/ic_mtrl_list"
-        android:title="Projects" />
+        android:title="@string/hardcoded_projects" />
 
     <item
         android:id="@+id/item_sketchub"
         android:icon="@drawable/sketchub_letter_logo"
-        android:title="Store" />
+        android:title="@string/hardcoded_store" />
 
 </menu>

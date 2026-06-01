@@ -54,7 +54,7 @@
                     android:id="@+id/xml_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="XML name(with .xml)"
+                    android:hint="@string/hardcoded_xml_namewith_xml"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +68,7 @@
                     android:id="@+id/reference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Reference" />
+                    android:hint="@string/hardcoded_reference" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -82,7 +82,7 @@
                     android:id="@+id/command"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Select command"
+                    android:hint="@string/hardcoded_select_command"
                     android:singleLine="true"
                     android:focusable="false" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -98,7 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789"
-                    android:hint="Distance"
+                    android:hint="@string/hardcoded_distance"
                     android:text="0"
                     android:inputType="number"
                     android:singleLine="true" />
@@ -115,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789"
-                    android:hint="Frontend"
+                    android:hint="@string/hardcoded_frontend"
                     android:text="0"
                     android:inputType="number"
                     android:singleLine="true" />
@@ -132,7 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789"
-                    android:hint="Backend"
+                    android:hint="@string/hardcoded_backend"
                     android:text="0"
                     android:inputType="number"
                     android:singleLine="true" />
@@ -147,7 +147,7 @@
                     android:id="@+id/changes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Input code"
+                    android:hint="@string/hardcoded_input_code"
                     android:maxLines="10"
                     android:minHeight="48dp" />
             </com.google.android.material.textfield.TextInputLayout>

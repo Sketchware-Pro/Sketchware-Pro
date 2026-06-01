@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="8dp"
-                android:text="."
+                android:text="@string/hardcoded_unknown_3"
                 android:textColor="#ff757575"
                 android:textSize="18dp" />
 

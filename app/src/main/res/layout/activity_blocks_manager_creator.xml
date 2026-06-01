@@ -49,7 +49,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Properties"
+                        android:text="@string/hardcoded_properties"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textStyle="bold" />
 
@@ -64,7 +64,7 @@
                             android:id="@+id/name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Name"
+                            android:hint="@string/hardcoded_name"
                             android:maxLength="40"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -87,7 +87,7 @@
                                 android:id="@+id/type"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Type"
+                                android:hint="@string/hardcoded_type"
                                 android:maxLength="10"
                                 android:textSize="14sp"
                                 android:focusable="false"
@@ -117,7 +117,7 @@
                             android:id="@+id/typename"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Type name"
+                            android:hint="@string/hardcoded_type_name"
                             android:maxLength="40"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -133,7 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Design"
+                        android:text="@string/hardcoded_design"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textStyle="bold" />
 
@@ -154,7 +154,7 @@
                                 android:id="@+id/colour"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Color"
+                                android:hint="@string/hardcoded_color"
                                 android:maxLength="10"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -183,7 +183,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
-                        android:text="Parameters"
+                        android:text="@string/hardcoded_parameters"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -219,7 +219,7 @@
                             android:id="@+id/spec"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Spec"
+                            android:hint="@string/hardcoded_spec"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -233,7 +233,7 @@
                             android:id="@+id/spec2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Spec2"
+                            android:hint="@string/hardcoded_spec2"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -242,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
-                        android:text="Block Preview"
+                        android:text="@string/hardcoded_block_preview"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -277,7 +277,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Block import (e.g., android.view.View)"
+                        android:text="@string/hardcoded_block_import_eg_androidviewview"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -294,7 +294,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="top"
-                            android:hint="Enter imports line by line"
+                            android:hint="@string/hardcoded_enter_imports_line_by_line"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -303,7 +303,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="Block embedded code"
+                        android:text="@string/hardcoded_block_embedded_code"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -320,7 +320,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="top"
-                            android:hint="Code"
+                            android:hint="@string/hardcoded_code"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 

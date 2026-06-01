@@ -9,7 +9,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Style name">
+        android:hint="@string/hardcoded_style_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/style_name"
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Style Parent">
+        android:hint="@string/hardcoded_style_parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/style_parent"
@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Style header value ( optional )">
+        android:hint="@string/hardcoded_style_header_value_optional">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/style_header_input"

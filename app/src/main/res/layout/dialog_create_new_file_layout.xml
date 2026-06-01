@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="2dp"
         android:layout_marginTop="4dp"
-        android:hint="Enter a name"
+        android:hint="@string/hardcoded_enter_a_name"
         app:hintEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -40,7 +40,7 @@
             android:id="@+id/chip_folder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Folder"
+            android:text="@string/hardcoded_folder"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -48,7 +48,7 @@
             android:id="@+id/chip_class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Class"
+            android:text="@string/hardcoded_class"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -56,7 +56,7 @@
             android:id="@+id/chip_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Activity"
+            android:text="@string/hardcoded_activity"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -64,7 +64,7 @@
             android:id="@+id/chip_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="File"
+            android:text="@string/hardcoded_file"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -72,7 +72,7 @@
             android:id="@+id/chip_java_class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Java Class"
+            android:text="@string/hardcoded_java_class"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -80,7 +80,7 @@
             android:id="@+id/chip_java_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Java Activity"
+            android:text="@string/hardcoded_java_activity"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -88,7 +88,7 @@
             android:id="@+id/chip_kotlin_class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kotlin Class"
+            android:text="@string/hardcoded_kotlin_class"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -96,7 +96,7 @@
             android:id="@+id/chip_kotlin_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kotlin Activity"
+            android:text="@string/hardcoded_kotlin_activity"
             android:visibility="gone"
             tools:visibility="visible" />
 

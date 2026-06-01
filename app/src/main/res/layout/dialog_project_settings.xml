@@ -28,7 +28,7 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="12dp"
-                android:hint="Minimum SDK version">
+                android:hint="@string/hardcoded_minimum_sdk_version">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_minimum_sdk_version"
@@ -44,7 +44,7 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="12dp"
-                android:hint="Target SDK version">
+                android:hint="@string/hardcoded_target_sdk_version">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_target_sdk_version"
@@ -60,7 +60,7 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="12dp"
-                android:hint="Application class name">
+                android:hint="@string/hardcoded_application_class_name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_application_class_name"
@@ -91,7 +91,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Enable ViewBinding"
+                        android:text="@string/hardcoded_enable_viewbinding"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textColor="?attr/colorOnSurface" />
 
@@ -99,7 +99,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="This will enable ViewBinding in your project. Note: Manual changes may be required for widgets used in ASD block"
+                        android:text="@string/hardcoded_this_will_enable_viewbinding_in_your_project_note_manual_cha"
                         android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -136,7 +136,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Remove old deprecated methods"
+                        android:text="@string/hardcoded_remove_old_deprecated_methods"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textColor="?attr/colorOnSurface" />
 
@@ -144,7 +144,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="This will remove methods in files, like showMessage, getDip, etc."
+                        android:text="@string/hardcoded_this_will_remove_methods_in_files_like_showmessage_getdip_et"
                         android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -181,7 +181,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Use MaterialComponents"
+                        android:text="@string/hardcoded_use_materialcomponents"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textColor="?attr/colorOnSurface" />
 
@@ -189,7 +189,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="This will replace e.g. Button with MaterialButton, be careful!"
+                        android:text="@string/hardcoded_this_will_replace_eg_button_with_materialbutton_be_careful"
                         android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
