@@ -1,0 +1,52 @@
+name: Build APK
+
+# يمكنك تشغيل البناء يدوياً من تبويب Actions، أو سيعمل تلقائياً عند كل تعديل (push)
+on:
+  workflow_dispatch:        # زر تشغيل يدوي
+  push:
+    branches:
+      - main                # يبني تلقائياً عند أي تعديل على فرع main
+
+jobs:
+  build:
+    name: Build Sketchware Pro APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) تنزيل كود المشروع كاملاً (fetch-depth: 0 ضروري لأن المشروع يستخدم git rev-parse)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true          # المشروع يستخدم Git LFS
+
+      # 2) سحب ملفات Git LFS بالكامل
+      - name: Checkout LFS objects
+        run: git lfs pull
+
+      # 3) تثبيت JDK 17 (مطلوب لـ AGP 8.12 و Gradle 8.13)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 4) إعداد Gradle مع التخزين المؤقت لتسريع البناء
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # 5) منح صلاحية التنفيذ لـ gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      # 6) بناء نسخة Debug (لا تحتاج توقيعاً خاصاً وتُثبَّت مباشرة)
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --stacktrace
+
+      # 7) رفع ملف الـ APK كـ Artifact لتنزيله على هاتفك
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sketchware-Pro-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
