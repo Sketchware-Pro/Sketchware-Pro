@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import a.a.a.Hx;
-import pro.sketchware.utility.FileUtil;
+import ide.sketchware.utility.FileUtil;
 
 public class ComponentExtraCode {
 

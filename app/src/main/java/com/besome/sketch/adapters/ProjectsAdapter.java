@@ -34,10 +34,12 @@ import a.a.a.yB;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
-import pro.sketchware.databinding.BottomSheetProjectOptionsBinding;
-import pro.sketchware.databinding.MyprojectsItemBinding;
+import ide.sketchware.R;
+import ide.sketchware.activities.main.fragments.projects.ProjectsFragment;
+import ide.sketchware.codeproject.model.CodeProject;
+import ide.sketchware.codeproject.ui.CodeProjectActivity;
+import ide.sketchware.databinding.BottomSheetProjectOptionsBinding;
+import ide.sketchware.databinding.MyprojectsItemBinding;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder> {
     private final ProjectsFragment projectsFragment;
@@ -182,7 +184,13 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
         holder.binding.getRoot().setOnClickListener(v -> {
             if (!mB.a()) {
-                projectsFragment.toDesignActivity(scId);
+                if (CodeProject.isCodeProject(projectMap)) {
+                    Intent intent = new Intent(activity, CodeProjectActivity.class);
+                    intent.putExtra("sc_id", scId);
+                    activity.startActivity(intent);
+                } else {
+                    projectsFragment.toDesignActivity(scId);
+                }
             }
         });
 

@@ -1,6 +1,6 @@
 package com.besome.sketch.editor.view.palette;
 
-import static pro.sketchware.utility.SketchwareUtil.dpToPx;
+import static ide.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -47,8 +47,8 @@ import mod.agus.jcoderz.editor.view.palette.IconSearchView;
 import mod.agus.jcoderz.editor.view.palette.IconTimePicker;
 import mod.agus.jcoderz.editor.view.palette.IconVideoView;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.widgets.IconCustomWidget;
+import ide.sketchware.R;
+import ide.sketchware.widgets.IconCustomWidget;
 
 public class PaletteWidget extends LinearLayout {
 

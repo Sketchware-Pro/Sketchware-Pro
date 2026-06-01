@@ -9,8 +9,8 @@ import android.widget.RelativeLayout;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-import pro.sketchware.databinding.EasyDeleteEdittextBinding;
-import pro.sketchware.lib.base.BaseTextWatcher;
+import ide.sketchware.databinding.EasyDeleteEdittextBinding;
+import ide.sketchware.lib.base.BaseTextWatcher;
 
 public class EasyDeleteEditText extends RelativeLayout {
 

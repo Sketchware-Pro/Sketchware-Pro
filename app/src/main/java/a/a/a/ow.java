@@ -30,12 +30,12 @@ import java.util.Locale;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
-import pro.sketchware.R;
-import pro.sketchware.databinding.FrManageSoundListBinding;
-import pro.sketchware.databinding.ManageSoundBinding;
-import pro.sketchware.databinding.ManageSoundListItemBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.databinding.FrManageSoundListBinding;
+import ide.sketchware.databinding.ManageSoundBinding;
+import ide.sketchware.databinding.ManageSoundListItemBinding;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class ow extends qA {
 

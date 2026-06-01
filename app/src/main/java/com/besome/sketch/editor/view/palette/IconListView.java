@@ -5,7 +5,7 @@ import android.content.Context;
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class IconListView extends IconBase {
     public IconListView(Context context) {

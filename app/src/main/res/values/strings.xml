@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sketchware Pro</string>
+    <string name="app_name">Sketchware IDE</string>
     <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="besome_blog_url">http://medium.com/sketchware</string>
     <string name="block_add_list_int_body_1">to</string>
@@ -2292,6 +2292,51 @@ Please try again later"</string>
     <string name="unknown_attr">Unknown Attribute</string>
     <string name="attr_already_exist">This attribute already exists</string>
     <string name="link_sw_assist">https://play.google.com/store/apps/details?id=com.w3wide.swassist</string>
+
+    <!-- Code Project -->
+    <string name="code_project_file_explorer">Files</string>
+    <string name="code_project_build">Build</string>
+    <string name="code_project_save">Save</string>
+    <string name="code_project_undo">Undo</string>
+    <string name="code_project_redo">Redo</string>
+    <string name="code_project_create">New Code Project</string>
+    <string name="code_project_app_name">App Name</string>
+    <string name="code_project_package_name">Package Name</string>
+    <string name="code_project_project_name">Project Name</string>
+    <string name="code_project_create_button">Create Project</string>
+    <string name="code_project_code_project">Code Project (IDE)</string>
+    <string name="code_project_build_success">Build successful!</string>
+    <string name="code_project_build_failed">Build failed</string>
+    <string name="code_project_building">Building project...</string>
+    <string name="code_project_compiling_kotlin">Compiling Kotlin...</string>
+    <string name="code_project_saved">File saved</string>
+    <string name="code_project_open_drawer">Open files</string>
+    <string name="code_project_close_drawer">Close files</string>
+    <string name="code_project_error_app_name">App name is required</string>
+    <string name="code_project_error_package_name">Enter a valid package name (e.g. com.example.app)</string>
+    <string name="code_project_error_project_name">Project name is required</string>
+    <string name="code_project_close_tab">Close tab</string>
+    <string name="code_project_no_file_open">No file open</string>
+    <string name="code_project_unsaved_changes">Unsaved Changes</string>
+    <string name="code_project_discard_changes">\'%s\' has unsaved changes. Discard?</string>
+    <string name="code_project_discard">Discard</string>
+    <string name="code_project_install_prompt">Install the APK on this device?</string>
+    <string name="code_project_install">Install</string>
+    <string name="code_project_logcat">Logcat</string>
+    <string name="code_project_logcat_clear">Clear log</string>
+    <string name="code_project_no_installer">No app available to install APK</string>
+    <string name="code_project_new_file">New File</string>
+    <string name="code_project_new_folder">New Folder</string>
+    <string name="code_project_rename">Rename</string>
+    <string name="code_project_delete">Delete</string>
+    <string name="code_project_confirm_delete">Delete \"%1$s\"? This cannot be undone.</string>
+    <string name="code_project_enter_name">Enter name</string>
+    <string name="code_project_build_errors">Build Errors</string>
+    <string name="code_project_new_project_hint">Create new code project</string>
+    <string name="code_project_block_not_supported">Block projects are no longer supported. Create a new code project instead.</string>
+    <string name="code_project_invalid_name">Invalid name. Avoid /, \\, or special characters.</string>
+    <string name="code_project_file_exists">A file or folder with that name already exists.</string>
+    <string name="code_project_operation_failed">Operation failed. Check permissions.</string>
 
 
 </resources>

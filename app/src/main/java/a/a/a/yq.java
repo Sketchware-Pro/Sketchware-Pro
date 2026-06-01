@@ -28,11 +28,11 @@ import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.blocks.CommandBlock;
 import mod.pranav.viewbinding.ViewBindingBuilder;
-import pro.sketchware.SketchApplication;
-import pro.sketchware.util.library.BuiltInLibraryManager;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.xml.XmlBuilder;
-import pro.sketchware.xml.XmlBuilderHelper;
+import ide.sketchware.SketchApplication;
+import ide.sketchware.util.library.BuiltInLibraryManager;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.xml.XmlBuilder;
+import ide.sketchware.xml.XmlBuilderHelper;
 
 public class yq {
 

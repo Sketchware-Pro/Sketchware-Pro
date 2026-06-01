@@ -34,7 +34,7 @@ import a.a.a.mB;
 import a.a.a.oq;
 import mod.hey.studios.project.ProjectSettings;
 import mod.pranav.viewbinding.ViewBindingBuilder;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickListener {
     private final boolean b = false;

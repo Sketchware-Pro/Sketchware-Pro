@@ -1,6 +1,6 @@
 package mod.hilal.saif.activities.tools;
 
-import static pro.sketchware.utility.GsonUtils.getGson;
+import static ide.sketchware.utility.GsonUtils.getGson;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -40,13 +40,13 @@ import java.util.regex.Pattern;
 import a.a.a.Rs;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ActivityBlocksManagerCreatorBinding;
-import pro.sketchware.lib.base.BaseTextWatcher;
-import pro.sketchware.lib.highlighter.SimpleHighlighter;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.PropertiesUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ActivityBlocksManagerCreatorBinding;
+import ide.sketchware.lib.base.BaseTextWatcher;
+import ide.sketchware.lib.highlighter.SimpleHighlighter;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.PropertiesUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
 

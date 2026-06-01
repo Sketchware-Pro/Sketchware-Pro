@@ -24,11 +24,11 @@ import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.jbk.build.BuiltInLibraries;
-import pro.sketchware.util.library.BuiltInLibraryManager;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileResConfig;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.xml.XmlBuilder;
+import ide.sketchware.util.library.BuiltInLibraryManager;
+import ide.sketchware.utility.FilePathUtil;
+import ide.sketchware.utility.FileResConfig;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.xml.XmlBuilder;
 
 public class Ix {
     private final BuiltInLibraryManager builtInLibraryManager;

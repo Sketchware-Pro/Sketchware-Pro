@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 
-import pro.sketchware.utility.FileUtil;
+import ide.sketchware.utility.FileUtil;
 
 /**
  * Helper used in {@link com.besome.sketch.editor.LogicEditorActivity} to get menus for custom

@@ -5,7 +5,7 @@ import android.os.Build;
 
 import a.a.a.lC;
 import a.a.a.yB;
-import pro.sketchware.SketchApplication;
+import ide.sketchware.SketchApplication;
 
 public class ProjectFile {
     public static final String COLOR_ACCENT = "color_accent";

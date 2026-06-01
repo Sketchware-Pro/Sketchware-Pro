@@ -3,7 +3,7 @@ package com.besome.sketch.editor.logic;
 import static com.besome.sketch.editor.logic.PaletteSelector.paletteSelectorRecord;
 import static com.google.android.material.color.MaterialColors.harmonizeWithPrimary;
 import static com.google.android.material.color.MaterialColors.isColorLight;
-import static pro.sketchware.utility.ThemeUtils.getColor;
+import static ide.sketchware.utility.ThemeUtils.getColor;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,8 +17,8 @@ import java.util.List;
 
 import a.a.a.Vs;
 import a.a.a.wB;
-import pro.sketchware.R;
-import pro.sketchware.databinding.PaletteSelectorItemBinding;
+import ide.sketchware.R;
+import ide.sketchware.databinding.PaletteSelectorItemBinding;
 
 public class PaletteSelectorAdapter extends RecyclerView.Adapter<PaletteSelectorAdapter.PaletteSelectorViewHolder> {
 

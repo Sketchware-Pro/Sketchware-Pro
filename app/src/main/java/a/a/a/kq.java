@@ -5,9 +5,9 @@ import static com.google.android.material.color.MaterialColors.harmonizeWithPrim
 import android.content.Context;
 import android.view.ContextThemeWrapper;
 
-import pro.sketchware.R;
-import pro.sketchware.SketchApplication;
-import pro.sketchware.menu.DefaultExtraMenuBean;
+import ide.sketchware.R;
+import ide.sketchware.SketchApplication;
+import ide.sketchware.menu.DefaultExtraMenuBean;
 
 public class kq {
     public static int a(String opcode, String blockType) {

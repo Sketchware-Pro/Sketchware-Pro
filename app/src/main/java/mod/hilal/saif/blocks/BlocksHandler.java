@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import mod.hilal.saif.activities.tools.ConfigActivity;
-import pro.sketchware.R;
-import pro.sketchware.blocks.ExtraBlocks;
-import pro.sketchware.utility.ThemeUtils;
+import ide.sketchware.R;
+import ide.sketchware.blocks.ExtraBlocks;
+import ide.sketchware.utility.ThemeUtils;
 
 public class BlocksHandler {
 

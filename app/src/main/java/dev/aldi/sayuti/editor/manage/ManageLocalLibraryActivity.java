@@ -40,11 +40,11 @@ import a.a.a.MA;
 import a.a.a.mB;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageLocallibrariesBinding;
-import pro.sketchware.databinding.ViewItemLocalLibBinding;
-import pro.sketchware.databinding.ViewItemLocalLibSearchBinding;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ManageLocallibrariesBinding;
+import ide.sketchware.databinding.ViewItemLocalLibBinding;
+import ide.sketchware.databinding.ViewItemLocalLibSearchBinding;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
     private final LibraryAdapter adapter = new LibraryAdapter();

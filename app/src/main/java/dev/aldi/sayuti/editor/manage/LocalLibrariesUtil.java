@@ -1,11 +1,11 @@
 package dev.aldi.sayuti.editor.manage;
 
-import static pro.sketchware.utility.FileUtil.deleteFile;
-import static pro.sketchware.utility.FileUtil.getExternalStorageDir;
-import static pro.sketchware.utility.FileUtil.isExistFile;
-import static pro.sketchware.utility.FileUtil.listDirAsFile;
-import static pro.sketchware.utility.FileUtil.readFile;
-import static pro.sketchware.utility.FileUtil.writeFile;
+import static ide.sketchware.utility.FileUtil.deleteFile;
+import static ide.sketchware.utility.FileUtil.getExternalStorageDir;
+import static ide.sketchware.utility.FileUtil.isExistFile;
+import static ide.sketchware.utility.FileUtil.listDirAsFile;
+import static ide.sketchware.utility.FileUtil.readFile;
+import static ide.sketchware.utility.FileUtil.writeFile;
 
 import com.google.gson.Gson;
 

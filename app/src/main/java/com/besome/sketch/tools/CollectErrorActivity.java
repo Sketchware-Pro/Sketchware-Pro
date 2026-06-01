@@ -21,8 +21,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.File;
 
 import a.a.a.GB;
-import pro.sketchware.R;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class CollectErrorActivity extends BaseAppCompatActivity {
     @SuppressLint("SetTextI18n")

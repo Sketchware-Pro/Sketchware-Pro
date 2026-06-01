@@ -8,7 +8,7 @@ import com.google.gson.annotations.Expose;
 
 import a.a.a.Gx;
 import mod.hilal.saif.components.ComponentsHandler;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class ComponentBean extends CollapsibleBean implements Parcelable {
     public static final Parcelable.Creator<ComponentBean> CREATOR = new Parcelable.Creator<>() {

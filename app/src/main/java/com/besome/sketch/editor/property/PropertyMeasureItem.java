@@ -15,9 +15,9 @@ import a.a.a.mB;
 import a.a.a.sq;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.PropertyPopupMeasurementBinding;
-import pro.sketchware.lib.validator.MinMaxInputValidator;
+import ide.sketchware.R;
+import ide.sketchware.databinding.PropertyPopupMeasurementBinding;
+import ide.sketchware.lib.validator.MinMaxInputValidator;
 
 @SuppressLint("ViewConstructor")
 public class PropertyMeasureItem extends RelativeLayout implements View.OnClickListener {

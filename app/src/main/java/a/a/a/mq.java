@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.hilal.saif.events.EventsHandler;
-import pro.sketchware.menu.DefaultExtraMenuBean;
+import ide.sketchware.menu.DefaultExtraMenuBean;
 
 public class mq {
     /**

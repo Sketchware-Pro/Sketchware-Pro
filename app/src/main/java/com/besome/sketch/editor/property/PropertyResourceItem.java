@@ -37,11 +37,11 @@ import a.a.a.mB;
 import a.a.a.wB;
 import mod.bobur.VectorDrawableLoader;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ImagePickerItemBinding;
-import pro.sketchware.databinding.SearchWithRecyclerViewBinding;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.SvgUtils;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ImagePickerItemBinding;
+import ide.sketchware.databinding.SearchWithRecyclerViewBinding;
+import ide.sketchware.utility.FilePathUtil;
+import ide.sketchware.utility.SvgUtils;
 
 public class PropertyResourceItem extends RelativeLayout implements View.OnClickListener {
 

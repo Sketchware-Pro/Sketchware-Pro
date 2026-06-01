@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import pro.sketchware.databinding.ManageLibraryCategoryItemBinding;
+import ide.sketchware.databinding.ManageLibraryCategoryItemBinding;
 
 public class LibraryCategoryView extends FrameLayout {
 

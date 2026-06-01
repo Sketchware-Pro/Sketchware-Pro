@@ -36,7 +36,7 @@ import a.a.a.mB;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class LibrarySettingsImporter {
     private static final ProjectComparator PROJECT_COMPARATOR = new ProjectComparator();

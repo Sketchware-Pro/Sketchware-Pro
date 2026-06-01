@@ -61,16 +61,16 @@ import a.a.a.uq;
 import a.a.a.wB;
 import a.a.a.yB;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.activities.resourceseditor.components.utils.StringsEditorManager;
-import pro.sketchware.databinding.PropertyInputItemBinding;
-import pro.sketchware.databinding.PropertyPopupHybridBinding;
-import pro.sketchware.databinding.PropertyPopupInputTextBinding;
-import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
-import pro.sketchware.lib.base.BaseTextWatcher;
-import pro.sketchware.lib.highlighter.SyntaxScheme;
-import pro.sketchware.lib.validator.PropertyNameValidator;
-import pro.sketchware.utility.FileUtil;
+import ide.sketchware.R;
+import ide.sketchware.activities.resourceseditor.components.utils.StringsEditorManager;
+import ide.sketchware.databinding.PropertyInputItemBinding;
+import ide.sketchware.databinding.PropertyPopupHybridBinding;
+import ide.sketchware.databinding.PropertyPopupInputTextBinding;
+import ide.sketchware.databinding.PropertyPopupParentAttrBinding;
+import ide.sketchware.lib.base.BaseTextWatcher;
+import ide.sketchware.lib.highlighter.SyntaxScheme;
+import ide.sketchware.lib.validator.PropertyNameValidator;
+import ide.sketchware.utility.FileUtil;
 
 @SuppressLint("ViewConstructor")
 public class PropertyInputItem extends RelativeLayout implements View.OnClickListener {

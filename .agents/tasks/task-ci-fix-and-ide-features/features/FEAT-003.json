@@ -1,0 +1,24 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Enable code autocomplete/suggestions for the Code Project IDE editor. The sora-editor library already has EditorAutoCompletion as a built-in component. The existing JavaLanguage from sora-editor provides basic Java keyword completion. We need to ensure autocomplete is enabled and provide a richer completion source with common Android API classes/methods and Java keywords.",
+  "status": "completed",
+  "steps": [
+    "Create `app/src/main/java/pro/sketchware/codeproject/editor/JavaAutoCompleteProvider.java` implementing sora-editor's `io.github.rosemoe.sora.lang.completion.CompletionPublisher` pattern. Specifically, create a class that can be integrated with the JavaLanguage or a custom Language wrapper. Since sora-editor's JavaLanguage already has built-in keyword completion, the simplest approach is: (a) Create a custom Language wrapper or use JavaLanguage as-is but ensure it provides completions. Actually the simplest approach: sora-editor's JavaLanguage already provides Java keyword autocompletion out of the box. We primarily need to ensure the EditorAutoCompletion component is enabled on the editor and add a supplemental completion source with common Android API identifiers.",
+    "Create the provider class that extends or wraps functionality. The sora-editor API for custom completions in version 0.23.5 works via the Language's `requireAutoComplete` method. Since JavaLanguage already implements this, the best approach is to subclass JavaLanguage as `JavaAutoCompleteLanguage` in `app/src/main/java/pro/sketchware/codeproject/editor/JavaAutoCompleteLanguage.java`. Override `requireAutoComplete` to call super (for keywords) and then add additional CompletionItems for common Android classes: Activity, Bundle, Intent, View, TextView, Button, RecyclerView, Toast, Log, Context, Fragment, etc. Also add common method names: onCreate, onResume, onPause, findViewById, setContentView, getString, getIntent, etc.",
+    "Modify `EditorUtils.java` to add a new method `loadJavaAutoCompleteConfig(CodeEditor editor)` that uses the new JavaAutoCompleteLanguage instead of plain JavaLanguage, and explicitly enables the EditorAutoCompletion component: `editor.getComponent(EditorAutoCompletion.class).setEnabled(true)`.",
+    "Modify `CodeProjectActivity.java` setupEditor() and openFile() to use the new `EditorUtils.loadJavaAutoCompleteConfig(binding.editor)` method for .java files instead of `EditorUtils.loadJavaConfig(binding.editor)`. Keep loadJavaConfig for backward compatibility with other parts of the app.",
+    "Ensure the EditorAutoCompletion component is enabled by default in setupEditor()."
+  ],
+  "acceptance_criteria": [
+    "Typing in the code editor triggers an autocomplete popup with Java keywords",
+    "Common Android API class names appear in the autocomplete suggestions",
+    "The autocomplete popup is functional (selecting an item inserts it)",
+    "gradle assembleRelease still succeeds"
+  ],
+  "verification": [
+    "Run `gradle assembleRelease` from the project root and confirm it succeeds"
+  ],
+  "blocked_reason": null,
+  "findings": "Build succeeds with assembleRelease (2m 16s). Used sora-editor 0.23.5 API: SimpleCompletionItem(label, prefixLength, commitText) constructor, CompletionItemKind.Class and CompletionItemKind.Method for item types. ContentReference.getLine() returns String. EditorAutoCompletion.setEnabled(true) required to activate the popup. JavaLanguage.requireAutoComplete called via super for built-in keyword completions."
+}

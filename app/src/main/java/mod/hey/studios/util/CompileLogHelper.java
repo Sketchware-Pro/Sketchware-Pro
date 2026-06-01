@@ -12,7 +12,7 @@ import com.google.android.material.color.MaterialColors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class CompileLogHelper {
     private static final String TAG = "CompileLogHelper";

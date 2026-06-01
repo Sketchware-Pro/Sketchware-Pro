@@ -10,7 +10,7 @@ import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class ProjectLibraryBean implements Parcelable {
     public static final Parcelable.Creator<ProjectLibraryBean> CREATOR = new Parcelable.Creator<>() {

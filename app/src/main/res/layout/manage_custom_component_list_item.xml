@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp" />
 
-            <pro.sketchware.activities.editor.component.CollapsibleCustomComponentLayout
+            <ide.sketchware.activities.editor.component.CollapsibleCustomComponentLayout
                 android:id="@+id/component_option"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

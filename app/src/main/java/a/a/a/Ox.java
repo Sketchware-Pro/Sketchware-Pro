@@ -33,9 +33,9 @@ import java.util.regex.Pattern;
 import dev.aldi.sayuti.editor.injection.AppCompatInjection;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.jbk.util.LogUtil;
-import pro.sketchware.managers.inject.InjectRootLayoutManager;
-import pro.sketchware.utility.InjectAttributeHandler;
-import pro.sketchware.xml.XmlBuilder;
+import ide.sketchware.managers.inject.InjectRootLayoutManager;
+import ide.sketchware.utility.InjectAttributeHandler;
+import ide.sketchware.xml.XmlBuilder;
 
 @SuppressLint("RtlHardcoded")
 public class Ox {

@@ -7,7 +7,7 @@ import com.google.android.material.chip.ChipGroup;
 
 import java.util.Iterator;
 
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class ReturnMoreblockManager {
 

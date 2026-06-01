@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import a.a.a.wB;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public abstract class CollapsibleLayout<T extends View> extends FrameLayout {
     private View confirmYes;

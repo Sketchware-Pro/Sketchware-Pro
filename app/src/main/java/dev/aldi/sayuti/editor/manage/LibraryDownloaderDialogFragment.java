@@ -35,10 +35,10 @@ import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuiltInLibraries;
 import mod.pranav.dependency.resolver.DependencyResolver;
-import pro.sketchware.R;
-import pro.sketchware.databinding.LibraryDownloaderDialogBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.databinding.LibraryDownloaderDialogBinding;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
     private LibraryDownloaderDialogBinding binding;

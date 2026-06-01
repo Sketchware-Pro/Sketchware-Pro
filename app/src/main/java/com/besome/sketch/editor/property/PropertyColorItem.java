@@ -17,7 +17,7 @@ import a.a.a.Kw;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 @SuppressLint("ViewConstructor")
 public class PropertyColorItem extends RelativeLayout implements View.OnClickListener {

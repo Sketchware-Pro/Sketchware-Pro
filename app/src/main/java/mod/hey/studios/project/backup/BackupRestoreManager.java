@@ -24,11 +24,11 @@ import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
 import dev.pranav.filepicker.FilePickerOptions;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
-import pro.sketchware.databinding.ProgressMsgBoxBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.activities.main.fragments.projects.ProjectsFragment;
+import ide.sketchware.databinding.ProgressMsgBoxBinding;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class BackupRestoreManager {
 

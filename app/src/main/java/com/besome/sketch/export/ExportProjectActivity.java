@@ -53,10 +53,10 @@ import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
-import pro.sketchware.R;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.utility.FilePathUtil;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class ExportProjectActivity extends BaseAppCompatActivity {
 

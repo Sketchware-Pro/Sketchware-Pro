@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectFileBean;
 
 import a.a.a.jC;
-import pro.sketchware.databinding.FileSelectorPopupSelectJavaListItemBinding;
-import pro.sketchware.listeners.ItemClickListener;
+import ide.sketchware.databinding.FileSelectorPopupSelectJavaListItemBinding;
+import ide.sketchware.listeners.ItemClickListener;
 
 public class JavaFileAdapter extends RecyclerView.Adapter<JavaFileAdapter.ViewHolder> {
 

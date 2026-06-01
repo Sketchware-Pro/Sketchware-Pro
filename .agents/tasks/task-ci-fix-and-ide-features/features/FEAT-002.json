@@ -1,0 +1,29 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Add multiple file tabs to the Code Project IDE. When user opens files from the file explorer, show them as tabs in a horizontal scrollable tab strip between the toolbar and the editor. Users can switch between open files by tapping tabs, close tabs with an X button, and see the currently active tab highlighted. Track unsaved changes with a dot indicator on the tab title.",
+  "status": "completed",
+  "steps": [
+    "Create a new model class `app/src/main/java/pro/sketchware/codeproject/ui/OpenFileTab.java` to represent an open tab. Fields: File file, String content (buffered content), boolean modified (unsaved changes). This avoids reading/writing disk on every tab switch.",
+    "Create a new RecyclerView adapter `app/src/main/java/pro/sketchware/codeproject/ui/FileTabAdapter.java` for the horizontal tab strip. Each item shows the filename (with a dot prefix like '\u2022 filename' when modified), a close (X) button, and highlights the active tab with a different background color. Use a simple item layout with a TextView for the filename and an ImageButton for close.",
+    "Create the tab item layout XML `app/src/main/res/layout/item_file_tab.xml`. A horizontal LinearLayout with: a TextView for the file name (single line, ellipsize end) and an ImageView for the close icon (use android.R.drawable.ic_menu_close_clear_cancel or a simple X vector). Use Material color attributes for active/inactive state background.",
+    "Modify `app/src/main/res/layout/activity_code_project.xml` to add a horizontal RecyclerView (id: tab_strip) between the AppBarLayout and the CodeEditor. Give it a fixed height (wrap_content, roughly 36-40dp) and a surface container background color.",
+    "Modify `CodeProjectActivity.java` to manage the tab list: (a) Add a List<OpenFileTab> field and a FileTabAdapter. (b) In setupEditor(), initialize the tab RecyclerView with a horizontal LinearLayoutManager and the adapter. (c) Change openFile() to: if file is already open in a tab, just switch to it; otherwise create a new OpenFileTab, add it to the list, and switch to it. When switching tabs, save the current editor content back to the active tab's content buffer (not to disk yet), then load the new tab's content into the editor. (d) Track modifications: use editor.subscribeEvent or a simple text change listener to mark the current tab as modified. (e) Close tab: remove from list, if it was the active tab switch to an adjacent tab or show empty editor. (f) Save: when user taps save, write current tab content to disk and clear modified flag. (g) When building, save all modified tabs to disk first.",
+    "Add string resources in app/src/main/res/values/strings.xml for any new user-visible strings (e.g. 'No file open')."
+  ],
+  "acceptance_criteria": [
+    "Opening a file from the explorer adds a tab to the tab strip",
+    "Tapping a different tab switches the editor content to that file",
+    "The active tab is visually distinguished (highlighted background)",
+    "Closing a tab removes it from the strip and switches to another open tab",
+    "Modifying text in the editor shows a dot/bullet indicator on the tab title",
+    "Saving a file clears the modified indicator",
+    "Building the project saves all modified tabs to disk first",
+    "gradle assembleRelease still succeeds"
+  ],
+  "verification": [
+    "Run `gradle assembleRelease` from the project root and confirm it succeeds"
+  ],
+  "blocked_reason": null,
+  "findings": "Build succeeds with assembleRelease (2m 27s). Used MaterialColors.getColor() for resolving theme attributes in the adapter. Used ignoreTextChange flag to prevent marking tabs as modified during programmatic setText() calls. ContentChangeEvent subscription used for text change detection. The onBackPressed now saves all modified tabs before exiting."
+}

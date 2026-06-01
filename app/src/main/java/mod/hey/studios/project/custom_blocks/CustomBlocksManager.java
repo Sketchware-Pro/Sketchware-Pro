@@ -22,8 +22,8 @@ import a.a.a.kq;
 import dev.aldi.sayuti.block.ExtraBlockFile;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class CustomBlocksManager {
     private final Context context;
@@ -178,7 +178,7 @@ import a.a.a.eC;
 import a.a.a.jC;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
-import pro.sketchware.utility.FileUtil;
+import ide.sketchware.utility.FileUtil;
 import com.google.gson.Gson;
 import java.io.File;
 import android.os.Environment;

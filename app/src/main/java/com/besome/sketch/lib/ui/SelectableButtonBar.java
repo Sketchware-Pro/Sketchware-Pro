@@ -13,7 +13,7 @@ import java.util.List;
 
 import a.a.a.YA;
 import a.a.a.wB;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class SelectableButtonBar extends LinearLayout {
 

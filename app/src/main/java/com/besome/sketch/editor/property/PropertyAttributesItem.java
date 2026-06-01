@@ -31,12 +31,12 @@ import a.a.a.Kw;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.PropertyInputItemBinding;
-import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
-import pro.sketchware.databinding.PropertySwitchItemSinglelineBinding;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.relativelayout.CircularDependencyDetector;
+import ide.sketchware.R;
+import ide.sketchware.databinding.PropertyInputItemBinding;
+import ide.sketchware.databinding.PropertyPopupParentAttrBinding;
+import ide.sketchware.databinding.PropertySwitchItemSinglelineBinding;
+import ide.sketchware.utility.SketchwareUtil;
+import ide.sketchware.utility.relativelayout.CircularDependencyDetector;
 
 @SuppressLint("ViewConstructor")
 public class PropertyAttributesItem extends LinearLayout implements View.OnClickListener {

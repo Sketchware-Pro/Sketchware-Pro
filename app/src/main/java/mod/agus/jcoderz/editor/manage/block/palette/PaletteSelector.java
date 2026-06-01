@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class PaletteSelector {
 

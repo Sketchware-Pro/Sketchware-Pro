@@ -1,6 +1,6 @@
 package mod.hilal.saif.activities.android_manifest;
 
-import static pro.sketchware.utility.GsonUtils.getGson;
+import static ide.sketchware.utility.GsonUtils.getGson;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -32,11 +32,11 @@ import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.remaker.view.CustomAttributeView;
-import pro.sketchware.R;
-import pro.sketchware.activities.editor.view.CodeViewerActivity;
-import pro.sketchware.databinding.AndroidManifestInjectionBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.activities.editor.view.CodeViewerActivity;
+import ide.sketchware.databinding.AndroidManifestInjectionBinding;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 @SuppressLint("SetTextI18n")
 public class AndroidManifestInjection extends BaseAppCompatActivity {

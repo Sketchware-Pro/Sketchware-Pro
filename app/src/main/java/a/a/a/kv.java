@@ -8,9 +8,9 @@ import com.besome.sketch.editor.manage.library.firebase.FirebaseActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageLibraryFirebasePreviewBinding;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ManageLibraryFirebasePreviewBinding;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class kv extends LinearLayout implements nv {
 
