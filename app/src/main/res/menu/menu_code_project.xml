@@ -23,4 +23,9 @@
         android:title="@string/code_project_redo"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_logcat"
+        android:title="@string/code_project_logcat"
+        app:showAsAction="never" />
+
 </menu>

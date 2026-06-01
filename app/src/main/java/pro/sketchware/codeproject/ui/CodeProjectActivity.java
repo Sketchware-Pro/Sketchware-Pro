@@ -43,6 +43,8 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private int activeTabIndex = -1;
     private FileTabAdapter tabAdapter;
     private boolean ignoreTextChange = false;
+    private LogcatPanel logcatPanel;
+    private boolean logcatVisible = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         setupDrawer();
         setupFileExplorer();
         setupEditor();
+        setupLogcat();
     }
 
     private void setupToolbar() {
@@ -108,6 +111,24 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 markCurrentTabModified();
             }
         });
+    }
+
+    private void setupLogcat() {
+        logcatPanel = new LogcatPanel();
+        logcatPanel.attach(binding.logcatList);
+        binding.btnClearLog.setOnClickListener(v -> logcatPanel.clear());
+        binding.btnCloseLog.setOnClickListener(v -> toggleLogcat());
+    }
+
+    private void toggleLogcat() {
+        logcatVisible = !logcatVisible;
+        if (logcatVisible) {
+            binding.logcatContainer.setVisibility(View.VISIBLE);
+            logcatPanel.start();
+        } else {
+            binding.logcatContainer.setVisibility(View.GONE);
+            logcatPanel.stop();
+        }
     }
 
     private void openFile(File file) {
@@ -266,6 +287,9 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         } else if (id == R.id.action_redo) {
             binding.editor.redo();
             return true;
+        } else if (id == R.id.action_logcat) {
+            toggleLogcat();
+            return true;
         }
         return false;
     }
@@ -344,11 +368,21 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
+        if (logcatVisible) {
+            toggleLogcat();
+        } else if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
             binding.drawerLayout.closeDrawer(binding.navView);
         } else {
             saveAllModifiedTabs();
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (logcatPanel != null) {
+            logcatPanel.stop();
         }
     }
 }
