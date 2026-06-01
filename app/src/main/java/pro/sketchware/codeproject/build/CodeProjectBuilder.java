@@ -6,7 +6,6 @@ import android.os.Build;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,8 +137,34 @@ public class CodeProjectBuilder {
                                     BinaryExecutor executor = new BinaryExecutor();
                                     executor.setCommands(args);
                                     String output = executor.execute();
-                                    if (!output.isEmpty()) {
-                                        throw new Exception("AAPT2 compile error: " + output);
+
+                                    // Determine expected .flat artifact name
+                                    String flatName = dir.getName() + "_" + file.getName().replaceFirst("\\.[^.]+$", "") + ".arsc.flat";
+                                    if (!file.getName().endsWith(".xml")) {
+                                        flatName = dir.getName() + "_" + file.getName() + ".flat";
+                                    }
+                                    File expectedFlat = new File(compiledResDir, flatName);
+
+                                    // Only fail if no .flat artifact was produced (output may contain non-fatal warnings)
+                                    if (!expectedFlat.exists()) {
+                                        // Also accept any .flat file matching file stem as fallback
+                                        boolean found = false;
+                                        String stem = file.getName().replaceFirst("\\.[^.]+$", "");
+                                        File[] flatFiles = compiledResDir.listFiles();
+                                        if (flatFiles != null) {
+                                            for (File f : flatFiles) {
+                                                if (f.getName().contains(stem) && f.getName().endsWith(".flat")) {
+                                                    found = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (!found) {
+                                            String errorDetail = output.isEmpty()
+                                                    ? "No compiled output produced for " + file.getName()
+                                                    : output;
+                                            throw new Exception("AAPT2 compile error: " + errorDetail);
+                                        }
                                     }
                                 }
                             }
@@ -319,23 +344,10 @@ public class CodeProjectBuilder {
         }
     }
 
-    @SuppressWarnings("unused")
-    private void addClassFiles(File dir, List<String> args) {
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    addClassFiles(file, args);
-                } else if (file.getName().endsWith(".class")) {
-                    args.add(file.getAbsolutePath());
-                }
-            }
-        }
-    }
-
     private File buildApk() throws Exception {
         File resourcesApk = new File(binDir, "resources.apk");
         File unsignedApk = new File(binDir, "unsigned.apk");
+        File alignedApk = new File(binDir, "aligned.apk");
         File dexFile = new File(dexDir, "classes.dex");
 
         // Build the unsigned APK by copying all entries from resources.apk
@@ -343,11 +355,24 @@ public class CodeProjectBuilder {
         try (ZipInputStream zis = new ZipInputStream(new FileInputStream(resourcesApk));
              ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(unsignedApk))) {
 
-            // Copy all existing entries from resources.apk
+            // Copy all existing entries preserving compression method and metadata
             ZipEntry entry;
             byte[] buffer = new byte[8192];
             while ((entry = zis.getNextEntry()) != null) {
-                zos.putNextEntry(new ZipEntry(entry.getName()));
+                ZipEntry outEntry = new ZipEntry(entry.getName());
+                outEntry.setTime(entry.getTime());
+
+                if (entry.getMethod() == ZipEntry.STORED) {
+                    // For STORED entries, we must set size, compressed size, and CRC
+                    outEntry.setMethod(ZipEntry.STORED);
+                    outEntry.setSize(entry.getSize());
+                    outEntry.setCompressedSize(entry.getCompressedSize());
+                    outEntry.setCrc(entry.getCrc());
+                } else {
+                    outEntry.setMethod(ZipEntry.DEFLATED);
+                }
+
+                zos.putNextEntry(outEntry);
                 int read;
                 while ((read = zis.read(buffer)) != -1) {
                     zos.write(buffer, 0, read);
@@ -356,8 +381,10 @@ public class CodeProjectBuilder {
                 zis.closeEntry();
             }
 
-            // Add classes.dex
-            zos.putNextEntry(new ZipEntry("classes.dex"));
+            // Add classes.dex (DEFLATED is fine for dex)
+            ZipEntry dexEntry = new ZipEntry("classes.dex");
+            dexEntry.setMethod(ZipEntry.DEFLATED);
+            zos.putNextEntry(dexEntry);
             try (FileInputStream dexIn = new FileInputStream(dexFile)) {
                 int read;
                 while ((read = dexIn.read(buffer)) != -1) {
@@ -367,25 +394,63 @@ public class CodeProjectBuilder {
             zos.closeEntry();
         }
 
-        return unsignedApk;
+        // Zipalign the APK (4-byte alignment) for resources.arsc and uncompressed entries
+        zipalign(unsignedApk, alignedApk);
+
+        return alignedApk;
     }
 
-    private File signApk(File unsignedApk) throws Exception {
-        File signedApk = new File(binDir, "signed.apk");
-        mod.jbk.util.TestkeySignBridge.signWithTestkey(
-                unsignedApk.getAbsolutePath(), signedApk.getAbsolutePath());
-        return signedApk;
-    }
+    private void zipalign(File input, File output) throws Exception {
+        // Use the bundled zipalign binary if available, otherwise skip alignment
+        // (APK will still work, just slightly less efficient memory-mapping)
+        File zipalignBinary = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "zipalign");
+        if (!zipalignBinary.exists()) {
+            // Fallback: just rename unaligned as aligned
+            if (!input.renameTo(output)) {
+                try (FileInputStream in = new FileInputStream(input);
+                     FileOutputStream out = new FileOutputStream(output)) {
+                    byte[] buffer = new byte[8192];
+                    int read;
+                    while ((read = in.read(buffer)) != -1) {
+                        out.write(buffer, 0, read);
+                    }
+                }
+            }
+            return;
+        }
 
-    private void copyFile(File src, File dst) throws IOException {
-        try (FileInputStream in = new FileInputStream(src);
-             FileOutputStream out = new FileOutputStream(dst)) {
-            byte[] buffer = new byte[8192];
-            int read;
-            while ((read = in.read(buffer)) != -1) {
-                out.write(buffer, 0, read);
+        zipalignBinary.setExecutable(true);
+        ArrayList<String> args = new ArrayList<>();
+        args.add(zipalignBinary.getAbsolutePath());
+        args.add("-f");
+        args.add("4");
+        args.add(input.getAbsolutePath());
+        args.add(output.getAbsolutePath());
+
+        BinaryExecutor executor = new BinaryExecutor();
+        executor.setCommands(args);
+        executor.execute();
+
+        if (!output.exists()) {
+            // Zipalign failed silently; use unaligned APK
+            if (!input.renameTo(output)) {
+                try (FileInputStream in = new FileInputStream(input);
+                     FileOutputStream out = new FileOutputStream(output)) {
+                    byte[] buffer = new byte[8192];
+                    int read;
+                    while ((read = in.read(buffer)) != -1) {
+                        out.write(buffer, 0, read);
+                    }
+                }
             }
         }
+    }
+
+    private File signApk(File apk) throws Exception {
+        File signedApk = new File(binDir, "signed.apk");
+        mod.jbk.util.TestkeySignBridge.signWithTestkey(
+                apk.getAbsolutePath(), signedApk.getAbsolutePath());
+        return signedApk;
     }
 
     public interface BuildProgressListener {

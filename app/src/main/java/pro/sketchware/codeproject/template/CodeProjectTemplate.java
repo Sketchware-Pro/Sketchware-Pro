@@ -94,12 +94,14 @@ public class CodeProjectTemplate {
 
     private static String escapeXml(String input) {
         if (input == null) return "";
+        // For Android string resources, use backslash escapes for ' and "
+        // (aapt2 rejects &apos; and &quot; in <string> values)
         return input
                 .replace("&", "&amp;")
                 .replace("<", "&lt;")
                 .replace(">", "&gt;")
-                .replace("'", "&apos;")
-                .replace("\"", "&quot;");
+                .replace("'", "\\'")
+                .replace("\"", "\\\"");
     }
 
     private static String generateColors() {

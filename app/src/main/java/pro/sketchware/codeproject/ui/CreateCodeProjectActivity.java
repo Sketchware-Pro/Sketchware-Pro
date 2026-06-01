@@ -20,7 +20,7 @@ import pro.sketchware.databinding.ActivityCreateCodeProjectBinding;
 
 public class CreateCodeProjectActivity extends BaseAppCompatActivity {
 
-    private static final Pattern PACKAGE_PATTERN = Pattern.compile("^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)+$");
+    private static final Pattern PACKAGE_PATTERN = Pattern.compile("^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$");
 
     private ActivityCreateCodeProjectBinding binding;
 

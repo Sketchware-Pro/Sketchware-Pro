@@ -88,8 +88,10 @@ public class FileExplorerAdapter extends RecyclerView.Adapter<FileExplorerAdapte
 
     private void toggleExpand(FileNode node, int position) {
         if (node.isExpanded) {
-            int count = collapseNode(node, position);
+            int count = countVisibleDescendants(node);
+            displayedNodes.subList(position + 1, position + 1 + count).clear();
             node.isExpanded = false;
+            collapseNestedState(node);
             notifyItemChanged(position);
             notifyItemRangeRemoved(position + 1, count);
         } else {
@@ -102,19 +104,36 @@ public class FileExplorerAdapter extends RecyclerView.Adapter<FileExplorerAdapte
         }
     }
 
-    private int collapseNode(FileNode node, int position) {
+    /**
+     * Counts total visible descendants (those currently in displayedNodes)
+     * without modifying the list.
+     */
+    private int countVisibleDescendants(FileNode node) {
         int count = 0;
         if (node.children != null) {
             for (FileNode child : node.children) {
-                if (child.isExpanded && child.isDirectory) {
-                    count += collapseNode(child, position + 1 + count);
-                    child.isExpanded = false;
-                }
                 count++;
+                if (child.isExpanded && child.isDirectory) {
+                    count += countVisibleDescendants(child);
+                }
             }
-            displayedNodes.subList(position + 1, position + 1 + count).clear();
         }
         return count;
+    }
+
+    /**
+     * Recursively resets isExpanded on nested directories so their
+     * logical state matches the UI (all collapsed).
+     */
+    private void collapseNestedState(FileNode node) {
+        if (node.children != null) {
+            for (FileNode child : node.children) {
+                if (child.isDirectory && child.isExpanded) {
+                    child.isExpanded = false;
+                    collapseNestedState(child);
+                }
+            }
+        }
     }
 
     private FileNode buildTree(File file, int level) {

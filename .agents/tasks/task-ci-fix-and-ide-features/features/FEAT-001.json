@@ -1,0 +1,19 @@
+{
+  "id": "FEAT-001",
+  "type": "fix",
+  "description": "Fix CI build failure by making createMockGoogleServices write to project root when GOOGLE_SERVICES_JSON secret is not available. Currently the fallback only writes to src/debug/google-services.json, but release builds need it at the project root ($projectDir/google-services.json).",
+  "status": "completed",
+  "steps": [
+    "In app/build.gradle, modify the createMockGoogleServices task. In the else branch (when secrets is null), change it to write the mock JSON to `$projectDir/google-services.json` (the project root) instead of only `src/debug/google-services.json`. This makes the fallback behavior match what the secret-available path does. The mock content JSON stays the same.",
+    "Keep the src/debug/google-services.json write as well for backward compatibility with debug builds that might reference it, OR just write to root since both debug and release will find it there. The simplest fix: write to root ($projectDir/google-services.json) in the fallback case, same as the secrets-available case does."
+  ],
+  "acceptance_criteria": [
+    "The createMockGoogleServices task writes mock google-services.json to $projectDir/google-services.json when GOOGLE_SERVICES_JSON env var is not set",
+    "gradle assembleRelease succeeds without GOOGLE_SERVICES_JSON being set"
+  ],
+  "verification": [
+    "Run `gradle assembleRelease` from the project root and confirm it succeeds"
+  ],
+  "blocked_reason": null,
+  "findings": "Build succeeds with gradle assembleRelease. The mock google-services.json is now written to $projectDir/google-services.json in both branches (secrets available and fallback). Java 17 via mise is required. Use ./gradlew not gradle. Build takes ~7 minutes."
+}
