@@ -131,10 +131,7 @@ tasks.register('createMockGoogleServices') {
             new File("$projectDir/google-services.json").text = secrets
             return
         }
-        def mockFile = file("src/debug/google-services.json")
-        if (!mockFile.exists()) {
-            mockFile.parentFile.mkdirs()
-            def mockContent = """{
+        def mockContent = """{
   "project_info": {
     "project_number": "123456789000",
     "firebase_url": "https://mock-project-default-rtdb.firebaseio.com",
@@ -164,8 +161,7 @@ tasks.register('createMockGoogleServices') {
   ],
   "configuration_version": "1"
 }"""
-            mockFile.text = mockContent
-        }
+        new File("$projectDir/google-services.json").text = mockContent
     }
 }
 

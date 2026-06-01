@@ -1,0 +1,33 @@
+{
+  "project_type": "Android app (Sketchware Pro IDE fork) with Gradle build",
+  "language": "Java (primary), Kotlin (some compiler-related code)",
+  "build_system": "Gradle with version catalog (gradle/libs.versions.toml). Uses google-services plugin requiring google-services.json. The app uses sora-editor 0.23.5 for code editing.",
+  "test_framework": "No unit tests in this project. Validation is done via Gradle assembleRelease.",
+  "build_command": "gradle assembleRelease",
+  "test_command": "gradle assembleRelease (no separate test suite)",
+  "verification_instructions": "Run `gradle assembleRelease` from the project root. It should complete without errors.",
+  "snapshot_or_generated_files": null,
+  "setup_instructions": "Java 17 must be active (mise use java@17). Then run gradle assembleRelease from project root.",
+  "environment_constraints": "OPEN_INTERNET - full network access. Java 17 available via mise. Gradle 8.14 available.",
+  "contribution_requirements": "New code goes in pro.sketchware.codeproject package. Use Java, not Kotlin, for new source files. Do not break existing drag-and-drop functionality.",
+  "key_patterns": "- CodeProjectActivity uses ViewBinding (ActivityCodeProjectBinding). - Editor is sora-editor CodeEditor widget. - Language support via JavaLanguage (built-in) and TextMate grammars. - EditorUtils provides loadJavaConfig/loadXmlConfig helpers. - CodeEditorLanguages has SCOPE_NAME_KOTLIN already defined for TextMate. - Kotlin compilation exists in mod.hey.studios.compiler.kotlin using K2JVMCompiler. - CodeProjectBuilder uses ECJ for Java compilation, D8 for dexing. - File explorer uses RecyclerView with FileExplorerAdapter. - The activity_code_project.xml layout has DrawerLayout with toolbar+editor in main content and NavigationView with file list in drawer.",
+  "relevant_files": [
+    "app/build.gradle",
+    "app/src/main/java/pro/sketchware/codeproject/ui/CodeProjectActivity.java",
+    "app/src/main/java/pro/sketchware/codeproject/ui/FileExplorerAdapter.java",
+    "app/src/main/java/pro/sketchware/codeproject/build/CodeProjectBuilder.java",
+    "app/src/main/java/pro/sketchware/codeproject/model/CodeProject.java",
+    "app/src/main/java/pro/sketchware/utility/EditorUtils.java",
+    "app/src/main/java/mod/jbk/code/CodeEditorLanguages.java",
+    "app/src/main/java/mod/jbk/code/CodeEditorColorSchemes.java",
+    "app/src/main/java/mod/hey/studios/compiler/kotlin/KotlinCompilerBridge.java",
+    "app/src/main/java/mod/hey/studios/compiler/kotlin/KotlinCompiler.kt",
+    "app/src/main/res/layout/activity_code_project.xml",
+    "app/src/main/res/menu/menu_code_project.xml",
+    "app/src/main/res/values/strings.xml",
+    "app/src/main/assets/textmate/languages.json",
+    ".github/workflows/android.yml",
+    "gradle/libs.versions.toml"
+  ],
+  "directory_structure": "- app/src/main/java/pro/sketchware/codeproject/ - Code project IDE feature (ui, build, model, template subpackages). - app/src/main/java/mod/jbk/code/ - Editor language/color scheme helpers. - app/src/main/java/mod/hey/studios/compiler/kotlin/ - Existing Kotlin compiler bridge. - app/src/main/res/layout/ - Layout XMLs. - app/src/main/res/menu/ - Menu XMLs. - app/src/main/assets/textmate/ - TextMate grammar files for syntax highlighting."
+}

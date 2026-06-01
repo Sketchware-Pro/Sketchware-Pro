@@ -1,0 +1,28 @@
+{
+  "id": "FEAT-004",
+  "type": "feat",
+  "description": "Add Kotlin support to the Code Project IDE. Allow .kt files in code projects with syntax highlighting (TextMate Kotlin grammar is already bundled in assets/textmate/kotlin/) and integrate Kotlin compilation into the CodeProjectBuilder build pipeline using the existing K2JVMCompiler infrastructure.",
+  "status": "completed",
+  "steps": [
+    "Modify `EditorUtils.java` to add a new method `loadKotlinConfig(CodeEditor editor)` that uses CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_KOTLIN) with isTextMate=true, following the same pattern as loadXmlConfig.",
+    "Modify `CodeProjectActivity.java` openFile() method to detect .kt files and call `EditorUtils.loadKotlinConfig(binding.editor)` instead of loadJavaConfig. The existing code already has a pattern: if name.endsWith('.xml') use XML config, else use Java config. Add an else-if for .endsWith('.kt') to load Kotlin config.",
+    "Modify `FileExplorerAdapter.java` to add a Kotlin file icon. In onBindViewHolder, add a case for .kt files. Use either a dedicated drawable or reuse the generic ic_file_24 with a different tint. For simplicity, create a new vector drawable `ic_file_kotlin_24.xml` in res/drawable/ (a simple 'K' badge on a file icon, or use the same file icon - keeping it simple).",
+    "Modify `CodeProject.java` to add a `getKotlinSourcePath()` method that returns the same path as getJavaSourcePath() (since Kotlin files live alongside Java files in the same source directory for this simple project structure).",
+    "Modify `CodeProjectBuilder.java` compileJava() method to add a Kotlin compilation step BEFORE Java compilation. Steps: (a) Collect all .kt files from the source directory. (b) If any .kt files exist, invoke the Kotlin compiler using the same pattern as KotlinCompiler.kt but adapted for the CodeProject's simpler structure. Use K2JVMCompiler with the classpath set to android.jar + lambda stubs, source files set to the .kt files, and output set to classesDir. (c) After Kotlin compilation, add classesDir to the Java compilation classpath so ECJ can reference Kotlin-compiled classes. (d) If no .kt files exist, skip Kotlin compilation entirely.",
+    "Update the CodeProjectTemplate.java to optionally note that .kt files are supported (no template change needed for the default Hello World, but ensure the template does not break if a user manually adds .kt files).",
+    "Add a new string resource for the Kotlin compilation step message in strings.xml."
+  ],
+  "acceptance_criteria": [
+    ".kt files in the source directory get Kotlin syntax highlighting in the editor",
+    "The file explorer shows .kt files (with appropriate icon)",
+    "Building a project with .kt files invokes the Kotlin compiler before Java compilation",
+    "Building a project with only .java files (no .kt) still works unchanged",
+    "The Kotlin compilation output classes are included in the DEX step",
+    "gradle assembleRelease still succeeds"
+  ],
+  "verification": [
+    "Run `gradle assembleRelease` from the project root and confirm it succeeds"
+  ],
+  "blocked_reason": null,
+  "findings": "Build succeeds with assembleRelease (2m 48s). DiagnosticCollector from mod.hey.studios.compiler.kotlin is directly accessible from Java. The build/ pattern in .gitignore matches codeproject/build/ directory, requiring -f flag when staging. K2JVMCompiler, K2JVMCompilerArguments, ExitCode, and Services are all available from org.jetbrains.kotlin packages via the kotlin_compiler bundle dependency."
+}

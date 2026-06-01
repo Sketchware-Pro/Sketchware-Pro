@@ -13,11 +13,13 @@ import com.google.android.material.color.MaterialColors;
 import io.github.rosemoe.sora.lang.Language;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
 import pro.sketchware.R;
+import pro.sketchware.codeproject.editor.JavaAutoCompleteLanguage;
 
 public class EditorUtils {
     EditorUtils() {
@@ -54,8 +56,26 @@ public class EditorUtils {
         loadConfigByLanguage(editor, new JavaLanguage(), false);
     }
 
+    public static void loadJavaAutoCompleteConfig(CodeEditor editor) {
+        loadConfigByLanguage(editor, new JavaAutoCompleteLanguage(), false);
+        editor.getComponent(EditorAutoCompletion.class).setEnabled(true);
+    }
+
     public static void loadXmlConfig(CodeEditor editor) {
         loadConfigByLanguage(editor, CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML), true);
+        disableAutoCompletion(editor);
+    }
+
+    public static void loadKotlinConfig(CodeEditor editor) {
+        loadConfigByLanguage(editor, CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_KOTLIN), true);
+        disableAutoCompletion(editor);
+    }
+
+    private static void disableAutoCompletion(CodeEditor editor) {
+        EditorAutoCompletion comp = editor.getComponent(EditorAutoCompletion.class);
+        if (comp != null) {
+            comp.setEnabled(false);
+        }
     }
 
     // todo: use dynamic color scheme for textmate language too

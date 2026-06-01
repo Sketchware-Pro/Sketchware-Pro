@@ -36,6 +36,8 @@ import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
+import pro.sketchware.codeproject.model.CodeProject;
+import pro.sketchware.codeproject.ui.CodeProjectActivity;
 import pro.sketchware.databinding.BottomSheetProjectOptionsBinding;
 import pro.sketchware.databinding.MyprojectsItemBinding;
 
@@ -182,7 +184,13 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
         holder.binding.getRoot().setOnClickListener(v -> {
             if (!mB.a()) {
-                projectsFragment.toDesignActivity(scId);
+                if (CodeProject.isCodeProject(projectMap)) {
+                    Intent intent = new Intent(activity, CodeProjectActivity.class);
+                    intent.putExtra("sc_id", scId);
+                    activity.startActivity(intent);
+                } else {
+                    projectsFragment.toDesignActivity(scId);
+                }
             }
         });
 
