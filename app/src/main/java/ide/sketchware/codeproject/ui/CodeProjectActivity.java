@@ -3,6 +3,8 @@ package ide.sketchware.codeproject.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.content.FileProvider;
@@ -18,7 +22,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +37,7 @@ import io.github.rosemoe.sora.lang.diagnostic.DiagnosticDetail;
 import io.github.rosemoe.sora.lang.diagnostic.DiagnosticRegion;
 import io.github.rosemoe.sora.lang.diagnostic.DiagnosticsContainer;
 import io.github.rosemoe.sora.text.Content;
+import io.github.rosemoe.sora.widget.EditorSearcher;
 import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
 import io.github.rosemoe.sora.widget.style.DiagnosticIndicatorStyle;
 import ide.sketchware.R;
@@ -56,6 +64,22 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private boolean logcatVisible = false;
     private BuildErrorAdapter errorAdapter;
     private final Map<String, List<CompilerErrorParser.CompilerError>> fileErrorMap = new HashMap<>();
+    private volatile int searchToken = 0;
+
+    private final ActivityResultLauncher<Intent> settingsLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    // Reload project metadata
+                    String scId = getIntent().getStringExtra("sc_id");
+                    if (scId != null) {
+                        HashMap<String, Object> metadata = lC.b(scId);
+                        if (metadata != null) {
+                            project = CodeProject.fromMetadata(metadata);
+                            binding.toolbar.setTitle(project.getProjectName());
+                        }
+                    }
+                }
+            });
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +108,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         setupEditor();
         setupLogcat();
         setupErrorPanel();
+        setupSearchPanel();
     }
 
     private void setupToolbar() {
@@ -430,6 +455,11 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private void switchToTab(int index) {
         if (index < 0 || index >= openTabs.size()) return;
 
+        // Stop any active search to avoid stale match positions against new content
+        if (binding.searchPanel.getRoot().getVisibility() == View.VISIBLE) {
+            binding.editor.getSearcher().stopSearch();
+        }
+
         activeTabIndex = index;
         OpenFileTab tab = openTabs.get(index);
         currentFile = tab.getFile();
@@ -455,6 +485,16 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             setDiagnosticsForCurrentFile(errors);
         } else {
             binding.editor.setDiagnostics(new DiagnosticsContainer());
+        }
+
+        // Re-run search on new file if search panel is active
+        if (binding.searchPanel.getRoot().getVisibility() == View.VISIBLE) {
+            EditText searchInput = binding.searchPanel.getRoot().findViewById(R.id.search_input);
+            String query = searchInput.getText().toString();
+            if (!query.isEmpty()) {
+                binding.editor.getSearcher().search(query,
+                    new EditorSearcher.SearchOptions(EditorSearcher.SearchOptions.TYPE_NORMAL, true));
+            }
         }
 
         // Update UI
@@ -571,6 +611,12 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             return true;
         } else if (id == R.id.action_logcat) {
             toggleLogcat();
+            return true;
+        } else if (id == R.id.action_search) {
+            toggleSearchPanel();
+            return true;
+        } else if (id == R.id.action_settings) {
+            openProjectSettings();
             return true;
         }
         return false;
@@ -799,7 +845,9 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (binding.errorPanel.getVisibility() == View.VISIBLE) {
+        if (binding.searchPanel.getRoot().getVisibility() == View.VISIBLE) {
+            hideSearchPanel();
+        } else if (binding.errorPanel.getVisibility() == View.VISIBLE) {
             hideErrorPanel();
         } else if (logcatVisible) {
             toggleLogcat();
@@ -817,5 +865,189 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         if (logcatPanel != null) {
             logcatPanel.stop();
         }
+    }
+
+    // ==================== Search & Replace ====================
+
+    private void setupSearchPanel() {
+        View searchPanel = binding.searchPanel.getRoot();
+
+        EditText searchInput = searchPanel.findViewById(R.id.search_input);
+        EditText replaceInput = searchPanel.findViewById(R.id.replace_input);
+        View replaceContainer = searchPanel.findViewById(R.id.replace_container);
+        View btnToggleReplace = searchPanel.findViewById(R.id.btn_toggle_replace);
+        View btnFindNext = searchPanel.findViewById(R.id.btn_find_next);
+        View btnReplace = searchPanel.findViewById(R.id.btn_replace);
+        View btnReplaceAll = searchPanel.findViewById(R.id.btn_replace_all);
+        View btnCloseSearch = searchPanel.findViewById(R.id.btn_close_search);
+        View btnSearchInProject = searchPanel.findViewById(R.id.btn_search_in_project);
+        android.widget.TextView matchCount = searchPanel.findViewById(R.id.match_count);
+
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String query = s.toString();
+                if (query.isEmpty()) {
+                    binding.editor.getSearcher().stopSearch();
+                    matchCount.setText("");
+                } else {
+                    binding.editor.getSearcher().search(query,
+                            new EditorSearcher.SearchOptions(EditorSearcher.SearchOptions.TYPE_NORMAL, true));
+                    // Delay to allow async search to complete before reading match count
+                    binding.editor.postDelayed(() -> updateMatchCount(matchCount), 100);
+                }
+            }
+        });
+
+        btnFindNext.setOnClickListener(v -> {
+            if (binding.editor.getSearcher().hasQuery()) {
+                binding.editor.getSearcher().gotoNext();
+                updateMatchCount(matchCount);
+            }
+        });
+
+        btnToggleReplace.setOnClickListener(v -> {
+            if (replaceContainer.getVisibility() == View.GONE) {
+                replaceContainer.setVisibility(View.VISIBLE);
+            } else {
+                replaceContainer.setVisibility(View.GONE);
+            }
+        });
+
+        btnReplace.setOnClickListener(v -> {
+            if (binding.editor.getSearcher().hasQuery()) {
+                String replaceText = replaceInput.getText().toString();
+                binding.editor.getSearcher().replaceCurrentMatch(replaceText);
+                updateMatchCount(matchCount);
+            }
+        });
+
+        btnReplaceAll.setOnClickListener(v -> {
+            if (binding.editor.getSearcher().hasQuery()) {
+                String replaceText = replaceInput.getText().toString();
+                binding.editor.getSearcher().replaceAll(replaceText);
+                updateMatchCount(matchCount);
+            }
+        });
+
+        btnCloseSearch.setOnClickListener(v -> hideSearchPanel());
+
+        btnSearchInProject.setOnClickListener(v -> {
+            String query = searchInput.getText().toString().trim();
+            if (!query.isEmpty()) {
+                searchInProject(query);
+            }
+        });
+    }
+
+    private void toggleSearchPanel() {
+        View panel = binding.searchPanel.getRoot();
+        if (panel.getVisibility() == View.VISIBLE) {
+            hideSearchPanel();
+        } else {
+            panel.setVisibility(View.VISIBLE);
+            EditText searchInput = panel.findViewById(R.id.search_input);
+            searchInput.requestFocus();
+        }
+    }
+
+    private void hideSearchPanel() {
+        View panel = binding.searchPanel.getRoot();
+        panel.setVisibility(View.GONE);
+        binding.editor.getSearcher().stopSearch();
+        android.widget.TextView matchCount = panel.findViewById(R.id.match_count);
+        matchCount.setText("");
+    }
+
+    private void updateMatchCount(android.widget.TextView matchCount) {
+        binding.editor.post(() -> {
+            try {
+                if (binding.editor.getSearcher().hasQuery()) {
+                    int total = binding.editor.getSearcher().getMatchedPositionCount();
+                    if (total > 0) {
+                        int current = binding.editor.getSearcher().getCurrentMatchedPositionIndex() + 1;
+                        matchCount.setText(getString(R.string.code_project_match_count, current, total));
+                    } else {
+                        matchCount.setText(getString(R.string.code_project_no_results));
+                    }
+                } else {
+                    matchCount.setText("");
+                }
+            } catch (Exception e) {
+                matchCount.setText("");
+            }
+        });
+    }
+
+    private void searchInProject(String query) {
+        Toast.makeText(this, R.string.code_project_search_in_project, Toast.LENGTH_SHORT).show();
+
+        final int token = ++searchToken;
+
+        new Thread(() -> {
+            List<String> results = new ArrayList<>();
+            File sourceRoot = new File(project.getSourcePath());
+            searchFilesRecursive(sourceRoot, query, results);
+
+            runOnUiThread(() -> {
+                if (isFinishing()) return;
+                // Discard stale results if a newer search was started
+                if (token != searchToken) return;
+                if (results.isEmpty()) {
+                    Toast.makeText(this, R.string.code_project_no_results, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // Reuse error panel to show search results
+                errorAdapter.setErrors(results);
+                binding.errorPanel.setVisibility(View.VISIBLE);
+            });
+        }).start();
+    }
+
+    private void searchFilesRecursive(File dir, String query, List<String> results) {
+        if (dir == null || !dir.exists()) return;
+        File[] files = dir.listFiles();
+        if (files == null) return;
+
+        String lowerQuery = query.toLowerCase();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                searchFilesRecursive(file, query, results);
+            } else {
+                String name = file.getName().toLowerCase();
+                if (name.endsWith(".java") || name.endsWith(".kt") || name.endsWith(".xml")) {
+                    searchInFile(file, lowerQuery, results);
+                }
+            }
+        }
+    }
+
+    private void searchInFile(File file, String lowerQuery, List<String> results) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            int lineNumber = 0;
+            while ((line = reader.readLine()) != null) {
+                lineNumber++;
+                if (line.toLowerCase().contains(lowerQuery)) {
+                    results.add(file.getAbsolutePath() + ":" + lineNumber + ": " + line.trim());
+                }
+            }
+        } catch (IOException e) {
+            // Skip unreadable files
+        }
+    }
+
+    // ==================== Project Settings ====================
+
+    private void openProjectSettings() {
+        Intent intent = new Intent(this, ProjectSettingsActivity.class);
+        intent.putExtra("sc_id", project.getScId());
+        settingsLauncher.launch(intent);
     }
 }

@@ -326,6 +326,10 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
+            android:name="ide.sketchware.codeproject.ui.ProjectSettingsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".activities.preview.LayoutPreviewActivity"
             android:configChanges="orientation|screenSize" />
 
