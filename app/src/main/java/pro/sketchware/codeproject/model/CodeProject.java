@@ -90,6 +90,10 @@ public class CodeProject {
         return getSourcePath() + File.separator + "java";
     }
 
+    public String getKotlinSourcePath() {
+        return getJavaSourcePath();
+    }
+
     public String getResPath() {
         return getSourcePath() + File.separator + "res";
     }

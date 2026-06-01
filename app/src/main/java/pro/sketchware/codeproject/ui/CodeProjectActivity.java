@@ -152,6 +152,8 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         String name = currentFile.getName().toLowerCase();
         if (name.endsWith(".xml")) {
             EditorUtils.loadXmlConfig(binding.editor);
+        } else if (name.endsWith(".kt")) {
+            EditorUtils.loadKotlinConfig(binding.editor);
         } else {
             EditorUtils.loadJavaAutoCompleteConfig(binding.editor);
         }

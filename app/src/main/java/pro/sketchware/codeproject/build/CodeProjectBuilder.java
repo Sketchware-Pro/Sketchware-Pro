@@ -14,7 +14,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import mod.hey.studios.compiler.kotlin.DiagnosticCollector;
 import mod.jbk.build.BuiltInLibraries;
+import org.jetbrains.kotlin.cli.common.ExitCode;
+import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments;
+import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler;
+import org.jetbrains.kotlin.config.Services;
 import pro.sketchware.codeproject.model.CodeProject;
 import pro.sketchware.utility.BinaryExecutor;
 import pro.sketchware.utility.FileUtil;
@@ -48,19 +53,22 @@ public class CodeProjectBuilder {
         if (listener != null) listener.onProgress("Compiling resources...", 3);
         compileResources();
 
-        if (listener != null) listener.onProgress("Compiling Java...", 4);
+        if (listener != null) listener.onProgress("Compiling Kotlin...", 4);
+        compileKotlin();
+
+        if (listener != null) listener.onProgress("Compiling Java...", 5);
         compileJava();
 
-        if (listener != null) listener.onProgress("Creating DEX...", 5);
+        if (listener != null) listener.onProgress("Creating DEX...", 6);
         createDex();
 
-        if (listener != null) listener.onProgress("Building APK...", 6);
+        if (listener != null) listener.onProgress("Building APK...", 7);
         File apk = buildApk();
 
-        if (listener != null) listener.onProgress("Signing APK...", 7);
+        if (listener != null) listener.onProgress("Signing APK...", 8);
         File signedApk = signApk(apk);
 
-        if (listener != null) listener.onProgress("Done", 8);
+        if (listener != null) listener.onProgress("Done", 9);
         return signedApk;
     }
 
@@ -179,6 +187,73 @@ public class CodeProjectBuilder {
         }
     }
 
+    private void compileKotlin() throws Exception {
+        File sourceDir = new File(project.getKotlinSourcePath());
+        List<File> ktFiles = new ArrayList<>();
+        collectKotlinFiles(sourceDir, ktFiles);
+
+        if (ktFiles.isEmpty()) return;
+
+        File androidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
+        File lambdaStubs = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "core-lambda-stubs.jar");
+
+        StringBuilder classpath = new StringBuilder();
+        classpath.append(androidJar.getAbsolutePath());
+        if (lambdaStubs.exists()) {
+            classpath.append(":").append(lambdaStubs.getAbsolutePath());
+        }
+
+        List<String> arguments = new ArrayList<>();
+        arguments.add("-cp");
+        arguments.add(classpath.toString());
+
+        for (File ktFile : ktFiles) {
+            arguments.add(ktFile.getAbsolutePath());
+        }
+
+        K2JVMCompiler compiler = new K2JVMCompiler();
+        DiagnosticCollector collector = new DiagnosticCollector();
+
+        K2JVMCompilerArguments args = new K2JVMCompilerArguments();
+        args.setCompileJava(false);
+        args.setIncludeRuntime(false);
+        args.setNoJdk(true);
+        args.setNoReflect(true);
+        args.setNoStdlib(true);
+        args.setDestination(classesDir.getAbsolutePath());
+
+        File kotlinHome = new File(binDir, "kotlin_home");
+        kotlinHome.mkdirs();
+        args.setKotlinHome(kotlinHome.getAbsolutePath());
+
+        compiler.parseArguments(arguments.toArray(new String[0]), args);
+
+        ExitCode exitCode = compiler.exec(collector, Services.EMPTY, args);
+
+        // Clean up META-INF that kotlinc generates (causes D8 issues)
+        File metaInf = new File(classesDir, "META-INF");
+        if (metaInf.exists()) {
+            FileUtil.deleteFile(metaInf.getAbsolutePath());
+        }
+
+        if (exitCode != ExitCode.OK) {
+            throw new Exception("Kotlin compilation failed");
+        }
+    }
+
+    private void collectKotlinFiles(File dir, List<File> ktFiles) {
+        if (dir == null || !dir.exists()) return;
+        File[] files = dir.listFiles();
+        if (files == null) return;
+        for (File file : files) {
+            if (file.isDirectory()) {
+                collectKotlinFiles(file, ktFiles);
+            } else if (file.getName().endsWith(".kt")) {
+                ktFiles.add(file);
+            }
+        }
+    }
+
     private void compileJava() throws Exception {
         File androidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
         File lambdaStubs = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "core-lambda-stubs.jar");
@@ -187,6 +262,12 @@ public class CodeProjectBuilder {
         classpath.append(androidJar.getAbsolutePath());
         if (lambdaStubs.exists()) {
             classpath.append(":").append(lambdaStubs.getAbsolutePath());
+        }
+
+        // Add compiled Kotlin classes to classpath so Java can reference them
+        File[] classFiles = classesDir.listFiles();
+        if (classesDir.exists() && classFiles != null && classFiles.length > 0) {
+            classpath.append(":").append(classesDir.getAbsolutePath());
         }
 
         List<String> args = new ArrayList<>();

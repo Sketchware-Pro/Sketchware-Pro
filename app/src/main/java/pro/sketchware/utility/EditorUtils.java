@@ -65,6 +65,10 @@ public class EditorUtils {
         loadConfigByLanguage(editor, CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML), true);
     }
 
+    public static void loadKotlinConfig(CodeEditor editor) {
+        loadConfigByLanguage(editor, CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_KOTLIN), true);
+    }
+
     // todo: use dynamic color scheme for textmate language too
     private static void loadConfigByLanguage(CodeEditor editor, Language language, boolean isTextMate) {
         editor.setEditorLanguage(language);

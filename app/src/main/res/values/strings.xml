@@ -2310,6 +2310,7 @@ Please try again later"</string>
     <string name="code_project_build_success">Build successful!</string>
     <string name="code_project_build_failed">Build failed</string>
     <string name="code_project_building">Building project...</string>
+    <string name="code_project_compiling_kotlin">Compiling Kotlin...</string>
     <string name="code_project_saved">File saved</string>
     <string name="code_project_open_drawer">Open files</string>
     <string name="code_project_close_drawer">Close files</string>

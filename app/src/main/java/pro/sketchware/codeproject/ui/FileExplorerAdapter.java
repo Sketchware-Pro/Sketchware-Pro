@@ -58,6 +58,8 @@ public class FileExplorerAdapter extends RecyclerView.Adapter<FileExplorerAdapte
             String name = node.file.getName().toLowerCase();
             if (name.endsWith(".java")) {
                 holder.binding.icon.setImageResource(R.drawable.ic_file_java_24);
+            } else if (name.endsWith(".kt")) {
+                holder.binding.icon.setImageResource(R.drawable.ic_file_kotlin_24);
             } else if (name.endsWith(".xml")) {
                 holder.binding.icon.setImageResource(R.drawable.ic_file_xml_24);
             } else {
