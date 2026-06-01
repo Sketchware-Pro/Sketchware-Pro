@@ -1,6 +1,7 @@
 package pro.sketchware.codeproject.ui;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private CodeProject project;
     private File currentFile;
     private FileExplorerAdapter fileAdapter;
+    private volatile boolean isBuilding = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +93,8 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
 
         currentFile = file;
         String content = FileUtil.readFile(file.getAbsolutePath());
+        // TODO: Undo history is lost on file switch because setText() resets the undo stack.
+        // A per-file undo manager could preserve history across file switches in a future version.
         binding.editor.setText(content);
 
         String name = file.getName().toLowerCase();
@@ -131,6 +135,10 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     }
 
     private void buildProject() {
+        if (isBuilding) return;
+        isBuilding = true;
+        setBuildMenuEnabled(false);
+
         saveCurrentFile();
         Toast.makeText(this, R.string.code_project_building, Toast.LENGTH_SHORT).show();
 
@@ -140,22 +148,44 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 File apk = builder.build(new CodeProjectBuilder.BuildProgressListener() {
                     @Override
                     public void onProgress(String message, int step) {
-                        runOnUiThread(() -> binding.toolbar.setSubtitle(message));
+                        runOnUiThread(() -> {
+                            if (!isFinishing()) {
+                                binding.toolbar.setSubtitle(message);
+                            }
+                        });
                     }
                 });
                 runOnUiThread(() -> {
-                    binding.toolbar.setSubtitle(project.getProjectName());
-                    Toast.makeText(CodeProjectActivity.this, R.string.code_project_build_success, Toast.LENGTH_SHORT).show();
+                    if (!isFinishing()) {
+                        binding.toolbar.setSubtitle(project.getProjectName());
+                        Toast.makeText(CodeProjectActivity.this, R.string.code_project_build_success, Toast.LENGTH_SHORT).show();
+                    }
+                    isBuilding = false;
+                    setBuildMenuEnabled(true);
                 });
             } catch (Exception e) {
                 runOnUiThread(() -> {
-                    binding.toolbar.setSubtitle(project.getProjectName());
-                    Toast.makeText(CodeProjectActivity.this,
-                            getString(R.string.code_project_build_failed) + ": " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                    if (!isFinishing()) {
+                        binding.toolbar.setSubtitle(project.getProjectName());
+                        Toast.makeText(CodeProjectActivity.this,
+                                getString(R.string.code_project_build_failed) + ": " + e.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                    isBuilding = false;
+                    setBuildMenuEnabled(true);
                 });
             }
         }).start();
+    }
+
+    private void setBuildMenuEnabled(boolean enabled) {
+        Menu menu = binding.toolbar.getMenu();
+        if (menu != null) {
+            MenuItem buildItem = menu.findItem(R.id.action_build);
+            if (buildItem != null) {
+                buildItem.setEnabled(enabled);
+            }
+        }
     }
 
     @Override

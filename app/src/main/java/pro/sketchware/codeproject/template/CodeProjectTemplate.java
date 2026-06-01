@@ -88,8 +88,18 @@ public class CodeProjectTemplate {
     private static String generateStrings(CodeProject project) {
         return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                 + "<resources>\n"
-                + "    <string name=\"app_name\">" + project.getAppName() + "</string>\n"
+                + "    <string name=\"app_name\">" + escapeXml(project.getAppName()) + "</string>\n"
                 + "</resources>\n";
+    }
+
+    private static String escapeXml(String input) {
+        if (input == null) return "";
+        return input
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("'", "&apos;")
+                .replace("\"", "&quot;");
     }
 
     private static String generateColors() {
