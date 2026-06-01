@@ -76,8 +76,8 @@
 
                 <ImageButton
                     android:id="@+id/btn_clear_log"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@android:drawable/ic_menu_delete"
                     android:contentDescription="@string/code_project_logcat_clear"
@@ -85,8 +85,8 @@
 
                 <ImageButton
                     android:id="@+id/btn_close_log"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@android:drawable/ic_menu_close_clear_cancel"
                     android:contentDescription="@string/common_word_close"

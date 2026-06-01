@@ -317,7 +317,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 });
                 runOnUiThread(() -> {
                     if (!isFinishing()) {
-                        binding.toolbar.setSubtitle(project.getProjectName());
+                        restoreActiveFileSubtitle();
                         promptInstallApk(apk);
                     }
                     isBuilding = false;
@@ -326,7 +326,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             } catch (Exception e) {
                 runOnUiThread(() -> {
                     if (!isFinishing()) {
-                        binding.toolbar.setSubtitle(project.getProjectName());
+                        restoreActiveFileSubtitle();
                         Toast.makeText(CodeProjectActivity.this,
                                 getString(R.string.code_project_build_failed) + ": " + e.getMessage(),
                                 Toast.LENGTH_LONG).show();
@@ -336,6 +336,15 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 });
             }
         }).start();
+    }
+
+    /**
+     * Restores the toolbar subtitle to the currently active file's name. Derived
+     * live (not snapshotted) so it stays correct even if the user switched tabs
+     * while the build was running.
+     */
+    private void restoreActiveFileSubtitle() {
+        binding.toolbar.setSubtitle(currentFile != null ? currentFile.getName() : null);
     }
 
     private void promptInstallApk(File apkFile) {

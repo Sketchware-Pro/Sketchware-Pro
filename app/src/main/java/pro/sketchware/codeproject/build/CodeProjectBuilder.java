@@ -379,7 +379,6 @@ public class CodeProjectBuilder {
         File resourcesApk = new File(binDir, "resources.apk");
         File unsignedApk = new File(binDir, "unsigned.apk");
         File alignedApk = new File(binDir, "aligned.apk");
-        File dexFile = new File(dexDir, "classes.dex");
 
         // Build the unsigned APK by copying all entries from resources.apk
         // and adding classes.dex using Java zip APIs (no host zip binary needed)
@@ -412,17 +411,26 @@ public class CodeProjectBuilder {
                 zis.closeEntry();
             }
 
-            // Add classes.dex (DEFLATED is fine for dex)
-            ZipEntry dexEntry = new ZipEntry("classes.dex");
-            dexEntry.setMethod(ZipEntry.DEFLATED);
-            zos.putNextEntry(dexEntry);
-            try (FileInputStream dexIn = new FileInputStream(dexFile)) {
-                int read;
-                while ((read = dexIn.read(buffer)) != -1) {
-                    zos.write(buffer, 0, read);
-                }
+            // Add every dex file D8 produced (classes.dex, classes2.dex, ...).
+            // D8 in DexIndexed mode may emit multiple dex files when method count is high.
+            File[] dexFiles = dexDir.listFiles((dir, name) ->
+                    name.startsWith("classes") && name.endsWith(".dex"));
+            if (dexFiles == null || dexFiles.length == 0) {
+                throw new Exception("No dex files found to package.");
             }
-            zos.closeEntry();
+            java.util.Arrays.sort(dexFiles, java.util.Comparator.comparing(File::getName));
+            for (File dex : dexFiles) {
+                ZipEntry dexEntry = new ZipEntry(dex.getName());
+                dexEntry.setMethod(ZipEntry.DEFLATED);
+                zos.putNextEntry(dexEntry);
+                try (FileInputStream dexIn = new FileInputStream(dex)) {
+                    int read;
+                    while ((read = dexIn.read(buffer)) != -1) {
+                        zos.write(buffer, 0, read);
+                    }
+                }
+                zos.closeEntry();
+            }
         }
 
         // Zipalign the APK (4-byte alignment) for resources.arsc and uncompressed entries

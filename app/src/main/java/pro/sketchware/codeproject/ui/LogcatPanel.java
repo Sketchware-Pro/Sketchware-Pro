@@ -79,6 +79,11 @@ public class LogcatPanel {
 
     public void stop() {
         isRunning = false;
+        mainHandler.removeCallbacksAndMessages(null);
+        synchronized (pendingLines) {
+            pendingLines.clear();
+            batchPosted = false;
+        }
         if (logcatProcess != null) {
             logcatProcess.destroy();
             logcatProcess = null;
@@ -90,6 +95,11 @@ public class LogcatPanel {
     }
 
     public void clear() {
+        mainHandler.removeCallbacksAndMessages(null);
+        synchronized (pendingLines) {
+            pendingLines.clear();
+            batchPosted = false;
+        }
         logLines.clear();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
@@ -97,6 +107,7 @@ public class LogcatPanel {
     }
 
     private void drainBatch() {
+        if (!isRunning) return;
         List<String> batch;
         synchronized (pendingLines) {
             batch = new ArrayList<>(pendingLines);
