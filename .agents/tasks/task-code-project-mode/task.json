@@ -1,0 +1,7 @@
+{
+  "task_id": "task-code-project-mode",
+  "task_description": "Add a Code Project mode to Sketchware Pro that provides a full-code IDE experience (file explorer, editable code editor with sora-editor, direct compilation of raw .java/.xml source files) alongside the existing drag-and-drop block-based system.",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001", "FEAT-002"],
+  "blocked_reason": null
+}
