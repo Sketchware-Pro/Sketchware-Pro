@@ -353,7 +353,11 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.code_project_no_installer, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setBuildMenuEnabled(boolean enabled) {

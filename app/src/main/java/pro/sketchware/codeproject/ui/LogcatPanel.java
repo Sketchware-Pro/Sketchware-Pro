@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import pro.sketchware.R;
@@ -21,6 +22,7 @@ import pro.sketchware.R;
 public class LogcatPanel {
 
     private static final int MAX_LINES = 5000;
+    private static final long BATCH_INTERVAL_MS = 100;
     private static final int COLOR_VERBOSE = 0xFF888888;
     private static final int COLOR_DEBUG = 0xFF2196F3;
     private static final int COLOR_INFO = 0xFF4CAF50;
@@ -28,12 +30,14 @@ public class LogcatPanel {
     private static final int COLOR_ERROR = 0xFFF44336;
 
     private final List<String> logLines = new ArrayList<>();
+    private final List<String> pendingLines = new LinkedList<>();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private RecyclerView recyclerView;
     private LogAdapter adapter;
     private Process logcatProcess;
     private Thread readerThread;
     private volatile boolean isRunning = false;
+    private boolean batchPosted = false;
 
     public void attach(RecyclerView rv) {
         this.recyclerView = rv;
@@ -55,8 +59,13 @@ public class LogcatPanel {
                         new InputStreamReader(logcatProcess.getInputStream()))) {
                     String line;
                     while (isRunning && (line = reader.readLine()) != null) {
-                        final String logLine = line;
-                        mainHandler.post(() -> addLine(logLine));
+                        synchronized (pendingLines) {
+                            pendingLines.add(line);
+                            if (!batchPosted) {
+                                batchPosted = true;
+                                mainHandler.postDelayed(this::drainBatch, BATCH_INTERVAL_MS);
+                            }
+                        }
                     }
                 } catch (Exception ignored) {
                 }
@@ -87,14 +96,26 @@ public class LogcatPanel {
         }
     }
 
-    private void addLine(String line) {
-        logLines.add(line);
+    private void drainBatch() {
+        List<String> batch;
+        synchronized (pendingLines) {
+            batch = new ArrayList<>(pendingLines);
+            pendingLines.clear();
+            batchPosted = false;
+        }
+        if (batch.isEmpty()) return;
+
+        int insertStart = logLines.size();
+        logLines.addAll(batch);
+
         if (logLines.size() > MAX_LINES) {
-            logLines.remove(0);
+            int excess = logLines.size() - MAX_LINES;
+            logLines.subList(0, excess).clear();
             adapter.notifyDataSetChanged();
         } else {
-            adapter.notifyItemInserted(logLines.size() - 1);
+            adapter.notifyItemRangeInserted(insertStart, batch.size());
         }
+
         if (recyclerView != null) {
             recyclerView.scrollToPosition(logLines.size() - 1);
         }

@@ -32,6 +32,7 @@ public class CodeProjectBuilder {
     private final File classesDir;
     private final File dexDir;
     private File aapt2Binary;
+    private List<File> cachedLibraryJars;
 
     public CodeProjectBuilder(Context context, CodeProject project) {
         this.context = context;
@@ -463,6 +464,9 @@ public class CodeProjectBuilder {
     }
 
     private List<File> getLibraryJars() {
+        if (cachedLibraryJars != null) {
+            return cachedLibraryJars;
+        }
         List<File> jars = new ArrayList<>();
         File libsDir = new File(project.getLibsPath());
         if (libsDir.exists() && libsDir.isDirectory()) {
@@ -475,7 +479,8 @@ public class CodeProjectBuilder {
                 }
             }
         }
-        return jars;
+        cachedLibraryJars = jars;
+        return cachedLibraryJars;
     }
 
     public interface BuildProgressListener {

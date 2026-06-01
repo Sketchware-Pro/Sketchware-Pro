@@ -2326,6 +2326,7 @@ Please try again later"</string>
     <string name="code_project_install">Install</string>
     <string name="code_project_logcat">Logcat</string>
     <string name="code_project_logcat_clear">Clear log</string>
+    <string name="code_project_no_installer">No app available to install APK</string>
 
 
 </resources>

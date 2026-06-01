@@ -28,10 +28,6 @@ public class OpenFileTab {
         return editorContent.toString();
     }
 
-    public void setContent(String content) {
-        this.editorContent = new Content(content);
-    }
-
     public boolean isModified() {
         return modified;
     }
