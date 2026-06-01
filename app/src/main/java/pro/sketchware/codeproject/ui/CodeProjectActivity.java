@@ -3,19 +3,22 @@ package pro.sketchware.codeproject.ui;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import a.a.a.lC;
+import io.github.rosemoe.sora.event.ContentChangeEvent;
 import pro.sketchware.R;
 import pro.sketchware.codeproject.build.CodeProjectBuilder;
 import pro.sketchware.codeproject.model.CodeProject;
@@ -30,6 +33,11 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private File currentFile;
     private FileExplorerAdapter fileAdapter;
     private volatile boolean isBuilding = false;
+
+    private final List<OpenFileTab> openTabs = new ArrayList<>();
+    private int activeTabIndex = -1;
+    private FileTabAdapter tabAdapter;
+    private boolean ignoreTextChange = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,34 +92,155 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         binding.editor.setEditable(true);
         binding.editor.setWordwrap(false);
         EditorUtils.loadJavaConfig(binding.editor);
+
+        tabAdapter = new FileTabAdapter(this::onTabClick, this::onTabClose);
+        binding.tabStrip.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        binding.tabStrip.setAdapter(tabAdapter);
+
+        binding.editor.subscribeEvent(ContentChangeEvent.class, (event, unsubscribe) -> {
+            if (!ignoreTextChange) {
+                markCurrentTabModified();
+            }
+        });
     }
 
     private void openFile(File file) {
         if (file == null || !file.exists()) return;
 
-        saveCurrentFile();
+        // Check if file is already open
+        for (int i = 0; i < openTabs.size(); i++) {
+            if (openTabs.get(i).getFile().getAbsolutePath().equals(file.getAbsolutePath())) {
+                switchToTab(i);
+                binding.drawerLayout.closeDrawers();
+                return;
+            }
+        }
 
-        currentFile = file;
+        // Save current tab content to buffer (not disk)
+        saveCurrentTabToBuffer();
+
+        // Create new tab
         String content = FileUtil.readFile(file.getAbsolutePath());
-        // TODO: Undo history is lost on file switch because setText() resets the undo stack.
-        // A per-file undo manager could preserve history across file switches in a future version.
-        binding.editor.setText(content);
+        OpenFileTab newTab = new OpenFileTab(file, content);
+        openTabs.add(newTab);
 
-        String name = file.getName().toLowerCase();
+        // Switch to the new tab
+        switchToTab(openTabs.size() - 1);
+        binding.drawerLayout.closeDrawers();
+    }
+
+    private void switchToTab(int index) {
+        if (index < 0 || index >= openTabs.size()) return;
+
+        // Save current tab content to buffer
+        if (activeTabIndex >= 0 && activeTabIndex < openTabs.size()) {
+            openTabs.get(activeTabIndex).setContent(binding.editor.getText().toString());
+        }
+
+        activeTabIndex = index;
+        OpenFileTab tab = openTabs.get(index);
+        currentFile = tab.getFile();
+
+        // Load content into editor
+        ignoreTextChange = true;
+        binding.editor.setText(tab.getContent());
+        ignoreTextChange = false;
+
+        // Configure language
+        String name = currentFile.getName().toLowerCase();
         if (name.endsWith(".xml")) {
             EditorUtils.loadXmlConfig(binding.editor);
         } else {
             EditorUtils.loadJavaConfig(binding.editor);
         }
 
-        binding.toolbar.setSubtitle(file.getName());
-        binding.drawerLayout.closeDrawers();
+        // Update UI
+        binding.toolbar.setSubtitle(currentFile.getName());
+        updateTabStrip();
+    }
+
+    private void updateTabStrip() {
+        if (openTabs.isEmpty()) {
+            binding.tabStrip.setVisibility(View.GONE);
+        } else {
+            binding.tabStrip.setVisibility(View.VISIBLE);
+            tabAdapter.setTabs(openTabs);
+            tabAdapter.setActiveIndex(activeTabIndex);
+        }
+    }
+
+    private void saveCurrentTabToBuffer() {
+        if (activeTabIndex >= 0 && activeTabIndex < openTabs.size()) {
+            openTabs.get(activeTabIndex).setContent(binding.editor.getText().toString());
+        }
+    }
+
+    private void markCurrentTabModified() {
+        if (activeTabIndex >= 0 && activeTabIndex < openTabs.size()) {
+            OpenFileTab tab = openTabs.get(activeTabIndex);
+            if (!tab.isModified()) {
+                tab.setModified(true);
+                tabAdapter.notifyTabChanged(activeTabIndex);
+            }
+        }
+    }
+
+    private void onTabClick(int position) {
+        if (position != activeTabIndex) {
+            switchToTab(position);
+        }
+    }
+
+    private void onTabClose(int position) {
+        if (position < 0 || position >= openTabs.size()) return;
+
+        openTabs.remove(position);
+
+        if (openTabs.isEmpty()) {
+            activeTabIndex = -1;
+            currentFile = null;
+            ignoreTextChange = true;
+            binding.editor.setText("");
+            ignoreTextChange = false;
+            binding.toolbar.setSubtitle(null);
+            updateTabStrip();
+        } else {
+            if (position == activeTabIndex) {
+                // Switch to adjacent tab (prefer left, then right)
+                int newIndex = (position > 0) ? position - 1 : 0;
+                activeTabIndex = -1; // Reset so switchToTab doesn't save stale buffer
+                switchToTab(newIndex);
+            } else if (position < activeTabIndex) {
+                activeTabIndex--;
+                updateTabStrip();
+            } else {
+                updateTabStrip();
+            }
+        }
     }
 
     private void saveCurrentFile() {
-        if (currentFile != null) {
+        if (activeTabIndex >= 0 && activeTabIndex < openTabs.size()) {
+            OpenFileTab tab = openTabs.get(activeTabIndex);
             String content = binding.editor.getText().toString();
-            FileUtil.writeFile(currentFile.getAbsolutePath(), content);
+            tab.setContent(content);
+            FileUtil.writeFile(tab.getFile().getAbsolutePath(), content);
+            tab.setModified(false);
+            tabAdapter.notifyTabChanged(activeTabIndex);
+        }
+    }
+
+    private void saveAllModifiedTabs() {
+        // Save current editor content to active tab buffer first
+        saveCurrentTabToBuffer();
+
+        for (int i = 0; i < openTabs.size(); i++) {
+            OpenFileTab tab = openTabs.get(i);
+            if (tab.isModified()) {
+                FileUtil.writeFile(tab.getFile().getAbsolutePath(), tab.getContent());
+                tab.setModified(false);
+                tabAdapter.notifyTabChanged(i);
+            }
         }
     }
 
@@ -139,7 +268,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         isBuilding = true;
         setBuildMenuEnabled(false);
 
-        saveCurrentFile();
+        saveAllModifiedTabs();
         Toast.makeText(this, R.string.code_project_building, Toast.LENGTH_SHORT).show();
 
         new Thread(() -> {
@@ -193,7 +322,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
             binding.drawerLayout.closeDrawer(binding.navView);
         } else {
-            saveCurrentFile();
+            saveAllModifiedTabs();
             super.onBackPressed();
         }
     }

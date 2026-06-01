@@ -31,6 +31,14 @@
                 app:dividerColor="?attr/colorSurfaceContainerHighest" />
         </com.google.android.material.appbar.AppBarLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tab_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="36dp"
+            android:background="?attr/colorSurfaceContainer"
+            android:visibility="gone" />
+
         <io.github.rosemoe.sora.widget.CodeEditor
             android:id="@+id/editor"
             android:layout_width="match_parent"

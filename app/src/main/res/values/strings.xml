@@ -2316,6 +2316,8 @@ Please try again later"</string>
     <string name="code_project_error_app_name">App name is required</string>
     <string name="code_project_error_package_name">Enter a valid package name (e.g. com.example.app)</string>
     <string name="code_project_error_project_name">Project name is required</string>
+    <string name="code_project_close_tab">Close tab</string>
+    <string name="code_project_no_file_open">No file open</string>
 
 
 </resources>
