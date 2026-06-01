@@ -269,13 +269,13 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 .setTitle(R.string.code_project_delete)
                 .setMessage(getString(R.string.code_project_confirm_delete, file.getName()))
                 .setPositiveButton(R.string.code_project_delete, (dialog, which) -> {
-                    if (!deleteRecursive(file)) {
+                    boolean deleted = deleteRecursive(file);
+                    if (!deleted) {
                         Toast.makeText(this, R.string.code_project_operation_failed, Toast.LENGTH_SHORT).show();
                     }
-                    // Close tabs for this file or any file inside it (if directory)
+                    // Always check tabs — partial delete may have removed some files
                     for (int i = openTabs.size() - 1; i >= 0; i--) {
-                        String tabPath = openTabs.get(i).getFile().getAbsolutePath();
-                        if (tabPath.equals(file.getAbsolutePath()) || tabPath.startsWith(file.getAbsolutePath() + "/")) {
+                        if (!openTabs.get(i).getFile().exists()) {
                             closeTab(i);
                         }
                     }

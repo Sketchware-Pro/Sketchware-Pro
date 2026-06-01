@@ -149,15 +149,24 @@ public class CodeProjectBuilder {
 
                                     // Only fail if no .flat artifact was produced (output may contain non-fatal warnings)
                                     if (!expectedFlat.exists()) {
-                                        // Also accept any .flat file matching file stem as fallback
+                                        // Fallback: accept a .flat file whose basename exactly matches the resource stem
                                         boolean found = false;
                                         String stem = file.getName().replaceFirst("\\.[^.]+$", "");
                                         File[] flatFiles = compiledResDir.listFiles();
                                         if (flatFiles != null) {
                                             for (File f : flatFiles) {
-                                                if (f.getName().contains(stem) && f.getName().endsWith(".flat")) {
-                                                    found = true;
-                                                    break;
+                                                if (f.getName().endsWith(".flat")) {
+                                                    // Extract the basename (everything before .arsc.flat or .flat)
+                                                    String flatBase = f.getName()
+                                                            .replace(".arsc.flat", "")
+                                                            .replace(".flat", "");
+                                                    // AAPT2 names flats as "dir_stem.arsc.flat" or "dir_stem.ext.flat"
+                                                    // The stem we need to match is after the last underscore-separated dir prefix
+                                                    String expectedPrefix = dir.getName() + "_" + stem;
+                                                    if (flatBase.equals(expectedPrefix) || flatBase.startsWith(expectedPrefix + ".")) {
+                                                        found = true;
+                                                        break;
+                                                    }
                                                 }
                                             }
                                         }

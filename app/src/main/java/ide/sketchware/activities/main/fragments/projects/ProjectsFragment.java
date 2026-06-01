@@ -141,6 +141,12 @@ public class ProjectsFragment extends DA {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        // Clear FAB listeners to avoid activity-scoped FAB holding fragment references
+        ExtendedFloatingActionButton fab = requireActivity().findViewById(R.id.create_new_project);
+        if (fab != null) {
+            fab.setOnClickListener(null);
+            fab.setTooltipText(null);
+        }
         binding = null; // avoid memory leaks
     }
 
