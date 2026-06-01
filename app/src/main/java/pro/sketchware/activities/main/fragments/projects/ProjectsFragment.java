@@ -149,7 +149,14 @@ public class ProjectsFragment extends DA {
         preference = new DB(requireContext(), "project");
 
         ExtendedFloatingActionButton fab = requireActivity().findViewById(R.id.create_new_project);
-        fab.setOnClickListener((v) -> showProjectTypeDialog());
+        fab.setOnClickListener((v) -> {
+            Intent intent = new Intent(getActivity(), CreateCodeProjectActivity.class);
+            openCreateCodeProject.launch(intent);
+        });
+        fab.setOnLongClickListener((v) -> {
+            showProjectTypeDialog();
+            return true;
+        });
         Insetter.builder().margin(WindowInsetsCompat.Type.navigationBars()).applyToView(fab);
 
         binding.swipeRefresh.setOnRefreshListener(this::refreshProjectsList);

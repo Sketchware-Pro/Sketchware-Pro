@@ -2327,6 +2327,14 @@ Please try again later"</string>
     <string name="code_project_logcat">Logcat</string>
     <string name="code_project_logcat_clear">Clear log</string>
     <string name="code_project_no_installer">No app available to install APK</string>
+    <string name="code_project_new_file">New File</string>
+    <string name="code_project_new_folder">New Folder</string>
+    <string name="code_project_rename">Rename</string>
+    <string name="code_project_delete">Delete</string>
+    <string name="code_project_confirm_delete">Delete \"%1$s\"? This cannot be undone.</string>
+    <string name="code_project_enter_name">Enter name</string>
+    <string name="code_project_build_errors">Build Errors</string>
+    <string name="code_project_long_press_hint">Long press for block project</string>
 
 
 </resources>

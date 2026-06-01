@@ -1,6 +1,7 @@
 package pro.sketchware.codeproject.ui;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ public class FileExplorerAdapter extends RecyclerView.Adapter<FileExplorerAdapte
 
     private final List<FileNode> displayedNodes = new ArrayList<>();
     private final OnFileClickListener listener;
+    private OnFileLongClickListener longClickListener;
 
     public FileExplorerAdapter(File rootDir, OnFileClickListener listener) {
         this.listener = listener;
@@ -78,6 +80,17 @@ public class FileExplorerAdapter extends RecyclerView.Adapter<FileExplorerAdapte
                     listener.onFileClick(clickedNode.file);
                 }
             }
+        });
+
+        holder.itemView.setOnLongClickListener(v -> {
+            int pos = holder.getAbsoluteAdapterPosition();
+            if (pos == RecyclerView.NO_POSITION) return false;
+            FileNode longClickedNode = displayedNodes.get(pos);
+            if (longClickListener != null) {
+                longClickListener.onFileLongClick(longClickedNode.file, v);
+                return true;
+            }
+            return false;
         });
     }
 
@@ -176,6 +189,14 @@ public class FileExplorerAdapter extends RecyclerView.Adapter<FileExplorerAdapte
 
     public interface OnFileClickListener {
         void onFileClick(File file);
+    }
+
+    public interface OnFileLongClickListener {
+        void onFileLongClick(File file, View view);
+    }
+
+    public void setOnFileLongClickListener(OnFileLongClickListener listener) {
+        this.longClickListener = listener;
     }
 
     static class FileNode {

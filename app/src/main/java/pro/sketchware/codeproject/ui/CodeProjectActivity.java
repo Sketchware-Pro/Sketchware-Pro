@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -14,6 +16,7 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,6 +48,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private boolean ignoreTextChange = false;
     private LogcatPanel logcatPanel;
     private boolean logcatVisible = false;
+    private BuildErrorAdapter errorAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +76,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         setupFileExplorer();
         setupEditor();
         setupLogcat();
+        setupErrorPanel();
     }
 
     private void setupToolbar() {
@@ -90,8 +95,159 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private void setupFileExplorer() {
         File sourceRoot = new File(project.getSourcePath());
         fileAdapter = new FileExplorerAdapter(sourceRoot, this::openFile);
+        fileAdapter.setOnFileLongClickListener(this::onFileLongClick);
         binding.fileList.setLayoutManager(new LinearLayoutManager(this));
         binding.fileList.setAdapter(fileAdapter);
+
+        // Setup "+" button in nav toolbar
+        binding.navToolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_add) {
+                showNewItemPopup(binding.navToolbar, new File(project.getSourcePath()));
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void onFileLongClick(File file, View anchor) {
+        PopupMenu popup = new PopupMenu(this, anchor);
+        if (file.isDirectory()) {
+            popup.getMenu().add(0, 1, 0, R.string.code_project_new_file);
+            popup.getMenu().add(0, 2, 1, R.string.code_project_new_folder);
+            popup.getMenu().add(0, 3, 2, R.string.code_project_rename);
+            popup.getMenu().add(0, 4, 3, R.string.code_project_delete);
+        } else {
+            popup.getMenu().add(0, 3, 0, R.string.code_project_rename);
+            popup.getMenu().add(0, 4, 1, R.string.code_project_delete);
+        }
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case 1:
+                    showNewFileDialog(file);
+                    return true;
+                case 2:
+                    showNewFolderDialog(file);
+                    return true;
+                case 3:
+                    showRenameDialog(file);
+                    return true;
+                case 4:
+                    showDeleteDialog(file);
+                    return true;
+            }
+            return false;
+        });
+        popup.show();
+    }
+
+    private void showNewItemPopup(View anchor, File parentDir) {
+        PopupMenu popup = new PopupMenu(this, anchor);
+        popup.getMenu().add(0, 1, 0, R.string.code_project_new_file);
+        popup.getMenu().add(0, 2, 1, R.string.code_project_new_folder);
+        popup.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == 1) {
+                showNewFileDialog(parentDir);
+                return true;
+            } else if (item.getItemId() == 2) {
+                showNewFolderDialog(parentDir);
+                return true;
+            }
+            return false;
+        });
+        popup.show();
+    }
+
+    private void showNewFileDialog(File parentDir) {
+        EditText input = new EditText(this);
+        input.setHint(R.string.code_project_enter_name);
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.code_project_new_file)
+                .setView(input)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    String name = input.getText().toString().trim();
+                    if (!name.isEmpty()) {
+                        File newFile = new File(parentDir, name);
+                        try {
+                            newFile.createNewFile();
+                        } catch (Exception ignored) {
+                        }
+                        refreshFileExplorer();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void showNewFolderDialog(File parentDir) {
+        EditText input = new EditText(this);
+        input.setHint(R.string.code_project_enter_name);
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.code_project_new_folder)
+                .setView(input)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    String name = input.getText().toString().trim();
+                    if (!name.isEmpty()) {
+                        File newDir = new File(parentDir, name);
+                        newDir.mkdirs();
+                        refreshFileExplorer();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void showRenameDialog(File file) {
+        EditText input = new EditText(this);
+        input.setText(file.getName());
+        input.setHint(R.string.code_project_enter_name);
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.code_project_rename)
+                .setView(input)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    String newName = input.getText().toString().trim();
+                    if (!newName.isEmpty()) {
+                        File renamed = new File(file.getParentFile(), newName);
+                        file.renameTo(renamed);
+                        refreshFileExplorer();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void showDeleteDialog(File file) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.code_project_delete)
+                .setMessage(getString(R.string.code_project_confirm_delete, file.getName()))
+                .setPositiveButton(R.string.code_project_delete, (dialog, which) -> {
+                    deleteRecursive(file);
+                    // Close tab if this file was open
+                    for (int i = openTabs.size() - 1; i >= 0; i--) {
+                        String tabPath = openTabs.get(i).getFile().getAbsolutePath();
+                        if (tabPath.equals(file.getAbsolutePath()) || tabPath.startsWith(file.getAbsolutePath() + "/")) {
+                            closeTab(i);
+                        }
+                    }
+                    refreshFileExplorer();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void deleteRecursive(File fileOrDir) {
+        if (fileOrDir.isDirectory()) {
+            File[] children = fileOrDir.listFiles();
+            if (children != null) {
+                for (File child : children) {
+                    deleteRecursive(child);
+                }
+            }
+        }
+        fileOrDir.delete();
+    }
+
+    private void refreshFileExplorer() {
+        fileAdapter.refresh(new File(project.getSourcePath()));
     }
 
     private void setupEditor() {
@@ -118,6 +274,42 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         logcatPanel.attach(binding.logcatList);
         binding.btnClearLog.setOnClickListener(v -> logcatPanel.clear());
         binding.btnCloseLog.setOnClickListener(v -> toggleLogcat());
+    }
+
+    private void setupErrorPanel() {
+        errorAdapter = new BuildErrorAdapter();
+        errorAdapter.setOnErrorClickListener((filePath, lineNumber) -> {
+            File file = new File(filePath);
+            if (file.exists()) {
+                openFile(file);
+                // Scroll to line after opening
+                binding.editor.post(() -> {
+                    if (lineNumber > 0) {
+                        binding.editor.setSelection(lineNumber - 1, 0);
+                    }
+                });
+            }
+        });
+        binding.errorList.setLayoutManager(new LinearLayoutManager(this));
+        binding.errorList.setAdapter(errorAdapter);
+        binding.btnCloseErrors.setOnClickListener(v -> hideErrorPanel());
+    }
+
+    private void showErrorPanel(String errorMessage) {
+        String[] lines = errorMessage.split("\\n");
+        List<String> errorLines = new ArrayList<>();
+        for (String line : lines) {
+            if (!line.trim().isEmpty()) {
+                errorLines.add(line);
+            }
+        }
+        errorAdapter.setErrors(errorLines);
+        binding.errorPanel.setVisibility(View.VISIBLE);
+    }
+
+    private void hideErrorPanel() {
+        binding.errorPanel.setVisibility(View.GONE);
+        errorAdapter.clear();
     }
 
     private void toggleLogcat() {
@@ -298,6 +490,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         if (isBuilding) return;
         isBuilding = true;
         setBuildMenuEnabled(false);
+        hideErrorPanel();
 
         saveAllModifiedTabs();
         Toast.makeText(this, R.string.code_project_building, Toast.LENGTH_SHORT).show();
@@ -327,9 +520,11 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 runOnUiThread(() -> {
                     if (!isFinishing()) {
                         restoreActiveFileSubtitle();
+                        String errorMsg = e.getMessage() != null ? e.getMessage() : "Unknown error";
+                        showErrorPanel(errorMsg);
                         Toast.makeText(CodeProjectActivity.this,
-                                getString(R.string.code_project_build_failed) + ": " + e.getMessage(),
-                                Toast.LENGTH_LONG).show();
+                                getString(R.string.code_project_build_failed),
+                                Toast.LENGTH_SHORT).show();
                     }
                     isBuilding = false;
                     setBuildMenuEnabled(true);
@@ -381,7 +576,9 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (logcatVisible) {
+        if (binding.errorPanel.getVisibility() == View.VISIBLE) {
+            hideErrorPanel();
+        } else if (logcatVisible) {
             toggleLogcat();
         } else if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
             binding.drawerLayout.closeDrawer(binding.navView);

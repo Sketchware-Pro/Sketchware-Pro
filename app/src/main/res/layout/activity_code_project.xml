@@ -46,6 +46,48 @@
             android:layout_weight="1" />
 
         <LinearLayout
+            android:id="@+id/error_panel"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:background="?attr/colorErrorContainer">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="2dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/code_project_build_errors"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnErrorContainer" />
+
+                <ImageButton
+                    android:id="@+id/btn_close_errors"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:contentDescription="@string/common_word_close"
+                    android:scaleType="center" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/error_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/logcat_container"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -117,7 +159,8 @@
                 android:id="@+id/nav_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="@string/code_project_file_explorer" />
+                app:title="@string/code_project_file_explorer"
+                app:menu="@menu/menu_file_explorer" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
