@@ -335,15 +335,24 @@ public class CodeProjectBuilder {
         args.add(project.getJavaSourcePath());
         args.add(genDir.getAbsolutePath());
 
+        java.io.StringWriter errWriter = new java.io.StringWriter();
+        java.io.StringWriter outWriter = new java.io.StringWriter();
         org.eclipse.jdt.internal.compiler.batch.Main ecjMain =
                 new org.eclipse.jdt.internal.compiler.batch.Main(
-                        new java.io.PrintWriter(System.out),
-                        new java.io.PrintWriter(System.err),
+                        new java.io.PrintWriter(outWriter),
+                        new java.io.PrintWriter(errWriter),
                         false, null, null);
 
         boolean success = ecjMain.compile(args.toArray(new String[0]));
         if (!success) {
-            throw new Exception("Java compilation failed. Check source files for errors.");
+            String errorOutput = errWriter.toString();
+            if (errorOutput.isEmpty()) {
+                errorOutput = outWriter.toString();
+            }
+            if (errorOutput.isEmpty()) {
+                errorOutput = "Java compilation failed. Check source files for errors.";
+            }
+            throw new Exception(errorOutput);
         }
     }
 

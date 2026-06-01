@@ -29,14 +29,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import a.a.a.lC;
 import io.github.rosemoe.sora.event.ContentChangeEvent;
+import io.github.rosemoe.sora.lang.diagnostic.DiagnosticDetail;
+import io.github.rosemoe.sora.lang.diagnostic.DiagnosticRegion;
+import io.github.rosemoe.sora.lang.diagnostic.DiagnosticsContainer;
 import io.github.rosemoe.sora.text.Content;
 import io.github.rosemoe.sora.widget.EditorSearcher;
 import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
+import io.github.rosemoe.sora.widget.style.DiagnosticIndicatorStyle;
 import ide.sketchware.R;
 import ide.sketchware.codeproject.build.CodeProjectBuilder;
+import ide.sketchware.codeproject.build.CompilerErrorParser;
 import ide.sketchware.codeproject.model.CodeProject;
 import ide.sketchware.databinding.ActivityCodeProjectBinding;
 import ide.sketchware.utility.EditorUtils;
@@ -58,6 +64,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private boolean logcatVisible = false;
     private BuildErrorAdapter errorAdapter;
     private volatile int searchToken = 0;
+    private final Map<String, List<CompilerErrorParser.CompilerError>> fileErrorMap = new HashMap<>();
 
     private final ActivityResultLauncher<Intent> settingsLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -357,6 +364,10 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         binding.editor.subscribeEvent(ContentChangeEvent.class, (event, unsubscribe) -> {
             if (!ignoreTextChange) {
                 markCurrentTabModified();
+                // Clear stale inline error highlights on first edit (positions are now invalid)
+                if (!fileErrorMap.isEmpty()) {
+                    clearInlineErrors();
+                }
             }
         });
     }
@@ -476,6 +487,14 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 binding.editor.getSearcher().search(query,
                     new EditorSearcher.SearchOptions(EditorSearcher.SearchOptions.TYPE_NORMAL, true));
             }
+        }
+
+        // Apply inline error diagnostics if this file has errors
+        List<CompilerErrorParser.CompilerError> errors = findErrorsForFile(currentFile);
+        if (errors != null && !errors.isEmpty()) {
+            setDiagnosticsForCurrentFile(errors);
+        } else {
+            binding.editor.setDiagnostics(new DiagnosticsContainer());
         }
 
         // Update UI
@@ -608,6 +627,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         isBuilding = true;
         setBuildMenuEnabled(false);
         hideErrorPanel();
+        clearInlineErrors();
 
         saveAllModifiedTabs();
         Toast.makeText(this, R.string.code_project_building, Toast.LENGTH_SHORT).show();
@@ -628,6 +648,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 runOnUiThread(() -> {
                     if (!isFinishing()) {
                         restoreActiveFileSubtitle();
+                        clearInlineErrors();
                         promptInstallApk(apk);
                     }
                     isBuilding = false;
@@ -639,6 +660,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                         restoreActiveFileSubtitle();
                         String errorMsg = e.getMessage() != null ? e.getMessage() : "Unknown error";
                         showErrorPanel(errorMsg);
+                        applyInlineErrors(errorMsg);
                         Toast.makeText(CodeProjectActivity.this,
                                 getString(R.string.code_project_build_failed),
                                 Toast.LENGTH_SHORT).show();
@@ -689,6 +711,136 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 buildItem.setEnabled(enabled);
             }
         }
+    }
+
+    /**
+     * Parses the compiler error output, groups errors by file path, and applies
+     * inline diagnostics (wavy underlines) to the currently active editor tab.
+     */
+    private void applyInlineErrors(String errorOutput) {
+        List<CompilerErrorParser.CompilerError> errors = CompilerErrorParser.parse(errorOutput);
+        if (errors.isEmpty()) return;
+
+        fileErrorMap.clear();
+
+        // Group errors by file path
+        for (CompilerErrorParser.CompilerError error : errors) {
+            String key = error.filePath;
+            List<CompilerErrorParser.CompilerError> list = fileErrorMap.get(key);
+            if (list == null) {
+                list = new ArrayList<>();
+                fileErrorMap.put(key, list);
+            }
+            list.add(error);
+        }
+
+        // Apply diagnostics to the currently active file
+        if (currentFile != null) {
+            List<CompilerErrorParser.CompilerError> currentErrors = findErrorsForFile(currentFile);
+            if (currentErrors != null && !currentErrors.isEmpty()) {
+                setDiagnosticsForCurrentFile(currentErrors);
+            }
+        }
+    }
+
+    /**
+     * Finds errors for a given file by checking both the absolute path and the filename
+     * suffix against the stored error map keys.
+     */
+    private List<CompilerErrorParser.CompilerError> findErrorsForFile(File file) {
+        if (file == null) return null;
+
+        String absolutePath = file.getAbsolutePath();
+
+        // Direct match
+        List<CompilerErrorParser.CompilerError> errors = fileErrorMap.get(absolutePath);
+        if (errors != null) return errors;
+
+        // Try matching by path suffix (compiler may report relative paths)
+        String fileName = "/" + file.getName();
+        for (Map.Entry<String, List<CompilerErrorParser.CompilerError>> entry : fileErrorMap.entrySet()) {
+            String errorPath = entry.getKey();
+            // Match if the absolute path ends with the error path (relative path reported)
+            if (errorPath.length() > 1 && (absolutePath.endsWith("/" + errorPath) || absolutePath.equals(errorPath))) {
+                return entry.getValue();
+            }
+            // Match if the error path ends with /filename (require separator to prevent
+            // cross-package false positives like com/foo/Util.java matching com/bar/Util.java)
+            if (errorPath.endsWith(fileName)) {
+                // Additional check: compare relative paths from source root
+                String sourceRoot = project.getSourcePath();
+                String relativeFromSource = absolutePath.startsWith(sourceRoot)
+                        ? absolutePath.substring(sourceRoot.length()) : absolutePath;
+                if (errorPath.endsWith(relativeFromSource) || relativeFromSource.endsWith(errorPath)) {
+                    return entry.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Creates DiagnosticRegion objects for each error and sets them on the editor
+     * with wavy underline style. Tapping an error region shows the error message as a tooltip.
+     */
+    private void setDiagnosticsForCurrentFile(List<CompilerErrorParser.CompilerError> fileErrors) {
+        DiagnosticsContainer container = new DiagnosticsContainer();
+        Content text = binding.editor.getText();
+        int lineCount = text.getLineCount();
+
+        for (int i = 0; i < fileErrors.size(); i++) {
+            CompilerErrorParser.CompilerError error = fileErrors.get(i);
+            int line = error.lineNumber - 1; // Convert to 0-indexed
+
+            // Skip if line is out of range
+            if (line < 0 || line >= lineCount) continue;
+
+            int columnCount = text.getColumnCount(line);
+            int startIndex;
+            int endIndex;
+
+            if (error.columnNumber > 0) {
+                // Use column info for precise start
+                int col = Math.min(error.columnNumber - 1, columnCount);
+                startIndex = text.getCharIndex(line, col);
+                endIndex = text.getCharIndex(line, columnCount);
+            } else {
+                // Highlight entire line
+                startIndex = text.getCharIndex(line, 0);
+                endIndex = text.getCharIndex(line, columnCount);
+            }
+
+            // Ensure we have a valid range (at least 1 char wide, within bounds)
+            if (endIndex <= startIndex) {
+                endIndex = Math.min(startIndex + 1, text.length());
+                if (endIndex <= startIndex) continue; // skip empty last line
+            }
+
+            short severity = error.isWarning
+                    ? DiagnosticRegion.SEVERITY_WARNING
+                    : DiagnosticRegion.SEVERITY_ERROR;
+
+            DiagnosticDetail detail = new DiagnosticDetail(
+                    error.message,     // briefMessage
+                    error.message,     // detailedMessage
+                    null,              // quickfixes
+                    null               // extraData
+            );
+
+            container.addDiagnostic(new DiagnosticRegion(
+                    startIndex, endIndex, severity, (long) i, detail));
+        }
+
+        binding.editor.setDiagnosticIndicatorStyle(DiagnosticIndicatorStyle.WAVY_LINE);
+        binding.editor.setDiagnostics(container);
+    }
+
+    /**
+     * Clears all inline error diagnostics from the editor and the error map.
+     */
+    private void clearInlineErrors() {
+        fileErrorMap.clear();
+        binding.editor.setDiagnostics(new DiagnosticsContainer());
     }
 
     @Override
