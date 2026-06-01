@@ -13,11 +13,13 @@ import com.google.android.material.color.MaterialColors;
 import io.github.rosemoe.sora.lang.Language;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
 import pro.sketchware.R;
+import pro.sketchware.codeproject.editor.JavaAutoCompleteLanguage;
 
 public class EditorUtils {
     EditorUtils() {
@@ -52,6 +54,11 @@ public class EditorUtils {
 
     public static void loadJavaConfig(CodeEditor editor) {
         loadConfigByLanguage(editor, new JavaLanguage(), false);
+    }
+
+    public static void loadJavaAutoCompleteConfig(CodeEditor editor) {
+        loadConfigByLanguage(editor, new JavaAutoCompleteLanguage(), false);
+        editor.getComponent(EditorAutoCompletion.class).setEnabled(true);
     }
 
     public static void loadXmlConfig(CodeEditor editor) {

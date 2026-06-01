@@ -19,6 +19,7 @@ import java.util.List;
 
 import a.a.a.lC;
 import io.github.rosemoe.sora.event.ContentChangeEvent;
+import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
 import pro.sketchware.R;
 import pro.sketchware.codeproject.build.CodeProjectBuilder;
 import pro.sketchware.codeproject.model.CodeProject;
@@ -91,7 +92,8 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         binding.editor.setTextSize(14);
         binding.editor.setEditable(true);
         binding.editor.setWordwrap(false);
-        EditorUtils.loadJavaConfig(binding.editor);
+        EditorUtils.loadJavaAutoCompleteConfig(binding.editor);
+        binding.editor.getComponent(EditorAutoCompletion.class).setEnabled(true);
 
         tabAdapter = new FileTabAdapter(this::onTabClick, this::onTabClose);
         binding.tabStrip.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -151,7 +153,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         if (name.endsWith(".xml")) {
             EditorUtils.loadXmlConfig(binding.editor);
         } else {
-            EditorUtils.loadJavaConfig(binding.editor);
+            EditorUtils.loadJavaAutoCompleteConfig(binding.editor);
         }
 
         // Update UI
