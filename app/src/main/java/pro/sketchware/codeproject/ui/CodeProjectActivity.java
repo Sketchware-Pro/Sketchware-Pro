@@ -165,14 +165,25 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 .setView(input)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     String name = input.getText().toString().trim();
-                    if (!name.isEmpty()) {
-                        File newFile = new File(parentDir, name);
-                        try {
-                            newFile.createNewFile();
-                        } catch (Exception ignored) {
-                        }
-                        refreshFileExplorer();
+                    if (!isValidFileName(name)) {
+                        Toast.makeText(this, R.string.code_project_invalid_name, Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    File newFile = new File(parentDir, name);
+                    if (newFile.exists()) {
+                        Toast.makeText(this, R.string.code_project_file_exists, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    try {
+                        if (!newFile.createNewFile()) {
+                            Toast.makeText(this, R.string.code_project_operation_failed, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(this, R.string.code_project_operation_failed, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    refreshFileExplorer();
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
@@ -186,11 +197,20 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 .setView(input)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     String name = input.getText().toString().trim();
-                    if (!name.isEmpty()) {
-                        File newDir = new File(parentDir, name);
-                        newDir.mkdirs();
-                        refreshFileExplorer();
+                    if (!isValidFileName(name)) {
+                        Toast.makeText(this, R.string.code_project_invalid_name, Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    File newDir = new File(parentDir, name);
+                    if (newDir.exists()) {
+                        Toast.makeText(this, R.string.code_project_file_exists, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!newDir.mkdirs()) {
+                        Toast.makeText(this, R.string.code_project_operation_failed, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    refreshFileExplorer();
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
@@ -205,11 +225,40 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 .setView(input)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     String newName = input.getText().toString().trim();
-                    if (!newName.isEmpty()) {
-                        File renamed = new File(file.getParentFile(), newName);
-                        file.renameTo(renamed);
-                        refreshFileExplorer();
+                    if (!isValidFileName(newName)) {
+                        Toast.makeText(this, R.string.code_project_invalid_name, Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    File renamed = new File(file.getParentFile(), newName);
+                    if (renamed.exists()) {
+                        Toast.makeText(this, R.string.code_project_file_exists, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    // Capture before rename — stat() on the old path won't work after move
+                    boolean wasDirectory = file.isDirectory();
+                    if (!file.renameTo(renamed)) {
+                        Toast.makeText(this, R.string.code_project_operation_failed, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    // Update any open tabs pointing to the old file
+                    String oldPath = file.getAbsolutePath();
+                    for (OpenFileTab tab : openTabs) {
+                        String tabPath = tab.getFile().getAbsolutePath();
+                        if (tabPath.equals(oldPath)) {
+                            tab.setFile(renamed);
+                        } else if (wasDirectory && tabPath.startsWith(oldPath + "/")) {
+                            // Child of renamed directory — update path
+                            String relativePart = tabPath.substring(oldPath.length());
+                            tab.setFile(new File(renamed.getAbsolutePath() + relativePart));
+                        }
+                    }
+                    // Refresh currentFile reference and subtitle
+                    if (activeTabIndex >= 0 && activeTabIndex < openTabs.size()) {
+                        currentFile = openTabs.get(activeTabIndex).getFile();
+                        binding.toolbar.setSubtitle(currentFile.getName());
+                    }
+                    updateTabStrip();
+                    refreshFileExplorer();
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
@@ -220,8 +269,10 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 .setTitle(R.string.code_project_delete)
                 .setMessage(getString(R.string.code_project_confirm_delete, file.getName()))
                 .setPositiveButton(R.string.code_project_delete, (dialog, which) -> {
-                    deleteRecursive(file);
-                    // Close tab if this file was open
+                    if (!deleteRecursive(file)) {
+                        Toast.makeText(this, R.string.code_project_operation_failed, Toast.LENGTH_SHORT).show();
+                    }
+                    // Close tabs for this file or any file inside it (if directory)
                     for (int i = openTabs.size() - 1; i >= 0; i--) {
                         String tabPath = openTabs.get(i).getFile().getAbsolutePath();
                         if (tabPath.equals(file.getAbsolutePath()) || tabPath.startsWith(file.getAbsolutePath() + "/")) {
@@ -234,16 +285,32 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 .show();
     }
 
-    private void deleteRecursive(File fileOrDir) {
+    private boolean deleteRecursive(File fileOrDir) {
+        boolean success = true;
         if (fileOrDir.isDirectory()) {
             File[] children = fileOrDir.listFiles();
             if (children != null) {
                 for (File child : children) {
-                    deleteRecursive(child);
+                    if (!deleteRecursive(child)) {
+                        success = false;
+                    }
                 }
             }
         }
-        fileOrDir.delete();
+        if (!fileOrDir.delete()) {
+            success = false;
+        }
+        return success;
+    }
+
+    /**
+     * Validates a file/folder name. Rejects empty, names with path separators or null bytes.
+     */
+    private boolean isValidFileName(String name) {
+        if (name == null || name.isEmpty()) return false;
+        if (name.contains("/") || name.contains("\\") || name.contains("\0")) return false;
+        if (name.equals(".") || name.equals("..")) return false;
+        return true;
     }
 
     private void refreshFileExplorer() {
@@ -280,6 +347,10 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         errorAdapter = new BuildErrorAdapter();
         errorAdapter.setOnErrorClickListener((filePath, lineNumber) -> {
             File file = new File(filePath);
+            // Fallback: if absolute path doesn't exist, try resolving relative to source root
+            if (!file.exists()) {
+                file = new File(project.getSourcePath(), filePath);
+            }
             if (file.exists()) {
                 openFile(file);
                 // Scroll to line after opening

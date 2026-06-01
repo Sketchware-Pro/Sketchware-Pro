@@ -157,6 +157,7 @@ public class ProjectsFragment extends DA {
             showProjectTypeDialog();
             return true;
         });
+        fab.setTooltipText(getString(R.string.code_project_long_press_hint));
         Insetter.builder().margin(WindowInsetsCompat.Type.navigationBars()).applyToView(fab);
 
         binding.swipeRefresh.setOnRefreshListener(this::refreshProjectsList);

@@ -2335,6 +2335,9 @@ Please try again later"</string>
     <string name="code_project_enter_name">Enter name</string>
     <string name="code_project_build_errors">Build Errors</string>
     <string name="code_project_long_press_hint">Long press for block project</string>
+    <string name="code_project_invalid_name">Invalid name. Avoid /, \\, or special characters.</string>
+    <string name="code_project_file_exists">A file or folder with that name already exists.</string>
+    <string name="code_project_operation_failed">Operation failed. Check permissions.</string>
 
 
 </resources>

@@ -6,7 +6,7 @@ import io.github.rosemoe.sora.text.Content;
 
 public class OpenFileTab {
 
-    private final File file;
+    private File file;
     private Content editorContent;
     private boolean modified;
 
@@ -18,6 +18,10 @@ public class OpenFileTab {
 
     public File getFile() {
         return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 
     public Content getEditorContent() {
