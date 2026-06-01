@@ -63,6 +63,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private LogcatPanel logcatPanel;
     private boolean logcatVisible = false;
     private BuildErrorAdapter errorAdapter;
+    private final Map<String, List<CompilerErrorParser.CompilerError>> fileErrorMap = new HashMap<>();
     private volatile int searchToken = 0;
     private final Map<String, List<CompilerErrorParser.CompilerError>> fileErrorMap = new HashMap<>();
 
@@ -477,6 +478,14 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             EditorUtils.loadKotlinConfig(binding.editor);
         } else {
             EditorUtils.loadJavaAutoCompleteConfig(binding.editor);
+        }
+
+        // Apply inline error diagnostics if this file has errors
+        List<CompilerErrorParser.CompilerError> errors = findErrorsForFile(currentFile);
+        if (errors != null && !errors.isEmpty()) {
+            setDiagnosticsForCurrentFile(errors);
+        } else {
+            binding.editor.setDiagnostics(new DiagnosticsContainer());
         }
 
         // Re-run search on new file if search panel is active
