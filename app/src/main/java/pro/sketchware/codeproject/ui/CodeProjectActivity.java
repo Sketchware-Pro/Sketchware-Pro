@@ -19,6 +19,7 @@ import java.util.List;
 
 import a.a.a.lC;
 import io.github.rosemoe.sora.event.ContentChangeEvent;
+import io.github.rosemoe.sora.text.Content;
 import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
 import pro.sketchware.R;
 import pro.sketchware.codeproject.build.CodeProjectBuilder;
@@ -118,9 +119,6 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             }
         }
 
-        // Save current tab content to buffer (not disk)
-        saveCurrentTabToBuffer();
-
         // Create new tab
         String content = FileUtil.readFile(file.getAbsolutePath());
         OpenFileTab newTab = new OpenFileTab(file, content);
@@ -134,18 +132,13 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private void switchToTab(int index) {
         if (index < 0 || index >= openTabs.size()) return;
 
-        // Save current tab content to buffer
-        if (activeTabIndex >= 0 && activeTabIndex < openTabs.size()) {
-            openTabs.get(activeTabIndex).setContent(binding.editor.getText().toString());
-        }
-
         activeTabIndex = index;
         OpenFileTab tab = openTabs.get(index);
         currentFile = tab.getFile();
 
-        // Load content into editor
+        // Load content into editor (Content object preserves undo/redo history)
         ignoreTextChange = true;
-        binding.editor.setText(tab.getContent());
+        binding.editor.setText(tab.getEditorContent());
         ignoreTextChange = false;
 
         // Configure language
@@ -174,9 +167,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     }
 
     private void saveCurrentTabToBuffer() {
-        if (activeTabIndex >= 0 && activeTabIndex < openTabs.size()) {
-            openTabs.get(activeTabIndex).setContent(binding.editor.getText().toString());
-        }
+        // No-op: Content object is shared between editor and tab, always up-to-date
     }
 
     private void markCurrentTabModified() {
@@ -218,7 +209,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             activeTabIndex = -1;
             currentFile = null;
             ignoreTextChange = true;
-            binding.editor.setText("");
+            binding.editor.setText(new Content(""));
             ignoreTextChange = false;
             binding.toolbar.setSubtitle(null);
             updateTabStrip();
@@ -240,18 +231,13 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private void saveCurrentFile() {
         if (activeTabIndex >= 0 && activeTabIndex < openTabs.size()) {
             OpenFileTab tab = openTabs.get(activeTabIndex);
-            String content = binding.editor.getText().toString();
-            tab.setContent(content);
-            FileUtil.writeFile(tab.getFile().getAbsolutePath(), content);
+            FileUtil.writeFile(tab.getFile().getAbsolutePath(), tab.getContent());
             tab.setModified(false);
             tabAdapter.notifyTabChanged(activeTabIndex);
         }
     }
 
     private void saveAllModifiedTabs() {
-        // Save current editor content to active tab buffer first
-        saveCurrentTabToBuffer();
-
         for (int i = 0; i < openTabs.size(); i++) {
             OpenFileTab tab = openTabs.get(i);
             if (tab.isModified()) {

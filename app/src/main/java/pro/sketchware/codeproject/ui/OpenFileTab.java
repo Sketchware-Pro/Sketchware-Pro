@@ -2,15 +2,17 @@ package pro.sketchware.codeproject.ui;
 
 import java.io.File;
 
+import io.github.rosemoe.sora.text.Content;
+
 public class OpenFileTab {
 
     private final File file;
-    private String content;
+    private Content editorContent;
     private boolean modified;
 
     public OpenFileTab(File file, String content) {
         this.file = file;
-        this.content = content;
+        this.editorContent = new Content(content);
         this.modified = false;
     }
 
@@ -18,12 +20,16 @@ public class OpenFileTab {
         return file;
     }
 
+    public Content getEditorContent() {
+        return editorContent;
+    }
+
     public String getContent() {
-        return content;
+        return editorContent.toString();
     }
 
     public void setContent(String content) {
-        this.content = content;
+        this.editorContent = new Content(content);
     }
 
     public boolean isModified() {
