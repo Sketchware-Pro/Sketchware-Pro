@@ -57,6 +57,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private LogcatPanel logcatPanel;
     private boolean logcatVisible = false;
     private BuildErrorAdapter errorAdapter;
+    private volatile int searchToken = 0;
 
     private final ActivityResultLauncher<Intent> settingsLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -824,6 +825,8 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private void searchInProject(String query) {
         Toast.makeText(this, R.string.code_project_search_in_project, Toast.LENGTH_SHORT).show();
 
+        final int token = ++searchToken;
+
         new Thread(() -> {
             List<String> results = new ArrayList<>();
             File sourceRoot = new File(project.getSourcePath());
@@ -831,6 +834,8 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
 
             runOnUiThread(() -> {
                 if (isFinishing()) return;
+                // Discard stale results if a newer search was started
+                if (token != searchToken) return;
                 if (results.isEmpty()) {
                     Toast.makeText(this, R.string.code_project_no_results, Toast.LENGTH_SHORT).show();
                     return;

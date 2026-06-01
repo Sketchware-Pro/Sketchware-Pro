@@ -2345,6 +2345,9 @@ Please try again later"</string>
     <string name="code_project_replace_all">Replace All</string>
     <string name="code_project_no_results">No results</string>
     <string name="code_project_match_count">%1$d of %2$d</string>
+    <string name="code_project_search_hint">Search…</string>
+    <string name="code_project_replace_hint">Replace…</string>
+    <string name="code_project_error_min_sdk">Min SDK must be a positive number</string>
 
     <!-- Project Settings -->
     <string name="code_project_settings">Project Settings</string>

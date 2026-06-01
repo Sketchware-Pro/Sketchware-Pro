@@ -65,6 +65,9 @@ public class ProjectSettingsActivity extends BaseAppCompatActivity {
         binding.btnSave.setOnClickListener(v -> saveSettings());
     }
 
+    private static final java.util.regex.Pattern PACKAGE_SEGMENT =
+            java.util.regex.Pattern.compile("[a-zA-Z][a-zA-Z0-9_]*");
+
     private void saveSettings() {
         String appName = binding.inputAppName.getText().toString().trim();
         String packageName = binding.inputPackageName.getText().toString().trim();
@@ -76,11 +79,15 @@ public class ProjectSettingsActivity extends BaseAppCompatActivity {
             binding.inputAppName.setError(getString(R.string.code_project_error_app_name));
             return;
         }
-        if (packageName.isEmpty() || !packageName.contains(".")) {
+        if (!isValidPackageName(packageName)) {
             binding.inputPackageName.setError(getString(R.string.code_project_error_package_name));
             return;
         }
-        if (versionCode.isEmpty()) {
+        int versionCodeInt;
+        try {
+            versionCodeInt = Integer.parseInt(versionCode);
+            if (versionCodeInt <= 0) throw new NumberFormatException();
+        } catch (NumberFormatException e) {
             binding.inputVersionCode.setError(getString(R.string.code_project_error_version_code));
             return;
         }
@@ -88,13 +95,21 @@ public class ProjectSettingsActivity extends BaseAppCompatActivity {
             binding.inputVersionName.setError(getString(R.string.code_project_error_version_name));
             return;
         }
+        int minSdkInt;
+        try {
+            minSdkInt = Integer.parseInt(minSdk);
+            if (minSdkInt <= 0) throw new NumberFormatException();
+        } catch (NumberFormatException e) {
+            binding.inputMinSdk.setError(getString(R.string.code_project_error_min_sdk));
+            return;
+        }
 
         // Update metadata
         metadata.put("my_app_name", appName);
         metadata.put("my_sc_pkg_name", packageName);
-        metadata.put("sc_ver_code", versionCode);
+        metadata.put("sc_ver_code", String.valueOf(versionCodeInt));
         metadata.put("sc_ver_name", versionName);
-        metadata.put("sc_min_sdk", minSdk);
+        metadata.put("sc_min_sdk", String.valueOf(minSdkInt));
 
         // Save via lC
         lC.a(scId, metadata);
@@ -102,6 +117,23 @@ public class ProjectSettingsActivity extends BaseAppCompatActivity {
         Toast.makeText(this, R.string.code_project_settings_saved, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
         finish();
+    }
+
+    /**
+     * Validates a Java package name: at least 2 segments separated by dots,
+     * each segment starts with a letter followed by letters/digits/underscores.
+     */
+    private boolean isValidPackageName(String name) {
+        if (name == null || name.isEmpty()) return false;
+        if (name.startsWith(".") || name.endsWith(".")) return false;
+        String[] segments = name.split("\\.");
+        if (segments.length < 2) return false;
+        for (String segment : segments) {
+            if (segment.isEmpty() || !PACKAGE_SEGMENT.matcher(segment).matches()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private String getMetaString(String key) {

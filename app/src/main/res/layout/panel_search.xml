@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:hint="Search..."
+            android:hint="@string/code_project_search_hint"
             android:singleLine="true"
             android:textSize="14sp"
             android:paddingHorizontal="8dp"
@@ -34,8 +34,8 @@
 
         <ImageButton
             android:id="@+id/btn_toggle_replace"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/arrow_down_float"
             android:contentDescription="@string/code_project_replace"
@@ -43,8 +43,8 @@
 
         <ImageButton
             android:id="@+id/btn_find_next"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_media_next"
             android:contentDescription="@string/code_project_search"
@@ -52,8 +52,8 @@
 
         <ImageButton
             android:id="@+id/btn_search_in_project"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_menu_search"
             android:contentDescription="@string/code_project_search_in_project"
@@ -61,8 +61,8 @@
 
         <ImageButton
             android:id="@+id/btn_close_search"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             android:contentDescription="@string/common_word_close"
@@ -82,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:hint="Replace..."
+            android:hint="@string/code_project_replace_hint"
             android:singleLine="true"
             android:textSize="14sp"
             android:paddingHorizontal="8dp"
@@ -91,8 +91,8 @@
 
         <ImageButton
             android:id="@+id/btn_replace"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_menu_edit"
             android:contentDescription="@string/code_project_replace"
@@ -100,8 +100,8 @@
 
         <ImageButton
             android:id="@+id/btn_replace_all"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_menu_manage"
             android:contentDescription="@string/code_project_replace_all"
