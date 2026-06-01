@@ -2322,6 +2322,8 @@ Please try again later"</string>
     <string name="code_project_unsaved_changes">Unsaved Changes</string>
     <string name="code_project_discard_changes">\'%s\' has unsaved changes. Discard?</string>
     <string name="code_project_discard">Discard</string>
+    <string name="code_project_install_prompt">Install the APK on this device?</string>
+    <string name="code_project_install">Install</string>
 
 
 </resources>

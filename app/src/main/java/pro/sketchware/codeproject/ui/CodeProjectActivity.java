@@ -1,5 +1,7 @@
 package pro.sketchware.codeproject.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -291,7 +294,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 runOnUiThread(() -> {
                     if (!isFinishing()) {
                         binding.toolbar.setSubtitle(project.getProjectName());
-                        Toast.makeText(CodeProjectActivity.this, R.string.code_project_build_success, Toast.LENGTH_SHORT).show();
+                        promptInstallApk(apk);
                     }
                     isBuilding = false;
                     setBuildMenuEnabled(true);
@@ -309,6 +312,24 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 });
             }
         }).start();
+    }
+
+    private void promptInstallApk(File apkFile) {
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.code_project_build_success)
+                .setMessage(R.string.code_project_install_prompt)
+                .setPositiveButton(R.string.code_project_install, (dialog, which) -> installApk(apkFile))
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void installApk(File apkFile) {
+        Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".provider", apkFile);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void setBuildMenuEnabled(boolean enabled) {
