@@ -2,7 +2,7 @@
   "id": "FEAT-002",
   "type": "feat",
   "description": "Implement the Code Project IDE mode: new project type, file explorer, code editor, build pipeline, and project template. This is a single large feature covering all new files and the complete Code Project workflow.",
-  "status": "pending",
+  "status": "in_progress",
   "steps": [
     "Step 1 - Create new branch 'feat/code-project-mode' from main",
     "Step 2 - Create data model class pro.sketchware.codeproject.model.CodeProject.java that represents a code project with fields: sc_id, projectName, packageName, appName, versionCode, versionName, projectPath (on-device storage path). Include methods to get source directories (java, res, manifest). Store projects at /storage/emulated/0/.sketchware/mysc/list/<sc_id>/project with an extra field 'sc_project_type' set to 'code' in the HashMap to differentiate from block-based projects (existing ones use proj_type=1).",

@@ -46,6 +46,7 @@ import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import pro.sketchware.R;
 import pro.sketchware.activities.main.activities.MainActivity;
+import pro.sketchware.codeproject.ui.CreateCodeProjectActivity;
 import pro.sketchware.databinding.MyprojectsBinding;
 import pro.sketchware.databinding.SortProjectDialogBinding;
 import pro.sketchware.utility.UI;
@@ -67,6 +68,12 @@ public class ProjectsFragment extends DA {
                     updateProject(sc_id);
                 }
             }
+        }
+    });
+
+    public final ActivityResultLauncher<Intent> openCreateCodeProject = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            refreshProjectsList();
         }
     });
     private DB preference;
@@ -142,7 +149,7 @@ public class ProjectsFragment extends DA {
         preference = new DB(requireContext(), "project");
 
         ExtendedFloatingActionButton fab = requireActivity().findViewById(R.id.create_new_project);
-        fab.setOnClickListener((v) -> toProjectSettingsActivity());
+        fab.setOnClickListener((v) -> showProjectTypeDialog());
         Insetter.builder().margin(WindowInsetsCompat.Type.navigationBars()).applyToView(fab);
 
         binding.swipeRefresh.setOnRefreshListener(this::refreshProjectsList);
@@ -265,6 +272,24 @@ public class ProjectsFragment extends DA {
                 }
             }
         });
+    }
+
+    private void showProjectTypeDialog() {
+        String[] options = {
+                getString(R.string.code_project_block_project),
+                getString(R.string.code_project_code_project)
+        };
+        new MaterialAlertDialogBuilder(requireActivity())
+                .setTitle(R.string.code_project_choose_type)
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        toProjectSettingsActivity();
+                    } else {
+                        Intent intent = new Intent(getActivity(), CreateCodeProjectActivity.class);
+                        openCreateCodeProject.launch(intent);
+                    }
+                })
+                .show();
     }
 
     private void showProjectSortingDialog() {

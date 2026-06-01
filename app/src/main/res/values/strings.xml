@@ -2293,5 +2293,29 @@ Please try again later"</string>
     <string name="attr_already_exist">This attribute already exists</string>
     <string name="link_sw_assist">https://play.google.com/store/apps/details?id=com.w3wide.swassist</string>
 
+    <!-- Code Project -->
+    <string name="code_project_file_explorer">Files</string>
+    <string name="code_project_build">Build</string>
+    <string name="code_project_save">Save</string>
+    <string name="code_project_undo">Undo</string>
+    <string name="code_project_redo">Redo</string>
+    <string name="code_project_create">New Code Project</string>
+    <string name="code_project_app_name">App Name</string>
+    <string name="code_project_package_name">Package Name</string>
+    <string name="code_project_project_name">Project Name</string>
+    <string name="code_project_create_button">Create Project</string>
+    <string name="code_project_choose_type">Choose Project Type</string>
+    <string name="code_project_block_project">Block Project (Visual)</string>
+    <string name="code_project_code_project">Code Project (IDE)</string>
+    <string name="code_project_build_success">Build successful!</string>
+    <string name="code_project_build_failed">Build failed</string>
+    <string name="code_project_building">Building project...</string>
+    <string name="code_project_saved">File saved</string>
+    <string name="code_project_open_drawer">Open files</string>
+    <string name="code_project_close_drawer">Close files</string>
+    <string name="code_project_error_app_name">App name is required</string>
+    <string name="code_project_error_package_name">Enter a valid package name (e.g. com.example.app)</string>
+    <string name="code_project_error_project_name">Project name is required</string>
+
 
 </resources>

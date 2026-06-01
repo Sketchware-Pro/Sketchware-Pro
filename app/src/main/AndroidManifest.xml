@@ -318,6 +318,14 @@
             android:configChanges="orientation|screenSize" />
 
         <activity
+            android:name="pro.sketchware.codeproject.ui.CodeProjectActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name="pro.sketchware.codeproject.ui.CreateCodeProjectActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
             android:name=".activities.preview.LayoutPreviewActivity"
             android:configChanges="orientation|screenSize" />
 
