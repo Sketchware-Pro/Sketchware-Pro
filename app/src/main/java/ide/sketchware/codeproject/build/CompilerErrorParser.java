@@ -38,6 +38,11 @@ public class CompilerErrorParser {
     private static final Pattern ERROR_PATTERN =
             Pattern.compile("(.*\\.(?:java|kt|xml)):(\\d+)(?::(\\d+))?:?\\s*(?:(error|warning):?\\s*)?(.+)");
 
+    // Kotlin compiler diagnostic format: "e: /path/File.kt: (10, 5): message"
+    // or: "w: /path/File.kt: (10, 5): message"
+    private static final Pattern KOTLIN_ERROR_PATTERN =
+            Pattern.compile("([ew]):\\s*(.*\\.(?:java|kt|xml)):\\s*\\((\\d+),\\s*(\\d+)\\):\\s*(.+)");
+
     /**
      * Parse compiler output text into a list of structured errors.
      *
@@ -78,6 +83,17 @@ public class CompilerErrorParser {
                 String message = matcher.group(5).trim();
 
                 errors.add(new CompilerError(filePath, lineNumber, columnNumber, message, isWarning));
+            } else {
+                Matcher ktMatcher = KOTLIN_ERROR_PATTERN.matcher(trimmed);
+                if (ktMatcher.matches()) {
+                    String severity = ktMatcher.group(1);
+                    String filePath = ktMatcher.group(2);
+                    int lineNumber = Integer.parseInt(ktMatcher.group(3));
+                    int columnNumber = Integer.parseInt(ktMatcher.group(4));
+                    String message = ktMatcher.group(5).trim();
+                    boolean isWarning = "w".equals(severity);
+                    errors.add(new CompilerError(filePath, lineNumber, columnNumber, message, isWarning));
+                }
             }
         }
         return errors;

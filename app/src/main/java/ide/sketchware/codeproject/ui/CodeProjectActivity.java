@@ -715,7 +715,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         for (Map.Entry<String, List<CompilerErrorParser.CompilerError>> entry : fileErrorMap.entrySet()) {
             String errorPath = entry.getKey();
             // Match if the absolute path ends with the error path (relative path reported)
-            if (errorPath.length() > 1 && absolutePath.endsWith(errorPath)) {
+            if (errorPath.length() > 1 && (absolutePath.endsWith("/" + errorPath) || absolutePath.equals(errorPath))) {
                 return entry.getValue();
             }
             // Match if the error path ends with /filename (require separator to prevent
