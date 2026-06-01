@@ -77,9 +77,11 @@ public class FileTabAdapter extends RecyclerView.Adapter<FileTabAdapter.ViewHold
         if (position == activeIndex) {
             holder.itemView.setBackgroundTintList(ColorStateList.valueOf(colorSurfaceHighest));
             holder.binding.tabTitle.setTextColor(colorOnSurface);
+            holder.binding.tabClose.setImageTintList(ColorStateList.valueOf(colorOnSurface));
         } else {
             holder.itemView.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
             holder.binding.tabTitle.setTextColor(colorOnSurfaceVariant);
+            holder.binding.tabClose.setImageTintList(ColorStateList.valueOf(colorOnSurfaceVariant));
         }
 
         holder.itemView.setOnClickListener(v -> {

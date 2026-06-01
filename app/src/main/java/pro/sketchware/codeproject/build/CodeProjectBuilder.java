@@ -33,6 +33,7 @@ public class CodeProjectBuilder {
     private final File dexDir;
     private File aapt2Binary;
     private List<File> cachedLibraryJars;
+    private boolean usesKotlin = false;
 
     public CodeProjectBuilder(Context context, CodeProject project) {
         this.context = context;
@@ -219,14 +220,20 @@ public class CodeProjectBuilder {
         collectKotlinFiles(sourceDir, ktFiles);
 
         if (ktFiles.isEmpty()) return;
+        usesKotlin = true;
 
         File androidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
         File lambdaStubs = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "core-lambda-stubs.jar");
+        File kotlinStdlib = BuiltInLibraries.getLibraryClassesJarPath(BuiltInLibraries.JETBRAINS_KOTLIN_STDLIB);
 
         StringBuilder classpath = new StringBuilder();
         classpath.append(androidJar.getAbsolutePath());
         if (lambdaStubs.exists()) {
             classpath.append(":").append(lambdaStubs.getAbsolutePath());
+        }
+        // Kotlin stdlib must be on the classpath to resolve standard library symbols
+        if (kotlinStdlib.exists()) {
+            classpath.append(":").append(kotlinStdlib.getAbsolutePath());
         }
         for (File jar : getLibraryJars()) {
             classpath.append(":").append(jar.getAbsolutePath());
@@ -236,9 +243,15 @@ public class CodeProjectBuilder {
         arguments.add("-cp");
         arguments.add(classpath.toString());
 
-        for (File ktFile : ktFiles) {
-            arguments.add(ktFile.getAbsolutePath());
+        // Pass generated R sources and project Java sources as source roots so Kotlin
+        // can resolve R and other project Java types. With setCompileJava(false) the
+        // compiler reads these .java files for resolution only (it does not emit them).
+        if (genDir.exists()) {
+            arguments.add(genDir.getAbsolutePath());
         }
+        // The Kotlin source dir is the same as the Java source dir; passing the
+        // directory compiles all .kt files within it and reads sibling .java files.
+        arguments.add(sourceDir.getAbsolutePath());
 
         K2JVMCompiler compiler = new K2JVMCompiler();
         DiagnosticCollector collector = new DiagnosticCollector();
@@ -334,6 +347,14 @@ public class CodeProjectBuilder {
         }
         for (File jar : getLibraryJars()) {
             programFiles.add(jar.toPath());
+        }
+        // When the project uses Kotlin, the stdlib classes must be dexed and packaged
+        // so kotlin runtime symbols are available at runtime.
+        if (usesKotlin) {
+            File kotlinStdlib = BuiltInLibraries.getLibraryClassesJarPath(BuiltInLibraries.JETBRAINS_KOTLIN_STDLIB);
+            if (kotlinStdlib.exists()) {
+                programFiles.add(kotlinStdlib.toPath());
+            }
         }
 
         java.util.Collection<java.nio.file.Path> libraryFiles = new java.util.LinkedList<>();

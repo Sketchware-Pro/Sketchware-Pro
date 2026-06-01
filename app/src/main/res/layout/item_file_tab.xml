@@ -19,11 +19,16 @@
         android:textSize="12sp"
         tools:text="MainActivity.java" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/tab_close"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="12dp"
+        android:scaleType="fitCenter"
         android:contentDescription="@string/code_project_close_tab"
         android:src="@android:drawable/ic_menu_close_clear_cancel" />
 

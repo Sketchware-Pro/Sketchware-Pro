@@ -12,7 +12,7 @@
     "gradle assembleRelease succeeds without GOOGLE_SERVICES_JSON being set"
   ],
   "verification": [
-    "Run `gradle assembleRelease` from the project root and confirm it succeeds"
+    "Run `./gradlew assembleRelease` from the project root and confirm it succeeds"
   ],
   "blocked_reason": null,
   "findings": "Build succeeds with gradle assembleRelease. The mock google-services.json is now written to $projectDir/google-services.json in both branches (secrets available and fallback). Java 17 via mise is required. Use ./gradlew not gradle. Build takes ~7 minutes."

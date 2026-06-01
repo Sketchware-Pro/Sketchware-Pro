@@ -63,10 +63,19 @@ public class EditorUtils {
 
     public static void loadXmlConfig(CodeEditor editor) {
         loadConfigByLanguage(editor, CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML), true);
+        disableAutoCompletion(editor);
     }
 
     public static void loadKotlinConfig(CodeEditor editor) {
         loadConfigByLanguage(editor, CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_KOTLIN), true);
+        disableAutoCompletion(editor);
+    }
+
+    private static void disableAutoCompletion(CodeEditor editor) {
+        EditorAutoCompletion comp = editor.getComponent(EditorAutoCompletion.class);
+        if (comp != null) {
+            comp.setEnabled(false);
+        }
     }
 
     // todo: use dynamic color scheme for textmate language too
