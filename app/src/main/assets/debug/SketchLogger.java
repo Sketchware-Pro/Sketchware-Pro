@@ -70,7 +70,7 @@ public class SketchLogger {
         Context context = <?class_name?>.getContext();
 
         Intent intent = new Intent();
-        intent.setAction("pro.sketchware.ACTION_NEW_DEBUG_LOG");
+        intent.setAction("ide.sketchware.ACTION_NEW_DEBUG_LOG");
         intent.putExtra("log", log);
         intent.putExtra("packageName", context.getPackageName());
         context.sendBroadcast(intent);

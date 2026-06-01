@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
 import a.a.a.wB;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class PropertySwitchItem extends RelativeLayout implements View.OnClickListener {
 

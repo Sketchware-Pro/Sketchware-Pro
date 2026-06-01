@@ -24,11 +24,11 @@ import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.DesignDrawerItemBinding;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.ThemeUtils;
-import pro.sketchware.utility.UI;
+import ide.sketchware.R;
+import ide.sketchware.databinding.DesignDrawerItemBinding;
+import ide.sketchware.utility.SketchwareUtil;
+import ide.sketchware.utility.ThemeUtils;
+import ide.sketchware.utility.UI;
 
 public class DesignDrawer extends LinearLayout {
     @SuppressLint("NonConstantResourceId")

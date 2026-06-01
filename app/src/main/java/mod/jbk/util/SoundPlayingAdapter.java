@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public abstract class SoundPlayingAdapter<VH extends SoundPlayingAdapter.ViewHolder> extends RecyclerView.Adapter<VH> {
     protected final SoundPlayer soundPlayer;

@@ -10,7 +10,7 @@ import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.TextBean;
 import com.besome.sketch.beans.ViewBean;
 
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class sq {
 

@@ -24,8 +24,8 @@ import a.a.a.kC;
 import a.a.a.mB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageCollectionShowWidgetBinding;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ManageCollectionShowWidgetBinding;
 
 public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private String widgetName;

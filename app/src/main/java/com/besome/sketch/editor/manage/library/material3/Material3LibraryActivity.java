@@ -13,8 +13,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.Objects;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageLibraryMaterial3Binding;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ManageLibraryMaterial3Binding;
 
 public class Material3LibraryActivity extends BaseAppCompatActivity {
 

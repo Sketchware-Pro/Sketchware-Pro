@@ -1,6 +1,6 @@
 package com.besome.sketch.editor.manage.library.material3;
 
-import static pro.sketchware.SketchApplication.getContext;
+import static ide.sketchware.SketchApplication.getContext;
 
 import android.content.Context;
 
@@ -9,8 +9,8 @@ import androidx.annotation.StyleRes;
 import com.besome.sketch.beans.ProjectLibraryBean;
 
 import a.a.a.jC;
-import pro.sketchware.R;
-import pro.sketchware.utility.ThemeUtils;
+import ide.sketchware.R;
+import ide.sketchware.utility.ThemeUtils;
 
 public class Material3LibraryManager {
 

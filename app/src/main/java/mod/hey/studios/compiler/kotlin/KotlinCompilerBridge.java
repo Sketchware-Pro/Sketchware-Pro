@@ -6,8 +6,8 @@ import a.a.a.ProjectBuilder;
 import a.a.a.yq;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
-import pro.sketchware.util.library.BuiltInLibraryManager;
-import pro.sketchware.utility.FileUtil;
+import ide.sketchware.util.library.BuiltInLibraryManager;
+import ide.sketchware.utility.FileUtil;
 
 public class KotlinCompilerBridge {
     public static void compileKotlinCodeIfPossible(BuildProgressReceiver receiver, ProjectBuilder builder) throws Throwable {

@@ -1,6 +1,6 @@
 package mod.khaled.logcat;
 
-import static pro.sketchware.utility.FileUtil.createNewFileIfNotPresent;
+import static ide.sketchware.utility.FileUtil.createNewFileIfNotPresent;
 
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
@@ -33,13 +33,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ActivityLogcatreaderBinding;
-import pro.sketchware.databinding.EasyDeleteEdittextBinding;
-import pro.sketchware.databinding.ViewLogcatItemBinding;
-import pro.sketchware.lib.base.BaseTextWatcher;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ActivityLogcatreaderBinding;
+import ide.sketchware.databinding.EasyDeleteEdittextBinding;
+import ide.sketchware.databinding.ViewLogcatItemBinding;
+import ide.sketchware.lib.base.BaseTextWatcher;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class LogReaderActivity extends BaseAppCompatActivity {
 
@@ -47,7 +47,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
     private final Pattern logPattern = Pattern.compile("^(.*\\d) ([VADEIW]) (.*): (.*)");
     private final ArrayList<HashMap<String, Object>> mainList = new ArrayList<>();
     private String pkgFilter = "";
-    private String packageName = "pro.sketchware";
+    private String packageName = "ide.sketchware";
     private boolean autoScroll = true;
     private ArrayList<String> pkgFilterList = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         binding.logsRecyclerView.setAdapter(new Adapter(new ArrayList<>()));
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("pro.sketchware.ACTION_NEW_DEBUG_LOG");
+        intentFilter.addAction("ide.sketchware.ACTION_NEW_DEBUG_LOG");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(logger, intentFilter, Context.RECEIVER_EXPORTED);
         } else {

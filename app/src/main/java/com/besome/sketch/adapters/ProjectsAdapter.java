@@ -34,12 +34,12 @@ import a.a.a.yB;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
-import pro.sketchware.codeproject.model.CodeProject;
-import pro.sketchware.codeproject.ui.CodeProjectActivity;
-import pro.sketchware.databinding.BottomSheetProjectOptionsBinding;
-import pro.sketchware.databinding.MyprojectsItemBinding;
+import ide.sketchware.R;
+import ide.sketchware.activities.main.fragments.projects.ProjectsFragment;
+import ide.sketchware.codeproject.model.CodeProject;
+import ide.sketchware.codeproject.ui.CodeProjectActivity;
+import ide.sketchware.databinding.BottomSheetProjectOptionsBinding;
+import ide.sketchware.databinding.MyprojectsItemBinding;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder> {
     private final ProjectsFragment projectsFragment;

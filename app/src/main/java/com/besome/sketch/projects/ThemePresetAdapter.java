@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pro.sketchware.databinding.ThemePresetItemBinding;
+import ide.sketchware.databinding.ThemePresetItemBinding;
 
 import java.util.List;
 

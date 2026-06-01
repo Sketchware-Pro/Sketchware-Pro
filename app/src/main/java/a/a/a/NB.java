@@ -6,7 +6,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class NB extends MB {
 

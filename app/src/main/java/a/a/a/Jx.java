@@ -27,7 +27,7 @@ import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.blocks.CommandBlock;
 import mod.hilal.saif.events.LogicHandler;
 import mod.pranav.viewbinding.ViewBindingBuilder;
-import pro.sketchware.control.logic.PermissionManager;
+import ide.sketchware.control.logic.PermissionManager;
 
 public class Jx {
 

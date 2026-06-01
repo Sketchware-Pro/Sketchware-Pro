@@ -22,7 +22,7 @@ import a.a.a.iI;
 import a.a.a.mB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClickListener {
     private final int validityInYears = 25;

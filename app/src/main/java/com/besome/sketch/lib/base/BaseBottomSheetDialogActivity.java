@@ -18,7 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import a.a.a.mB;
 import a.a.a.wB;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class BaseBottomSheetDialogActivity extends BaseAppCompatActivity {
 

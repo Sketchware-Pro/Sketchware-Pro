@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sketchware Pro</string>
+    <string name="app_name">Sketchware IDE</string>
     <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="besome_blog_url">http://medium.com/sketchware</string>
     <string name="block_add_list_int_body_1">to</string>
@@ -2304,8 +2304,6 @@ Please try again later"</string>
     <string name="code_project_package_name">Package Name</string>
     <string name="code_project_project_name">Project Name</string>
     <string name="code_project_create_button">Create Project</string>
-    <string name="code_project_choose_type">Choose Project Type</string>
-    <string name="code_project_block_project">Block Project (Visual)</string>
     <string name="code_project_code_project">Code Project (IDE)</string>
     <string name="code_project_build_success">Build successful!</string>
     <string name="code_project_build_failed">Build failed</string>
@@ -2334,7 +2332,8 @@ Please try again later"</string>
     <string name="code_project_confirm_delete">Delete \"%1$s\"? This cannot be undone.</string>
     <string name="code_project_enter_name">Enter name</string>
     <string name="code_project_build_errors">Build Errors</string>
-    <string name="code_project_long_press_hint">Long press for block project</string>
+    <string name="code_project_new_project_hint">Create new code project</string>
+    <string name="code_project_block_not_supported">Block projects are no longer supported. Create a new code project instead.</string>
     <string name="code_project_invalid_name">Invalid name. Avoid /, \\, or special characters.</string>
     <string name="code_project_file_exists">A file or folder with that name already exists.</string>
     <string name="code_project_operation_failed">Operation failed. Check permissions.</string>

@@ -22,10 +22,10 @@ import java.util.Optional;
 import a.a.a.Lx;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.OldResourceIdMapper;
-import pro.sketchware.R;
-import pro.sketchware.SketchApplication;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.SketchApplication;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 //responsible code :
 //ComponentBean == sketchware / beans √
 //Manage components == agus /component √

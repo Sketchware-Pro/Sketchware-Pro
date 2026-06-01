@@ -19,8 +19,8 @@ import a.a.a.Qp;
 import a.a.a.Yv;
 import a.a.a.mB;
 import a.a.a.ow;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageSoundBinding;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ManageSoundBinding;
 
 public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
 

@@ -114,17 +114,17 @@ import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
-import pro.sketchware.R;
-import pro.sketchware.activities.appcompat.ManageAppCompatActivity;
-import pro.sketchware.activities.editor.command.ManageXMLCommandActivity;
-import pro.sketchware.activities.editor.view.CodeViewerActivity;
-import pro.sketchware.activities.editor.view.ViewCodeEditorActivity;
-import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
-import pro.sketchware.dialogs.BuildSettingsBottomSheet;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.ThemeUtils;
-import pro.sketchware.utility.apk.ApkSignatures;
+import ide.sketchware.R;
+import ide.sketchware.activities.appcompat.ManageAppCompatActivity;
+import ide.sketchware.activities.editor.command.ManageXMLCommandActivity;
+import ide.sketchware.activities.editor.view.CodeViewerActivity;
+import ide.sketchware.activities.editor.view.ViewCodeEditorActivity;
+import ide.sketchware.activities.resourceseditor.ResourcesEditorActivity;
+import ide.sketchware.dialogs.BuildSettingsBottomSheet;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
+import ide.sketchware.utility.ThemeUtils;
+import ide.sketchware.utility.apk.ApkSignatures;
 
 public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public static String sc_id;

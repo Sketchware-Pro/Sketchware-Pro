@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.google.android.material.color.MaterialColors;
 
-import pro.sketchware.databinding.FrLogicListItemComponentEventBinding;
+import ide.sketchware.databinding.FrLogicListItemComponentEventBinding;
 
 public class ComponentEventButton extends LinearLayout {
 

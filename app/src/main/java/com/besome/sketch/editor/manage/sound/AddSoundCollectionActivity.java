@@ -29,8 +29,8 @@ import a.a.a.uq;
 import a.a.a.wq;
 import a.a.a.yy;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageSoundAddBinding;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ManageSoundAddBinding;
 
 public class AddSoundCollectionActivity extends BaseDialogActivity implements View.OnClickListener {
 

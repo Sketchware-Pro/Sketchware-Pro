@@ -21,7 +21,7 @@ import a.a.a.bB;
 import a.a.a.gB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickListener {
     private final ArrayList<String> adUnits = new ArrayList<>();

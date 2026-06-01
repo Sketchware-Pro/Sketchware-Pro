@@ -18,10 +18,10 @@ import dev.aldi.sayuti.block.ExtraBlockFile;
 import mod.agus.jcoderz.editor.manage.block.palette.PaletteSelector;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.jbk.util.LogUtil;
-import pro.sketchware.R;
-import pro.sketchware.SketchApplication;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.SketchApplication;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 /**
  * An optimized Custom Blocks loader.

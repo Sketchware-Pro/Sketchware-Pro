@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import a.a.a.uy;
 import a.a.a.wB;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class PaletteFavorite extends LinearLayout {
     private LinearLayout collectionWidgets;

@@ -5,8 +5,8 @@ import android.content.Intent;
 
 import com.besome.sketch.tools.CompileLogActivity;
 
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
+import ide.sketchware.utility.FilePathUtil;
+import ide.sketchware.utility.FileUtil;
 
 public class CompileErrorSaver {
 

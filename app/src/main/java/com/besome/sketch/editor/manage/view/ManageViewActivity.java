@@ -1,6 +1,6 @@
 package com.besome.sketch.editor.manage.view;
 
-import static pro.sketchware.utility.SketchwareUtil.dpToPx;
+import static ide.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,7 +40,7 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.wq;
 import a.a.a.xw;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.OnPageChangeListener {
     private static final int TAB_COUNT = 2;

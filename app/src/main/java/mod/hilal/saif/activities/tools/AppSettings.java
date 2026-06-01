@@ -41,13 +41,13 @@ import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
-import pro.sketchware.R;
-import pro.sketchware.activities.editor.component.ManageCustomComponentActivity;
-import pro.sketchware.activities.settings.SettingsActivity;
-import pro.sketchware.databinding.ActivityAppSettingsBinding;
-import pro.sketchware.databinding.DialogSelectApkToSignBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.activities.editor.component.ManageCustomComponentActivity;
+import ide.sketchware.activities.settings.SettingsActivity;
+import ide.sketchware.databinding.ActivityAppSettingsBinding;
+import ide.sketchware.databinding.DialogSelectApkToSignBinding;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class AppSettings extends BaseAppCompatActivity {
     @Override

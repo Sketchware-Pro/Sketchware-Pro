@@ -13,8 +13,8 @@ import java.util.HashMap;
 
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.hey.studios.code.SrcCodeEditor;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageProguardBinding;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ManageProguardBinding;
 
 public class ManageProguardActivity extends BaseAppCompatActivity
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {

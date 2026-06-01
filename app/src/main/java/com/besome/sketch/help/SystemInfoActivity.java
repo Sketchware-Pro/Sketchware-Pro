@@ -14,8 +14,8 @@ import com.besome.sketch.lib.ui.PropertyTwoLineItem;
 import a.a.a.GB;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ActivitySystemInfoBinding;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ActivitySystemInfoBinding;
 
 public class SystemInfoActivity extends BaseAppCompatActivity {
 

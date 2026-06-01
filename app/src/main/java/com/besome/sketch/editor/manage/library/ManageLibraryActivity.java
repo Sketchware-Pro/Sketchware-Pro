@@ -37,8 +37,8 @@ import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesLibraryItemView;
-import pro.sketchware.R;
-import pro.sketchware.utility.UI;
+import ide.sketchware.R;
+import ide.sketchware.utility.UI;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
 

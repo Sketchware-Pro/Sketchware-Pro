@@ -42,7 +42,7 @@ import a.a.a.mB;
 import a.a.a.ro;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class PropertyActivity extends BaseAppCompatActivity implements Kw {
 

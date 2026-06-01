@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import a.a.a.MB;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class MoreblockValidator extends MB {
 

@@ -6,7 +6,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import a.a.a.wB;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class ColorGroupItem extends RelativeLayout {
 

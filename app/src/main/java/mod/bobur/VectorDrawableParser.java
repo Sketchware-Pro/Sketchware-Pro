@@ -14,9 +14,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import a.a.a.wq;
-import pro.sketchware.SketchApplication;
-import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
-import pro.sketchware.utility.FileUtil;
+import ide.sketchware.SketchApplication;
+import ide.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
+import ide.sketchware.utility.FileUtil;
 
 public class VectorDrawableParser {
 

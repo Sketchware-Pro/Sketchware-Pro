@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.utility.FileUtil;
+import ide.sketchware.utility.FileUtil;
 
 /**
  * Sample usage of CommandBlock:

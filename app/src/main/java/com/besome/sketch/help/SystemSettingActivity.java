@@ -12,8 +12,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.PreferenceActivityBinding;
+import ide.sketchware.R;
+import ide.sketchware.databinding.PreferenceActivityBinding;
 
 public class SystemSettingActivity extends BaseAppCompatActivity {
     @Override

@@ -10,8 +10,8 @@ import com.bumptech.glide.Glide;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import pro.sketchware.R;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class AudioMetadata {
     public static final AudioAttributes MEDIA_PLAYER_AUDIO_ATTRIBUTES = new AudioAttributes.Builder()

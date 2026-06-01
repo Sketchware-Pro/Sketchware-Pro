@@ -7,7 +7,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class YB extends MB {
 

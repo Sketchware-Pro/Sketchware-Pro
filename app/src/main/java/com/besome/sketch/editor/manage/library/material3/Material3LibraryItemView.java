@@ -9,7 +9,7 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.LibraryItemView;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 @SuppressLint("ViewConstructor")
 public class Material3LibraryItemView extends LibraryItemView {

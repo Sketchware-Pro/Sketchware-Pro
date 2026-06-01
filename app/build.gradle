@@ -12,8 +12,8 @@ android {
     def shortCommitHash = "git rev-parse --short HEAD".execute().text.trim()
 
     defaultConfig {
-        applicationId = "pro.sketchware"
-        namespace = "pro.sketchware"
+        applicationId = "ide.sketchware"
+        namespace = "ide.sketchware"
         //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
         targetSdk = 28
         minSdk = 26

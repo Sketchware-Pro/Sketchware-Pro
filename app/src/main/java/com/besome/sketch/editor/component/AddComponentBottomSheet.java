@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ComponentAddItemBinding;
-import pro.sketchware.databinding.LogicAddComponentBinding;
-import pro.sketchware.dialogs.InnerAddComponentBottomSheet;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ComponentAddItemBinding;
+import ide.sketchware.databinding.LogicAddComponentBinding;
+import ide.sketchware.dialogs.InnerAddComponentBottomSheet;
 
 public class AddComponentBottomSheet extends BottomSheetDialogFragment {
     private String sc_id;

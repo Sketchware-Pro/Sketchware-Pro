@@ -30,10 +30,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
-import pro.sketchware.R;
-import pro.sketchware.databinding.FrComponentListBinding;
-import pro.sketchware.databinding.FrLogicListItemComponentBinding;
-import pro.sketchware.databinding.FrLogicListItemEventPreviewBinding;
+import ide.sketchware.R;
+import ide.sketchware.databinding.FrComponentListBinding;
+import ide.sketchware.databinding.FrLogicListItemComponentBinding;
+import ide.sketchware.databinding.FrLogicListItemEventPreviewBinding;
 
 public class br extends qA implements View.OnClickListener {
 

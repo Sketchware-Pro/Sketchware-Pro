@@ -8,9 +8,9 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.CustomToastBinding;
-import pro.sketchware.utility.ThemeUtils;
+import ide.sketchware.R;
+import ide.sketchware.databinding.CustomToastBinding;
+import ide.sketchware.utility.ThemeUtils;
 
 public class bB {
 

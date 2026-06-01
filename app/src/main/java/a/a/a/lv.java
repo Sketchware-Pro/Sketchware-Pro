@@ -6,8 +6,8 @@ import android.widget.LinearLayout;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.firebase.FirebaseActivity;
 
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageLibraryFirebaseProjectSettingsBinding;
+import ide.sketchware.R;
+import ide.sketchware.databinding.ManageLibraryFirebaseProjectSettingsBinding;
 
 public class lv extends LinearLayout implements nv {
 

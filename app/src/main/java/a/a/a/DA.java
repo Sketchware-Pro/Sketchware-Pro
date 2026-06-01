@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public abstract class DA extends qA {
     public DA() {

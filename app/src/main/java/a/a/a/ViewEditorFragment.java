@@ -28,9 +28,9 @@ import com.besome.sketch.editor.view.palette.PaletteWidget;
 import java.util.ArrayList;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.widgets.WidgetsCreatorManager;
+import ide.sketchware.R;
+import ide.sketchware.utility.SketchwareUtil;
+import ide.sketchware.widgets.WidgetsCreatorManager;
 
 public class ViewEditorFragment extends qA {
 

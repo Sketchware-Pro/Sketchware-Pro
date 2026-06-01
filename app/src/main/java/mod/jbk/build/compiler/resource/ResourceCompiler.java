@@ -19,9 +19,9 @@ import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
-import pro.sketchware.SketchApplication;
-import pro.sketchware.utility.BinaryExecutor;
-import pro.sketchware.utility.FileUtil;
+import ide.sketchware.SketchApplication;
+import ide.sketchware.utility.BinaryExecutor;
+import ide.sketchware.utility.FileUtil;
 
 /**
  * A class responsible for compiling a Project's resources.

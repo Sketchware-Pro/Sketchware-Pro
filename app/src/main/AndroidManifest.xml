@@ -46,7 +46,7 @@
             android:name="com.besome.sketch.common.SrcViewerActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="pro.sketchware.activities.importicon.ImportIconActivity"
+            android:name="ide.sketchware.activities.importicon.ImportIconActivity"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name="com.besome.sketch.help.LicenseActivity" />
@@ -85,7 +85,7 @@
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/Theme.SketchwarePro.SmallToolbar" />
         <activity
-            android:name="pro.sketchware.activities.main.activities.MainActivity"
+            android:name="ide.sketchware.activities.main.activities.MainActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
             android:theme="@style/Theme.SketchwarePro.Starting">
@@ -266,7 +266,7 @@
             android:name="mod.hilal.saif.activities.tools.AppSettings"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="pro.sketchware.activities.about.AboutActivity"
+            android:name="ide.sketchware.activities.about.AboutActivity"
             android:configChanges="orientation|screenSize" />
         <activity android:name="mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity" />
         <activity
@@ -279,13 +279,13 @@
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
 
         <activity
-            android:name="pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity"
+            android:name="ide.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.SketchwarePro.ProjectPreview" />
 
-        <activity android:name="pro.sketchware.activities.settings.SettingsActivity" />
+        <activity android:name="ide.sketchware.activities.settings.SettingsActivity" />
 
-        <activity android:name="pro.sketchware.activities.resourceseditor.ResourcesEditorActivity" />
+        <activity android:name="ide.sketchware.activities.resourceseditor.ResourcesEditorActivity" />
 
         <activity
             android:name="com.besome.sketch.editor.manage.library.material3.Material3LibraryActivity"
@@ -318,11 +318,11 @@
             android:configChanges="orientation|screenSize" />
 
         <activity
-            android:name="pro.sketchware.codeproject.ui.CodeProjectActivity"
+            android:name="ide.sketchware.codeproject.ui.CodeProjectActivity"
             android:configChanges="orientation|screenSize" />
 
         <activity
-            android:name="pro.sketchware.codeproject.ui.CreateCodeProjectActivity"
+            android:name="ide.sketchware.codeproject.ui.CreateCodeProjectActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
@@ -334,7 +334,7 @@
             android:value="true" />
 
         <service
-            android:name="pro.sketchware.firebase.FirebaseMessagingServiceImpl"
+            android:name="ide.sketchware.firebase.FirebaseMessagingServiceImpl"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

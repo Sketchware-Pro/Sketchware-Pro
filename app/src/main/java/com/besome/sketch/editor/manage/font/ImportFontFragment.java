@@ -26,12 +26,12 @@ import a.a.a.jC;
 import a.a.a.oB;
 import a.a.a.qA;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.FrManageFontListBinding;
-import pro.sketchware.databinding.ManageFontBinding;
-import pro.sketchware.databinding.ManageFontListItemBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import ide.sketchware.R;
+import ide.sketchware.databinding.FrManageFontListBinding;
+import ide.sketchware.databinding.ManageFontBinding;
+import ide.sketchware.databinding.ManageFontListItemBinding;
+import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class ImportFontFragment extends qA {
 

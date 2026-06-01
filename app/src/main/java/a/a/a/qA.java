@@ -14,7 +14,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.transition.MaterialSharedAxis;
 
 import dev.chrisbanes.insetter.Insetter;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class qA extends Fragment {
 

@@ -20,7 +20,7 @@ import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 import mod.pranav.viewbinding.ViewBindingBuilder;
-import pro.sketchware.utility.FileUtil;
+import ide.sketchware.utility.FileUtil;
 
 public class Lx {
 

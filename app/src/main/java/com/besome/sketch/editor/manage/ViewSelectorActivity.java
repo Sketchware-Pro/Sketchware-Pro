@@ -24,12 +24,12 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.rq;
 import a.a.a.wq;
-import pro.sketchware.R;
-import pro.sketchware.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
-import pro.sketchware.databinding.FileSelectorPopupSelectXmlBinding;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.ThemeUtils;
-import pro.sketchware.utility.UI;
+import ide.sketchware.R;
+import ide.sketchware.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
+import ide.sketchware.databinding.FileSelectorPopupSelectXmlBinding;
+import ide.sketchware.utility.SketchwareUtil;
+import ide.sketchware.utility.ThemeUtils;
+import ide.sketchware.utility.UI;
 
 public class ViewSelectorActivity extends BaseAppCompatActivity {
     private final int[] x = new int[19];

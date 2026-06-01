@@ -8,7 +8,7 @@ import com.besome.sketch.editor.view.AndroidxOrMaterialView;
 import com.besome.sketch.editor.view.palette.IconBase;
 
 import mod.agus.jcoderz.beans.ViewBeans;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class IconSwipeRefreshLayout extends IconBase implements AndroidxOrMaterialView {
 

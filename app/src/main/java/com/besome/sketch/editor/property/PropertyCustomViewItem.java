@@ -21,8 +21,8 @@ import a.a.a.Kw;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
+import ide.sketchware.R;
+import ide.sketchware.databinding.PropertyPopupSelectorSingleBinding;
 
 @SuppressLint("ViewConstructor")
 public class PropertyCustomViewItem extends RelativeLayout implements View.OnClickListener {

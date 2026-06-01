@@ -10,7 +10,7 @@ import com.besome.sketch.lib.base.CollapsibleLayout;
 import java.util.List;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
+import ide.sketchware.R;
 
 public class MyProjectButtonLayout extends CollapsibleLayout<MyProjectButton> {
     public MyProjectButtonLayout(Context context) {
