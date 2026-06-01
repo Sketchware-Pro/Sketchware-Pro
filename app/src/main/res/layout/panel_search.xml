@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?attr/colorSurfaceContainer"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/search_input"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:hint="@string/code_project_search_hint"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:paddingHorizontal="8dp"
+            android:background="@android:color/transparent"
+            android:importantForAutofill="no" />
+
+        <TextView
+            android:id="@+id/match_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:paddingHorizontal="6dp" />
+
+        <ImageButton
+            android:id="@+id/btn_toggle_replace"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/arrow_down_float"
+            android:contentDescription="@string/code_project_replace"
+            android:scaleType="center" />
+
+        <ImageButton
+            android:id="@+id/btn_find_next"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_media_next"
+            android:contentDescription="@string/code_project_search"
+            android:scaleType="center" />
+
+        <ImageButton
+            android:id="@+id/btn_search_in_project"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_search"
+            android:contentDescription="@string/code_project_search_in_project"
+            android:scaleType="center" />
+
+        <ImageButton
+            android:id="@+id/btn_close_search"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:contentDescription="@string/common_word_close"
+            android:scaleType="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/replace_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/replace_input"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:hint="@string/code_project_replace_hint"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:paddingHorizontal="8dp"
+            android:background="@android:color/transparent"
+            android:importantForAutofill="no" />
+
+        <ImageButton
+            android:id="@+id/btn_replace"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_edit"
+            android:contentDescription="@string/code_project_replace"
+            android:scaleType="center" />
+
+        <ImageButton
+            android:id="@+id/btn_replace_all"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_manage"
+            android:contentDescription="@string/code_project_replace_all"
+            android:scaleType="center" />
+    </LinearLayout>
+
+</LinearLayout>
