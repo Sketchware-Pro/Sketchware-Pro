@@ -468,6 +468,16 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             EditorUtils.loadJavaAutoCompleteConfig(binding.editor);
         }
 
+        // Re-run search on new file if search panel is active
+        if (binding.searchPanel.getRoot().getVisibility() == View.VISIBLE) {
+            EditText searchInput = binding.searchPanel.getRoot().findViewById(R.id.search_input);
+            String query = searchInput.getText().toString();
+            if (!query.isEmpty()) {
+                binding.editor.getSearcher().search(query,
+                    new EditorSearcher.SearchOptions(EditorSearcher.SearchOptions.TYPE_NORMAL, true));
+            }
+        }
+
         // Update UI
         binding.toolbar.setSubtitle(currentFile.getName());
         updateTabStrip();
@@ -737,7 +747,8 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 } else {
                     binding.editor.getSearcher().search(query,
                             new EditorSearcher.SearchOptions(EditorSearcher.SearchOptions.TYPE_NORMAL, true));
-                    updateMatchCount(matchCount);
+                    // Delay to allow async search to complete before reading match count
+                    binding.editor.postDelayed(() -> updateMatchCount(matchCount), 100);
                 }
             }
         });

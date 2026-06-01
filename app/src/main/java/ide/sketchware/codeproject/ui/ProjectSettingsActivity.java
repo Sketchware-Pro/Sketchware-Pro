@@ -12,7 +12,9 @@ import java.util.HashMap;
 
 import a.a.a.lC;
 import ide.sketchware.R;
+import ide.sketchware.codeproject.model.CodeProject;
 import ide.sketchware.databinding.ActivityProjectSettingsBinding;
+import ide.sketchware.utility.FileUtil;
 
 public class ProjectSettingsActivity extends BaseAppCompatActivity {
 
@@ -114,9 +116,47 @@ public class ProjectSettingsActivity extends BaseAppCompatActivity {
         // Save via lC
         lC.a(scId, metadata);
 
+        // Update manifest package attribute on disk
+        updateManifestPackage(packageName);
+        // Update strings.xml app_name on disk
+        updateAppNameInStrings(appName);
+
         Toast.makeText(this, R.string.code_project_settings_saved, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
         finish();
+    }
+
+    private void updateManifestPackage(String packageName) {
+        CodeProject project = CodeProject.fromMetadata(metadata);
+        String manifestPath = project.getManifestPath();
+        java.io.File manifestFile = new java.io.File(manifestPath);
+        if (manifestFile.exists()) {
+            String content = FileUtil.readFile(manifestPath);
+            // Replace package="..." attribute
+            content = content.replaceFirst(
+                "package=\"[^\"]*\"",
+                "package=\"" + packageName + "\""
+            );
+            FileUtil.writeFile(manifestPath, content);
+        }
+    }
+
+    private void updateAppNameInStrings(String appName) {
+        CodeProject project = CodeProject.fromMetadata(metadata);
+        String stringsPath = project.getResPath() + java.io.File.separator + "values"
+            + java.io.File.separator + "strings.xml";
+        java.io.File stringsFile = new java.io.File(stringsPath);
+        if (stringsFile.exists()) {
+            String content = FileUtil.readFile(stringsPath);
+            // Escape for Android string resource
+            String escaped = appName.replace("&", "&amp;").replace("<", "&lt;")
+                .replace(">", "&gt;").replace("'", "\\'").replace("\"", "\\\"");
+            content = content.replaceFirst(
+                "<string name=\"app_name\">[^<]*</string>",
+                "<string name=\"app_name\">" + escaped + "</string>"
+            );
+            FileUtil.writeFile(stringsPath, content);
+        }
     }
 
     /**
