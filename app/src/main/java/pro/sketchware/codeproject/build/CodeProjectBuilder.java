@@ -227,6 +227,9 @@ public class CodeProjectBuilder {
         if (lambdaStubs.exists()) {
             classpath.append(":").append(lambdaStubs.getAbsolutePath());
         }
+        for (File jar : getLibraryJars()) {
+            classpath.append(":").append(jar.getAbsolutePath());
+        }
 
         List<String> arguments = new ArrayList<>();
         arguments.add("-cp");
@@ -294,6 +297,9 @@ public class CodeProjectBuilder {
         if (classesDir.exists() && classFiles != null && classFiles.length > 0) {
             classpath.append(":").append(classesDir.getAbsolutePath());
         }
+        for (File jar : getLibraryJars()) {
+            classpath.append(":").append(jar.getAbsolutePath());
+        }
 
         List<String> args = new ArrayList<>();
         args.add("-1.7");
@@ -324,6 +330,9 @@ public class CodeProjectBuilder {
         java.util.Collection<java.nio.file.Path> programFiles = new java.util.LinkedList<>();
         for (File file : pro.sketchware.utility.FileUtil.listFilesRecursively(classesDir, ".class")) {
             programFiles.add(file.toPath());
+        }
+        for (File jar : getLibraryJars()) {
+            programFiles.add(jar.toPath());
         }
 
         java.util.Collection<java.nio.file.Path> libraryFiles = new java.util.LinkedList<>();
@@ -451,6 +460,22 @@ public class CodeProjectBuilder {
         mod.jbk.util.TestkeySignBridge.signWithTestkey(
                 apk.getAbsolutePath(), signedApk.getAbsolutePath());
         return signedApk;
+    }
+
+    private List<File> getLibraryJars() {
+        List<File> jars = new ArrayList<>();
+        File libsDir = new File(project.getLibsPath());
+        if (libsDir.exists() && libsDir.isDirectory()) {
+            File[] files = libsDir.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile() && file.getName().endsWith(".jar")) {
+                        jars.add(file);
+                    }
+                }
+            }
+        }
+        return jars;
     }
 
     public interface BuildProgressListener {

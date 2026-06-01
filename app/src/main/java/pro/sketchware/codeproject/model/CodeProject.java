@@ -110,6 +110,10 @@ public class CodeProject {
         return getProjectMyscPath() + File.separator + "gen";
     }
 
+    public String getLibsPath() {
+        return getProjectMyscPath() + File.separator + "app" + File.separator + "libs";
+    }
+
     public static boolean isCodeProject(HashMap<String, Object> projectMap) {
         if (projectMap == null) return false;
         return PROJECT_TYPE_CODE.equals(yB.c(projectMap, KEY_PROJECT_TYPE));

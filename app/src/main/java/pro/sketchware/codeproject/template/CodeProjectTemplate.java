@@ -19,6 +19,7 @@ public class CodeProjectTemplate {
         FileUtil.makeDir(layoutDir);
         FileUtil.makeDir(valuesDir);
         FileUtil.makeDir(drawableDir);
+        FileUtil.makeDir(project.getLibsPath());
 
         FileUtil.writeFile(project.getManifestPath(), generateManifest(project));
         FileUtil.writeFile(javaDir + File.separator + "MainActivity.java", generateMainActivity(project));
