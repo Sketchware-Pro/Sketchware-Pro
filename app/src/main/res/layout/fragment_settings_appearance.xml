@@ -67,14 +67,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="System default"
+                            android:text="@string/hardcoded_system_default"
                             android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Follow system theme settings"
+                            android:text="@string/hardcoded_follow_system_theme_settings"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
@@ -122,7 +122,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:text="Light"
+                            android:text="@string/hardcoded_light"
                             android:textAppearance="?attr/textAppearanceBodyLarge" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -155,7 +155,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:text="Dark"
+                            android:text="@string/hardcoded_dark"
                             android:textAppearance="?attr/textAppearanceBodyLarge" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

@@ -44,7 +44,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Search for projects..."
+                        android:text="@string/hardcoded_search_for_projects"
                         android:textColor="?attr/colorOnSurfaceVariant" />
                 </com.google.android.material.appbar.MaterialToolbar>
             </com.google.android.material.card.MaterialCardView>
@@ -63,7 +63,7 @@
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="96dp"
-            android:text="New project"
+            android:text="@string/hardcoded_new_project"
             app:icon="@drawable/ic_mtrl_add"
             app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
             tools:ignore="ContentDescription" />

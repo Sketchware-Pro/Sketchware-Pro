@@ -5,25 +5,25 @@
     <item
         android:id="@+id/action_auto_scroll"
         android:checkable="true"
-        android:title="Auto scroll"
+        android:title="@string/hardcoded_auto_scroll"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_filter"
         android:icon="@drawable/ic_mtrl_filter"
-        android:title="Filter by package name"
+        android:title="@string/hardcoded_filter_by_package_name"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_export"
         android:icon="@drawable/ic_mtrl_export"
-        android:title="Export Logcat"
+        android:title="@string/hardcoded_export_logcat"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_clear"
         android:icon="@drawable/ic_mtrl_clear_all"
-        android:title="Clear all logs"
+        android:title="@string/hardcoded_clear_all_logs"
         app:showAsAction="always" />
 
 

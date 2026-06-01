@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="While you wait..."
+            android:text="@string/hardcoded_while_you_wait"
             android:textColor="?attr/colorPrimary"
             android:textStyle="bold" />
 

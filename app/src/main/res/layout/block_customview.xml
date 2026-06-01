@@ -47,7 +47,7 @@
                         android:paddingTop="2dp"
                         android:paddingRight="2dp"
                         android:paddingBottom="6dp"
-                        android:text="Application"
+                        android:text="@string/hardcoded_application"
                         android:textSize="14sp" />
 
                     <include layout="@layout/block_customview_spec" />

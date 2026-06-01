@@ -16,14 +16,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Sort by Project Name" />
+            android:text="@string/hardcoded_sort_by_project_name" />
 
         <RadioButton
             android:id="@+id/sortByID"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Sort by ID" />
+            android:text="@string/hardcoded_sort_by_id" />
     </RadioGroup>
 
     <RadioGroup
@@ -37,13 +37,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Ascending (A-Z)" />
+            android:text="@string/hardcoded_ascending_az" />
 
         <RadioButton
             android:id="@+id/sortOrderDesc"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Descending (Z-A)" />
+            android:text="@string/hardcoded_descending_za" />
     </RadioGroup>
 </LinearLayout>

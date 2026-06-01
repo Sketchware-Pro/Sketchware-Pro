@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
-            android:hint="Widget title">
+            android:hint="@string/hardcoded_widget_title">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/widget_title"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
-            android:hint="Widget class name">
+            android:hint="@string/hardcoded_widget_class_name">
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/widget_name"
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
-            android:hint="Select widget type">
+            android:hint="@string/hardcoded_select_widget_type">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/widget_type"
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
-            android:hint="Select category">
+            android:hint="@string/hardcoded_select_category">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_widget_to"
@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
-            android:hint="XML attributes">
+            android:hint="@string/hardcoded_xml_attributes">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inject_code"

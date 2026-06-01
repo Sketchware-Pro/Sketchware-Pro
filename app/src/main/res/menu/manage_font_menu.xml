@@ -4,20 +4,20 @@
         android:id="@+id/menu_font_edit"
         android:icon="@drawable/ic_mtrl_edit"
         android:orderInCategory="1"
-        android:title="edit"
+        android:title="@string/hardcoded_edit"
         android:visible="false"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_font_delete"
         android:icon="@drawable/ic_mtrl_delete"
         android:orderInCategory="1"
-        android:title="remove"
+        android:title="@string/hardcoded_remove"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_font_add"
         android:icon="@drawable/ic_mtrl_add"
         android:orderInCategory="1"
-        android:title="add"
+        android:title="@string/hardcoded_add"
         android:visible="false"
         app:showAsAction="always" />
 </menu>

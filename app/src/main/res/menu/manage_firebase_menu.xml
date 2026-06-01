@@ -4,12 +4,12 @@
         android:id="@+id/menu_firebase_help"
         android:icon="@drawable/ic_mtrl_help"
         android:orderInCategory="1"
-        android:title="Settings"
+        android:title="@string/hardcoded_settings"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_firebase_settings"
         android:icon="@drawable/ic_mtrl_settings"
         android:orderInCategory="1"
-        android:title="Settings"
+        android:title="@string/hardcoded_settings"
         app:showAsAction="always" />
 </menu>

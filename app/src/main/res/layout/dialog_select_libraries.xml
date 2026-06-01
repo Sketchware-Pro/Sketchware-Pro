@@ -17,7 +17,7 @@
             android:id="@+id/searchInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search for libraries"
+            android:hint="@string/hardcoded_search_for_libraries"
             android:importantForAutofill="noExcludeDescendants"
             app:boxCornerRadiusBottomEnd="50dp"
             app:boxCornerRadiusBottomStart="50dp"

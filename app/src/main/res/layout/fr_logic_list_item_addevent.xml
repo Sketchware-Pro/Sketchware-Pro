@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_toRightOf="@+id/tv_target_type"
-        android:text=": "
+        android:text="@string/hardcoded_unknown_1"
         android:textSize="13sp" />
 
     <TextView

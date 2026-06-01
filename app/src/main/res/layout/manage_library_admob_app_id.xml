@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:padding="4dp"
-                    android:text="EDIT"
+                    android:text="@string/hardcoded_edit_2"
                     android:textAppearance="?attr/textAppearanceBodyMedium" />
             </LinearLayout>
 

@@ -10,7 +10,7 @@
         android:id="@+id/string_key_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="String key">
+        android:hint="@string/hardcoded_string_key">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/string_key_input"
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="String value">
+        android:hint="@string/hardcoded_string_value">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/string_value_input"
@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="String header value ( optional )">
+        android:hint="@string/hardcoded_string_header_value_optional">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/string_header_input"

@@ -20,7 +20,7 @@
         android:id="@+id/design_actionbar_titleopen_drawer"
         android:icon="@drawable/selector_ic_more_tinted_24"
         android:orderInCategory="110"
-        android:title="Design Drawer"
+        android:title="@string/hardcoded_design_drawer"
         app:showAsAction="always" />
 
 </menu>

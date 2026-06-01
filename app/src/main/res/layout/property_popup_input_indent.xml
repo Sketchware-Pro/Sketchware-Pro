@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Enter padding value"
+            android:hint="@string/hardcoded_enter_padding_value"
             android:importantForAutofill="noExcludeDescendants"
             app:errorEnabled="true">
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="4dp"
-            android:text="dp"
+            android:text="@string/hardcoded_dp"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -62,7 +62,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="left"
+                android:hint="@string/hardcoded_left"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
-                android:text="dp"
+                android:text="@string/hardcoded_dp"
                 android:textSize="16sp" />
 
             <!-- Spacer -->
@@ -94,7 +94,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="right"
+                android:hint="@string/hardcoded_right"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
-                android:text="dp"
+                android:text="@string/hardcoded_dp"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -129,7 +129,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="top"
+                android:hint="@string/hardcoded_top"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
-                android:text="dp"
+                android:text="@string/hardcoded_dp"
                 android:textSize="16sp" />
 
             <!-- Spacer -->
@@ -161,7 +161,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="bottom"
+                android:hint="@string/hardcoded_bottom"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -179,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
-                android:text="dp"
+                android:text="@string/hardcoded_dp"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -192,6 +192,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:minHeight="0dp"
-        android:text="Padding on all sides" />
+        android:text="@string/hardcoded_padding_on_all_sides" />
 
 </LinearLayout>

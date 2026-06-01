@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="14dp"
             android:layout_marginTop="10dp"
-            android:text="Pick your color"
+            android:text="@string/hardcoded_pick_your_color"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="14dp"
             android:layout_marginTop="4dp"
-            android:text="Either enter a hex color code or pick a color from the list below." />
+            android:text="@string/hardcoded_either_enter_a_hex_color_code_or_pick_a_color_from_the_list" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        android:text="New color"
+        android:text="@string/hardcoded_new_color"
         app:icon="@drawable/ic_mtrl_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:gravity="center"
-            android:text="No Ad Units to display"
+            android:text="@string/hardcoded_no_ad_units_to_display"
             android:textSize="12sp"
             tools:visibility="gone" />
 

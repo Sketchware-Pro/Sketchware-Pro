@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/input_layout_res"
-        android:hint="res">
+        android:hint="@string/hardcoded_res">
 
         <EditText
             android:id="@+id/input_res"
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="attr">
+        android:hint="@string/hardcoded_attr">
 
         <EditText
             android:id="@+id/input_attr"
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="value">
+        android:hint="@string/hardcoded_value">
 
         <EditText
             android:id="@+id/input_value"

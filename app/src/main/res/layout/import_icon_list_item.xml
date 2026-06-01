@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:maxLines="2"
-        android:text="Title"
+        android:text="@string/hardcoded_title"
         android:textColor="?colorControlNormal"
         android:textSize="11sp" />
 

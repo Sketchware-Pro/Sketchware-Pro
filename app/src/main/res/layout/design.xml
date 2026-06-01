@@ -133,7 +133,7 @@
                             android:layout_marginHorizontal="8dp"
                             android:layout_weight="1"
                             android:singleLine="true"
-                            android:text="main"
+                            android:text="@string/hardcoded_main"
                             android:textAppearance="?attr/textAppearanceBodyMedium" />
 
                         <ImageView
@@ -158,7 +158,7 @@
                         style="?attr/materialSplitButtonLeadingFilledStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Run"
+                        android:text="@string/hardcoded_run"
                         app:icon="@drawable/ic_mtrl_run" />
 
                     <com.google.android.material.button.MaterialButton

@@ -32,7 +32,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:hint="Search for libraries"
+            android:hint="@string/hardcoded_search_for_libraries"
             app:defaultMarginsEnabled="false"
             app:navigationIcon="?attr/homeAsUpIndicator" />
 
@@ -59,7 +59,7 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Search for libraries"
+        android:hint="@string/hardcoded_search_for_libraries"
         app:layout_anchor="@id/search_bar">
 
         <androidx.recyclerview.widget.RecyclerView

@@ -10,7 +10,7 @@
         android:id="@+id/searchInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search..."
+        android:hint="@string/hardcoded_search"
         android:importantForAutofill="noExcludeDescendants"
         app:boxCornerRadiusBottomEnd="50dp"
         app:boxCornerRadiusBottomStart="50dp"

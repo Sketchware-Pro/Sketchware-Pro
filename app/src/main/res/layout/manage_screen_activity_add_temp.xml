@@ -169,7 +169,7 @@
                     android:id="@+id/ed_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter name"
+                    android:hint="@string/hardcoded_enter_name"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:lines="1" />
@@ -212,7 +212,7 @@
                             android:layout_marginTop="1dp"
                             android:layout_marginBottom="2dp"
                             android:layout_toEndOf="@+id/tipIcon"
-                            android:text="Important note"
+                            android:text="@string/hardcoded_important_note"
                             android:textColor="?attr/colorPrimary"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -240,7 +240,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="Type"
+                        android:text="@string/hardcoded_type"
                         android:textColor="?colorPrimary" />
 
                     <HorizontalScrollView
@@ -264,28 +264,28 @@
                                 style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Activity" />
+                                android:text="@string/hardcoded_activity" />
 
                             <Button
                                 android:id="@+id/select_fragment"
                                 style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Fragment" />
+                                android:text="@string/hardcoded_fragment" />
 
                             <Button
                                 android:id="@+id/select_dialogfragment"
                                 style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="DialogFragment" />
+                                android:text="@string/hardcoded_dialogfragment" />
 
                             <Button
                                 android:id="@+id/select_bottomsheetdialogfragment"
                                 style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="BottomSheetDialogFragment" />
+                                android:text="@string/hardcoded_bottomsheetdialogfragment" />
                         </com.google.android.material.button.MaterialButtonToggleGroup>
                     </HorizontalScrollView>
                 </LinearLayout>
@@ -301,7 +301,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="Screen orientation"
+                        android:text="@string/hardcoded_screen_orientation"
                         android:textColor="?colorPrimary" />
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
@@ -321,7 +321,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Portrait" />
+                            android:text="@string/hardcoded_portrait" />
 
                         <Button
                             android:id="@+id/select_landscape"
@@ -329,7 +329,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Landscape" />
+                            android:text="@string/hardcoded_landscape" />
 
                         <Button
                             android:id="@+id/select_both"
@@ -337,7 +337,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Both" />
+                            android:text="@string/hardcoded_both" />
 
                     </com.google.android.material.button.MaterialButtonToggleGroup>
                 </LinearLayout>
@@ -353,7 +353,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="Keyboard settings"
+                        android:text="@string/hardcoded_keyboard_settings"
                         android:textColor="?colorPrimary" />
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
@@ -373,7 +373,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Unspecified" />
+                            android:text="@string/hardcoded_unspecified" />
 
                         <Button
                             android:id="@+id/select_visible"
@@ -381,7 +381,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Visible" />
+                            android:text="@string/hardcoded_visible" />
 
                         <Button
                             android:id="@+id/select_hidden"
@@ -389,7 +389,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Hidden" />
+                            android:text="@string/hardcoded_hidden" />
                     </com.google.android.material.button.MaterialButtonToggleGroup>
                 </LinearLayout>
             </LinearLayout>
@@ -412,7 +412,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:text="Cancel" />
+            android:text="@string/hardcoded_cancel" />
 
         <Button
             android:id="@+id/btn_save"
@@ -420,7 +420,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Save" />
+            android:text="@string/hardcoded_save" />
 
     </LinearLayout>
 </RelativeLayout>

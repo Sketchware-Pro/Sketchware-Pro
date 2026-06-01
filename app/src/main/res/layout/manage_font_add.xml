@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Font preview"
+                android:text="@string/hardcoded_font_preview"
                 android:textColor="#ff7d7d7d"
                 android:textSize="14sp" />
 
@@ -35,7 +35,7 @@
                 android:id="@+id/font_preview_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="This is how your font looks like."
+                android:text="@string/hardcoded_this_is_how_your_font_looks_like"
                 android:textSize="18sp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -59,7 +59,7 @@
                 android:id="@+id/ed_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Font name"
+                android:hint="@string/hardcoded_font_name"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
@@ -91,7 +91,7 @@
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
                 android:paddingRight="25dp"
-                android:text="Select"
+                android:text="@string/hardcoded_select"
                 app:cornerRadius="10dp"
                 app:icon="@drawable/ic_mtrl_add"
                 app:iconGravity="start"
@@ -114,7 +114,7 @@
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
                 android:paddingRight="25dp"
-                android:text="Clear"
+                android:text="@string/hardcoded_clear"
                 android:visibility="gone"
                 app:cornerRadius="10dp"
                 app:icon="@drawable/ic_mtrl_reset"
@@ -136,6 +136,6 @@
         android:layout_marginTop="4dp"
         android:minWidth="0dp"
         android:minHeight="0dp"
-        android:text="Add to my collection"
+        android:text="@string/hardcoded_add_to_my_collection"
         android:translationX="-5dp" />
 </LinearLayout>

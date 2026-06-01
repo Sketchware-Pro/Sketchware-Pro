@@ -4,47 +4,47 @@
 
     <item
         android:id="@+id/action_undo"
-        android:title="Undo"
+        android:title="@string/hardcoded_undo"
         android:icon="@drawable/ic_mtrl_undo"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_redo"
-        android:title="Redo"
+        android:title="@string/hardcoded_redo"
         android:icon="@drawable/ic_mtrl_redo"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_paste"
-        android:title="Paste"
+        android:title="@string/hardcoded_paste"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_word_wrap"
         android:checkable="true"
-        android:title="Word wrap"
+        android:title="@string/hardcoded_word_wrap"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_pretty_print"
-        android:title="Pretty print"
+        android:title="@string/hardcoded_pretty_print"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_find_replace"
-        android:title="Find &amp; Replace"
+        android:title="@string/hardcoded_find_amp_replace"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_autocomplete"
         android:checkable="true"
-        android:title="Auto complete"
+        android:title="@string/hardcoded_auto_complete"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_autocomplete_symbol_pair"
         android:checkable="true"
-        android:title="Auto complete symbol pair"
+        android:title="@string/hardcoded_auto_complete_symbol_pair"
         app:showAsAction="never" />
 
 </menu>

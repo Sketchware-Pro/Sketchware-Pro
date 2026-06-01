@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="16dp"
-        android:hint="Enter the new name"
+        android:hint="@string/hardcoded_enter_the_new_name"
         app:hintEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="14dp"
         android:layout_marginTop="10dp"
-        android:text="Rename occurrences in file"
+        android:text="@string/hardcoded_rename_occurrences_in_file"
         android:visibility="gone"
         tools:visibility="visible" />
 </LinearLayout>

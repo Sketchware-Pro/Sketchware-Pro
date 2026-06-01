@@ -46,7 +46,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:padding="4dp"
-                android:text="use (moreblockName[type|typeName] or\nmoreblockName[type|typeName|typeCode]) for custom moreblock type(S)"
+                android:text="@string/hardcoded_use_moreblocknametypetypename_ornmoreblocknametypetypenamety"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -77,7 +77,7 @@
                     android:id="@+id/ed_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Block name"
+                    android:hint="@string/hardcoded_block_name"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:lines="1" />
@@ -90,7 +90,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Select Moreblock type"
+                android:text="@string/hardcoded_select_moreblock_type"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -115,7 +115,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:text="Void"
+                        android:text="@string/hardcoded_void"
                         app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
@@ -125,7 +125,7 @@
                         style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="String"
+                        android:text="@string/hardcoded_string"
                         app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
@@ -135,7 +135,7 @@
                         style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Number"
+                        android:text="@string/hardcoded_number"
                         app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
@@ -145,7 +145,7 @@
                         style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Boolean"
+                        android:text="@string/hardcoded_boolean"
                         app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
@@ -155,7 +155,7 @@
                         style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Map"
+                        android:text="@string/hardcoded_map"
                         app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
@@ -165,7 +165,7 @@
                         style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="List String"
+                        android:text="@string/hardcoded_list_string"
                         app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
@@ -175,7 +175,7 @@
                         style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="List Map"
+                        android:text="@string/hardcoded_list_map"
                         app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
@@ -185,7 +185,7 @@
                         style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="View"
+                        android:text="@string/hardcoded_view"
                         app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
@@ -200,7 +200,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Add Variable"
+                android:text="@string/hardcoded_add_variable"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -237,7 +237,7 @@
                         android:id="@+id/ed_variable_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Variable name"
+                        android:hint="@string/hardcoded_variable_name"
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:lines="1" />
@@ -275,7 +275,7 @@
                         android:id="@+id/ed_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Label text"
+                        android:hint="@string/hardcoded_label_text"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1" />
@@ -295,7 +295,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Custom Parameter"
+                android:text="@string/hardcoded_custom_parameter"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -314,7 +314,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
-                    android:hint="Parameter"
+                    android:hint="@string/hardcoded_parameter"
                     app:counterEnabled="true"
                     app:counterMaxLength="100"
                     app:endIconMode="clear_text"
@@ -340,7 +340,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
-                    android:hint="Variable name"
+                    android:hint="@string/hardcoded_variable_name"
                     app:counterEnabled="true"
                     android:layout_marginTop="8dp"
                     app:counterMaxLength="100"

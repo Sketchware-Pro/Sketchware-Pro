@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="Enter divider height value"
+        android:hint="@string/hardcoded_enter_divider_height_value"
         android:importantForAutofill="noExcludeDescendants">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="dp"
+        android:text="@string/hardcoded_dp"
         android:textSize="16sp" />
 
 </LinearLayout>

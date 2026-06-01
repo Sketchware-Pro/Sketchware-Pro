@@ -11,7 +11,7 @@
         android:id="@+id/color_key_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Color name">
+        android:hint="@string/hardcoded_color_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/color_key_input"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:gravity="center_vertical"
-            android:hint="Color value"
+            android:hint="@string/hardcoded_color_value"
             android:importantForAutofill="noExcludeDescendants"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/color_preview_card">
@@ -87,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="String header value ( optional )">
+        android:hint="@string/hardcoded_string_header_value_optional">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/string_header_input"

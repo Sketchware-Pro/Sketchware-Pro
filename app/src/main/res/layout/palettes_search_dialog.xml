@@ -17,7 +17,7 @@
             android:id="@+id/edittext_search_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search..."
+            android:hint="@string/hardcoded_search"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

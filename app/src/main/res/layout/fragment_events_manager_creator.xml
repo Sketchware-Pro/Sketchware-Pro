@@ -51,7 +51,7 @@
                             android:id="@+id/events_creator_eventname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Event Name" />
+                            android:hint="@string/hardcoded_event_name" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -63,7 +63,7 @@
                             android:id="@+id/events_creator_varname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Widget/Component name" />
+                            android:hint="@string/hardcoded_widgetcomponent_name" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <RelativeLayout
@@ -83,7 +83,7 @@
                                 android:id="@+id/events_creator_icon"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Icon"
+                                android:hint="@string/hardcoded_icon"
                                 android:inputType="number" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,7 +109,7 @@
                             android:id="@+id/events_creator_desc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Description" />
+                            android:hint="@string/hardcoded_description" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -121,7 +121,7 @@
                             android:id="@+id/events_creator_params"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Parameters" />
+                            android:hint="@string/hardcoded_parameters" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -133,7 +133,7 @@
                             android:id="@+id/events_creator_spec"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Spec  (### => Variable name)"
+                            android:hint="@string/hardcoded_spec_variable_name"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -146,7 +146,7 @@
                             android:id="@+id/events_creator_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Event code (### ==> Variable name)" />
+                            android:hint="@string/hardcoded_event_code_variable_name" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -176,7 +176,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="8dp"
-                                android:text="Listener properties :"
+                                android:text="@string/hardcoded_listener_properties"
                                 android:textSize="16sp" />
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -190,7 +190,7 @@
                                     android:id="@+id/events_creator_listenercode"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Listener Code (### ==> variable name)"
+                                    android:hint="@string/hardcoded_listener_code_variable_name"
                                     android:textSize="14sp" />
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,7 +205,7 @@
                                     android:id="@+id/events_creator_listenercustomimport"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Custom Import"
+                                    android:hint="@string/hardcoded_custom_import_1"
                                     android:textSize="14sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>

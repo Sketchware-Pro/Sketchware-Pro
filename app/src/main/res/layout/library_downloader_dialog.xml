@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:text="Download a dependency"
+        android:text="@string/hardcoded_download_a_dependency"
         android:textAppearance="?attr/textAppearanceTitleLarge" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="16dp"
-        android:hint="Enter a dependency"
+        android:hint="@string/hardcoded_enter_a_dependency"
         android:importantForAutofill="noExcludeDescendants"
         app:placeholderText="@string/local_library_manager_dependency_example">
 

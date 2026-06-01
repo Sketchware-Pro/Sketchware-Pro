@@ -4,13 +4,13 @@
         android:id="@+id/menu_collection_edit"
         android:icon="@drawable/ic_mtrl_edit"
         android:orderInCategory="1"
-        android:title="edit"
+        android:title="@string/hardcoded_edit"
         android:visible="false"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_collection_delete"
         android:icon="@drawable/ic_mtrl_delete"
         android:orderInCategory="1"
-        android:title="remove"
+        android:title="@string/hardcoded_remove"
         app:showAsAction="always" />
 </menu>

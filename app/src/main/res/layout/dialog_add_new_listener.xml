@@ -18,7 +18,7 @@
             android:id="@+id/listener_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="@string/hardcoded_name" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -30,7 +30,7 @@
             android:id="@+id/listener_custom_import"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Custom import" />
+            android:hint="@string/hardcoded_custom_import" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -42,7 +42,7 @@
             android:id="@+id/listener_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Code (### => variable name)" />
+            android:hint="@string/hardcoded_code_variable_name" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.materialswitch.MaterialSwitch
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
-        android:text="Independent class/method"
+        android:text="@string/hardcoded_independent_classmethod"
         android:textSize="14sp" />
     </LinearLayout>
 </ScrollView>

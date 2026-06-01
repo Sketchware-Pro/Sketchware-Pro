@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:text="Comments" />
+        android:text="@string/hardcoded_comments" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider_top"

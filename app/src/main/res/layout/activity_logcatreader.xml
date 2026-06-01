@@ -34,7 +34,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:hint="Search log"
+            android:hint="@string/hardcoded_search_log"
             android:importantForAutofill="noExcludeDescendants"
             app:boxCornerRadiusBottomEnd="50dp"
             app:boxCornerRadiusBottomStart="50dp"
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Logcat hasn't captured anything yet"
+            android:text="@string/hardcoded_logcat_hasnt_captured_anything_yet"
             android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
 
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="Keep this screen open then run your app"
+            android:text="@string/hardcoded_keep_this_screen_open_then_run_your_app"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
 

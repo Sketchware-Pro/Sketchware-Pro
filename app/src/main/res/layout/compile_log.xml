@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Awesome, no bugs to fix!"
+            android:text="@string/hardcoded_awesome_no_bugs_to_fix"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="20sp" />
 
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="Let's continue working on the project"
+            android:text="@string/hardcoded_lets_continue_working_on_the_project"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
 

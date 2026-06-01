@@ -15,7 +15,7 @@
             android:id="@+id/modifier"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="private, public or public static (optional)"
+            android:hint="@string/hardcoded_private_public_or_public_static_optional"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -29,7 +29,7 @@
             android:id="@+id/type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Type, e.g. File"
+            android:hint="@string/hardcoded_type_eg_file"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,7 +43,7 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name, e.g. file"
+            android:hint="@string/hardcoded_name_eg_file"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -57,7 +57,7 @@
             android:id="@+id/initializer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Initializer, e.g. new File() (optional)"
+            android:hint="@string/hardcoded_initializer_eg_new_file_optional"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
