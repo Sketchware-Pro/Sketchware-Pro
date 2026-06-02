@@ -1,0 +1,28 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "APK Install Prompt After Successful Build - Show a MaterialAlertDialog after build success asking to install the APK, using FileProvider URI and ACTION_VIEW intent.",
+  "status": "completed",
+  "steps": [
+    "Add string resources in app/src/main/res/values/strings.xml under the '<!-- Code Project -->' section: `code_project_install_prompt` ('Build successful. Install the APK?'), `code_project_install` ('Install'), `code_project_later` ('Later').",
+    "Add the REQUEST_INSTALL_PACKAGES permission in app/src/main/AndroidManifest.xml: `<uses-permission android:name=\"android.permission.REQUEST_INSTALL_PACKAGES\" />` (needed for API 26+).",
+    "Modify CodeProjectActivity.java `buildProject()` method: After the build succeeds, instead of just showing a Toast, call a new method `promptInstallApk(File apkFile)`. Pass the returned `signedApk` File to this method.",
+    "Add the `promptInstallApk(File apkFile)` method to CodeProjectActivity.java: Show a MaterialAlertDialogBuilder with title 'Build successful', message from the new string resource, positive button 'Install' that calls `installApk(apkFile)`, negative button 'Later' that dismisses.",
+    "Add the `installApk(File apkFile)` method: Use `FileProvider.getUriForFile(this, getPackageName() + \".provider\", apkFile)` to get the content URI. Create an Intent with ACTION_VIEW, setDataAndType(uri, \"application/vnd.android.package-archive\"), addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_ACTIVITY_NEW_TASK). Call startActivity(intent).",
+    "Add necessary imports to CodeProjectActivity.java: `android.content.Intent`, `android.net.Uri`, `androidx.core.content.FileProvider`, `com.google.android.material.dialog.MaterialAlertDialogBuilder`.",
+    "Store the built APK File reference: The builder.build() returns the signed APK file. Pass this to promptInstallApk on the UI thread in the success callback.",
+    "Update provider_paths.xml (app/src/main/res/xml/provider_paths.xml) to ensure it covers the build output directory. The existing config has `<external-path name=\"external_files\" path=\".\" />` which covers all external storage - this should be sufficient since the project bin/ path is under external storage (/storage/emulated/0/.sketchware/). Verify and leave as-is if it covers the path."
+  ],
+  "acceptance_criteria": [
+    "After a successful build, a dialog appears asking to install the APK",
+    "Clicking 'Install' launches the system installer via Intent with FileProvider URI",
+    "Clicking 'Later' dismisses the dialog without action",
+    "REQUEST_INSTALL_PACKAGES permission is declared in the manifest",
+    "The code compiles without errors"
+  ],
+  "verification": [
+    "Run ./gradlew assembleDebug in the project root and confirm it completes without compilation errors"
+  ],
+  "blocked_reason": null,
+  "findings": "REQUEST_INSTALL_PACKAGES permission was already present in AndroidManifest.xml so no manifest change was needed. Build compiles cleanly. The promptInstallApk method uses MaterialAlertDialogBuilder with build_success title, install_prompt message, Install positive button and system cancel negative button."
+}

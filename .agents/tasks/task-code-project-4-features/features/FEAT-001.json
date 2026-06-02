@@ -1,0 +1,26 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Persistent Undo History Per File Tab - Store a sora-editor Content object per tab instead of a raw String, so switching tabs preserves undo/redo history.",
+  "status": "completed",
+  "steps": [
+    "Modify app/src/main/java/pro/sketchware/codeproject/ui/OpenFileTab.java: Add a field `private io.github.rosemoe.sora.text.Content editorContent;` alongside the existing `content` String field. Add getter/setter `getEditorContent()` and `setEditorContent(Content)`. In the constructor, create the Content from the initial string: `this.editorContent = new Content(content);`. The `getContent()` method should return `editorContent.toString()` so that existing code (saveAllModifiedTabs, saveCurrentFile) that calls getContent() still works. `setContent(String)` should update the editorContent: `this.editorContent = new Content(content);`.",
+    "Modify app/src/main/java/pro/sketchware/codeproject/ui/CodeProjectActivity.java in `switchToTab()`: Instead of `binding.editor.setText(tab.getContent())`, use `binding.editor.setText(tab.getEditorContent())`. The sora-editor's setText(Content) overload swaps the underlying Content object (which retains its UndoManager and undo history). Remove the `ignoreTextChange = true/false` wrapping around the setText call since we want changes tracked properly on the new Content.",
+    "Modify `saveCurrentTabToBuffer()` in CodeProjectActivity.java: Instead of `openTabs.get(activeTabIndex).setContent(binding.editor.getText().toString())`, do nothing (or optionally store a reference). The Content object is already shared between the editor and the tab, so edits are live. Remove the call to setContent entirely from saveCurrentTabToBuffer - just leave it as a no-op or remove the method.",
+    "In `switchToTab()`, remove the line `openTabs.get(activeTabIndex).setContent(binding.editor.getText().toString())` at the top that saves the current tab - since the Content is shared, it is already up to date.",
+    "In `closeTab()`, when clearing the editor for empty tab state, use `binding.editor.setText(new Content(\"\"))` with a fresh Content object.",
+    "In `openFile()`, remove the `saveCurrentTabToBuffer()` call since Content is shared and always up-to-date.",
+    "Ensure the `ignoreTextChange` pattern still works: In switchToTab, wrap the setText call with ignoreTextChange=true/false to prevent marking the newly-switched tab as modified when Content is loaded. The ContentChangeEvent will fire when setContent is called."
+  ],
+  "acceptance_criteria": [
+    "OpenFileTab holds a Content object that retains undo/redo state",
+    "Switching between tabs uses editor.setText(Content) to swap content with preserved undo history",
+    "Saving files still works - getContent() returns the current text from the Content object",
+    "The code compiles without errors in Gradle assembleDebug"
+  ],
+  "verification": [
+    "Run ./gradlew assembleDebug in the project root and confirm it completes without compilation errors"
+  ],
+  "blocked_reason": null,
+  "findings": "Build compiles cleanly with only a deprecation note (pre-existing, unrelated). The Content class from sora-editor accepts a String constructor and the editor's setText(Content) overload works as expected for sharing the live Content object."
+}

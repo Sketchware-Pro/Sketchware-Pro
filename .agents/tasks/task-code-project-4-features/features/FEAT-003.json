@@ -1,0 +1,27 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Dependency Management - Support external .jar libraries in a libs/ folder within the code project. Scan this folder during build and add JARs to compilation classpath and D8 dexing.",
+  "status": "completed",
+  "steps": [
+    "Add `getLibsPath()` method to app/src/main/java/pro/sketchware/codeproject/model/CodeProject.java: Return `getProjectMyscPath() + File.separator + \"app\" + File.separator + \"libs\"`. This follows the same structure as the source path (app/src/main/...).",
+    "Modify app/src/main/java/pro/sketchware/codeproject/template/CodeProjectTemplate.java in the `generate()` method: Add `FileUtil.makeDir(project.getLibsPath())` to create the libs/ directory as part of the project scaffold.",
+    "Modify app/src/main/java/pro/sketchware/codeproject/build/CodeProjectBuilder.java - add a helper method `private List<File> getLibraryJars()` that scans `new File(project.getLibsPath())` for all .jar files (not recursive, just top-level). Return an empty list if the directory does not exist.",
+    "In `compileJava()`: After building the classpath StringBuilder, iterate over `getLibraryJars()` and append each jar path to the classpath with ':' separator.",
+    "In `compileKotlin()`: After building the classpath StringBuilder, iterate over `getLibraryJars()` and append each jar path to the classpath with ':' separator.",
+    "In `createDex()`: After collecting programFiles from classesDir, also add all .jar files from `getLibraryJars()` to the programFiles collection (D8 can dex jar files directly). Use `file.toPath()` for each jar."
+  ],
+  "acceptance_criteria": [
+    "CodeProject.getLibsPath() returns the correct path to the libs/ directory",
+    "CodeProjectTemplate.generate() creates a libs/ directory in the project scaffold",
+    "compileJava() includes all .jar files from libs/ in the classpath",
+    "compileKotlin() includes all .jar files from libs/ in the classpath",
+    "createDex() includes all .jar files from libs/ as program files for D8",
+    "The code compiles without errors"
+  ],
+  "verification": [
+    "Run ./gradlew assembleDebug in the project root and confirm it completes without compilation errors"
+  ],
+  "blocked_reason": null,
+  "findings": "The build/ pattern in .gitignore matches the 'build' path segment in codeproject/build/. Need to use git add -f for files in that directory since they are already tracked."
+}

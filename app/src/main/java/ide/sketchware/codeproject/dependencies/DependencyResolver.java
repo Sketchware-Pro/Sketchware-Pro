@@ -4,21 +4,21 @@ import android.content.Context;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 /**
- * Main orchestrator for Maven dependency resolution.
- * Downloads POM files, parses transitive dependencies, and resolves artifact JARs.
+ * Resolves Maven dependencies for a Code Project.
+ *
+ * <p>This is a thin facade over the project's existing dependency-resolution
+ * stack ({@code org.cosmic.ide.dependency.resolver}, the same library used by
+ * the block editor's library downloader). The heavy lifting — POM parsing,
+ * repository fallback, transitive resolution, downloading — lives in that
+ * battle-tested library; {@link CosmicDependencyBridge} adapts it to the Code
+ * Project IDE by placing resolved JARs into the project's {@code libs/resolved/}
+ * directory for the ECJ/D8 classpath.
  */
 public class DependencyResolver {
 
@@ -33,246 +33,19 @@ public class DependencyResolver {
         void onError(String error);
     }
 
-    private static final int MAX_DEPTH = 5;
-
     private final Context context;
-    private final ArtifactDownloader downloader;
-    private final Set<String> resolvedSet = new HashSet<>();
-    private final List<String> warnings = new ArrayList<>();
 
     public DependencyResolver(Context context) {
         this.context = context;
-        this.downloader = new ArtifactDownloader(context);
     }
 
     /**
-     * Resolves a list of dependency declarations by downloading artifacts and their
-     * transitive dependencies. Resolved JARs are copied to the outputDir.
-     *
-     * @param declarations the list of dependencies to resolve
-     * @param outputDir    the directory to copy resolved JARs into
-     * @param listener     callback for progress, completion, and errors
+     * Resolves a list of dependency declarations (and their transitive
+     * dependencies) using the cosmic-ide resolver, placing resolved JARs into
+     * {@code outputDir}. Must be called off the main thread.
      */
     public void resolve(List<DependencyDeclaration> declarations, File outputDir, ResolveListener listener) {
-        if (!outputDir.exists()) {
-            outputDir.mkdirs();
-        }
-
-        List<File> resolvedJars = new ArrayList<>();
-        List<String> errors = new ArrayList<>();
-        resolvedSet.clear();
-        warnings.clear();
-
-        for (DependencyDeclaration dep : declarations) {
-            if (listener != null) {
-                listener.onProgress("Resolving " + dep.getGroupId() + ":" + dep.getArtifactId() + "...");
-            }
-            try {
-                resolveRecursive(dep, outputDir, resolvedJars, listener, 0);
-            } catch (Exception e) {
-                String msg = dep + ": " + (e.getMessage() != null ? e.getMessage() : "Unknown error");
-                errors.add(msg);
-            }
-        }
-
-        if (listener != null) {
-            // Surface AAR-payload warnings (dropped resources/assets/native libs)
-            // alongside any errors so incomplete results aren't silent.
-            String warningText = warnings.isEmpty() ? null
-                    : "Warnings (build may be incomplete):\n" + String.join("\n", warnings);
-
-            if (errors.isEmpty()) {
-                listener.onComplete(resolvedJars);
-                if (warningText != null) {
-                    listener.onError(warningText);
-                }
-            } else if (!resolvedJars.isEmpty()) {
-                // Partial success: report resolved jars but also show errors/warnings
-                listener.onComplete(resolvedJars);
-                String msg = "Some dependencies failed:\n" + String.join("\n", errors);
-                if (warningText != null) msg += "\n\n" + warningText;
-                listener.onError(msg);
-            } else {
-                String msg = "All dependencies failed:\n" + String.join("\n", errors);
-                if (warningText != null) msg += "\n\n" + warningText;
-                listener.onError(msg);
-            }
-        }
-    }
-
-    /**
-     * Recursively resolves a single dependency and its transitive dependencies.
-     */
-    private void resolveRecursive(DependencyDeclaration dep, File outputDir,
-                                  List<File> resolvedJars, ResolveListener listener, int depth) throws Exception {
-        if (depth > MAX_DEPTH) {
-            return; // Prevent infinite recursion
-        }
-
-        // Check if already resolved (use groupId:artifactId as key — first successful version wins)
-        String key = dep.getGroupId() + ":" + dep.getArtifactId();
-        if (resolvedSet.contains(key)) {
-            return;
-        }
-
-        // 1. Download POM
-        if (listener != null) {
-            listener.onProgress("Downloading POM: " + dep + "...");
-        }
-        File pomFile = downloader.download(dep, "pom");
-
-        // 2. Parse POM to get packaging type and transitive deps
-        PomParser.PomInfo pomInfo;
-        try (InputStream pomStream = new FileInputStream(pomFile)) {
-            pomInfo = PomParser.parse(pomStream);
-        }
-
-        // 3. Determine artifact extension from packaging
-        String extension = "jar";
-        if ("aar".equals(pomInfo.packaging)) {
-            extension = "aar";
-        } else if ("pom".equals(pomInfo.packaging) || "bundle".equals(pomInfo.packaging)) {
-            // POM-only parents or bundles (treat bundle as jar)
-            if ("bundle".equals(pomInfo.packaging)) {
-                extension = "jar";
-            } else {
-                // POM packaging = no artifact to download, only resolve transitive deps
-                extension = null;
-            }
-        }
-
-        // 4. Download artifact (.jar or .aar) if applicable
-        if (extension != null) {
-            if (listener != null) {
-                listener.onProgress("Downloading " + dep.getArtifactId() + "-" + dep.getVersion() + "." + extension + "...");
-            }
-
-            File artifactFile = downloader.download(dep, extension);
-
-            // 5. Handle AAR: extract classes.jar from the zip
-            File jarFile;
-            if ("aar".equals(extension)) {
-                jarFile = extractClassesJarFromAar(artifactFile, dep);
-            } else {
-                jarFile = artifactFile;
-            }
-
-            // 6. Copy to output directory (atomic: write to temp, rename on success)
-            if (jarFile != null && jarFile.exists()) {
-                // Include groupId so artifacts with the same artifactId+version but
-                // different groups don't overwrite each other in libs/resolved.
-                String safeGroup = dep.getGroupId().replace('.', '_');
-                String outputName = safeGroup + "-" + dep.getArtifactId() + "-" + dep.getVersion() + ".jar";
-                File outputFile = new File(outputDir, outputName);
-                File tempFile = new File(outputDir, outputName + ".tmp");
-                copyFile(jarFile, tempFile);
-                if (outputFile.exists()) outputFile.delete();
-                if (!tempFile.renameTo(outputFile)) {
-                    // Fallback: rename failed (different filesystem), copy directly
-                    copyFile(jarFile, outputFile);
-                    tempFile.delete();
-                }
-                resolvedJars.add(outputFile);
-            }
-        }
-
-        // 7. Recursively resolve transitive dependencies
-        // Mark resolved only after the artifact (POM + jar/aar) is handled, so a
-        // failed download doesn't poison a later valid path to the same artifact.
-        // Added before recursion to keep cycle detection (A→B→A) correct.
-        resolvedSet.add(key);
-        if (pomInfo.dependencies != null && !pomInfo.dependencies.isEmpty()) {
-            for (DependencyDeclaration transitiveDep : pomInfo.dependencies) {
-                resolveRecursive(transitiveDep, outputDir, resolvedJars, listener, depth + 1);
-            }
-        }
-    }
-
-    /**
-     * Extracts classes.jar from an AAR file (which is a ZIP archive). Also detects
-     * whether the AAR carries res/, assets/, or jni/ payload that this build pipeline
-     * does not yet link, and records a warning so the result isn't silently incomplete.
-     */
-    private File extractClassesJarFromAar(File aarFile, DependencyDeclaration dep) throws IOException {
-        File extractDir = new File(aarFile.getParentFile(), "extracted");
-        if (!extractDir.exists()) {
-            extractDir.mkdirs();
-        }
-
-        File classesJar = new File(extractDir, dep.getArtifactId() + "-" + dep.getVersion() + "-classes.jar");
-        if (classesJar.exists() && classesJar.length() > 0) {
-            return classesJar;
-        }
-
-        // Write to temp file first to avoid partial extractions being treated as valid
-        File tempJar = new File(extractDir, classesJar.getName() + ".tmp");
-        boolean foundClasses = false;
-        boolean hasResources = false;
-        boolean hasAssets = false;
-        boolean hasJni = false;
-
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(aarFile))) {
-            ZipEntry entry;
-            byte[] buffer = new byte[8192];
-            // Scan the entire archive (classes.jar typically precedes res/, so we
-            // can't return early if we also want to detect dropped payload).
-            while ((entry = zis.getNextEntry()) != null) {
-                String name = entry.getName();
-                if (!entry.isDirectory()) {
-                    if (name.startsWith("res/")) hasResources = true;
-                    else if (name.startsWith("assets/")) hasAssets = true;
-                    else if (name.startsWith("jni/")) hasJni = true;
-                }
-                if ("classes.jar".equals(name)) {
-                    try (FileOutputStream fos = new FileOutputStream(tempJar)) {
-                        int len;
-                        while ((len = zis.read(buffer)) != -1) {
-                            fos.write(buffer, 0, len);
-                        }
-                    }
-                    foundClasses = true;
-                }
-                zis.closeEntry();
-            }
-        }
-
-        // Warn that non-class AAR payload is dropped (not yet linked into the build)
-        if (hasResources || hasAssets || hasJni) {
-            StringBuilder dropped = new StringBuilder();
-            if (hasResources) dropped.append("resources ");
-            if (hasAssets) dropped.append("assets ");
-            if (hasJni) dropped.append("native-libs ");
-            warnings.add(dep + " is an AAR; its " + dropped.toString().trim()
-                    + " were not included (only classes). It may not work correctly at runtime.");
-        }
-
-        if (foundClasses && tempJar.exists()) {
-            // Atomic rename
-            if (classesJar.exists()) classesJar.delete();
-            if (!tempJar.renameTo(classesJar)) {
-                copyFile(tempJar, classesJar);
-                tempJar.delete();
-            }
-            return classesJar;
-        }
-
-        // No classes.jar found in AAR; clean up any temp
-        if (tempJar.exists()) tempJar.delete();
-        return null;
-    }
-
-    /**
-     * Copies a file from source to destination.
-     */
-    private void copyFile(File source, File dest) throws IOException {
-        try (FileInputStream fis = new FileInputStream(source);
-             FileOutputStream fos = new FileOutputStream(dest)) {
-            byte[] buffer = new byte[8192];
-            int len;
-            while ((len = fis.read(buffer)) != -1) {
-                fos.write(buffer, 0, len);
-            }
-        }
+        CosmicDependencyBridge.resolve(context, declarations, outputDir, listener);
     }
 
     /**
@@ -281,9 +54,6 @@ public class DependencyResolver {
      * - "groupId:artifactId:version"
      * - "implementation groupId:artifactId:version"
      * Skips empty lines and comments (lines starting with # or //).
-     *
-     * @param file the dependencies.txt file to parse
-     * @return list of parsed dependency declarations
      */
     public static List<DependencyDeclaration> parseDependenciesFile(File file) {
         List<DependencyDeclaration> declarations = new ArrayList<>();
@@ -295,14 +65,9 @@ public class DependencyResolver {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-
-                // Skip empty lines
                 if (line.isEmpty()) continue;
-
-                // Skip comments
                 if (line.startsWith("#") || line.startsWith("//")) continue;
 
-                // Remove "implementation", "api", "compileOnly" prefix if present
                 String notation = line;
                 if (notation.startsWith("implementation ")) {
                     notation = notation.substring("implementation ".length()).trim();
@@ -312,7 +77,6 @@ public class DependencyResolver {
                     notation = notation.substring("compileOnly ".length()).trim();
                 }
 
-                // Remove surrounding quotes if present
                 if (notation.startsWith("'") && notation.endsWith("'")) {
                     notation = notation.substring(1, notation.length() - 1);
                 } else if (notation.startsWith("\"") && notation.endsWith("\"")) {
