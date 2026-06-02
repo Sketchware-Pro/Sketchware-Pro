@@ -35,6 +35,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_sync_deps"
+        android:title="@string/code_project_sync_deps"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_settings"
         android:title="@string/code_project_settings"
         app:showAsAction="never" />

@@ -21,6 +21,8 @@ build/
 
 # Local configuration file (sdk path, etc)
 local.properties
+.env.e2b.local
+.e2b-sandbox-id
 
 # Log Files
 *.log

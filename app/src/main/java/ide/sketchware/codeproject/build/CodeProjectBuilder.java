@@ -515,9 +515,20 @@ public class CodeProjectBuilder {
             return cachedLibraryJars;
         }
         List<File> jars = new ArrayList<>();
-        File libsDir = new File(project.getLibsPath());
-        if (libsDir.exists() && libsDir.isDirectory()) {
-            File[] files = libsDir.listFiles();
+
+        // Scan libs/ (manually placed JARs)
+        scanJarsInDir(new File(project.getLibsPath()), jars);
+
+        // Scan libs/resolved/ (auto-resolved dependencies)
+        scanJarsInDir(new File(project.getLibsPath(), "resolved"), jars);
+
+        cachedLibraryJars = jars;
+        return cachedLibraryJars;
+    }
+
+    private void scanJarsInDir(File dir, List<File> jars) {
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
             if (files != null) {
                 for (File file : files) {
                     if (file.isFile() && file.getName().endsWith(".jar")) {
@@ -526,8 +537,6 @@ public class CodeProjectBuilder {
                 }
             }
         }
-        cachedLibraryJars = jars;
-        return cachedLibraryJars;
     }
 
     public interface BuildProgressListener {
