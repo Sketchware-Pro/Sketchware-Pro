@@ -16,6 +16,9 @@ on:
       - 'wip/**'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   notifyTelegram:
     name: Notify Telegram
@@ -131,6 +134,56 @@ jobs:
         run: |
           python ./.github/workflows/deploy_artifacts.py
         continue-on-error: true
+
+  publishGitHubRelease:
+    name: Publish GitHub Release
+    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
+    needs: build
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: apk-${{ needs.build.outputs.short_sha }}
+      RELEASE_NAME: Sketchware Pro APK ${{ needs.build.outputs.short_sha }}
+      APK_PATH: ./downloaded-artifact/app-release-${{ needs.build.outputs.short_sha }}.apk
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: apk-release-${{ needs.build.outputs.short_sha }}
+          path: ./downloaded-artifact
+
+      - name: Publish APK to GitHub Releases
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          commit_author="$(git log -1 --pretty=format:'%an')"
+          commit_subject="$(git log -1 --pretty=format:'%s')"
+          commit_hash="$(git log -1 --pretty=format:'%H')"
+
+          notes_file="$(mktemp)"
+          cat > "$notes_file" <<EOF
+          Android release APK built from commit ${commit_hash}.
+
+          Commit by: ${commit_author}
+          Commit message: ${commit_subject}
+          Version: Android >= 8
+          EOF
+
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "$APK_PATH" --clobber
+            gh release edit "$RELEASE_TAG" \
+              --title "$RELEASE_NAME" \
+              --notes-file "$notes_file" \
+              --target "$GITHUB_SHA"
+          else
+            gh release create "$RELEASE_TAG" "$APK_PATH" \
+              --title "$RELEASE_NAME" \
+              --notes-file "$notes_file" \
+              --target "$GITHUB_SHA"
+          fi
 
   updateAppData:
     name: Update App Data
