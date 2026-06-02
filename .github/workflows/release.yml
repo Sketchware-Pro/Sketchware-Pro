@@ -42,12 +42,17 @@ jobs:
       - name: Create or Update GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          tag_name="${{ github.ref_name }}"
-          # Fallback tag name if triggered manually without a tag
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [[ ! "$tag_name" =~ ^v ]]; then
-            tag_name="v-manual-$(date +'%Y%m%d-%H%M%S')"
-          fi
+        - name: Create or Update GitHub Release
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            REF_NAME: ${{ github.ref_name }}
+            EVENT_NAME: ${{ github.event_name }}
+          run: |
+            tag_name="$REF_NAME"
+            # Fallback tag name if triggered manually without a tag
+            if [ "$EVENT_NAME" = "workflow_dispatch" ] && [[ ! "$tag_name" =~ ^v ]]; then
+              tag_name="v-manual-$(date +'%Y%m%d-%H%M%S')"
+            fi
           
           apk_file="app/build/outputs/apk/release/app-release.apk"
           release_apk="Sketchware-Pro-${tag_name}.apk"
