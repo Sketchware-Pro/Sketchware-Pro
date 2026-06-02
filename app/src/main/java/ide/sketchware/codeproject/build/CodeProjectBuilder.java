@@ -103,13 +103,8 @@ public class CodeProjectBuilder {
             return;
         }
 
-        try (InputStream is = context.getAssets().open(assetName);
-             FileOutputStream fos = new FileOutputStream(aapt2Binary)) {
-            byte[] buffer = new byte[8192];
-            int read;
-            while ((read = is.read(buffer)) != -1) {
-                fos.write(buffer, 0, read);
-            }
+        try (InputStream is = context.getAssets().open(assetName)) {
+            FileUtil.extractFileFromZip(is, aapt2Binary);
         }
         aapt2Binary.setExecutable(true);
     }
@@ -225,8 +220,7 @@ public class CodeProjectBuilder {
 
     private void compileKotlin() throws Exception {
         File sourceDir = new File(project.getKotlinSourcePath());
-        List<File> ktFiles = new ArrayList<>();
-        collectKotlinFiles(sourceDir, ktFiles);
+        List<File> ktFiles = new ArrayList<>(FileUtil.listFilesRecursively(sourceDir, ".kt"));
 
         if (ktFiles.isEmpty()) return;
         usesKotlin = true;
@@ -292,18 +286,7 @@ public class CodeProjectBuilder {
         }
     }
 
-    private void collectKotlinFiles(File dir, List<File> ktFiles) {
-        if (dir == null || !dir.exists()) return;
-        File[] files = dir.listFiles();
-        if (files == null) return;
-        for (File file : files) {
-            if (file.isDirectory()) {
-                collectKotlinFiles(file, ktFiles);
-            } else if (file.getName().endsWith(".kt")) {
-                ktFiles.add(file);
-            }
-        }
-    }
+
 
     private void compileJava() throws Exception {
         File androidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
@@ -464,14 +447,7 @@ public class CodeProjectBuilder {
         if (!zipalignBinary.exists()) {
             // Fallback: just rename unaligned as aligned
             if (!input.renameTo(output)) {
-                try (FileInputStream in = new FileInputStream(input);
-                     FileOutputStream out = new FileOutputStream(output)) {
-                    byte[] buffer = new byte[8192];
-                    int read;
-                    while ((read = in.read(buffer)) != -1) {
-                        out.write(buffer, 0, read);
-                    }
-                }
+                FileUtil.copyFile(input.getAbsolutePath(), output.getAbsolutePath());
             }
             return;
         }
@@ -491,14 +467,7 @@ public class CodeProjectBuilder {
         if (!output.exists()) {
             // Zipalign failed silently; use unaligned APK
             if (!input.renameTo(output)) {
-                try (FileInputStream in = new FileInputStream(input);
-                     FileOutputStream out = new FileOutputStream(output)) {
-                    byte[] buffer = new byte[8192];
-                    int read;
-                    while ((read = in.read(buffer)) != -1) {
-                        out.write(buffer, 0, read);
-                    }
-                }
+                FileUtil.copyFile(input.getAbsolutePath(), output.getAbsolutePath());
             }
         }
     }

@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -51,6 +50,7 @@ import ide.sketchware.codeproject.model.CodeProject;
 import ide.sketchware.databinding.ActivityCodeProjectBinding;
 import ide.sketchware.utility.EditorUtils;
 import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class CodeProjectActivity extends BaseAppCompatActivity {
 
@@ -203,21 +203,21 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     String name = input.getText().toString().trim();
                     if (!isValidFileName(name)) {
-                        Toast.makeText(this, R.string.code_project_invalid_name, Toast.LENGTH_SHORT).show();
+                        SketchwareUtil.toast(getString(R.string.code_project_invalid_name));
                         return;
                     }
                     File newFile = new File(parentDir, name);
                     if (newFile.exists()) {
-                        Toast.makeText(this, R.string.code_project_file_exists, Toast.LENGTH_SHORT).show();
+                        SketchwareUtil.toast(getString(R.string.code_project_file_exists));
                         return;
                     }
                     try {
                         if (!newFile.createNewFile()) {
-                            Toast.makeText(this, R.string.code_project_operation_failed, Toast.LENGTH_SHORT).show();
+                            SketchwareUtil.toast(getString(R.string.code_project_operation_failed));
                             return;
                         }
                     } catch (Exception e) {
-                        Toast.makeText(this, R.string.code_project_operation_failed, Toast.LENGTH_SHORT).show();
+                        SketchwareUtil.toast(getString(R.string.code_project_operation_failed));
                         return;
                     }
                     refreshFileExplorer();
@@ -235,16 +235,16 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     String name = input.getText().toString().trim();
                     if (!isValidFileName(name)) {
-                        Toast.makeText(this, R.string.code_project_invalid_name, Toast.LENGTH_SHORT).show();
+                        SketchwareUtil.toast(getString(R.string.code_project_invalid_name));
                         return;
                     }
                     File newDir = new File(parentDir, name);
                     if (newDir.exists()) {
-                        Toast.makeText(this, R.string.code_project_file_exists, Toast.LENGTH_SHORT).show();
+                        SketchwareUtil.toast(getString(R.string.code_project_file_exists));
                         return;
                     }
                     if (!newDir.mkdirs()) {
-                        Toast.makeText(this, R.string.code_project_operation_failed, Toast.LENGTH_SHORT).show();
+                        SketchwareUtil.toast(getString(R.string.code_project_operation_failed));
                         return;
                     }
                     refreshFileExplorer();
@@ -263,18 +263,18 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     String newName = input.getText().toString().trim();
                     if (!isValidFileName(newName)) {
-                        Toast.makeText(this, R.string.code_project_invalid_name, Toast.LENGTH_SHORT).show();
+                        SketchwareUtil.toast(getString(R.string.code_project_invalid_name));
                         return;
                     }
                     File renamed = new File(file.getParentFile(), newName);
                     if (renamed.exists()) {
-                        Toast.makeText(this, R.string.code_project_file_exists, Toast.LENGTH_SHORT).show();
+                        SketchwareUtil.toast(getString(R.string.code_project_file_exists));
                         return;
                     }
                     // Capture before rename — stat() on the old path won't work after move
                     boolean wasDirectory = file.isDirectory();
-                    if (!file.renameTo(renamed)) {
-                        Toast.makeText(this, R.string.code_project_operation_failed, Toast.LENGTH_SHORT).show();
+                    if (!FileUtil.renameFile(file.getAbsolutePath(), renamed.getAbsolutePath())) {
+                        SketchwareUtil.toast(getString(R.string.code_project_operation_failed));
                         return;
                     }
                     // Update any open tabs pointing to the old file
@@ -306,9 +306,9 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 .setTitle(R.string.code_project_delete)
                 .setMessage(getString(R.string.code_project_confirm_delete, file.getName()))
                 .setPositiveButton(R.string.code_project_delete, (dialog, which) -> {
-                    boolean deleted = deleteRecursive(file);
-                    if (!deleted) {
-                        Toast.makeText(this, R.string.code_project_operation_failed, Toast.LENGTH_SHORT).show();
+                    FileUtil.deleteFile(file.getAbsolutePath());
+                    if (file.exists()) {
+                        SketchwareUtil.toast(getString(R.string.code_project_operation_failed));
                     }
                     // Always check tabs — partial delete may have removed some files
                     for (int i = openTabs.size() - 1; i >= 0; i--) {
@@ -320,24 +320,6 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
-    }
-
-    private boolean deleteRecursive(File fileOrDir) {
-        boolean success = true;
-        if (fileOrDir.isDirectory()) {
-            File[] children = fileOrDir.listFiles();
-            if (children != null) {
-                for (File child : children) {
-                    if (!deleteRecursive(child)) {
-                        success = false;
-                    }
-                }
-            }
-        }
-        if (!fileOrDir.delete()) {
-            success = false;
-        }
-        return success;
     }
 
     /**
@@ -606,7 +588,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             return true;
         } else if (id == R.id.action_save) {
             saveCurrentFile();
-            Toast.makeText(this, R.string.code_project_saved, Toast.LENGTH_SHORT).show();
+            SketchwareUtil.toast(getString(R.string.code_project_saved));
             return true;
         } else if (id == R.id.action_undo) {
             binding.editor.undo();
@@ -638,7 +620,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         clearInlineErrors();
 
         saveAllModifiedTabs();
-        Toast.makeText(this, R.string.code_project_building, Toast.LENGTH_SHORT).show();
+        SketchwareUtil.toast(getString(R.string.code_project_building));
 
         new Thread(() -> {
             CodeProjectBuilder builder = new CodeProjectBuilder(CodeProjectActivity.this, project);
@@ -669,9 +651,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                         String errorMsg = e.getMessage() != null ? e.getMessage() : "Unknown error";
                         showErrorPanel(errorMsg);
                         applyInlineErrors(errorMsg);
-                        Toast.makeText(CodeProjectActivity.this,
-                                getString(R.string.code_project_build_failed),
-                                Toast.LENGTH_SHORT).show();
+                        SketchwareUtil.toast(getString(R.string.code_project_build_failed));
                     }
                     isBuilding = false;
                     setBuildMenuEnabled(true);
@@ -707,7 +687,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         try {
             startActivity(intent);
         } catch (android.content.ActivityNotFoundException e) {
-            Toast.makeText(this, R.string.code_project_no_installer, Toast.LENGTH_SHORT).show();
+            SketchwareUtil.toast(getString(R.string.code_project_no_installer));
         }
     }
 
@@ -998,7 +978,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     }
 
     private void searchInProject(String query) {
-        Toast.makeText(this, R.string.code_project_search_in_project, Toast.LENGTH_SHORT).show();
+        SketchwareUtil.toast(getString(R.string.code_project_search_in_project));
 
         final int token = ++searchToken;
 
@@ -1012,7 +992,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 // Discard stale results if a newer search was started
                 if (token != searchToken) return;
                 if (results.isEmpty()) {
-                    Toast.makeText(this, R.string.code_project_no_results, Toast.LENGTH_SHORT).show();
+                    SketchwareUtil.toast(getString(R.string.code_project_no_results));
                     return;
                 }
                 // Reuse error panel to show search results
@@ -1078,13 +1058,13 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             }
         }
         if (!depsFile.exists()) {
-            Toast.makeText(this, R.string.code_project_no_deps_file, Toast.LENGTH_SHORT).show();
+            SketchwareUtil.toast(getString(R.string.code_project_no_deps_file));
             return;
         }
 
         List<DependencyDeclaration> deps = DependencyResolver.parseDependenciesFile(depsFile);
         if (deps.isEmpty()) {
-            Toast.makeText(this, R.string.code_project_no_deps_declared, Toast.LENGTH_SHORT).show();
+            SketchwareUtil.toast(getString(R.string.code_project_no_deps_declared));
             return;
         }
 
@@ -1101,7 +1081,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         // Resolve into a temp dir and swap it in only on success, so a failed or
         // partial sync doesn't wipe the last good set of resolved jars.
         File tempDir = new File(project.getLibsPath(), ".resolved_tmp");
-        clearResolvedDir(tempDir);
+        FileUtil.deleteFile(tempDir.getAbsolutePath());
         tempDir.mkdirs();
 
         new Thread(() -> {
@@ -1127,9 +1107,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                                 setBuildMenuEnabled(true);
                                 if (isFinishing() || isDestroyed()) return;
                                 progress.dismiss();
-                                Toast.makeText(CodeProjectActivity.this,
-                                        getString(R.string.code_project_deps_synced, resolvedJars.size()),
-                                        Toast.LENGTH_SHORT).show();
+                                SketchwareUtil.toast(getString(R.string.code_project_deps_synced, resolvedJars.size()));
                                 refreshFileExplorer();
                             });
                         } catch (IOException e) {
@@ -1148,8 +1126,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                     @Override
                     public void onError(String error) {
                         // Keep the previous resolved jars intact; just discard temp
-                        clearResolvedDir(tempDir);
-                        tempDir.delete();
+                        FileUtil.deleteFile(tempDir.getAbsolutePath());
                         runOnUiThread(() -> {
                             isSyncing = false;
                             setBuildMenuEnabled(true);
@@ -1162,8 +1139,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             } catch (Exception e) {
                 // Defensive: resolve() should report via the listener, but never
                 // leave the non-cancelable dialog stuck if it throws unexpectedly.
-                clearResolvedDir(tempDir);
-                tempDir.delete();
+                FileUtil.deleteFile(tempDir.getAbsolutePath());
                 runOnUiThread(() -> {
                     isSyncing = false;
                     setBuildMenuEnabled(true);
@@ -1181,58 +1157,26 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
      * successful resolution so a failed sync never wipes the last good set.
      */
     private void swapResolvedDir(File tempDir, File resolvedDir) throws IOException {
-        clearResolvedDir(resolvedDir);
-        if (!resolvedDir.exists()) {
-            resolvedDir.mkdirs();
-        }
-        File[] files = tempDir.listFiles();
-        if (files != null) {
-            for (File f : files) {
-                if (f.isFile()) {
-                    File dest = new File(resolvedDir, f.getName());
-                    if (dest.exists()) dest.delete();
-                    if (!f.renameTo(dest)) {
-                        copyFileOrThrow(f, dest);
-                        if (!f.delete()) {
-                            throw new IOException("Failed to remove temp dependency: " + f.getName());
-                        }
-                    }
-                }
-            }
-        }
-        clearResolvedDir(tempDir);
-        tempDir.delete();
-    }
+        File backupDir = new File(resolvedDir.getParentFile(), resolvedDir.getName() + "_backup");
+        FileUtil.deleteFile(backupDir.getAbsolutePath());
 
-    private void copyFileOrThrow(File source, File dest) throws IOException {
-        File parent = dest.getParentFile();
-        if (parent != null && !parent.exists() && !parent.mkdirs()) {
-            throw new IOException("Failed to create dependency output directory");
-        }
-        try (FileInputStream input = new FileInputStream(source);
-             FileOutputStream output = new FileOutputStream(dest, false)) {
-            byte[] buffer = new byte[8192];
-            int read;
-            while ((read = input.read(buffer)) != -1) {
-                output.write(buffer, 0, read);
+        // 1. Rename existing resolved dir to backup
+        if (resolvedDir.exists()) {
+            if (!resolvedDir.renameTo(backupDir)) {
+                throw new IOException("Failed to create backup of resolved dependencies");
             }
         }
-    }
 
-    /**
-     * Removes all .jar files from the resolved-dependencies directory so a fresh
-     * sync reflects exactly the current dependencies.txt.
-     */
-    private void clearResolvedDir(File resolvedDir) {
-        if (resolvedDir.exists() && resolvedDir.isDirectory()) {
-            File[] files = resolvedDir.listFiles();
-            if (files != null) {
-                for (File f : files) {
-                    if (f.isFile()) {
-                        f.delete();
-                    }
-                }
+        // 2. Rename temp dir to resolved dir
+        if (!tempDir.renameTo(resolvedDir)) {
+            // Restore backup if renaming temp fails
+            if (backupDir.exists()) {
+                backupDir.renameTo(resolvedDir);
             }
+            throw new IOException("Failed to install resolved dependencies");
         }
+
+        // 3. Clean up backup
+        FileUtil.deleteFile(backupDir.getAbsolutePath());
     }
 }

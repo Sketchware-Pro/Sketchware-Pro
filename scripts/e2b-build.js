@@ -108,34 +108,48 @@ function tail(text, lines) {
 }
 
 function makeArchive(archive) {
+  const repoBasename = path.basename(repoRoot);
   execFileSync(
     "tar",
     [
-      "--exclude=sketchware-pro/.git",
-      "--exclude=sketchware-pro/.gradle",
-      "--exclude=sketchware-pro/build",
-      "--exclude=sketchware-pro/app/build",
+      `--exclude=${repoBasename}/.git`,
+      `--exclude=${repoBasename}/.gradle`,
+      `--exclude=${repoBasename}/build`,
+      `--exclude=${repoBasename}/app/build`,
+      `--exclude=${repoBasename}/.env.e2b.local`,
+      `--exclude=${repoBasename}/.env`,
+      `--exclude=${repoBasename}/.env.*`,
+      `--exclude=${repoBasename}/*.local`,
+      `--exclude=${repoBasename}/.secrets`,
+      `--exclude=${repoBasename}/secrets`,
+      `--exclude=${repoBasename}/.credential*`,
       "-czf",
       archive,
       "-C",
       path.dirname(repoRoot),
-      path.basename(repoRoot),
+      repoBasename,
     ],
     { stdio: "inherit" },
   );
 }
 
-function readSandboxId(options) {
-  if (options.forceNew) return "";
-  if (options.sandboxId) return options.sandboxId.trim();
-  if (!existsSync(options.sandboxIdFile)) return "";
+function readSandboxState(options) {
+  if (options.forceNew) return { sandboxId: "", template: "" };
+  if (options.sandboxId) return { sandboxId: options.sandboxId.trim(), template: "" };
+  if (!existsSync(options.sandboxIdFile)) return { sandboxId: "", template: "" };
 
-  return readFileSync(options.sandboxIdFile, "utf8").trim();
+  const raw = readFileSync(options.sandboxIdFile, "utf8").trim();
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return { sandboxId: raw, template: "" };
+  }
 }
 
 async function getSandbox(Sandbox, options) {
-  const existingSandboxId = readSandboxId(options);
-  if (existingSandboxId) {
+  const { sandboxId: existingSandboxId, template: persistedTemplate } =
+    readSandboxState(options);
+  if (existingSandboxId && (!persistedTemplate || persistedTemplate === options.template)) {
     try {
       const sandbox = await Sandbox.connect(existingSandboxId, {
         apiKey: process.env.E2B_API_KEY,
@@ -154,15 +168,19 @@ async function getSandbox(Sandbox, options) {
     apiKey: process.env.E2B_API_KEY,
     timeoutMs: options.timeoutMs,
   });
-  writeFileSync(options.sandboxIdFile, `${sandbox.sandboxId}\n`, { mode: 0o600 });
+  writeFileSync(
+    options.sandboxIdFile,
+    `${JSON.stringify({ sandboxId: sandbox.sandboxId, template: options.template })}\n`,
+    { mode: 0o600 },
+  );
   console.log(`E2B_CREATED_SANDBOX_ID=${sandbox.sandboxId}`);
   console.log(`E2B_SANDBOX_ID_FILE=${options.sandboxIdFile}`);
   return sandbox;
 }
 
 async function main() {
-  const options = parseArgs(process.argv.slice(2));
   loadLocalEnv();
+  const options = parseArgs(process.argv.slice(2));
 
   if (!process.env.E2B_API_KEY) {
     throw new Error("Missing E2B_API_KEY. Put it in .env.e2b.local or export it.");
@@ -175,6 +193,7 @@ async function main() {
   console.log(`E2B_SANDBOX_ID=${sandbox.sandboxId}`);
   console.log(`E2B_TEMPLATE=${options.template}`);
 
+  const repoBasename = path.basename(repoRoot);
   const buildSteps = [
     "set -eu",
     "source /etc/profile.d/android-build.sh",
@@ -182,10 +201,10 @@ async function main() {
     "sudo /var/lib/dpkg/info/ca-certificates-java.postinst configure >/dev/null",
     "sudo chown -R user:user /opt/android-sdk",
     'sdkmanager "build-tools;35.0.0" >/dev/null',
-    "rm -rf /home/user/workspace/sketchware-pro",
+    `rm -rf /home/user/workspace/${repoBasename}`,
     "mkdir -p /home/user/workspace",
     `tar -xzf ${shellQuote(remoteArchive)} -C /home/user/workspace`,
-    "cd /home/user/workspace/sketchware-pro",
+    `cd /home/user/workspace/${repoBasename}`,
     "chmod +x ./gradlew",
     'printf "sdk.dir=%s\\n" "$ANDROID_HOME" > local.properties',
     'printf "PWD=%s\\n" "$PWD"',

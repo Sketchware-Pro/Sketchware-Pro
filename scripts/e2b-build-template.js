@@ -79,8 +79,8 @@ function requireE2B() {
 }
 
 async function main() {
-  const options = parseArgs(process.argv.slice(2));
   loadLocalEnv();
+  const options = parseArgs(process.argv.slice(2));
 
   if (!process.env.E2B_API_KEY) {
     throw new Error("Missing E2B_API_KEY. Put it in .env.e2b.local or export it.");

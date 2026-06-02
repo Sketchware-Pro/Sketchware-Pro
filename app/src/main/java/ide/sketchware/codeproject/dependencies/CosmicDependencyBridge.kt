@@ -102,36 +102,21 @@ object CosmicDependencyBridge {
             }
             resolvedJars.isNotEmpty() -> {
                 listener.onComplete(resolvedJars)
-                var msg = "Some dependencies failed:\n" + errors.joinToString("\n")
+                var msg = "Some dependencies failed to resolve:\n" + errors.joinToString("\n")
                 if (warningText != null) msg += "\n\n$warningText"
-                listener.onError(msg)
+                listener.onWarning(msg)
             }
             else -> {
-                var msg = "All dependencies failed:\n" + errors.joinToString("\n")
+                var msg = "All dependencies failed to resolve:\n" + errors.joinToString("\n")
                 if (warningText != null) msg += "\n\n$warningText"
                 listener.onError(msg)
             }
         }
     }
 
-    /**
-     * The cosmic-ide library pre-seeds its repository list (Google, Maven Central,
-     * JitPack) in a static initializer. We only seed defaults as a fallback in the
-     * unlikely case the shared list is empty — avoiding duplicate mirror entries.
-     */
-    private fun ensureRepositories() {
-        if (repositories.isNotEmpty()) return
-        val defaults = listOf(
-            "Google" to "https://dl.google.com/android/maven2",
-            "Maven Central" to "https://repo.maven.apache.org/maven2",
-            "JitPack" to "https://jitpack.io"
-        )
-        for ((repoName, url) in defaults) {
-            repositories.add(object : Repository {
-                override fun getName() = repoName
-                override fun getURL() = url
-            })
-        }
+    private fun isCoordinateSafe(value: String): Boolean {
+        val pattern = Regex("[a-zA-Z0-9._-]+")
+        return value.isNotEmpty() && pattern.matches(value)
     }
 
     /**
@@ -140,25 +125,38 @@ object CosmicDependencyBridge {
      * native libs are present (those aren't linked by the Code Project build yet).
      */
     private fun downloadJar(art: Artifact, outputDir: File, warnings: MutableList<String>): File? {
+        if (!isCoordinateSafe(art.groupId) || !isCoordinateSafe(art.artifactId) || !isCoordinateSafe(art.version ?: "")) {
+            warnings.add("Skipped unsafe artifact coordinates: ${art.groupId}:${art.artifactId}:${art.version}")
+            return null
+        }
+
         // Include groupId so same-named artifacts from different groups don't collide
         val base = "${art.groupId.replace('.', '_')}-${art.artifactId}-${art.version}"
         val outJar = File(outputDir, "$base.jar")
 
         return if (art.extension == "jar") {
             val tmp = File(outputDir, "$base.jar.tmp")
-            art.downloadTo(tmp)
-            if (outJar.exists()) outJar.delete()
-            if (!tmp.renameTo(outJar)) {
-                tmp.copyTo(outJar, overwrite = true)
-                tmp.delete()
+            try {
+                art.downloadTo(tmp)
+                if (outJar.exists()) outJar.delete()
+                if (!tmp.renameTo(outJar)) {
+                    tmp.copyTo(outJar, overwrite = true)
+                    tmp.delete()
+                }
+                outJar
+            } catch (e: Exception) {
+                if (tmp.exists()) tmp.delete()
+                throw e
             }
-            outJar
         } else {
             val aar = File(outputDir, "$base.aar.tmp")
-            art.downloadTo(aar)
-            val jar = extractClassesJar(aar, outJar, art, warnings)
-            aar.delete()
-            jar
+            try {
+                art.downloadTo(aar)
+                val jar = extractClassesJar(aar, outJar, art, warnings)
+                jar
+            } finally {
+                if (aar.exists()) aar.delete()
+            }
         }
     }
 

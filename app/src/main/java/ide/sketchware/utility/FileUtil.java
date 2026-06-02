@@ -780,30 +780,37 @@ public class FileUtil {
         if (!target.exists()) {
             target.getParentFile().mkdirs();
         }
-        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(target));
-        outputStream.write(data);
-        outputStream.flush();
-        outputStream.close();
+        try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(target))) {
+            outputStream.write(data);
+            outputStream.flush();
+        }
     }
 
     public static void extractZipTo(ZipInputStream input, String outPath) throws IOException {
-        File outDir = new File(outPath);
-        if (!outDir.exists()) {
-            outDir.mkdirs();
-        }
-
-        ZipEntry entry = input.getNextEntry();
-        while (entry != null) {
-            String entryPathExtracted = new File(outPath, entry.getName()).getAbsolutePath();
-
-            if (!entry.isDirectory()) {
-                new File(entryPathExtracted).getParentFile().mkdirs();
-                writeBytes(new File(entryPathExtracted), readFromInputStream(input));
+        try (ZipInputStream zipInput = input) {
+            File outDir = new File(outPath);
+            String canonicalOutDirPath = outDir.getCanonicalPath();
+            if (!outDir.exists()) {
+                outDir.mkdirs();
             }
-            input.closeEntry();
-            entry = input.getNextEntry();
+
+            ZipEntry entry = zipInput.getNextEntry();
+            while (entry != null) {
+                File targetFile = new File(outDir, entry.getName());
+                String canonicalTargetFilePath = targetFile.getCanonicalPath();
+                if (!canonicalTargetFilePath.startsWith(canonicalOutDirPath + File.separator)) {
+                    throw new SecurityException("Blocked zip slip directory traversal: " + entry.getName());
+                }
+                String entryPathExtracted = targetFile.getAbsolutePath();
+
+                if (!entry.isDirectory()) {
+                    new File(entryPathExtracted).getParentFile().mkdirs();
+                    writeBytes(new File(entryPathExtracted), readFromInputStream(zipInput));
+                }
+                zipInput.closeEntry();
+                entry = zipInput.getNextEntry();
+            }
         }
-        input.close();
     }
 
     /**

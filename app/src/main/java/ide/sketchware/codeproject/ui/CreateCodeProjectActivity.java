@@ -3,7 +3,6 @@ package ide.sketchware.codeproject.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
