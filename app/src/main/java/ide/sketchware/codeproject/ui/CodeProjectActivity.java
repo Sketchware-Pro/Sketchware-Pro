@@ -43,6 +43,8 @@ import io.github.rosemoe.sora.widget.style.DiagnosticIndicatorStyle;
 import ide.sketchware.R;
 import ide.sketchware.codeproject.build.CodeProjectBuilder;
 import ide.sketchware.codeproject.build.CompilerErrorParser;
+import ide.sketchware.codeproject.dependencies.DependencyDeclaration;
+import ide.sketchware.codeproject.dependencies.DependencyResolver;
 import ide.sketchware.codeproject.model.CodeProject;
 import ide.sketchware.databinding.ActivityCodeProjectBinding;
 import ide.sketchware.utility.EditorUtils;
@@ -618,6 +620,9 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         } else if (id == R.id.action_settings) {
             openProjectSettings();
             return true;
+        } else if (id == R.id.action_sync_deps) {
+            syncDependencies();
+            return true;
         }
         return false;
     }
@@ -1049,5 +1054,65 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         Intent intent = new Intent(this, ProjectSettingsActivity.class);
         intent.putExtra("sc_id", project.getScId());
         settingsLauncher.launch(intent);
+    }
+
+    // ==================== Dependency Sync ====================
+
+    private void syncDependencies() {
+        File depsFile = new File(project.getProjectMyscPath(), "dependencies.txt");
+        if (!depsFile.exists()) {
+            Toast.makeText(this, R.string.code_project_no_deps_file, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<DependencyDeclaration> deps = DependencyResolver.parseDependenciesFile(depsFile);
+        if (deps.isEmpty()) {
+            Toast.makeText(this, R.string.code_project_no_deps_declared, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Show progress
+        android.app.ProgressDialog progress = new android.app.ProgressDialog(this);
+        progress.setMessage(getString(R.string.code_project_syncing_deps));
+        progress.setCancelable(false);
+        progress.show();
+
+        File resolvedDir = new File(project.getLibsPath(), "resolved");
+        resolvedDir.mkdirs();
+
+        new Thread(() -> {
+            DependencyResolver resolver = new DependencyResolver(CodeProjectActivity.this);
+            resolver.resolve(deps, resolvedDir, new DependencyResolver.ResolveListener() {
+                @Override
+                public void onProgress(String message) {
+                    runOnUiThread(() -> {
+                        if (!isFinishing() && !isDestroyed()) {
+                            progress.setMessage(message);
+                        }
+                    });
+                }
+
+                @Override
+                public void onComplete(List<File> resolvedJars) {
+                    runOnUiThread(() -> {
+                        if (isFinishing() || isDestroyed()) return;
+                        progress.dismiss();
+                        Toast.makeText(CodeProjectActivity.this,
+                                getString(R.string.code_project_deps_synced, resolvedJars.size()),
+                                Toast.LENGTH_SHORT).show();
+                        refreshFileExplorer();
+                    });
+                }
+
+                @Override
+                public void onError(String error) {
+                    runOnUiThread(() -> {
+                        if (isFinishing() || isDestroyed()) return;
+                        progress.dismiss();
+                        showErrorPanel(error);
+                    });
+                }
+            });
+        }).start();
     }
 }

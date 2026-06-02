@@ -27,6 +27,10 @@ public class CodeProjectTemplate {
         FileUtil.writeFile(valuesDir + File.separator + "strings.xml", generateStrings(project));
         FileUtil.writeFile(valuesDir + File.separator + "colors.xml", generateColors());
         FileUtil.writeFile(valuesDir + File.separator + "styles.xml", generateStyles());
+
+        // Generate dependencies.txt with instructions
+        FileUtil.writeFile(project.getProjectMyscPath() + File.separator + "dependencies.txt",
+                generateDependenciesFile());
     }
 
     private static String generateManifest(CodeProject project) {
@@ -123,5 +127,13 @@ public class CodeProjectTemplate {
                 + "        <item name=\"colorAccent\">@color/colorAccent</item>\n"
                 + "    </style>\n"
                 + "</resources>\n";
+    }
+
+    private static String generateDependenciesFile() {
+        return "# Add dependencies here, one per line\n"
+                + "# Format: implementation groupId:artifactId:version\n"
+                + "# Example: implementation com.google.code.gson:gson:2.10.1\n"
+                + "#\n"
+                + "# Run \"Sync Dependencies\" from the IDE menu to download\n";
     }
 }

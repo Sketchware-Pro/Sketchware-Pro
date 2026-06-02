@@ -2360,5 +2360,12 @@ Please try again later"</string>
     <string name="code_project_error_version_code">Version code is required</string>
     <string name="code_project_error_version_name">Version name is required</string>
 
+    <!-- Dependency Sync -->
+    <string name="code_project_sync_deps">Sync Dependencies</string>
+    <string name="code_project_syncing_deps">Syncing dependencies\u2026</string>
+    <string name="code_project_deps_synced">%1$d dependencies resolved</string>
+    <string name="code_project_no_deps_file">No dependencies.txt file found</string>
+    <string name="code_project_no_deps_declared">No dependencies declared</string>
+
 
 </resources>
