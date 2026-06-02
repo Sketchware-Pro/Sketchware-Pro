@@ -57,6 +57,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private File currentFile;
     private FileExplorerAdapter fileAdapter;
     private volatile boolean isBuilding = false;
+    private volatile boolean isSyncing = false;
 
     private final List<OpenFileTab> openTabs = new ArrayList<>();
     private int activeTabIndex = -1;
@@ -628,7 +629,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     }
 
     private void buildProject() {
-        if (isBuilding) return;
+        if (isBuilding || isSyncing) return;
         isBuilding = true;
         setBuildMenuEnabled(false);
         hideErrorPanel();
@@ -1059,7 +1060,17 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     // ==================== Dependency Sync ====================
 
     private void syncDependencies() {
-        File depsFile = new File(project.getProjectMyscPath(), "dependencies.txt");
+        if (isBuilding || isSyncing) return;
+
+        // dependencies.txt lives in the editable source tree (visible in the file
+        // explorer). Fall back to the legacy project-root location for old projects.
+        File depsFile = new File(project.getSourcePath(), "dependencies.txt");
+        if (!depsFile.exists()) {
+            File legacy = new File(project.getProjectMyscPath(), "dependencies.txt");
+            if (legacy.exists()) {
+                depsFile = legacy;
+            }
+        }
         if (!depsFile.exists()) {
             Toast.makeText(this, R.string.code_project_no_deps_file, Toast.LENGTH_SHORT).show();
             return;
@@ -1071,6 +1082,9 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             return;
         }
 
+        isSyncing = true;
+        setBuildMenuEnabled(false);
+
         // Show progress
         android.app.ProgressDialog progress = new android.app.ProgressDialog(this);
         progress.setMessage(getString(R.string.code_project_syncing_deps));
@@ -1078,41 +1092,110 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         progress.show();
 
         File resolvedDir = new File(project.getLibsPath(), "resolved");
-        resolvedDir.mkdirs();
+        // Resolve into a temp dir and swap it in only on success, so a failed or
+        // partial sync doesn't wipe the last good set of resolved jars.
+        File tempDir = new File(project.getLibsPath(), ".resolved_tmp");
+        clearResolvedDir(tempDir);
+        tempDir.mkdirs();
 
         new Thread(() -> {
             DependencyResolver resolver = new DependencyResolver(CodeProjectActivity.this);
-            resolver.resolve(deps, resolvedDir, new DependencyResolver.ResolveListener() {
-                @Override
-                public void onProgress(String message) {
-                    runOnUiThread(() -> {
-                        if (!isFinishing() && !isDestroyed()) {
-                            progress.setMessage(message);
-                        }
-                    });
-                }
+            try {
+                resolver.resolve(deps, tempDir, new DependencyResolver.ResolveListener() {
+                    @Override
+                    public void onProgress(String message) {
+                        runOnUiThread(() -> {
+                            if (!isFinishing() && !isDestroyed()) {
+                                progress.setMessage(message);
+                            }
+                        });
+                    }
 
-                @Override
-                public void onComplete(List<File> resolvedJars) {
-                    runOnUiThread(() -> {
-                        if (isFinishing() || isDestroyed()) return;
-                        progress.dismiss();
-                        Toast.makeText(CodeProjectActivity.this,
-                                getString(R.string.code_project_deps_synced, resolvedJars.size()),
-                                Toast.LENGTH_SHORT).show();
-                        refreshFileExplorer();
-                    });
-                }
+                    @Override
+                    public void onComplete(List<File> resolvedJars) {
+                        // Swap temp → resolved on the worker thread before touching UI
+                        swapResolvedDir(tempDir, resolvedDir);
+                        runOnUiThread(() -> {
+                            isSyncing = false;
+                            setBuildMenuEnabled(true);
+                            if (isFinishing() || isDestroyed()) return;
+                            progress.dismiss();
+                            Toast.makeText(CodeProjectActivity.this,
+                                    getString(R.string.code_project_deps_synced, resolvedJars.size()),
+                                    Toast.LENGTH_SHORT).show();
+                            refreshFileExplorer();
+                        });
+                    }
 
-                @Override
-                public void onError(String error) {
-                    runOnUiThread(() -> {
-                        if (isFinishing() || isDestroyed()) return;
-                        progress.dismiss();
-                        showErrorPanel(error);
-                    });
-                }
-            });
+                    @Override
+                    public void onError(String error) {
+                        // Keep the previous resolved jars intact; just discard temp
+                        clearResolvedDir(tempDir);
+                        tempDir.delete();
+                        runOnUiThread(() -> {
+                            isSyncing = false;
+                            setBuildMenuEnabled(true);
+                            if (isFinishing() || isDestroyed()) return;
+                            progress.dismiss();
+                            showErrorPanel(error);
+                        });
+                    }
+                });
+            } catch (Exception e) {
+                // Defensive: resolve() should report via the listener, but never
+                // leave the non-cancelable dialog stuck if it throws unexpectedly.
+                clearResolvedDir(tempDir);
+                tempDir.delete();
+                runOnUiThread(() -> {
+                    isSyncing = false;
+                    setBuildMenuEnabled(true);
+                    if (isFinishing() || isDestroyed()) return;
+                    progress.dismiss();
+                    showErrorPanel(e.getMessage() != null ? e.getMessage() : "Dependency sync failed");
+                });
+            }
         }).start();
+    }
+
+    /**
+     * Replaces the contents of {@code resolvedDir} with the freshly-resolved jars
+     * from {@code tempDir}, then removes the temp dir. Called only after a
+     * successful resolution so a failed sync never wipes the last good set.
+     */
+    private void swapResolvedDir(File tempDir, File resolvedDir) {
+        clearResolvedDir(resolvedDir);
+        if (!resolvedDir.exists()) {
+            resolvedDir.mkdirs();
+        }
+        File[] files = tempDir.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isFile()) {
+                    File dest = new File(resolvedDir, f.getName());
+                    if (dest.exists()) dest.delete();
+                    // temp and resolved share the same parent (libs/), so rename is reliable
+                    f.renameTo(dest);
+                }
+            }
+        }
+        clearResolvedDir(tempDir);
+        tempDir.delete();
+    }
+
+    /**
+     * Removes all .jar files from the resolved-dependencies directory so a fresh
+     * sync reflects exactly the current dependencies.txt.
+     */
+    private void clearResolvedDir(File resolvedDir) {
+        if (resolvedDir.exists() && resolvedDir.isDirectory()) {
+            File[] files = resolvedDir.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    if (f.isFile()) {
+                        f.delete();
+                    }
+                }
+            }
+        }
     }
 }

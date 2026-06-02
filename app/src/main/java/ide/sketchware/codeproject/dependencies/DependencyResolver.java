@@ -95,12 +95,11 @@ public class DependencyResolver {
             return; // Prevent infinite recursion
         }
 
-        // Check if already resolved (use groupId:artifactId as key — first encountered version wins)
+        // Check if already resolved (use groupId:artifactId as key — first successful version wins)
         String key = dep.getGroupId() + ":" + dep.getArtifactId();
         if (resolvedSet.contains(key)) {
             return;
         }
-        resolvedSet.add(key);
 
         // 1. Download POM
         if (listener != null) {
@@ -146,7 +145,10 @@ public class DependencyResolver {
 
             // 6. Copy to output directory (atomic: write to temp, rename on success)
             if (jarFile != null && jarFile.exists()) {
-                String outputName = dep.getArtifactId() + "-" + dep.getVersion() + ".jar";
+                // Include groupId so artifacts with the same artifactId+version but
+                // different groups don't overwrite each other in libs/resolved.
+                String safeGroup = dep.getGroupId().replace('.', '_');
+                String outputName = safeGroup + "-" + dep.getArtifactId() + "-" + dep.getVersion() + ".jar";
                 File outputFile = new File(outputDir, outputName);
                 File tempFile = new File(outputDir, outputName + ".tmp");
                 copyFile(jarFile, tempFile);
@@ -161,6 +163,10 @@ public class DependencyResolver {
         }
 
         // 7. Recursively resolve transitive dependencies
+        // Mark resolved only after the artifact (POM + jar/aar) is handled, so a
+        // failed download doesn't poison a later valid path to the same artifact.
+        // Added before recursion to keep cycle detection (A→B→A) correct.
+        resolvedSet.add(key);
         if (pomInfo.dependencies != null && !pomInfo.dependencies.isEmpty()) {
             for (DependencyDeclaration transitiveDep : pomInfo.dependencies) {
                 resolveRecursive(transitiveDep, outputDir, resolvedJars, listener, depth + 1);

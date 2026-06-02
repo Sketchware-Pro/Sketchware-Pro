@@ -97,6 +97,10 @@ public class ArtifactDownloader {
             parentDir.mkdirs();
         }
 
+        // Download to a temp file first, then atomically rename — a non-zero file
+        // size alone is not proof of a complete download.
+        File tempFile = new File(parentDir, destination.getName() + ".part");
+
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         FileOutputStream outputStream = null;
@@ -115,7 +119,7 @@ public class ArtifactDownloader {
             }
 
             inputStream = connection.getInputStream();
-            outputStream = new FileOutputStream(destination);
+            outputStream = new FileOutputStream(tempFile);
 
             byte[] buffer = new byte[8192];
             int bytesRead;
@@ -123,10 +127,20 @@ public class ArtifactDownloader {
                 outputStream.write(buffer, 0, bytesRead);
             }
             outputStream.flush();
+            outputStream.close();
+            outputStream = null;
+
+            // Atomically promote the temp file to the final cache path
+            if (destination.exists() && !destination.delete()) {
+                throw new IOException("Failed to replace cached file: " + destination.getAbsolutePath());
+            }
+            if (!tempFile.renameTo(destination)) {
+                throw new IOException("Failed to finalize cached file: " + destination.getAbsolutePath());
+            }
         } catch (IOException e) {
             // Clean up partial download
-            if (destination.exists()) {
-                destination.delete();
+            if (tempFile.exists()) {
+                tempFile.delete();
             }
             throw e;
         } finally {

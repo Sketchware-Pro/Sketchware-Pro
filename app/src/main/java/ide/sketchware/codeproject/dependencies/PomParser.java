@@ -44,6 +44,17 @@ public class PomParser {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(false);
+        // Harden against XXE — POM XML comes from remote repositories
+        factory.setXIncludeAware(false);
+        factory.setExpandEntityReferences(false);
+        try {
+            factory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        } catch (Exception ignored) {
+            // Some features may be unsupported on certain parsers; secure-processing is the key one
+        }
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(pomXml);
         doc.getDocumentElement().normalize();
@@ -59,8 +70,22 @@ public class PomParser {
             }
         }
 
+        // Parse <properties> for placeholder resolution (e.g. ${kotlin.version})
+        Map<String, String> properties = parseProperties(root);
+        // Built-in project coordinates for ${project.version} style placeholders
+        // (only if the POM didn't declare its own same-named properties)
+        String projectVersion = getChildText(root, "version");
+        if (projectVersion != null && !projectVersion.isEmpty()) {
+            if (!properties.containsKey("project.version")) {
+                properties.put("project.version", projectVersion);
+            }
+            if (!properties.containsKey("version")) {
+                properties.put("version", projectVersion);
+            }
+        }
+
         // Extract dependency management versions for resolution
-        Map<String, String> managedVersions = parseDependencyManagement(root);
+        Map<String, String> managedVersions = parseDependencyManagement(root, properties);
 
         // Extract dependencies
         NodeList dependenciesNodes = root.getElementsByTagName("dependencies");
@@ -113,12 +138,20 @@ public class PomParser {
                     version = managedVersions.get(key);
                 }
 
-                // Skip if version still unresolved (or contains property placeholders)
+                // Substitute ${...} property placeholders from the same POM
+                version = resolvePlaceholders(version, properties);
+
+                // Skip if version still unresolved (or contains unresolved placeholders)
                 if (version == null || version.isEmpty() || version.contains("${")) {
                     continue;
                 }
 
-                info.dependencies.add(new DependencyDeclaration(groupId, artifactId, version));
+                // Construct the declaration; skip (don't abort) on invalid coordinates
+                try {
+                    info.dependencies.add(new DependencyDeclaration(groupId, artifactId, version));
+                } catch (IllegalArgumentException ignored) {
+                    // Malformed coordinate from a remote POM — skip it safely
+                }
             }
         }
 
@@ -128,7 +161,7 @@ public class PomParser {
     /**
      * Parses the dependencyManagement section to extract managed versions.
      */
-    private static Map<String, String> parseDependencyManagement(Element root) {
+    private static Map<String, String> parseDependencyManagement(Element root, Map<String, String> properties) {
         Map<String, String> managedVersions = new HashMap<>();
 
         NodeList dmNodes = root.getElementsByTagName("dependencyManagement");
@@ -146,7 +179,7 @@ public class PomParser {
                 Element depElement = (Element) depItem;
                 String groupId = getChildText(depElement, "groupId");
                 String artifactId = getChildText(depElement, "artifactId");
-                String version = getChildText(depElement, "version");
+                String version = resolvePlaceholders(getChildText(depElement, "version"), properties);
 
                 if (groupId != null && artifactId != null && version != null
                         && !version.contains("${")) {
@@ -156,6 +189,56 @@ public class PomParser {
         }
 
         return managedVersions;
+    }
+
+    /**
+     * Parses the top-level &lt;properties&gt; section into a key→value map.
+     */
+    private static Map<String, String> parseProperties(Element root) {
+        Map<String, String> properties = new HashMap<>();
+        NodeList propsNodes = root.getElementsByTagName("properties");
+        for (int i = 0; i < propsNodes.getLength(); i++) {
+            Node propsNode = propsNodes.item(i);
+            if (propsNode.getNodeType() != Node.ELEMENT_NODE) continue;
+            // Only the project-level <properties> (direct child of root)
+            if (propsNode.getParentNode() != root) continue;
+
+            NodeList children = propsNode.getChildNodes();
+            for (int j = 0; j < children.getLength(); j++) {
+                Node child = children.item(j);
+                if (child.getNodeType() != Node.ELEMENT_NODE) continue;
+                String name = child.getNodeName();
+                String value = child.getTextContent();
+                if (name != null && value != null) {
+                    properties.put(name.trim(), value.trim());
+                }
+            }
+        }
+        return properties;
+    }
+
+    /**
+     * Substitutes ${...} placeholders in a value using the given properties map.
+     * Returns the input unchanged if it has no placeholders or they can't be resolved.
+     */
+    private static String resolvePlaceholders(String value, Map<String, String> properties) {
+        if (value == null || !value.contains("${")) {
+            return value;
+        }
+        String result = value;
+        // Resolve up to a few levels of nested placeholders
+        for (int pass = 0; pass < 5 && result.contains("${"); pass++) {
+            int start = result.indexOf("${");
+            int end = result.indexOf('}', start);
+            if (end < 0) break;
+            String key = result.substring(start + 2, end);
+            String replacement = properties.get(key);
+            if (replacement == null) {
+                break; // unresolved — leave ${...} so caller skips it
+            }
+            result = result.substring(0, start) + replacement + result.substring(end + 1);
+        }
+        return result;
     }
 
     /**

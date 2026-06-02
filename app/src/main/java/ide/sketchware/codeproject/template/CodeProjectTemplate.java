@@ -28,8 +28,9 @@ public class CodeProjectTemplate {
         FileUtil.writeFile(valuesDir + File.separator + "colors.xml", generateColors());
         FileUtil.writeFile(valuesDir + File.separator + "styles.xml", generateStyles());
 
-        // Generate dependencies.txt with instructions
-        FileUtil.writeFile(project.getProjectMyscPath() + File.separator + "dependencies.txt",
+        // Generate dependencies.txt in the editable source tree (visible in the
+        // file explorer and read by the "Sync Dependencies" action)
+        FileUtil.writeFile(project.getSourcePath() + File.separator + "dependencies.txt",
                 generateDependenciesFile());
     }
 

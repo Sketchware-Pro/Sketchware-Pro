@@ -5,14 +5,32 @@ package ide.sketchware.codeproject.dependencies;
  */
 public class DependencyDeclaration {
 
+    private static final java.util.regex.Pattern SAFE_COORDINATE =
+            java.util.regex.Pattern.compile("[a-zA-Z0-9._-]+");
+
     private final String groupId;
     private final String artifactId;
     private final String version;
 
+    /**
+     * Constructs a dependency declaration, validating each coordinate against a
+     * safe-character whitelist. This guards every construction path (including
+     * transitive dependencies parsed from remote POMs) against path traversal.
+     *
+     * @throws IllegalArgumentException if any coordinate is null/empty or contains unsafe characters
+     */
     public DependencyDeclaration(String groupId, String artifactId, String version) {
+        if (!isSafe(groupId) || !isSafe(artifactId) || !isSafe(version)) {
+            throw new IllegalArgumentException(
+                    "Invalid Maven coordinates: " + groupId + ":" + artifactId + ":" + version);
+        }
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.version = version;
+    }
+
+    private static boolean isSafe(String value) {
+        return value != null && !value.isEmpty() && SAFE_COORDINATE.matcher(value).matches();
     }
 
     public String getGroupId() {
@@ -37,16 +55,18 @@ public class DependencyDeclaration {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DependencyDeclaration that = (DependencyDeclaration) o;
-        return groupId.equals(that.groupId) && artifactId.equals(that.artifactId);
+        return groupId.equals(that.groupId)
+                && artifactId.equals(that.artifactId)
+                && version.equals(that.version);
     }
 
     @Override
     public int hashCode() {
-        return 31 * groupId.hashCode() + artifactId.hashCode();
+        int result = groupId.hashCode();
+        result = 31 * result + artifactId.hashCode();
+        result = 31 * result + version.hashCode();
+        return result;
     }
-
-    private static final java.util.regex.Pattern SAFE_COORDINATE =
-            java.util.regex.Pattern.compile("[a-zA-Z0-9._-]+");
 
     /**
      * Parses a dependency notation string in the format "groupId:artifactId:version".
@@ -71,9 +91,7 @@ public class DependencyDeclaration {
             return null;
         }
         // Reject coordinates with path traversal or unsafe characters
-        if (!SAFE_COORDINATE.matcher(groupId).matches()
-                || !SAFE_COORDINATE.matcher(artifactId).matches()
-                || !SAFE_COORDINATE.matcher(version).matches()) {
+        if (!isSafe(groupId) || !isSafe(artifactId) || !isSafe(version)) {
             return null;
         }
         return new DependencyDeclaration(groupId, artifactId, version);
