@@ -14,6 +14,8 @@ on:
       - 'settings.gradle'
     branches-ignore:
       - 'wip/**'
+    tags:
+      - '*'
   workflow_dispatch:
 
 permissions:
@@ -139,11 +141,11 @@ jobs:
     name: Publish GitHub Release
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     needs: build
-    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
     env:
       GH_TOKEN: ${{ github.token }}
-      RELEASE_TAG: apk-${{ needs.build.outputs.short_sha }}
-      RELEASE_NAME: Sketchware Pro APK ${{ needs.build.outputs.short_sha }}
+      RELEASE_TAG: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('apk-{0}', needs.build.outputs.short_sha) }}
+      RELEASE_NAME: ${{ startsWith(github.ref, 'refs/tags/') && format('Sketchware Pro {0}', github.ref_name) || format('Sketchware Pro APK {0}', needs.build.outputs.short_sha) }}
       APK_PATH: ./downloaded-artifact/app-release-${{ needs.build.outputs.short_sha }}.apk
     steps:
       - uses: actions/checkout@v4
