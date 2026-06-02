@@ -38,6 +38,7 @@ public class DependencyResolver {
     private final Context context;
     private final ArtifactDownloader downloader;
     private final Set<String> resolvedSet = new HashSet<>();
+    private final List<String> warnings = new ArrayList<>();
 
     public DependencyResolver(Context context) {
         this.context = context;
@@ -60,6 +61,7 @@ public class DependencyResolver {
         List<File> resolvedJars = new ArrayList<>();
         List<String> errors = new ArrayList<>();
         resolvedSet.clear();
+        warnings.clear();
 
         for (DependencyDeclaration dep : declarations) {
             if (listener != null) {
@@ -74,14 +76,26 @@ public class DependencyResolver {
         }
 
         if (listener != null) {
+            // Surface AAR-payload warnings (dropped resources/assets/native libs)
+            // alongside any errors so incomplete results aren't silent.
+            String warningText = warnings.isEmpty() ? null
+                    : "Warnings (build may be incomplete):\n" + String.join("\n", warnings);
+
             if (errors.isEmpty()) {
                 listener.onComplete(resolvedJars);
+                if (warningText != null) {
+                    listener.onError(warningText);
+                }
             } else if (!resolvedJars.isEmpty()) {
-                // Partial success: report resolved jars but also show errors
+                // Partial success: report resolved jars but also show errors/warnings
                 listener.onComplete(resolvedJars);
-                listener.onError("Some dependencies failed:\n" + String.join("\n", errors));
+                String msg = "Some dependencies failed:\n" + String.join("\n", errors);
+                if (warningText != null) msg += "\n\n" + warningText;
+                listener.onError(msg);
             } else {
-                listener.onError("All dependencies failed:\n" + String.join("\n", errors));
+                String msg = "All dependencies failed:\n" + String.join("\n", errors);
+                if (warningText != null) msg += "\n\n" + warningText;
+                listener.onError(msg);
             }
         }
     }
@@ -175,7 +189,9 @@ public class DependencyResolver {
     }
 
     /**
-     * Extracts classes.jar from an AAR file (which is a ZIP archive).
+     * Extracts classes.jar from an AAR file (which is a ZIP archive). Also detects
+     * whether the AAR carries res/, assets/, or jni/ payload that this build pipeline
+     * does not yet link, and records a warning so the result isn't silently incomplete.
      */
     private File extractClassesJarFromAar(File aarFile, DependencyDeclaration dep) throws IOException {
         File extractDir = new File(aarFile.getParentFile(), "extracted");
@@ -190,34 +206,58 @@ public class DependencyResolver {
 
         // Write to temp file first to avoid partial extractions being treated as valid
         File tempJar = new File(extractDir, classesJar.getName() + ".tmp");
+        boolean foundClasses = false;
+        boolean hasResources = false;
+        boolean hasAssets = false;
+        boolean hasJni = false;
 
         try (ZipInputStream zis = new ZipInputStream(new FileInputStream(aarFile))) {
             ZipEntry entry;
+            byte[] buffer = new byte[8192];
+            // Scan the entire archive (classes.jar typically precedes res/, so we
+            // can't return early if we also want to detect dropped payload).
             while ((entry = zis.getNextEntry()) != null) {
-                if ("classes.jar".equals(entry.getName())) {
+                String name = entry.getName();
+                if (!entry.isDirectory()) {
+                    if (name.startsWith("res/")) hasResources = true;
+                    else if (name.startsWith("assets/")) hasAssets = true;
+                    else if (name.startsWith("jni/")) hasJni = true;
+                }
+                if ("classes.jar".equals(name)) {
                     try (FileOutputStream fos = new FileOutputStream(tempJar)) {
-                        byte[] buffer = new byte[8192];
                         int len;
                         while ((len = zis.read(buffer)) != -1) {
                             fos.write(buffer, 0, len);
                         }
                     }
-                    // Atomic rename
-                    if (classesJar.exists()) classesJar.delete();
-                    if (!tempJar.renameTo(classesJar)) {
-                        copyFile(tempJar, classesJar);
-                        tempJar.delete();
-                    }
-                    return classesJar;
+                    foundClasses = true;
                 }
                 zis.closeEntry();
             }
-        } finally {
-            // Clean up temp if extraction failed partway
-            if (tempJar.exists()) tempJar.delete();
         }
 
-        // No classes.jar found in AAR
+        // Warn that non-class AAR payload is dropped (not yet linked into the build)
+        if (hasResources || hasAssets || hasJni) {
+            StringBuilder dropped = new StringBuilder();
+            if (hasResources) dropped.append("resources ");
+            if (hasAssets) dropped.append("assets ");
+            if (hasJni) dropped.append("native-libs ");
+            warnings.add(dep + " is an AAR; its " + dropped.toString().trim()
+                    + " were not included (only classes). It may not work correctly at runtime.");
+        }
+
+        if (foundClasses && tempJar.exists()) {
+            // Atomic rename
+            if (classesJar.exists()) classesJar.delete();
+            if (!tempJar.renameTo(classesJar)) {
+                copyFile(tempJar, classesJar);
+                tempJar.delete();
+            }
+            return classesJar;
+        }
+
+        // No classes.jar found in AAR; clean up any temp
+        if (tempJar.exists()) tempJar.delete();
         return null;
     }
 
