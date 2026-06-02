@@ -101,13 +101,18 @@ The block editor is **not** an isolated module. It is anchored by
 non-block, actively-used code depends on it:
 
 ```
-DesignActivity  (kept)
-  ├── ide.sketchware.activities.resourceseditor.components.adapters.StringsAdapter
-  ├── ide.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager
-  ├── mod.jbk.build.compiler.resource.ResourceCompiler
-  ├── mod.bobur.VectorDrawableParser
-  └── a.a.a.ViewEditorFragment
+DesignActivity  (kept — cannot be deleted)
+  ▲ depended on by (inbound — these import DesignActivity.sc_id):
+  │   ├── ide.sketchware.activities.resourceseditor.components.adapters.StringsAdapter
+  │   ├── ide.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager
+  │   ├── mod.jbk.build.compiler.resource.ResourceCompiler
+  │   └── mod.bobur.VectorDrawableParser
+  ▼ depends on (outbound):
+      └── a.a.a.ViewEditorFragment  (and the editor view/logic/property trees)
 ```
+
+Both directions pin `DesignActivity`: kept code depends on it (inbound), and it
+reaches into the editor graph (outbound). Either alone is enough to block deletion.
 
 Because `DesignActivity` reaches into the editor view/logic/property trees, and
 because many block-editor activities are still declared in
@@ -166,7 +171,7 @@ When you remove an Activity/Service class, also remove its declaration from
 
 | Phase | Outcome |
 | ----- | ------- |
-| Block-editor orphan removal (this phase) | Removed 3 fully-orphaned leaf classes (`PropertySwitchItem`, `dev.aldi.sayuti.editor.injection.ManifestInjection`, `DialogButtonGradientDrawable`). Peeling converged after one round; no further leaves were safely removable because the rest of the graph is pinned by `DesignActivity` and the manifest. |
+| Block-editor orphan removal (this phase) | Removed 3 fully-orphaned leaf classes (`PropertySwitchItem`, `dev.aldi.sayuti.editor.injection.ManifestInjection`, `DialogButtonGradientDrawable`) plus the now-orphaned `res/layout/property_switch_item.xml`. Peeling converged after one round; no further leaves were safely removable because the rest of the graph is pinned by `DesignActivity` and the manifest. |
 
 ### Future work
 - The block editor can only be fully removed once the resource editor and
