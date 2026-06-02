@@ -76,6 +76,15 @@ The **iron rule** for any refactor: `./gradlew assembleDebug` must report
 `mod.hey.studios.code.*`, `mod.bobur.*` and friends provide the compiler/build
 infra and are referenced by the resource editor and build pipeline.
 
+> **Maven dependency resolution already exists.** `mod.pranav.dependency.resolver.DependencyResolver`
+> (Kotlin) wraps the bundled `com.github.Cosmic-Ide:DependencyResolver` library
+> (`org.cosmic.ide.dependency.resolver`, declared as `libs.dependencyresolver`).
+> It does POM parsing, repository fallback, transitive resolution, AAR handling,
+> and D8 dexing, and is already wired into the block editor via
+> `dev.aldi.sayuti.editor.manage.LibraryDownloaderDialogFragment`. **Reuse this —
+> do not hand-roll a Maven resolver.** The Code Project IDE consumes it through
+> `ide.sketchware.codeproject.dependencies.CosmicDependencyBridge`.
+
 ### Legacy block editor — being retired (see §4)
 - `com.besome.sketch.editor.*` (≈133 files) — the drag-and-drop logic/view editor.
 - `dev.aldi.sayuti.*` (≈39 files) — block palette, custom view items, local library management.
@@ -189,6 +198,53 @@ When you remove an Activity/Service class, also remove its declaration from
   (the build supports both).
 - Put new first-party features under `ide.sketchware.*`, respecting existing
   directory/file naming.
+- **Before building a new subsystem, check whether it already exists** (see §8) —
+  search `mod.*`, `app/libs/*.jar`, and `gradle/libs.versions.toml` first.
 - Commit message prefixes: `feat:`, `fix:`, `style:`, `refactor:`, `test:`,
   `docs:`, `chore:`.
 - Always run `./gradlew assembleDebug` before committing.
+
+
+---
+
+## 8. Reuse existing infrastructure before building new
+
+This is a large, decade-old codebase (≈200k LOC across `com.besome.*`, `a.a.a.*`,
+`dev.*`, `mod.*`, plus prebuilt JARs in `app/libs/`). Before implementing any
+non-trivial capability, **search the tree first** — chances are it already
+exists, is more robust than a fresh implementation, and is wired into the build.
+
+### Case study: the Maven dependency resolver (what NOT to do)
+
+An early pass at "dependency resolution for Code Projects" hand-rolled a POM
+parser, an HTTP artifact downloader, and a repository URL builder from scratch
+(`PomParser`, `ArtifactDownloader`, `MavenRepository`). That was wasted effort
+and strictly worse than what already shipped:
+
+- The repo already bundles `com.github.Cosmic-Ide:DependencyResolver`
+  (`org.cosmic.ide.dependency.resolver`) — a maintained Maven resolver with
+  transitive resolution, repository fallback, and AAR handling.
+- It was already used by `mod.pranav.dependency.resolver.DependencyResolver` and
+  the block editor's library downloader.
+
+The fix was to delete the custom code and add a thin
+`CosmicDependencyBridge` over the existing library. Net result: **−734 lines**
+and a more correct, better-tested resolver.
+
+### Checklist before writing a new subsystem
+
+1. **Grep the source tree** for the capability and its synonyms
+   (e.g. `maven`, `resolver`, `dependency`, `download`, `pom`).
+2. **Check `app/libs/*.jar` and `gradle/libs.versions.toml`** — a library may
+   already be on the classpath (references from JARs are invisible to source
+   grep, so inspect the declared dependencies too).
+3. **Look in `mod.*`** — most contributor features live there
+   (`mod.jbk`, `mod.hey.studios`, `mod.pranav`, `mod.hilal.saif`, `mod.bobur`).
+4. **Check how an existing screen does it** — e.g. the block editor often
+   already has a working flow you can adapt rather than reimplement.
+5. Only build new when reuse is genuinely impossible, and say *why* in the PR.
+
+If you do add a thin adapter over existing code, let the compiler validate the
+integration: a Kotlin/Java call against the real library/API fails at
+`./gradlew assembleDebug` if a signature is wrong — stronger proof than a
+hand-rolled equivalent that only "looks right".
