@@ -2,7 +2,7 @@
 
 The Code Project dependency feature drops its own Maven stack (`PomParser`, `ArtifactDownloader`, `MavenRepository`, ~734 lines) and routes resolution through the project's existing `org.cosmic.ide.dependency.resolver` library — the same one the block editor's `LibraryDownloaderDialogFragment` drives via `mod.pranav.dependency.resolver.DependencyResolver`. `DependencyResolver.java` becomes a thin facade that keeps `ResolveListener` and `parseDependenciesFile()` and forwards `resolve()` to the new `CosmicDependencyBridge.kt`. The bridge resolves each declared coordinate plus its transitive tree, downloads jar/aar, extracts `classes.jar` from AARs (warning on dropped res/assets/jni), and writes `group_artifact-version.jar` into `libs/resolved/` without pre-dexing, since `CodeProjectBuilder` dexes the whole classpath at build time.
 
-**Watch for:** the bridge overwrites the library's **global** `eventReciever` with a no-op (confirmed) — if a block-editor library download runs concurrently with a Code Project sync, the block editor's progress/error callbacks silently route to the no-op; `ensureRepositories()` doesn't do what it claims because the library pre-seeds Google/Central/JitPack under different hostnames, so it ends up appending duplicate mirrors to a shared global (confirmed); and version-conflict resolution semantics shifted from "first-wins everywhere" to "newest-wins within a tree, first-wins across declarations" (confirmed).
+**Watch for:** the bridge overwrites the library's **global** `eventReceiver` with a no-op (confirmed) — if a block-editor library download runs concurrently with a Code Project sync, the block editor's progress/error callbacks silently route to the no-op; `ensureRepositories()` doesn't do what it claims because the library pre-seeds Google/Central/JitPack under different hostnames, so it ends up appending duplicate mirrors to a shared global (confirmed); and version-conflict resolution semantics shifted from "first-wins everywhere" to "newest-wins within a tree, first-wins across declarations" (confirmed).
 
 ## High-level view
 
@@ -10,22 +10,21 @@ The swap itself is the right move: the deleted code was a partial reimplementati
 
 The resolve sequence — `getArtifact` → `resolveDependencyTree` → `getAllDependencies` → `downloadTo` — is used correctly, and the ordering question (must `downloadTo` precede `resolveDependencyTree`?) resolves to no: `getArtifact` already fetches the POM and sets each artifact's repository and extension, and `downloadTo` only fetches the binary, independent of tree resolution. pranav downloads the main artifact first only to dex incrementally, not as a precondition. The one wrinkle is that `getAllDependencies()` internally re-runs `resolveDependencyTree()`, so the explicit pre-call resolves the tree twice.
 
-The real risk is shared mutable global state in the library. `eventReciever` is a single process-wide `var`; both resolvers assign it without synchronization, so concurrent runs clobber each other. `repositories` is a process-wide pre-seeded queue; `ensureRepositories()` mutates it on every sync and, because its host check misses the pre-seeded Google/Central mirrors, leaves duplicate entries that the block editor's resolver then iterates too.
+The real risk is shared mutable global state in the library. `eventReceiver` is a single process-wide `var`; both resolvers assign it without synchronization, so concurrent runs clobber each other. `repositories` is a process-wide pre-seeded queue; `ensureRepositories()` mutates it on every sync and, because its host check misses the pre-seeded Google/Central mirrors, leaves duplicate entries that the block editor's resolver then iterates too.
 
 Version selection changed in a subtle way. The library collapses duplicate `group:artifact` within a tree to the newest version; the bridge's own first-wins dedup set only governs collisions across separately-resolved top-level declarations. The deleted resolver was uniformly first-wins, so declaration order can now pick an older shared transitive.
 
-Two smaller deltas: there's no longer a download cache (every sync re-fetches from the network), and the AAR extraction writes straight to the final jar rather than through a temp file — masked by the outer temp-dir swap but inconsistent with the jar path.
+One smaller delta: there's no longer a download cache, so repeat syncs re-fetch from the network.
 
 <details>
 <summary>Issues (7)</summary>
 
-1. **eventReciever clobbering (MEDIUM, confirmed/likely)** — the bridge overwrites the library's global `eventReciever`; a concurrent block-editor download loses its progress/error callbacks. Guard against concurrent runs or save/restore the receiver around the bridge's resolution.
+1. **eventReceiver clobbering (MEDIUM, confirmed/likely)** — the bridge overwrites the library's global `eventReceiver`; a concurrent block-editor download loses its progress/error callbacks. Guard against concurrent runs or save/restore the receiver around the bridge's resolution.
 2. **ensureRepositories is a no-op that adds duplicate mirrors (LOW, confirmed)** — the library pre-seeds Google/Central/JitPack under different hostnames, so the host check adds a second Google (`dl.google.com`) and second Central (`repo.maven.apache.org`) to the shared global. Drop the function or match against the pre-seeded URLs.
 3. **Version-conflict semantics shifted (LOW, confirmed)** — newest-wins within a tree but first-wins across declarations, vs uniformly first-wins before. Confirm this is acceptable; if a deterministic global policy is wanted, dedup before resolving.
 4. **Redundant tree resolution (LOW, confirmed)** — `getAllDependencies()` already calls `resolveDependencyTree()`, so the explicit pre-call resolves the main tree twice (double POM fetches). Remove the explicit `artifact.resolveDependencyTree()` line.
 5. **No artifact cache (LOW, confirmed)** — the deleted `ArtifactDownloader` cached under `maven_cache`; the bridge re-downloads every sync. Acceptable but slower/more bandwidth on repeat syncs.
-6. **Non-atomic AAR extraction (LOW, confirmed)** — the AAR path writes `classes.jar` straight to the final output file while the jar path uses a temp+rename. Masked by the outer `.resolved_tmp` swap; align for consistency.
-7. **Resource-only AAR emits a warning but no error (LOW, confirmed)** — an AAR with no `classes.jar` produces the dropped-payload warning and returns null, contributing nothing without a hard error. Edge case; consider surfacing as an error.
+6. **Resource-only AAR emits a warning but no error (LOW, confirmed)** — an AAR with no `classes.jar` produces the dropped-payload warning and returns null, contributing nothing without a hard error. Edge case; consider surfacing as an error.
 
 </details>
 
@@ -38,18 +37,19 @@ Two smaller deltas: there's no longer a download cache (every sync re-fetches fr
 
 One redundancy: decompiling `Artifact.getAllDependencies` shows it calls `resolveDependencyTree$default` itself before flattening. The bridge calls `artifact.resolveDependencyTree()` explicitly and *then* `artifact.getAllDependencies()`, so the main artifact's tree is resolved twice — double the POM network round-trips for that subtree. (pranav is worse, calling `getAllDependencies()` three times, so this is not a regression.) The explicit `resolveDependencyTree()` line can be deleted with no behavioral change.
 
-### eventReciever clobbering across resolvers
+### eventReceiver clobbering across resolvers
 
-`eventReciever` is a single global `var` in the library's `UtilsKt`, shared by every caller in the process. The bridge sets it to a no-op `DependencyResolverCallback`; pranav sets it to a callback that drives the block editor's UI (`unzipping`, `dexing`, `onDownloadStart/End`, `onDownloadError`, `onTaskCompleted`). Both run on their own background threads (`CodeProjectActivity` spawns a `Thread`; `LibraryDownloaderDialogFragment` does too), and neither synchronizes on the global.
+`eventReceiver` is a single global `var` in the library's `UtilsKt`, shared by every caller in the process. The bridge sets it to a no-op `DependencyResolverCallback`; pranav sets it to a callback that drives the block editor's UI (`unzipping`, `dexing`, `onDownloadStart/End`, `onDownloadError`, `onTaskCompleted`). Both run on their own background threads (`CodeProjectActivity` spawns a `Thread`; `LibraryDownloaderDialogFragment` does too), and neither synchronizes on the global.
 
-```
+```text
+# concurrency/sequence diagram pseudocode
 Code Project sync thread          Block editor download thread
-  eventReciever = no-op   ----X---->  (pranav had set its callback)
+  eventReceiver = no-op   ----X---->  (pranav had set its callback)
   ... resolve ...                     ... downloadTo() fires onDownloadStart
                                           -> goes to the no-op, UI never updates
 ```
 
-If both flows overlap, whichever assigns last wins for the whole process. The bridge clobbering pranav's callback means the block editor's progress and, more importantly, `onDownloadError` events vanish into the no-op while its download keeps running — the UI looks frozen and failures go unreported. Concurrency requires the user to trigger both at once, so impact is "likely" rather than guaranteed, but the global is genuinely shared. Saving and restoring `eventReciever` around the bridge's `runBlocking`, or gating the two flows so they can't overlap, would close it.
+If both flows overlap, whichever assigns last wins for the whole process. The bridge clobbering pranav's callback means the block editor's progress and, more importantly, `onDownloadError` events vanish into the no-op while its download keeps running — the UI looks frozen and failures go unreported. Concurrency requires the user to trigger both at once, so impact is "likely" rather than guaranteed, but the global is genuinely shared. Saving and restoring `eventReceiver` around the bridge's `runBlocking`, or gating the two flows so they can't overlap, would close it.
 
 ### Repository seeding duplicates pre-seeded mirrors
 
@@ -63,15 +63,15 @@ For androidx the resolver walks the queue and `checkExists` picks the first host
 
 Net: within one declaration's tree the newest version wins; across two declarations sharing a transitive, the first-declared declaration's resolved version wins regardless of which is newer. The deleted resolver used one `resolvedSet` spanning all declarations and recursion, so it was uniformly first-wins in DFS order. The new behavior is usually an improvement (proper newest-wins inside each tree), but it's a real semantic change: declaration order in `dependencies.txt` can now select an older version of a shared transitive than another declaration would have pulled. A pre-resolution dedup of the declared list would make the policy deterministic.
 
-### AAR extraction: non-atomic write and resource-only edge case
+### AAR extraction: resource-only edge case
 
-The jar path downloads to `base.jar.tmp` and renames to the final name; the AAR path's `extractClassesJar` instead deletes any existing final jar and streams `classes.jar` straight into it with no temp file. Because resolution always targets `.resolved_tmp` and `swapResolvedDir` only promotes it on success (with `onError` clearing the temp dir), a half-written AAR jar is discarded before it can reach `libs/resolved/`, so the non-atomicity is masked. The two paths should still match for consistency.
+The jar path downloads to `base.jar.tmp` and renames to the final name; the AAR path now extracts `classes.jar` to a temp file and renames it into place too. Both paths are also masked by the outer `.resolved_tmp` swap before anything reaches `libs/resolved/`.
 
 The full-archive scan is correct: it iterates every entry (no early return) so `res/`, `assets/`, and `jni/` are detected even though `classes.jar` typically precedes them. One edge case: the dropped-payload warning is appended based on the scan regardless of whether `classes.jar` was found, so a resource-only AAR (no `classes.jar`) emits the "resources were not included" warning and returns null — contributing no jar and no hard error, only a warning. Rare, but such a dependency silently produces nothing buildable.
 
-### Warning path fires both onComplete and onError
+### Warning path should stay distinct from errors
 
-When there are warnings but no errors, `dispatchResult` calls `onComplete(jars)` then `onError(warningText)`. In `CodeProjectActivity` that shows the success toast + `refreshFileExplorer()` *and* the error panel, and dismisses the progress dialog twice. This matches the deleted resolver's behavior (not a regression), but it stays safe only because `onComplete` runs `swapResolvedDir` synchronously on the worker thread before `onError` clears the temp dir — a fragile ordering dependency baked into the dual-callback contract rather than expressed explicitly.
+When there are warnings but no errors, `dispatchResult` should complete the sync and surface the warning separately rather than routing the warning through `onError`. Keeping warning UI distinct avoids double dismissal and avoids treating a successfully swapped dependency set as a failed sync.
 
 </details>
 

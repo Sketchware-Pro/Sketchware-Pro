@@ -27,7 +27,7 @@ The block-editor disablement works by redirecting `toDesignActivity(sc_id)` to o
 
 The `.gitignore` at the repo root contains the pattern `build/` (line 20), intended to exclude Gradle build output directories. This pattern also matches any path segment named `build`, including the Java package `ide.sketchware.codeproject.build`. The old file at `pro/sketchware/codeproject/build/CodeProjectBuilder.java` was tracked (force-added at some point, overriding the ignore rule). When the rename deleted that tracked file, the replacement at `ide/sketchware/codeproject/build/CodeProjectBuilder.java` was never staged — git silently ignores it.
 
-```
+```bash
 $ git ls-tree -r HEAD | grep "codeproject/build"
 # (empty)
 

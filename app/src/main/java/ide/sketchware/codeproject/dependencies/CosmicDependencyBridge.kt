@@ -34,7 +34,7 @@ object CosmicDependencyBridge {
             // The library calls into a process-wide event receiver. Save the
             // current one, install a no-op for our run, and restore it afterward
             // so we don't leave another caller's receiver pointing at our stub.
-            val previousReceiver = runCatching { eventReciever }.getOrNull()
+            val previousReceiver = eventReciever
             eventReciever = object : PranavResolver.DependencyResolverCallback() {}
 
             if (!outputDir.exists()) outputDir.mkdirs()
@@ -77,7 +77,7 @@ object CosmicDependencyBridge {
                     }
                 }
             } finally {
-                if (previousReceiver != null) eventReciever = previousReceiver
+                eventReciever = previousReceiver
             }
 
             dispatchResult(listener, resolvedJars, errors, warnings)
@@ -98,7 +98,7 @@ object CosmicDependencyBridge {
         when {
             errors.isEmpty() -> {
                 listener.onComplete(resolvedJars)
-                if (warningText != null) listener.onError(warningText)
+                if (warningText != null) listener.onWarning(warningText)
             }
             resolvedJars.isNotEmpty() -> {
                 listener.onComplete(resolvedJars)

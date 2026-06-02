@@ -30,6 +30,8 @@ public class DependencyResolver {
 
         void onComplete(List<File> resolvedJars);
 
+        void onWarning(String warning);
+
         void onError(String error);
     }
 

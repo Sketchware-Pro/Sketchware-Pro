@@ -24,6 +24,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,8 +68,8 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private LogcatPanel logcatPanel;
     private boolean logcatVisible = false;
     private BuildErrorAdapter errorAdapter;
-    private volatile int searchToken = 0;
     private final Map<String, List<CompilerErrorParser.CompilerError>> fileErrorMap = new HashMap<>();
+    private volatile int searchToken = 0;
 
     private final ActivityResultLauncher<Intent> settingsLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -482,6 +484,14 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             EditorUtils.loadJavaAutoCompleteConfig(binding.editor);
         }
 
+        // Apply inline error diagnostics if this file has errors
+        List<CompilerErrorParser.CompilerError> errors = findErrorsForFile(currentFile);
+        if (errors != null && !errors.isEmpty()) {
+            setDiagnosticsForCurrentFile(errors);
+        } else {
+            binding.editor.setDiagnostics(new DiagnosticsContainer());
+        }
+
         // Re-run search on new file if search panel is active
         if (binding.searchPanel.getRoot().getVisibility() == View.VISIBLE) {
             EditText searchInput = binding.searchPanel.getRoot().findViewById(R.id.search_input);
@@ -490,14 +500,6 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 binding.editor.getSearcher().search(query,
                     new EditorSearcher.SearchOptions(EditorSearcher.SearchOptions.TYPE_NORMAL, true));
             }
-        }
-
-        // Apply inline error diagnostics if this file has errors
-        List<CompilerErrorParser.CompilerError> errors = findErrorsForFile(currentFile);
-        if (errors != null && !errors.isEmpty()) {
-            setDiagnosticsForCurrentFile(errors);
-        } else {
-            binding.editor.setDiagnostics(new DiagnosticsContainer());
         }
 
         // Update UI
@@ -715,6 +717,10 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             MenuItem buildItem = menu.findItem(R.id.action_build);
             if (buildItem != null) {
                 buildItem.setEnabled(enabled);
+            }
+            MenuItem syncItem = menu.findItem(R.id.action_sync_deps);
+            if (syncItem != null) {
+                syncItem.setEnabled(enabled);
             }
         }
     }
@@ -1113,17 +1119,29 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
 
                     @Override
                     public void onComplete(List<File> resolvedJars) {
-                        // Swap temp → resolved on the worker thread before touching UI
-                        swapResolvedDir(tempDir, resolvedDir);
+                        try {
+                            // Swap temp -> resolved on the worker thread before touching UI
+                            swapResolvedDir(tempDir, resolvedDir);
+                            runOnUiThread(() -> {
+                                isSyncing = false;
+                                setBuildMenuEnabled(true);
+                                if (isFinishing() || isDestroyed()) return;
+                                progress.dismiss();
+                                Toast.makeText(CodeProjectActivity.this,
+                                        getString(R.string.code_project_deps_synced, resolvedJars.size()),
+                                        Toast.LENGTH_SHORT).show();
+                                refreshFileExplorer();
+                            });
+                        } catch (IOException e) {
+                            onError(e.getMessage() != null ? e.getMessage() : "Failed to install resolved dependencies");
+                        }
+                    }
+
+                    @Override
+                    public void onWarning(String warning) {
                         runOnUiThread(() -> {
-                            isSyncing = false;
-                            setBuildMenuEnabled(true);
                             if (isFinishing() || isDestroyed()) return;
-                            progress.dismiss();
-                            Toast.makeText(CodeProjectActivity.this,
-                                    getString(R.string.code_project_deps_synced, resolvedJars.size()),
-                                    Toast.LENGTH_SHORT).show();
-                            refreshFileExplorer();
+                            showErrorPanel(warning);
                         });
                     }
 
@@ -1162,7 +1180,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
      * from {@code tempDir}, then removes the temp dir. Called only after a
      * successful resolution so a failed sync never wipes the last good set.
      */
-    private void swapResolvedDir(File tempDir, File resolvedDir) {
+    private void swapResolvedDir(File tempDir, File resolvedDir) throws IOException {
         clearResolvedDir(resolvedDir);
         if (!resolvedDir.exists()) {
             resolvedDir.mkdirs();
@@ -1173,13 +1191,32 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 if (f.isFile()) {
                     File dest = new File(resolvedDir, f.getName());
                     if (dest.exists()) dest.delete();
-                    // temp and resolved share the same parent (libs/), so rename is reliable
-                    f.renameTo(dest);
+                    if (!f.renameTo(dest)) {
+                        copyFileOrThrow(f, dest);
+                        if (!f.delete()) {
+                            throw new IOException("Failed to remove temp dependency: " + f.getName());
+                        }
+                    }
                 }
             }
         }
         clearResolvedDir(tempDir);
         tempDir.delete();
+    }
+
+    private void copyFileOrThrow(File source, File dest) throws IOException {
+        File parent = dest.getParentFile();
+        if (parent != null && !parent.exists() && !parent.mkdirs()) {
+            throw new IOException("Failed to create dependency output directory");
+        }
+        try (FileInputStream input = new FileInputStream(source);
+             FileOutputStream output = new FileOutputStream(dest, false)) {
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = input.read(buffer)) != -1) {
+                output.write(buffer, 0, read);
+            }
+        }
     }
 
     /**
