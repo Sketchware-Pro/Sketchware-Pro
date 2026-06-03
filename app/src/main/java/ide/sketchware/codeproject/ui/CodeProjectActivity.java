@@ -363,8 +363,12 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private void setupLogcat() {
         logcatPanel = new LogcatPanel();
         logcatPanel.attach(binding.logcatList);
+        if (project != null) {
+            logcatPanel.setPackageName(project.getPackageName());
+        }
         binding.btnClearLog.setOnClickListener(v -> logcatPanel.clear());
         binding.btnExportLog.setOnClickListener(v -> exportLogcat());
+        binding.btnFilterLog.setOnClickListener(v -> showLogcatPackageFilterDialog());
         binding.btnCloseLog.setOnClickListener(v -> toggleLogcat());
         binding.logcatSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -378,6 +382,23 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
+    }
+
+    private void showLogcatPackageFilterDialog() {
+        EditText input = new EditText(this);
+        input.setSingleLine(true);
+        input.setHint(R.string.code_project_logcat_package_filter_hint);
+        input.setText(logcatPanel.getPackageFilter());
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.code_project_logcat_package_filter)
+                .setMessage(R.string.code_project_logcat_package_filter_message)
+                .setView(input)
+                .setPositiveButton(android.R.string.ok, (dialog, which) ->
+                        logcatPanel.setPackageFilter(input.getText().toString()))
+                .setNeutralButton(R.string.common_word_reset, (dialog, which) ->
+                        logcatPanel.setPackageFilter(""))
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private void exportLogcat() {
@@ -590,21 +611,35 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private void saveCurrentFile() {
         if (activeTabIndex >= 0 && activeTabIndex < openTabs.size()) {
             OpenFileTab tab = openTabs.get(activeTabIndex);
+            if (!validateTabBeforeSave(tab)) return;
             FileUtil.writeFile(tab.getFile().getAbsolutePath(), tab.getContent());
             tab.setModified(false);
             tabAdapter.notifyTabChanged(activeTabIndex);
         }
     }
 
-    private void saveAllModifiedTabs() {
+    private boolean saveAllModifiedTabs() {
         for (int i = 0; i < openTabs.size(); i++) {
             OpenFileTab tab = openTabs.get(i);
             if (tab.isModified()) {
+                if (!validateTabBeforeSave(tab)) return false;
                 FileUtil.writeFile(tab.getFile().getAbsolutePath(), tab.getContent());
                 tab.setModified(false);
                 tabAdapter.notifyTabChanged(i);
             }
         }
+        return true;
+    }
+
+    private boolean validateTabBeforeSave(OpenFileTab tab) {
+        if (CodeProjectEditorSupport.isLayoutXmlFile(project, tab.getFile())) {
+            String validationError = CodeProjectEditorSupport.validateLayoutXml(tab.getContent());
+            if (validationError != null) {
+                SketchwareUtil.toast(validationError);
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean onMenuItemClick(MenuItem item) {
@@ -654,7 +689,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             CodeProjectEditorSupport.openLayoutPreview(this, project, currentFile, binding.editor.getText().toString());
             return true;
         } else if (id == R.id.action_resources) {
-            CodeProjectEditorSupport.showResourceDialog(this, project, this::openFile);
+            CodeProjectEditorSupport.openResourceEditor(this, project);
             return true;
         } else if (id == R.id.action_editor_settings) {
             CodeProjectEditorSupport.showSettingsDialog(this, binding.editor);
@@ -670,7 +705,11 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         hideErrorPanel();
         clearInlineErrors();
 
-        saveAllModifiedTabs();
+        if (!saveAllModifiedTabs()) {
+            isBuilding = false;
+            setBuildMenuEnabled(true);
+            return;
+        }
         SketchwareUtil.toast(getString(R.string.code_project_building));
 
         new Thread(() -> {
@@ -897,8 +936,9 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         } else if (binding.drawerLayout.isDrawerOpen(binding.navView)) {
             binding.drawerLayout.closeDrawer(binding.navView);
         } else {
-            saveAllModifiedTabs();
-            super.onBackPressed();
+            if (saveAllModifiedTabs()) {
+                super.onBackPressed();
+            }
         }
     }
 

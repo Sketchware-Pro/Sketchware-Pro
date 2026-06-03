@@ -19,6 +19,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +53,8 @@ import ide.sketchware.utility.UI;
 
 public class ResourcesEditorActivity extends BaseAppCompatActivity {
 
+    public static final String EXTRA_RESOURCE_ROOT = "resource_root";
+
     private final String variantFullNameStarts = "values-";
     public yq yq;
     public boolean isComingFromSrcCodeEditor;
@@ -70,6 +73,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
     private ResourcesEditorsActivityBinding binding;
     private MaterialAlertDialogBuilder builder;
     private int currentTabPosition = 0;
+    private String explicitResourceRoot;
 
     public static String escapeXml(String text) {
         if (text == null) return "";
@@ -107,6 +111,11 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
 
     private void initializeManagers() {
         sc_id = getIntent().getStringExtra("sc_id");
+        explicitResourceRoot = getIntent().getStringExtra(EXTRA_RESOURCE_ROOT);
+
+        if (isUsingExplicitResourceRoot()) {
+            return;
+        }
 
         yq = new yq(getApplicationContext(), sc_id);
         yq.a(jC.c(sc_id), jC.b(sc_id), jC.a(sc_id));
@@ -122,15 +131,62 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
 
     private void initializeBackgroundTask(String variant) {
         this.variant = variant;
-        String baseDir = String.format("%s/files/resource/values%s/", wq.b(sc_id), variant);
+        String baseDir = getValuesDirPath(variant);
         stringsFilePath = baseDir + "strings.xml";
         colorsFilePath = baseDir + "colors.xml";
         stylesFilePath = baseDir + "styles.xml";
         themesFilePath = baseDir + "themes.xml";
         arrayFilePath = baseDir + "arrays.xml";
+        ensureResourceValueFiles();
 
         setupViewPager();
         startBackgroundTask();
+    }
+
+    public boolean isUsingExplicitResourceRoot() {
+        return explicitResourceRoot != null && !explicitResourceRoot.isEmpty();
+    }
+
+    public boolean shouldManageProjectDefaults() {
+        return !isUsingExplicitResourceRoot() && variant.isEmpty();
+    }
+
+    public String getExplicitResourceRoot() {
+        return explicitResourceRoot;
+    }
+
+    private String getValuesDirPath(String variant) {
+        if (isUsingExplicitResourceRoot()) {
+            return new File(explicitResourceRoot, "values" + variant).getAbsolutePath() + "/";
+        }
+        return String.format("%s/files/resource/values%s/", wq.b(sc_id), variant);
+    }
+
+    private String getResourceRootPath() {
+        if (isUsingExplicitResourceRoot()) {
+            return explicitResourceRoot;
+        }
+        return wq.b(sc_id) + "/files/resource/";
+    }
+
+    private void ensureResourceValueFiles() {
+        if (!isUsingExplicitResourceRoot()) return;
+        ensureResourceXml(stringsFilePath);
+        ensureResourceXml(colorsFilePath);
+        ensureResourceXml(stylesFilePath);
+        ensureResourceXml(themesFilePath);
+        ensureResourceXml(arrayFilePath);
+    }
+
+    private void ensureResourceXml(String filePath) {
+        File file = new File(filePath);
+        File parent = file.getParentFile();
+        if (parent != null && !parent.exists()) {
+            parent.mkdirs();
+        }
+        if (!file.exists()) {
+            FileUtil.writeFile(filePath, "<resources>\n</resources>");
+        }
     }
 
     private void setupListeners() {
@@ -402,6 +458,9 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
     }
 
     private void updateProjectMetadata() {
+        if (isUsingExplicitResourceRoot()) {
+            return;
+        }
         if (variant.isEmpty()) {
             HashMap<String, Object> metadata = yq.metadata;
 
@@ -468,7 +527,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         }
 
         ArrayList<String> resourcesDir = new ArrayList<>();
-        FileUtil.listDir(wq.b(sc_id) + "/files/resource/", resourcesDir);
+        FileUtil.listDir(getResourceRootPath(), resourcesDir);
 
         ArrayList<String> variants = extractVariants(resourcesDir);
         AtomicInteger selectedChoice = new AtomicInteger(variants.indexOf("values" + variant));

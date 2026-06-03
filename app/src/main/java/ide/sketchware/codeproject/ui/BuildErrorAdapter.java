@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ide.sketchware.R;
+import mod.hey.studios.util.CompileLogHelper;
 
 public class BuildErrorAdapter extends RecyclerView.Adapter<BuildErrorAdapter.ViewHolder> {
 
@@ -53,7 +54,8 @@ public class BuildErrorAdapter extends RecyclerView.Adapter<BuildErrorAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String errorLine = errors.get(position);
-        holder.textView.setText(errorLine);
+        holder.textView.setText(CompileLogHelper.getColoredLogs(holder.itemView.getContext(), errorLine));
+        holder.textView.setTextIsSelectable(true);
 
         Matcher matcher = FILE_LINE_PATTERN.matcher(errorLine);
         if (matcher.find()) {

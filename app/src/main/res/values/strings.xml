@@ -2325,6 +2325,9 @@ Please try again later"</string>
     <string name="code_project_logcat">Logcat</string>
     <string name="code_project_logcat_clear">Clear log</string>
     <string name="code_project_logcat_filter">Filter</string>
+    <string name="code_project_logcat_package_filter">Filter package</string>
+    <string name="code_project_logcat_package_filter_message">Separate multiple package names with commas.</string>
+    <string name="code_project_logcat_package_filter_hint">com.example.app</string>
     <string name="code_project_logcat_export">Export log</string>
     <string name="code_project_logcat_exported">Log exported: %1$s</string>
     <string name="code_project_no_installer">No app available to install APK</string>

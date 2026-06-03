@@ -9,6 +9,7 @@ import android.view.ContextThemeWrapper;
 
 import androidx.core.content.ContextCompat;
 
+import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager;
 import com.google.android.material.color.MaterialColors;
 
@@ -18,6 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import java.io.File;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,17 +53,34 @@ public class ColorsEditorManager {
     private final ArrayList<ColorModel> resColorsNightList = new ArrayList<>();
 
     private final Material3LibraryManager material3LibraryManager;
+    private final String projectScId;
+    private final String resourceRoot;
 
     public ColorsEditorManager() {
-        material3LibraryManager = new Material3LibraryManager(sc_id);
+        this(sc_id, null);
+    }
+
+    public ColorsEditorManager(String projectScId, String resourceRoot) {
+        this.projectScId = projectScId;
+        this.resourceRoot = resourceRoot;
+        material3LibraryManager = resourceRoot == null
+                ? new Material3LibraryManager(projectScId)
+                : new Material3LibraryManager(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_MATERIAL3));
         initialize();
     }
 
     public void initialize() {
-        String filePath = wq.b(sc_id) + "/files/resource/values/colors.xml";
-        String filePathNight = wq.b(sc_id) + "/files/resource/values-night/colors.xml";
+        String filePath = getColorsPath("");
+        String filePathNight = getColorsPath("-night");
         parseColorsXML(resColorsList, FileUtil.readFileIfExist(filePath));
         parseColorsXML(resColorsNightList, FileUtil.readFileIfExist(filePathNight));
+    }
+
+    private String getColorsPath(String variant) {
+        if (resourceRoot != null && !resourceRoot.isEmpty()) {
+            return new File(new File(resourceRoot, "values" + variant), "colors.xml").getAbsolutePath();
+        }
+        return wq.b(projectScId) + "/files/resource/values" + variant + "/colors.xml";
     }
 
     public ArrayList<ColorModel> getResColorsList() {
@@ -197,8 +216,8 @@ public class ColorsEditorManager {
                 }
             }
 
-            if (isDefaultVariant && defaultColors != null && sc_id != null) {
-                HashMap<String, Object> metadata = lC.b(sc_id);
+            if (isDefaultVariant && defaultColors != null && projectScId != null) {
+                HashMap<String, Object> metadata = lC.b(projectScId);
                 Set<String> missingKeys = new HashSet<>(defaultColors.keySet());
                 foundPrimaryColors.forEach(missingKeys::remove);
 
@@ -224,7 +243,7 @@ public class ColorsEditorManager {
 
             // Save the updated XML if changes are detected
             if (hasChanges) {
-                XmlUtil.saveXml(wq.b(sc_id) + "/files/resource/values/colors.xml", convertListToXml(colorList, notesMap));
+                XmlUtil.saveXml(getColorsPath(""), convertListToXml(colorList, notesMap));
             }
 
         } catch (Exception e) {

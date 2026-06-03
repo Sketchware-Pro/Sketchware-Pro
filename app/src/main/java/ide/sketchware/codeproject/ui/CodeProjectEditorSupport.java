@@ -5,17 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import a.a.a.Lx;
 import ide.sketchware.R;
 import ide.sketchware.activities.preview.LayoutPreviewActivity;
+import ide.sketchware.activities.resourceseditor.ResourcesEditorActivity;
 import ide.sketchware.codeproject.model.CodeProject;
+import ide.sketchware.tools.ViewBeanParser;
 import ide.sketchware.utility.SketchwareUtil;
+import ide.sketchware.utility.relativelayout.CircularDependencyDetector;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
 import mod.hey.studios.code.SrcCodeEditor;
@@ -23,10 +26,6 @@ import mod.hey.studios.code.SrcCodeEditor;
 final class CodeProjectEditorSupport {
 
     static final String PREF_PREFIX = "code_project";
-
-    interface ResourceOpenListener {
-        void open(File file);
-    }
 
     private CodeProjectEditorSupport() {
     }
@@ -103,11 +102,23 @@ final class CodeProjectEditorSupport {
             SketchwareUtil.toast(activity.getString(R.string.code_project_layout_preview_unavailable));
             return;
         }
+        String validationError = validateLayoutXml(xml);
+        if (validationError != null) {
+            SketchwareUtil.toast(validationError);
+            return;
+        }
         Intent intent = new Intent(activity, LayoutPreviewActivity.class);
         intent.putExtra("sc_id", project.getScId());
         intent.putExtra("title", file.getName());
         intent.putExtra("content", file.getAbsolutePath());
         intent.putExtra("xml", xml);
+        activity.startActivity(intent);
+    }
+
+    static void openResourceEditor(Activity activity, CodeProject project) {
+        Intent intent = new Intent(activity, ResourcesEditorActivity.class);
+        intent.putExtra("sc_id", project.getScId());
+        intent.putExtra(ResourcesEditorActivity.EXTRA_RESOURCE_ROOT, project.getResPath());
         activity.startActivity(intent);
     }
 
@@ -119,37 +130,23 @@ final class CodeProjectEditorSupport {
                 && parent.getParentFile().getAbsolutePath().equals(new File(project.getResPath()).getAbsolutePath());
     }
 
-    static void showResourceDialog(Activity activity, CodeProject project, ResourceOpenListener listener) {
-        List<File> resources = new ArrayList<>();
-        collectResourceXmlFiles(new File(project.getResPath()), resources);
-        if (resources.isEmpty()) {
-            SketchwareUtil.toast(activity.getString(R.string.code_project_no_resources));
-            return;
-        }
-
-        String[] labels = new String[resources.size()];
-        String resRoot = new File(project.getResPath()).getAbsolutePath();
-        for (int i = 0; i < resources.size(); i++) {
-            String path = resources.get(i).getAbsolutePath();
-            labels[i] = path.startsWith(resRoot) ? path.substring(resRoot.length() + 1) : resources.get(i).getName();
-        }
-
-        new MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.code_project_resources)
-                .setItems(labels, (dialog, which) -> listener.open(resources.get(which)))
-                .show();
-    }
-
-    private static void collectResourceXmlFiles(File dir, List<File> out) {
-        if (dir == null || !dir.exists()) return;
-        File[] files = dir.listFiles();
-        if (files == null) return;
-        for (File file : files) {
-            if (file.isDirectory()) {
-                collectResourceXmlFiles(file, out);
-            } else if (file.getName().toLowerCase().endsWith(".xml")) {
-                out.add(file);
+    static String validateLayoutXml(String xml) {
+        try {
+            var parser = new ViewBeanParser(xml);
+            parser.setSkipRoot(true);
+            ArrayList<ViewBean> parsedLayout = parser.parse();
+            for (ViewBean viewBean : parsedLayout) {
+                CircularDependencyDetector detector = new CircularDependencyDetector(parsedLayout, viewBean);
+                for (String attr : viewBean.parentAttributes.keySet()) {
+                    String targetId = viewBean.parentAttributes.get(attr);
+                    if (!detector.isLegalAttribute(targetId, attr)) {
+                        return "Circular dependency found in \"" + viewBean.name + "\"";
+                    }
+                }
             }
+            return null;
+        } catch (Exception e) {
+            return e.toString();
         }
     }
 }
