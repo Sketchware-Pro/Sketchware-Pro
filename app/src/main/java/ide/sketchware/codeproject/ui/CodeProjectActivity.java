@@ -107,6 +107,13 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
 
         project = CodeProject.fromMetadata(metadata);
 
+        File sourceDir = new File(project.getSourcePath());
+        if (!sourceDir.exists()) {
+            ide.sketchware.codeproject.template.CodeProjectTemplate.generate(project);
+            metadata.put(CodeProject.KEY_PROJECT_TYPE, CodeProject.PROJECT_TYPE_CODE);
+            lC.a(scId, metadata);
+        }
+
         setupToolbar();
         setupDrawer();
         setupFileExplorer();
@@ -114,6 +121,27 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         setupLogcat();
         setupErrorPanel();
         setupSearchPanel();
+
+        if (savedInstanceState != null) {
+            logcatVisible = savedInstanceState.getBoolean("logcatVisible", false);
+            if (logcatVisible) {
+                binding.logcatContainer.setVisibility(View.VISIBLE);
+                logcatPanel.start();
+            }
+            String savedPackageFilter = savedInstanceState.getString("logcatPackageFilter");
+            if (savedPackageFilter != null && logcatPanel != null) {
+                logcatPanel.setPackageFilter(savedPackageFilter);
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("logcatVisible", logcatVisible);
+        if (logcatPanel != null) {
+            outState.putString("logcatPackageFilter", logcatPanel.getPackageFilter());
+        }
     }
 
     private void setupToolbar() {

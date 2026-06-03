@@ -1,6 +1,6 @@
 package mod.hilal.saif.activities.tools;
 
-import static com.besome.sketch.editor.view.ViewEditor.shakeView;
+import static ide.sketchware.utility.UI.shakeView;
 
 import android.content.Intent;
 import android.net.Uri;

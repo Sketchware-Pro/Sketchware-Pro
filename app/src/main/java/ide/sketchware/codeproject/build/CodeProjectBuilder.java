@@ -415,11 +415,23 @@ public class CodeProjectBuilder {
             // Add every dex file D8 produced (classes.dex, classes2.dex, ...).
             // D8 in DexIndexed mode may emit multiple dex files when method count is high.
             File[] dexFiles = dexDir.listFiles((dir, name) ->
-                    name.startsWith("classes") && name.endsWith(".dex"));
+                    name.matches("classes\\d*\\.dex"));
             if (dexFiles == null || dexFiles.length == 0) {
                 throw new Exception("No dex files found to package.");
             }
-            java.util.Arrays.sort(dexFiles, java.util.Comparator.comparing(File::getName));
+            java.util.Arrays.sort(dexFiles, (f1, f2) -> {
+                String n1 = f1.getName();
+                String n2 = f2.getName();
+                if (n1.equals("classes.dex")) return -1;
+                if (n2.equals("classes.dex")) return 1;
+                try {
+                    int num1 = Integer.parseInt(n1.substring(7, n1.length() - 4));
+                    int num2 = Integer.parseInt(n2.substring(7, n2.length() - 4));
+                    return Integer.compare(num1, num2);
+                } catch (Exception e) {
+                    return n1.compareTo(n2);
+                }
+            });
             for (File dex : dexFiles) {
                 ZipEntry dexEntry = new ZipEntry(dex.getName());
                 dexEntry.setMethod(ZipEntry.DEFLATED);

@@ -74,6 +74,7 @@ public class LogcatPanel {
                     String line;
                     while (isRunning && (line = reader.readLine()) != null) {
                         synchronized (pendingLines) {
+                            if (!isRunning) break;
                             pendingLines.add(line);
                             if (!batchPosted) {
                                 batchPosted = true;

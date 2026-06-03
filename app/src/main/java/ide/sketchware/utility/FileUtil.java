@@ -846,4 +846,23 @@ public class FileUtil {
         String mimeType = URLConnection.guessContentTypeFromName(path);
         return mimeType != null && mimeType.startsWith("image");
     }
+
+    public static ArrayList<String> getAllJavaFileNames(String projectScId) {
+        ArrayList<String> javaFileNames = new ArrayList<>();
+        for (com.besome.sketch.beans.ProjectFileBean projectFile : a.a.a.jC.b(projectScId).b()) {
+            javaFileNames.add(projectFile.getJavaName());
+        }
+        return javaFileNames;
+    }
+
+    public static ArrayList<String> getAllXmlFileNames(String projectScId) {
+        ArrayList<String> xmlFileNames = new ArrayList<>();
+        for (com.besome.sketch.beans.ProjectFileBean projectFile : a.a.a.jC.b(projectScId).b()) {
+            String xmlName = projectFile.getXmlName();
+            if (xmlName != null && !xmlName.isEmpty()) {
+                xmlFileNames.add(xmlName);
+            }
+        }
+        return xmlFileNames;
+    }
 }
