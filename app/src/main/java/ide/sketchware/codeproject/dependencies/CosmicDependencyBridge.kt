@@ -119,6 +119,21 @@ object CosmicDependencyBridge {
         return value.isNotEmpty() && pattern.matches(value)
     }
 
+    private fun ensureRepositories() {
+        if (repositories.isNotEmpty()) return
+        val defaults = listOf(
+            "Google" to "https://dl.google.com/android/maven2",
+            "Maven Central" to "https://repo.maven.apache.org/maven2",
+            "JitPack" to "https://jitpack.io"
+        )
+        for ((repoName, url) in defaults) {
+            repositories.add(object : Repository {
+                override fun getName() = repoName
+                override fun getURL() = url
+            })
+        }
+    }
+
     /**
      * Downloads an artifact and returns the resolved `.jar` placed in [outputDir].
      * For AARs, extracts `classes.jar` and records a warning if resources/assets/

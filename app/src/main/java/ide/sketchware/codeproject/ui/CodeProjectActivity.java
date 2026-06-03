@@ -1163,20 +1163,55 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         // 1. Rename existing resolved dir to backup
         if (resolvedDir.exists()) {
             if (!resolvedDir.renameTo(backupDir)) {
-                throw new IOException("Failed to create backup of resolved dependencies");
+                copyFileOrThrow(resolvedDir, backupDir);
+                FileUtil.deleteFile(resolvedDir.getAbsolutePath());
             }
         }
 
         // 2. Rename temp dir to resolved dir
         if (!tempDir.renameTo(resolvedDir)) {
-            // Restore backup if renaming temp fails
-            if (backupDir.exists()) {
-                backupDir.renameTo(resolvedDir);
+            try {
+                copyFileOrThrow(tempDir, resolvedDir);
+                FileUtil.deleteFile(tempDir.getAbsolutePath());
+            } catch (IOException e) {
+                // Restore backup if installing temp fails
+                if (backupDir.exists()) {
+                    if (!backupDir.renameTo(resolvedDir)) {
+                        copyFileOrThrow(backupDir, resolvedDir);
+                    }
+                }
+                throw new IOException("Failed to install resolved dependencies", e);
             }
-            throw new IOException("Failed to install resolved dependencies");
         }
 
         // 3. Clean up backup
         FileUtil.deleteFile(backupDir.getAbsolutePath());
+    }
+
+    private void copyFileOrThrow(File source, File target) throws IOException {
+        if (source.isDirectory()) {
+            if (!target.exists() && !target.mkdirs()) {
+                throw new IOException("Failed to create directory: " + target.getAbsolutePath());
+            }
+            File[] children = source.listFiles();
+            if (children == null) return;
+            for (File child : children) {
+                copyFileOrThrow(child, new File(target, child.getName()));
+            }
+            return;
+        }
+
+        File parent = target.getParentFile();
+        if (parent != null && !parent.exists() && !parent.mkdirs()) {
+            throw new IOException("Failed to create directory: " + parent.getAbsolutePath());
+        }
+        try (FileInputStream input = new FileInputStream(source);
+             FileOutputStream output = new FileOutputStream(target)) {
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = input.read(buffer)) != -1) {
+                output.write(buffer, 0, read);
+            }
+        }
     }
 }
