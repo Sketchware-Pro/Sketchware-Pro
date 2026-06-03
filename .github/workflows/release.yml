@@ -44,6 +44,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REF_NAME: ${{ github.ref_name }}
           EVENT_NAME: ${{ github.event_name }}
+          COMMIT_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
 
@@ -64,9 +65,9 @@ jobs:
             gh release upload "$tag_name" "./$release_apk" --clobber
             gh release edit "$tag_name" \
               --title "Sketchware Pro $tag_name" \
-              --notes "Automated release built from commit ${{ github.sha }}."
+              --notes "Automated release built from commit $COMMIT_SHA."
           else
             gh release create "$tag_name" "./$release_apk" \
               --title "Sketchware Pro $tag_name" \
-              --notes "Automated release built from commit ${{ github.sha }}."
+              --notes "Automated release built from commit $COMMIT_SHA."
           fi
