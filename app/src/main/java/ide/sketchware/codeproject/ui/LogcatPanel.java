@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import ide.sketchware.R;
+import ide.sketchware.utility.FileUtil;
 
 public class LogcatPanel {
 
@@ -30,6 +32,7 @@ public class LogcatPanel {
     private static final int COLOR_ERROR = 0xFFF44336;
 
     private final List<String> logLines = new ArrayList<>();
+    private final List<String> visibleLines = new ArrayList<>();
     private final List<String> pendingLines = new LinkedList<>();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private RecyclerView recyclerView;
@@ -38,6 +41,7 @@ public class LogcatPanel {
     private Thread readerThread;
     private volatile boolean isRunning = false;
     private boolean batchPosted = false;
+    private String filter = "";
 
     public void attach(RecyclerView rv) {
         this.recyclerView = rv;
@@ -101,9 +105,25 @@ public class LogcatPanel {
             batchPosted = false;
         }
         logLines.clear();
+        visibleLines.clear();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter == null ? "" : filter.trim().toLowerCase();
+        rebuildVisibleLines();
+    }
+
+    public boolean exportTo(File file) {
+        if (file == null || logLines.isEmpty()) return false;
+        StringBuilder builder = new StringBuilder();
+        for (String line : logLines) {
+            builder.append(line).append('\n');
+        }
+        FileUtil.writeFile(file.getAbsolutePath(), builder.toString());
+        return true;
     }
 
     private void drainBatch() {
@@ -122,13 +142,34 @@ public class LogcatPanel {
         if (logLines.size() > MAX_LINES) {
             int excess = logLines.size() - MAX_LINES;
             logLines.subList(0, excess).clear();
-            adapter.notifyDataSetChanged();
+            rebuildVisibleLines();
         } else {
-            adapter.notifyItemRangeInserted(insertStart, batch.size());
+            if (filter.isEmpty()) {
+                visibleLines.addAll(batch);
+                adapter.notifyItemRangeInserted(insertStart, batch.size());
+            } else {
+                rebuildVisibleLines();
+            }
         }
 
-        if (recyclerView != null) {
-            recyclerView.scrollToPosition(logLines.size() - 1);
+        if (recyclerView != null && !visibleLines.isEmpty()) {
+            recyclerView.scrollToPosition(visibleLines.size() - 1);
+        }
+    }
+
+    private void rebuildVisibleLines() {
+        visibleLines.clear();
+        if (filter.isEmpty()) {
+            visibleLines.addAll(logLines);
+        } else {
+            for (String line : logLines) {
+                if (line.toLowerCase().contains(filter)) {
+                    visibleLines.add(line);
+                }
+            }
+        }
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -173,14 +214,14 @@ public class LogcatPanel {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            String line = logLines.get(position);
+            String line = visibleLines.get(position);
             holder.textView.setText(line);
             holder.textView.setTextColor(getColorForLevel(line));
         }
 
         @Override
         public int getItemCount() {
-            return logLines.size();
+            return visibleLines.size();
         }
     }
 }

@@ -2324,6 +2324,9 @@ Please try again later"</string>
     <string name="code_project_install">Install</string>
     <string name="code_project_logcat">Logcat</string>
     <string name="code_project_logcat_clear">Clear log</string>
+    <string name="code_project_logcat_filter">Filter</string>
+    <string name="code_project_logcat_export">Export log</string>
+    <string name="code_project_logcat_exported">Log exported: %1$s</string>
     <string name="code_project_no_installer">No app available to install APK</string>
     <string name="code_project_new_file">New File</string>
     <string name="code_project_new_folder">New Folder</string>
@@ -2362,10 +2365,27 @@ Please try again later"</string>
 
     <!-- Dependency Sync -->
     <string name="code_project_sync_deps">Sync Dependencies</string>
+    <string name="code_project_add_dependency">Add Dependency</string>
+    <string name="code_project_dependency_hint">group:artifact:version</string>
+    <string name="code_project_dependency_added">Dependency added</string>
+    <string name="code_project_invalid_dependency">Invalid dependency. Use group:artifact:version</string>
     <string name="code_project_syncing_deps">Syncing dependencies\u2026</string>
     <string name="code_project_deps_synced">%1$d dependencies resolved</string>
     <string name="code_project_no_deps_file">No dependencies.txt file found</string>
     <string name="code_project_no_deps_declared">No dependencies declared</string>
+    <string name="code_project_format_file">Format File</string>
+    <string name="code_project_format_unsupported">Only Java and XML files can be formatted</string>
+    <string name="code_project_format_failed">Failed to format file</string>
+    <string name="code_project_formatted">File formatted</string>
+    <string name="code_project_layout_preview">Layout Preview</string>
+    <string name="code_project_layout_preview_unavailable">Open a layout XML file first</string>
+    <string name="code_project_resources">Resources</string>
+    <string name="code_project_no_resources">No resource XML files found</string>
+    <string name="code_project_editor_settings">Editor Settings</string>
+    <string name="code_project_word_wrap">Word wrap</string>
+    <string name="code_project_auto_complete">Auto complete</string>
+    <string name="code_project_auto_complete_pairs">Auto complete symbol pairs</string>
+    <string name="code_project_theme">Theme</string>
 
 
 </resources>

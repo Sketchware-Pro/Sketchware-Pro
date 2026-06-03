@@ -343,6 +343,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         binding.editor.setWordwrap(false);
         EditorUtils.loadJavaAutoCompleteConfig(binding.editor);
         binding.editor.getComponent(EditorAutoCompletion.class).setEnabled(true);
+        CodeProjectEditorSupport.applyPreferences(this, binding.editor, false);
 
         tabAdapter = new FileTabAdapter(this::onTabClick, this::onTabClose);
         binding.tabStrip.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -363,7 +364,31 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         logcatPanel = new LogcatPanel();
         logcatPanel.attach(binding.logcatList);
         binding.btnClearLog.setOnClickListener(v -> logcatPanel.clear());
+        binding.btnExportLog.setOnClickListener(v -> exportLogcat());
         binding.btnCloseLog.setOnClickListener(v -> toggleLogcat());
+        binding.logcatSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                logcatPanel.setFilter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void exportLogcat() {
+        File outDir = new File(project.getBinPath());
+        if (!outDir.exists()) outDir.mkdirs();
+        File out = new File(outDir, "logcat.txt");
+        if (logcatPanel.exportTo(out)) {
+            SketchwareUtil.toast(getString(R.string.code_project_logcat_exported, out.getAbsolutePath()));
+        } else {
+            SketchwareUtil.toast(getString(R.string.code_project_no_results));
+        }
     }
 
     private void setupErrorPanel() {
@@ -465,6 +490,7 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         } else {
             EditorUtils.loadJavaAutoCompleteConfig(binding.editor);
         }
+        CodeProjectEditorSupport.applyPreferences(this, binding.editor, false);
 
         // Apply inline error diagnostics if this file has errors
         List<CompilerErrorParser.CompilerError> errors = findErrorsForFile(currentFile);
@@ -607,6 +633,31 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             return true;
         } else if (id == R.id.action_sync_deps) {
             syncDependencies();
+            return true;
+        } else if (id == R.id.action_add_dependency) {
+            CodeProjectDependencyActions.showAddDialog(this, project, new CodeProjectDependencyActions.DependencyChangedListener() {
+                @Override
+                public void onDependencyChanged() {
+                    refreshFileExplorer();
+                }
+
+                @Override
+                public void onSyncRequested() {
+                    syncDependencies();
+                }
+            });
+            return true;
+        } else if (id == R.id.action_format_file) {
+            formatCurrentFile();
+            return true;
+        } else if (id == R.id.action_layout_preview) {
+            CodeProjectEditorSupport.openLayoutPreview(this, project, currentFile, binding.editor.getText().toString());
+            return true;
+        } else if (id == R.id.action_resources) {
+            CodeProjectEditorSupport.showResourceDialog(this, project, this::openFile);
+            return true;
+        } else if (id == R.id.action_editor_settings) {
+            CodeProjectEditorSupport.showSettingsDialog(this, binding.editor);
             return true;
         }
         return false;
@@ -936,6 +987,24 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
                 searchInProject(query);
             }
         });
+    }
+
+    private void formatCurrentFile() {
+        if (currentFile == null || activeTabIndex < 0 || activeTabIndex >= openTabs.size()) {
+            SketchwareUtil.toast(getString(R.string.code_project_no_file_open));
+            return;
+        }
+
+        String formatted = CodeProjectEditorSupport.format(this, currentFile, binding.editor.getText().toString());
+        if (formatted == null) {
+            return;
+        }
+        ignoreTextChange = true;
+        binding.editor.setText(new Content(formatted));
+        openTabs.get(activeTabIndex).setEditorContent(binding.editor.getText());
+        ignoreTextChange = false;
+        markCurrentTabModified();
+        SketchwareUtil.toast(getString(R.string.code_project_formatted));
     }
 
     private void toggleSearchPanel() {
