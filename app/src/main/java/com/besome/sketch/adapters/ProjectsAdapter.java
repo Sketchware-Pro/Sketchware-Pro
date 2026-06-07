@@ -184,9 +184,13 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
         holder.binding.getRoot().setOnClickListener(v -> {
             if (!mB.a()) {
-                Intent intent = new Intent(activity, CodeProjectActivity.class);
-                intent.putExtra("sc_id", scId);
-                activity.startActivity(intent);
+                if (CodeProject.isCodeProject(projectMap)) {
+                    Intent intent = new Intent(activity, CodeProjectActivity.class);
+                    intent.putExtra("sc_id", scId);
+                    activity.startActivity(intent);
+                } else {
+                    projectsFragment.toDesignActivity(scId);
+                }
             }
         });
 

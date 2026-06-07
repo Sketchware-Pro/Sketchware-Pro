@@ -100,14 +100,12 @@ object CosmicDependencyBridge {
                 listener.onComplete(resolvedJars)
                 if (warningText != null) listener.onWarning(warningText)
             }
-            resolvedJars.isNotEmpty() -> {
-                listener.onComplete(resolvedJars)
-                var msg = "Some dependencies failed to resolve:\n" + errors.joinToString("\n")
-                if (warningText != null) msg += "\n\n$warningText"
-                listener.onWarning(msg)
-            }
             else -> {
-                var msg = "All dependencies failed to resolve:\n" + errors.joinToString("\n")
+                var msg = if (resolvedJars.isEmpty()) {
+                    "All dependencies failed to resolve:\n" + errors.joinToString("\n")
+                } else {
+                    "Some dependencies failed to resolve:\n" + errors.joinToString("\n")
+                }
                 if (warningText != null) msg += "\n\n$warningText"
                 listener.onError(msg)
             }

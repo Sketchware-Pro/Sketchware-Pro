@@ -295,7 +295,9 @@ public class StylesEditor extends Fragment {
 
     public void saveStylesFile() {
         if (hasUnsavedChanges) {
-            FileUtil.writeFile(filePath, stylesEditorManager.convertStylesToXML(stylesList, notesMap));
+            if (activity != null && activity.isPathSafe(filePath)) {
+                FileUtil.writeFile(filePath, stylesEditorManager.convertStylesToXML(stylesList, notesMap));
+            }
             hasUnsavedChanges = false;
         }
     }

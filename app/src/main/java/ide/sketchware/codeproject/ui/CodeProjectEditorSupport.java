@@ -112,6 +112,7 @@ final class CodeProjectEditorSupport {
         intent.putExtra("title", file.getName());
         intent.putExtra("content", file.getAbsolutePath());
         intent.putExtra("xml", xml);
+        intent.putExtra(LayoutPreviewActivity.EXTRA_RESOURCE_ROOT, project.getResPath());
         activity.startActivity(intent);
     }
 

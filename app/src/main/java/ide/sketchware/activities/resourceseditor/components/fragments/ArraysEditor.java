@@ -327,7 +327,9 @@ public class ArraysEditor extends Fragment {
 
     public void saveArraysFile() {
         if (hasUnsavedChanges) {
-            FileUtil.writeFile(filePath, arraysEditorManager.convertArraysToXML(arraysList, notesMap));
+            if (activity != null && activity.isPathSafe(filePath)) {
+                FileUtil.writeFile(filePath, arraysEditorManager.convertArraysToXML(arraysList, notesMap));
+            }
             hasUnsavedChanges = false;
         }
     }

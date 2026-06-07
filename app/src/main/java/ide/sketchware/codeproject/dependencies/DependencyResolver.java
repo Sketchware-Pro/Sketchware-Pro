@@ -57,7 +57,7 @@ public class DependencyResolver {
      * - "implementation groupId:artifactId:version"
      * Skips empty lines and comments (lines starting with # or //).
      */
-    public static List<DependencyDeclaration> parseDependenciesFile(File file) {
+    public static List<DependencyDeclaration> parseDependenciesFile(File file) throws IOException {
         List<DependencyDeclaration> declarations = new ArrayList<>();
         if (file == null || !file.exists()) {
             return declarations;
@@ -90,8 +90,6 @@ public class DependencyResolver {
                     declarations.add(dep);
                 }
             }
-        } catch (IOException e) {
-            // Return whatever we have so far
         }
 
         return declarations;

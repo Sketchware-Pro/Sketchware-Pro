@@ -144,7 +144,7 @@ public class LogcatPanel {
             for (String item : this.packageFilter.split(",")) {
                 String trimmed = item.trim();
                 if (!trimmed.isEmpty()) {
-                    packageFilters.add(trimmed);
+                    packageFilters.add(trimmed.toLowerCase(Locale.ROOT));
                 }
             }
         }
@@ -247,7 +247,14 @@ public class LogcatPanel {
     }
 
     private boolean matchesPackageFilter(LogLine line) {
-        return packageFilters.isEmpty() || packageFilters.contains(line.packageName);
+        if (packageFilters.isEmpty()) return true;
+        String rawLower = line.raw.toLowerCase(Locale.ROOT);
+        for (String pkg : packageFilters) {
+            if (rawLower.contains(pkg)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static int getColorForLevel(LogLine line) {

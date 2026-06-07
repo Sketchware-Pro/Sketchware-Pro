@@ -113,6 +113,17 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         sc_id = getIntent().getStringExtra("sc_id");
         explicitResourceRoot = getIntent().getStringExtra(EXTRA_RESOURCE_ROOT);
 
+        if (sc_id != null && (sc_id.contains("..") || sc_id.contains("/") || sc_id.contains("\\"))) {
+            android.util.Log.e("ResourcesEditor", "Invalid sc_id: path traversal or separator detected.");
+            finish();
+            return;
+        }
+        if (explicitResourceRoot != null && explicitResourceRoot.contains("..")) {
+            android.util.Log.e("ResourcesEditor", "Invalid explicitResourceRoot: path traversal detected.");
+            finish();
+            return;
+        }
+
         if (isUsingExplicitResourceRoot()) {
             return;
         }
@@ -178,7 +189,32 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         ensureResourceXml(arrayFilePath);
     }
 
+    public boolean isPathSafe(String filePath) {
+        if (filePath == null) return false;
+        try {
+            if (sc_id != null && (sc_id.contains("..") || sc_id.contains("/") || sc_id.contains("\\"))) {
+                return false;
+            }
+            if (explicitResourceRoot != null && explicitResourceRoot.contains("..")) {
+                return false;
+            }
+            String rootPath = getResourceRootPath();
+            if (rootPath == null || rootPath.isEmpty()) return false;
+
+            File rootFile = new File(rootPath).getCanonicalFile();
+            File targetFile = new File(filePath).getCanonicalFile();
+
+            return targetFile.getPath().startsWith(rootFile.getPath());
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private void ensureResourceXml(String filePath) {
+        if (!isPathSafe(filePath)) {
+            android.util.Log.e("ResourcesEditor", "Path safety check failed for: " + filePath);
+            return;
+        }
         File file = new File(filePath);
         File parent = file.getParentFile();
         if (parent != null && !parent.exists()) {

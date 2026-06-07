@@ -16,12 +16,11 @@ on:
       - 'wip/**'
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   notifyTelegram:
     name: Notify Telegram
+    permissions:
+      contents: read
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
@@ -46,6 +45,8 @@ jobs:
 
   build:
     name: Build APKs
+    permissions:
+      contents: read
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     outputs:
       short_sha: ${{ steps.set_sha.outputs.short_sha }}
@@ -91,6 +92,8 @@ jobs:
 
   aggregateAndSend:
     name: Send APKs to Telegram
+    permissions:
+      contents: read
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     needs: build
     steps:
@@ -137,6 +140,8 @@ jobs:
 
   updateAppData:
     name: Update App Data
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

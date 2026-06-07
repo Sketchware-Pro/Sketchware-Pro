@@ -1,6 +1,7 @@
 package ide.sketchware.codeproject.ui;
 
 import java.io.File;
+import java.util.Objects;
 
 import io.github.rosemoe.sora.text.Content;
 
@@ -29,7 +30,7 @@ public class OpenFileTab {
     }
 
     public void setEditorContent(Content editorContent) {
-        this.editorContent = editorContent;
+        this.editorContent = Objects.requireNonNull(editorContent, "editorContent cannot be null");
     }
 
     public String getContent() {

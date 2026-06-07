@@ -108,10 +108,13 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         project = CodeProject.fromMetadata(metadata);
 
         File sourceDir = new File(project.getSourcePath());
+        if (!CodeProject.isCodeProject(metadata)) {
+            SketchwareUtil.toast(getString(R.string.code_project_block_not_supported));
+            finish();
+            return;
+        }
         if (!sourceDir.exists()) {
             ide.sketchware.codeproject.template.CodeProjectTemplate.generate(project);
-            metadata.put(CodeProject.KEY_PROJECT_TYPE, CodeProject.PROJECT_TYPE_CODE);
-            lC.a(scId, metadata);
         }
 
         setupToolbar();
@@ -636,14 +639,21 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
         }
     }
 
-    private void saveCurrentFile() {
+    private boolean saveCurrentFile() {
         if (activeTabIndex >= 0 && activeTabIndex < openTabs.size()) {
             OpenFileTab tab = openTabs.get(activeTabIndex);
-            if (!validateTabBeforeSave(tab)) return;
-            FileUtil.writeFile(tab.getFile().getAbsolutePath(), tab.getContent());
+            if (!validateTabBeforeSave(tab)) return false;
+            try {
+                FileUtil.writeFile(tab.getFile().getAbsolutePath(), tab.getContent());
+            } catch (Exception e) {
+                SketchwareUtil.toast("Failed to save file: " + e.getMessage());
+                return false;
+            }
             tab.setModified(false);
             tabAdapter.notifyTabChanged(activeTabIndex);
+            return true;
         }
+        return false;
     }
 
     private boolean saveAllModifiedTabs() {
@@ -651,7 +661,12 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             OpenFileTab tab = openTabs.get(i);
             if (tab.isModified()) {
                 if (!validateTabBeforeSave(tab)) return false;
-                FileUtil.writeFile(tab.getFile().getAbsolutePath(), tab.getContent());
+                try {
+                    FileUtil.writeFile(tab.getFile().getAbsolutePath(), tab.getContent());
+                } catch (Exception e) {
+                    SketchwareUtil.toast("Failed to save file " + tab.getFile().getName() + ": " + e.getMessage());
+                    return false;
+                }
                 tab.setModified(false);
                 tabAdapter.notifyTabChanged(i);
             }
@@ -676,8 +691,9 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             buildProject();
             return true;
         } else if (id == R.id.action_save) {
-            saveCurrentFile();
-            SketchwareUtil.toast(getString(R.string.code_project_saved));
+            if (saveCurrentFile()) {
+                SketchwareUtil.toast(getString(R.string.code_project_saved));
+            }
             return true;
         } else if (id == R.id.action_undo) {
             binding.editor.undo();
@@ -1185,6 +1201,10 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
     private void syncDependencies() {
         if (isBuilding || isSyncing) return;
 
+        if (!saveAllModifiedTabs()) {
+            return;
+        }
+
         // dependencies.txt lives in the editable source tree (visible in the file
         // explorer). Fall back to the legacy project-root location for old projects.
         File depsFile = new File(project.getSourcePath(), "dependencies.txt");
@@ -1199,7 +1219,13 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             return;
         }
 
-        List<DependencyDeclaration> deps = DependencyResolver.parseDependenciesFile(depsFile);
+        List<DependencyDeclaration> deps;
+        try {
+            deps = DependencyResolver.parseDependenciesFile(depsFile);
+        } catch (IOException e) {
+            SketchwareUtil.toast("Failed to read dependencies: " + e.getMessage());
+            return;
+        }
         if (deps.isEmpty()) {
             SketchwareUtil.toast(getString(R.string.code_project_no_deps_declared));
             return;
@@ -1313,6 +1339,9 @@ public class CodeProjectActivity extends BaseAppCompatActivity {
             } catch (IOException e) {
                 // Restore backup if installing temp fails
                 if (backupDir.exists()) {
+                    if (resolvedDir.exists()) {
+                        FileUtil.deleteFile(resolvedDir.getAbsolutePath());
+                    }
                     if (!backupDir.renameTo(resolvedDir)) {
                         copyFileOrThrow(backupDir, resolvedDir);
                     }

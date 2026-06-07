@@ -283,7 +283,9 @@ public class ThemesEditor extends Fragment {
 
     public void saveThemesFile() {
         if (hasUnsavedChanges) {
-            FileUtil.writeFile(filePath, themesEditorManager.convertStylesToXML(themesList, notesMap));
+            if (activity != null && activity.isPathSafe(filePath)) {
+                FileUtil.writeFile(filePath, themesEditorManager.convertStylesToXML(themesList, notesMap));
+            }
             hasUnsavedChanges = false;
         }
     }

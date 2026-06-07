@@ -293,7 +293,9 @@ public class ColorsEditor extends Fragment {
 
     public void saveColorsFile() {
         if (hasUnsavedChanges) {
-            XmlUtil.saveXml(contentPath, colorsEditorManager.convertListToXml(colorList, notesMap));
+            if (activity != null && activity.isPathSafe(contentPath)) {
+                XmlUtil.saveXml(contentPath, colorsEditorManager.convertListToXml(colorList, notesMap));
+            }
             hasUnsavedChanges = false;
         }
     }
