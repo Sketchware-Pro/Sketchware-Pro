@@ -87,16 +87,36 @@ async function main() {
   }
 
   const { Template, defaultBuildLogger } = requireE2B();
-  const template = Template()
+  const template = Template({
+    fileContextPath: repoRoot,
+    fileIgnorePatterns: [
+      ".git",
+      ".gradle",
+      "build",
+      "app/build",
+      ".env.e2b.local",
+      ".env",
+      ".env.*",
+      "*.local",
+      ".secrets",
+      "secrets",
+      ".credential*",
+    ],
+  })
+    .skipCache()
     .fromUbuntuImage("24.04")
-    .runCmd("apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends openjdk-17-jdk-headless ca-certificates curl unzip sudo && rm -rf /var/lib/apt/lists/*", { user: "root" })
-    .runCmd("mkdir -p /opt/android-sdk/cmdline-tools /etc/ssl/certs/java && /var/lib/dpkg/info/ca-certificates-java.postinst configure >/dev/null || true", { user: "root" })
+    .runCmd("apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends openjdk-17-jdk-headless ca-certificates-java ca-certificates curl unzip sudo && rm -rf /var/lib/apt/lists/*", { user: "root" })
+    .runCmd("mkdir -p /opt/android-sdk/cmdline-tools /etc/ssl/certs/java && update-ca-certificates -f && /var/lib/dpkg/info/ca-certificates-java.postinst configure", { user: "root" })
     .runCmd("curl -fsSL https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip -o /tmp/android-commandlinetools.zip && unzip -q /tmp/android-commandlinetools.zip -d /opt/android-sdk/cmdline-tools && mv /opt/android-sdk/cmdline-tools/cmdline-tools /opt/android-sdk/cmdline-tools/latest && rm /tmp/android-commandlinetools.zip", { user: "root" })
     .runCmd("yes | /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=/opt/android-sdk --licenses >/dev/null", { user: "root" })
     .runCmd("/opt/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=/opt/android-sdk \"platform-tools\" \"platforms;android-36\" \"build-tools;36.0.0\" \"build-tools;35.0.0\" >/dev/null", { user: "root" })
     .runCmd("useradd -m -s /bin/bash user || true && echo 'user ALL=(ALL) NOPASSWD:ALL' >/etc/sudoers.d/e2b-user && chmod 0440 /etc/sudoers.d/e2b-user && chown -R user:user /opt/android-sdk", { user: "root" })
     .runCmd("printf '%s\\n' 'export ANDROID_HOME=/opt/android-sdk' 'export ANDROID_SDK_ROOT=/opt/android-sdk' 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64' 'export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$JAVA_HOME/bin:$PATH' >/etc/profile.d/android-build.sh", { user: "root" })
-    .setWorkdir("/home/user");
+    .setWorkdir("/home/user")
+    .copy(".", "/home/user/sketchware-pro", { user: "user" })
+    .runCmd("chown -R user:user /home/user/sketchware-pro", { user: "root" })
+    .runCmd("cd /home/user/sketchware-pro && chmod +x ./gradlew && source /etc/profile.d/android-build.sh && ./gradlew assembleDebug --dry-run --no-daemon --max-workers=2", { user: "user" })
+    .runCmd("rm -rf /home/user/sketchware-pro", { user: "user" });
 
   console.log(`Building E2B template ${options.name} (${options.cpuCount} CPU, ${options.memoryMB} MB)...`);
   const info = await Template.build(template, options.name, {
