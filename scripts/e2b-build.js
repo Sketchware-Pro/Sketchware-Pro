@@ -21,6 +21,8 @@ function parseArgs(argv) {
     tailLines: Number(process.env.E2B_TAIL_LINES || 400),
     template: process.env.E2B_TEMPLATE || defaultTemplate,
     timeoutMs: Number(process.env.E2B_TIMEOUT_MS || 60 * 60 * 1000),
+    release: false,
+    out: "",
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -33,6 +35,8 @@ function parseArgs(argv) {
     else if (arg === "--tail-lines") options.tailLines = Number(argv[++index]);
     else if (arg === "--template") options.template = argv[++index];
     else if (arg === "--timeout-ms") options.timeoutMs = Number(argv[++index]);
+    else if (arg === "--release") options.release = true;
+    else if (arg === "--out") options.out = argv[++index];
     else if (arg === "--help" || arg === "-h") {
       printHelp();
       process.exit(0);
@@ -63,6 +67,8 @@ Options:
   --tail-lines <count>  Lines to keep from stdout/stderr tails (default: 400)
   --archive <path>      Local tarball path (default: ${defaultArchive})
   --timeout-ms <ms>     Sandbox and build timeout (default: 3600000)
+  --release            Build release APK (assembleRelease) instead of debug APK (assembleDebug)
+  --out <path>         Local file path to download the compiled APK to (default: ./app-release.apk or ./app-debug.apk)
 
 Environment:
   E2B_API_KEY can be exported or stored in .env.e2b.local.
@@ -194,6 +200,9 @@ async function main() {
   console.log(`E2B_TEMPLATE=${options.template}`);
 
   const repoBasename = path.basename(repoRoot);
+  const isRelease = options.release;
+  const buildTask = isRelease ? "assembleRelease" : "assembleDebug";
+
   const buildSteps = [
     "set -eu",
     "source /etc/profile.d/android-build.sh",
@@ -211,7 +220,7 @@ async function main() {
     "nproc",
     "free -m",
     "java -version",
-    "./gradlew assembleDebug --no-daemon --stacktrace --max-workers=2",
+    `./gradlew ${buildTask} --no-daemon --stacktrace --max-workers=2`,
   ];
 
   try {
@@ -229,6 +238,19 @@ async function main() {
       console.log("BUILD_STDERR_TAIL_END");
     }
     console.log("BUILD_EXIT_CODE=0");
+
+    const findResult = await sandbox.commands.run(`find /home/user/workspace/${repoBasename}/app/build/outputs/apk -name "*.apk"`);
+    const apkPaths = findResult.stdout.trim().split("\n").filter(p => p.trim().endsWith(".apk"));
+    if (apkPaths.length > 0) {
+      const remoteApkPath = apkPaths[0].trim();
+      console.log(`Downloading APK from sandbox: ${remoteApkPath}`);
+      const fileBytes = await sandbox.files.read(remoteApkPath, { format: "bytes" });
+      const localApkPath = options.out || (isRelease ? "app-release.apk" : "app-debug.apk");
+      writeFileSync(localApkPath, Buffer.from(fileBytes));
+      console.log(`Successfully downloaded APK to: ${localApkPath}`);
+    } else {
+      console.warn("No APK files found in sandbox build output directory.");
+    }
   } catch (error) {
     console.log("BUILD_FAILED");
     if (error.stdout) {

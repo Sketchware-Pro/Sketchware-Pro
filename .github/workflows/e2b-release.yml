@@ -1,0 +1,104 @@
+name: Publish E2B Release APK
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - 'gradle/**'
+      - 'build.gradle'
+      - 'settings.gradle'
+      - 'scripts/**'
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Version tag name (e.g. v7.0.0-beta1). Leave empty for auto-generated tag.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  e2b-build:
+    name: Build & Publish via E2B
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install E2B SDK
+        run: npm install e2b
+
+      - name: Compile Release APK in E2B Sandbox
+        env:
+          E2B_API_KEY: ${{ secrets.E2B_API_KEY }}
+        run: |
+          node scripts/e2b-build.js --release --kill-after
+
+      - name: Create or Update GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_VERSION: ${{ github.event.inputs.version_name }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          tag_name="$INPUT_VERSION"
+          if [ -z "$tag_name" ]; then
+            if [ "$EVENT_NAME" = "push" ]; then
+              # For push to main, update a rolling nightly release
+              tag_name="nightly"
+            else
+              tag_name="v-e2b-$(date +'%Y%m%d-%H%M%S')"
+            fi
+          fi
+
+          apk_file="app-release.apk"
+          if [ ! -f "$apk_file" ]; then
+            echo "Error: apk file $apk_file not found."
+            exit 1
+          fi
+
+          release_apk="Sketchware-Pro-${tag_name}.apk"
+          mv "$apk_file" "./$release_apk"
+
+          echo "Publishing release for tag: $tag_name"
+
+          # Handle rolling nightly release specifically (delete previous asset to overwrite it)
+          if [ "$tag_name" = "nightly" ]; then
+            # Check if release exists
+            if gh release view nightly >/dev/null 2>&1; then
+              # Update existing rolling release
+              gh release upload nightly "./$release_apk" --clobber
+              gh release edit nightly \
+                --title "Sketchware Pro Nightly Build" \
+                --prerelease \
+                --notes "Automated nightly build from commit $COMMIT_SHA. Built fast using E2B Sandbox."
+            else
+              # Create new rolling release
+              gh release create nightly "./$release_apk" \
+                --title "Sketchware Pro Nightly Build" \
+                --prerelease \
+                --notes "Automated nightly build from commit $COMMIT_SHA. Built fast using E2B Sandbox."
+            fi
+          else
+            # Standard release creation
+            if gh release view "$tag_name" >/dev/null 2>&1; then
+              gh release upload "$tag_name" "./$release_apk" --clobber
+              gh release edit "$tag_name" \
+                --title "Sketchware Pro $tag_name" \
+                --notes "Automated release built from commit $COMMIT_SHA using E2B Sandbox."
+            else
+              gh release create "$tag_name" "./$release_apk" \
+                --title "Sketchware Pro $tag_name" \
+                --notes "Automated release built from commit $COMMIT_SHA using E2B Sandbox."
+            fi
+          fi
