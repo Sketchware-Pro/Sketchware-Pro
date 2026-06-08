@@ -66,7 +66,7 @@ public class StringsEditor extends Fragment {
 
         boolean isSkippingMode = updateMode == 1;
         boolean isMergeAndReplace = updateMode == 2;
-        stringsEditorManager.isDefaultVariant = activity.variant.isEmpty();
+        stringsEditorManager.isDefaultVariant = activity.shouldManageProjectDefaults();
 
         ArrayList<HashMap<String, Object>> defaultStrings = new ArrayList<>();
         if ((activity.variant.isEmpty() || hasUnsavedChanges) && !FileUtil.isExistFile(filePath)) {
@@ -187,8 +187,10 @@ public class StringsEditor extends Fragment {
 
     public void saveStringsFile() {
         if (hasUnsavedChanges) {
-            XmlUtil.saveXml(filePath, stringsEditorManager.convertListMapToXmlStrings(listmap, notesMap));
-            hasUnsavedChanges = false;
+            if (activity != null && activity.isPathSafe(filePath)) {
+                XmlUtil.saveXml(filePath, stringsEditorManager.convertListMapToXmlStrings(listmap, notesMap));
+                hasUnsavedChanges = false;
+            }
         }
     }
 }

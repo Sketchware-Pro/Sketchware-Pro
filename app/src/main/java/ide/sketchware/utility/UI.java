@@ -118,4 +118,11 @@ public class UI {
         }
         return result;
     }
+
+    public static void shakeView(View view) {
+        ObjectAnimator
+                .ofFloat(view, "translationX", 0, 35, -35, 35, -35, 25, -25, 12, -12, 0)
+                .setDuration(200)
+                .start();
+    }
 }

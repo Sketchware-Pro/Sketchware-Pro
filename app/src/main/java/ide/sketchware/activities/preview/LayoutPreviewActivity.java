@@ -18,6 +18,8 @@ import ide.sketchware.utility.UI;
 
 public class LayoutPreviewActivity extends BaseAppCompatActivity {
 
+    public static final String EXTRA_RESOURCE_ROOT = "resource_root";
+
     private ViewPane pane;
 
     private String content;
@@ -41,8 +43,9 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
         });
         content = getIntent().getStringExtra("xml");
         var sc_id = getIntent().getStringExtra("sc_id");
+        String resourceRoot = getIntent().getStringExtra(EXTRA_RESOURCE_ROOT);
         pane = binding.pane;
-        pane.initialize(sc_id, true);
+        pane.initialize(sc_id, true, resourceRoot);
         pane.updateRootLayout(sc_id, getIntent().getStringExtra("title"));
         pane.setVerticalScrollBarEnabled(true);
         pane.setResourceManager(jC.d(sc_id));

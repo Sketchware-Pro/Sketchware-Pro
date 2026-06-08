@@ -1,7 +1,6 @@
 package ide.sketchware.codeproject.ui;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -11,10 +10,12 @@ import java.io.File;
 import java.util.HashMap;
 
 import a.a.a.lC;
+import a.a.a.yB;
 import ide.sketchware.R;
 import ide.sketchware.codeproject.model.CodeProject;
 import ide.sketchware.databinding.ActivityProjectSettingsBinding;
 import ide.sketchware.utility.FileUtil;
+import ide.sketchware.utility.SketchwareUtil;
 
 public class ProjectSettingsActivity extends BaseAppCompatActivity {
 
@@ -51,12 +52,12 @@ public class ProjectSettingsActivity extends BaseAppCompatActivity {
     }
 
     private void populateFields() {
-        binding.inputAppName.setText(getMetaString("my_app_name"));
-        binding.inputPackageName.setText(getMetaString("my_sc_pkg_name"));
-        binding.inputVersionCode.setText(getMetaString("sc_ver_code"));
-        binding.inputVersionName.setText(getMetaString("sc_ver_name"));
+        binding.inputAppName.setText(yB.c(metadata, "my_app_name"));
+        binding.inputPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
+        binding.inputVersionCode.setText(yB.c(metadata, "sc_ver_code"));
+        binding.inputVersionName.setText(yB.c(metadata, "sc_ver_name"));
 
-        String minSdk = getMetaString("sc_min_sdk");
+        String minSdk = yB.c(metadata, "sc_min_sdk");
         if (minSdk.isEmpty()) {
             minSdk = "21";
         }
@@ -121,7 +122,7 @@ public class ProjectSettingsActivity extends BaseAppCompatActivity {
         // Update strings.xml app_name on disk
         updateAppNameInStrings(appName);
 
-        Toast.makeText(this, R.string.code_project_settings_saved, Toast.LENGTH_SHORT).show();
+        SketchwareUtil.toast(getString(R.string.code_project_settings_saved));
         setResult(RESULT_OK);
         finish();
     }
@@ -176,8 +177,4 @@ public class ProjectSettingsActivity extends BaseAppCompatActivity {
         return true;
     }
 
-    private String getMetaString(String key) {
-        Object value = metadata.get(key);
-        return value != null ? value.toString() : "";
-    }
 }

@@ -1,0 +1,27 @@
+{
+  "project_type": "Android app (Java/Kotlin) - Sketchware Pro IDE with code project mode",
+  "language": "Java",
+  "build_system": "Gradle with version catalog (libs.versions.toml). Android compileSdk 36, minSdk 26, Java 17. Uses fileTree JARs in app/libs/.",
+  "test_framework": "No unit tests found for the codeproject module. The project uses Android instrumented testing patterns but none exist yet for this feature area.",
+  "build_command": "cd /projects/sandbox/Sketchware-Pro && ./gradlew assembleDebug",
+  "test_command": "N/A - no tests for codeproject module",
+  "verification_instructions": "Run ./gradlew assembleDebug to ensure code compiles without errors. Check that all new/modified files have correct imports and follow existing code patterns.",
+  "snapshot_or_generated_files": null,
+  "setup_instructions": "Java 17 required, Gradle 8.14 available via wrapper. Use mise to set java 17 before building.",
+  "environment_constraints": "OPEN_INTERNET - full network access. Android SDK not pre-installed but Gradle wrapper handles dependencies. Java 17 available via mise.",
+  "contribution_requirements": "Use Java (not Kotlin) for new source files in the codeproject package. Follow existing naming conventions (code_project_ prefix for string resources). Commit to feat/code-project-mode branch.",
+  "key_patterns": "sora-editor 0.23.5 used for code editor (Content class at io.github.rosemoe.sora.text.Content). FileProvider already configured at ${applicationId}.provider with external-path '.' in provider_paths.xml. Builder pattern: CodeProjectBuilder with BuildProgressListener interface. Code project files reside in ide.sketchware.codeproject package with sub-packages: build, editor, model, template, ui.",
+  "relevant_files": [
+    "app/src/main/java/ide/sketchware/codeproject/ui/CodeProjectActivity.java",
+    "app/src/main/java/ide/sketchware/codeproject/ui/OpenFileTab.java",
+    "app/src/main/java/ide/sketchware/codeproject/build/CodeProjectBuilder.java",
+    "app/src/main/java/ide/sketchware/codeproject/model/CodeProject.java",
+    "app/src/main/java/ide/sketchware/codeproject/template/CodeProjectTemplate.java",
+    "app/src/main/res/layout/activity_code_project.xml",
+    "app/src/main/res/menu/menu_code_project.xml",
+    "app/src/main/res/values/strings.xml",
+    "app/src/main/res/xml/provider_paths.xml",
+    "app/src/main/AndroidManifest.xml"
+  ],
+  "directory_structure": "app/src/main/java/ide/sketchware/codeproject/ - main package for code project mode. Sub-packages: build/ (CodeProjectBuilder), editor/ (JavaAutoCompleteLanguage), model/ (CodeProject data class), template/ (CodeProjectTemplate scaffold generator), ui/ (Activity, adapters, tabs). Resources: res/layout/activity_code_project.xml, res/menu/menu_code_project.xml. Build output goes to project's bin/ directory."
+}

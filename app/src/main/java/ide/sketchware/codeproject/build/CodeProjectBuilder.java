@@ -103,13 +103,8 @@ public class CodeProjectBuilder {
             return;
         }
 
-        try (InputStream is = context.getAssets().open(assetName);
-             FileOutputStream fos = new FileOutputStream(aapt2Binary)) {
-            byte[] buffer = new byte[8192];
-            int read;
-            while ((read = is.read(buffer)) != -1) {
-                fos.write(buffer, 0, read);
-            }
+        try (InputStream is = context.getAssets().open(assetName)) {
+            FileUtil.extractFileFromZip(is, aapt2Binary);
         }
         aapt2Binary.setExecutable(true);
     }
@@ -225,8 +220,7 @@ public class CodeProjectBuilder {
 
     private void compileKotlin() throws Exception {
         File sourceDir = new File(project.getKotlinSourcePath());
-        List<File> ktFiles = new ArrayList<>();
-        collectKotlinFiles(sourceDir, ktFiles);
+        List<File> ktFiles = new ArrayList<>(FileUtil.listFilesRecursively(sourceDir, ".kt"));
 
         if (ktFiles.isEmpty()) return;
         usesKotlin = true;
@@ -292,18 +286,7 @@ public class CodeProjectBuilder {
         }
     }
 
-    private void collectKotlinFiles(File dir, List<File> ktFiles) {
-        if (dir == null || !dir.exists()) return;
-        File[] files = dir.listFiles();
-        if (files == null) return;
-        for (File file : files) {
-            if (file.isDirectory()) {
-                collectKotlinFiles(file, ktFiles);
-            } else if (file.getName().endsWith(".kt")) {
-                ktFiles.add(file);
-            }
-        }
-    }
+
 
     private void compileJava() throws Exception {
         File androidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
@@ -432,11 +415,23 @@ public class CodeProjectBuilder {
             // Add every dex file D8 produced (classes.dex, classes2.dex, ...).
             // D8 in DexIndexed mode may emit multiple dex files when method count is high.
             File[] dexFiles = dexDir.listFiles((dir, name) ->
-                    name.startsWith("classes") && name.endsWith(".dex"));
+                    name.matches("classes\\d*\\.dex"));
             if (dexFiles == null || dexFiles.length == 0) {
                 throw new Exception("No dex files found to package.");
             }
-            java.util.Arrays.sort(dexFiles, java.util.Comparator.comparing(File::getName));
+            java.util.Arrays.sort(dexFiles, (f1, f2) -> {
+                String n1 = f1.getName();
+                String n2 = f2.getName();
+                if (n1.equals("classes.dex")) return -1;
+                if (n2.equals("classes.dex")) return 1;
+                try {
+                    int num1 = Integer.parseInt(n1.substring(7, n1.length() - 4));
+                    int num2 = Integer.parseInt(n2.substring(7, n2.length() - 4));
+                    return Integer.compare(num1, num2);
+                } catch (Exception e) {
+                    return n1.compareTo(n2);
+                }
+            });
             for (File dex : dexFiles) {
                 ZipEntry dexEntry = new ZipEntry(dex.getName());
                 dexEntry.setMethod(ZipEntry.DEFLATED);
@@ -464,14 +459,7 @@ public class CodeProjectBuilder {
         if (!zipalignBinary.exists()) {
             // Fallback: just rename unaligned as aligned
             if (!input.renameTo(output)) {
-                try (FileInputStream in = new FileInputStream(input);
-                     FileOutputStream out = new FileOutputStream(output)) {
-                    byte[] buffer = new byte[8192];
-                    int read;
-                    while ((read = in.read(buffer)) != -1) {
-                        out.write(buffer, 0, read);
-                    }
-                }
+                FileUtil.copyFile(input.getAbsolutePath(), output.getAbsolutePath());
             }
             return;
         }
@@ -491,14 +479,7 @@ public class CodeProjectBuilder {
         if (!output.exists()) {
             // Zipalign failed silently; use unaligned APK
             if (!input.renameTo(output)) {
-                try (FileInputStream in = new FileInputStream(input);
-                     FileOutputStream out = new FileOutputStream(output)) {
-                    byte[] buffer = new byte[8192];
-                    int read;
-                    while ((read = in.read(buffer)) != -1) {
-                        out.write(buffer, 0, read);
-                    }
-                }
+                FileUtil.copyFile(input.getAbsolutePath(), output.getAbsolutePath());
             }
         }
     }
@@ -515,9 +496,20 @@ public class CodeProjectBuilder {
             return cachedLibraryJars;
         }
         List<File> jars = new ArrayList<>();
-        File libsDir = new File(project.getLibsPath());
-        if (libsDir.exists() && libsDir.isDirectory()) {
-            File[] files = libsDir.listFiles();
+
+        // Scan libs/ (manually placed JARs)
+        scanJarsInDir(new File(project.getLibsPath()), jars);
+
+        // Scan libs/resolved/ (auto-resolved dependencies)
+        scanJarsInDir(new File(project.getLibsPath(), "resolved"), jars);
+
+        cachedLibraryJars = jars;
+        return cachedLibraryJars;
+    }
+
+    private void scanJarsInDir(File dir, List<File> jars) {
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
             if (files != null) {
                 for (File file : files) {
                     if (file.isFile() && file.getName().endsWith(".jar")) {
@@ -526,8 +518,6 @@ public class CodeProjectBuilder {
                 }
             }
         }
-        cachedLibraryJars = jars;
-        return cachedLibraryJars;
     }
 
     public interface BuildProgressListener {

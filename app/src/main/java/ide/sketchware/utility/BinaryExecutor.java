@@ -15,14 +15,23 @@ public class BinaryExecutor {
     }
 
     public String execute() {
+        Process process = null;
         try {
-            Scanner scanner = new Scanner(mProcess.start().getErrorStream());
-            while (scanner.hasNextLine()) {
-                mWriter.append(scanner.nextLine());
-                mWriter.append(System.lineSeparator());
+            mProcess.redirectErrorStream(true);
+            process = mProcess.start();
+            try (Scanner scanner = new Scanner(process.getInputStream())) {
+                while (scanner.hasNextLine()) {
+                    mWriter.append(scanner.nextLine());
+                    mWriter.append(System.lineSeparator());
+                }
             }
+            process.waitFor();
         } catch (Exception e) {
             e.printStackTrace(new PrintWriter(mWriter));
+        } finally {
+            if (process != null) {
+                process.destroy();
+            }
         }
         return mWriter.toString();
     }

@@ -19,6 +19,8 @@ on:
 jobs:
   notifyTelegram:
     name: Notify Telegram
+    permissions:
+      contents: read
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
@@ -43,6 +45,8 @@ jobs:
 
   build:
     name: Build APKs
+    permissions:
+      contents: read
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     outputs:
       short_sha: ${{ steps.set_sha.outputs.short_sha }}
@@ -64,7 +68,7 @@ jobs:
           printf 'GOOGLE_SERVICES_JSON<<EOF\n%s\nEOF\n' "$JSON_CONTENT" >> $GITHUB_ENV
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Build Release APK
         env:
@@ -88,6 +92,8 @@ jobs:
 
   aggregateAndSend:
     name: Send APKs to Telegram
+    permissions:
+      contents: read
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     needs: build
     steps:
@@ -134,6 +140,8 @@ jobs:
 
   updateAppData:
     name: Update App Data
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

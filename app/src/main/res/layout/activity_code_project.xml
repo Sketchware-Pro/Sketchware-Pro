@@ -123,6 +123,32 @@
                     android:textStyle="bold"
                     android:textSize="13sp" />
 
+                <EditText
+                    android:id="@+id/logcat_search"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:hint="@string/code_project_logcat_filter"
+                    android:singleLine="true"
+                    android:textSize="12sp" />
+
+                <ImageButton
+                    android:id="@+id/btn_filter_log"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@android:drawable/ic_menu_sort_by_size"
+                    android:contentDescription="@string/code_project_logcat_package_filter"
+                    android:scaleType="center" />
+
+                <ImageButton
+                    android:id="@+id/btn_export_log"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@android:drawable/ic_menu_upload"
+                    android:contentDescription="@string/code_project_logcat_export"
+                    android:scaleType="center" />
+
                 <ImageButton
                     android:id="@+id/btn_clear_log"
                     android:layout_width="48dp"

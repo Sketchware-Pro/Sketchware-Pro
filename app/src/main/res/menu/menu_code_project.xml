@@ -35,6 +35,36 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_sync_deps"
+        android:title="@string/code_project_sync_deps"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_add_dependency"
+        android:title="@string/code_project_add_dependency"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_format_file"
+        android:title="@string/code_project_format_file"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_layout_preview"
+        android:title="@string/code_project_layout_preview"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_resources"
+        android:title="@string/code_project_resources"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_editor_settings"
+        android:title="@string/code_project_editor_settings"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_settings"
         android:title="@string/code_project_settings"
         app:showAsAction="never" />

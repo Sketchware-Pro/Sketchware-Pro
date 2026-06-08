@@ -71,7 +71,7 @@ public class ColorsEditor extends Fragment {
 
         boolean isSkippingMode = updateMode == 1;
         boolean isMergeAndReplace = updateMode == 2;
-        colorsEditorManager.isDefaultVariant = activity.variant.isEmpty();
+        colorsEditorManager.isDefaultVariant = activity.shouldManageProjectDefaults();
         isNightVariant = activity.variant.contains("night");
 
         ArrayList<ColorModel> defaultColors = new ArrayList<>();
@@ -138,7 +138,7 @@ public class ColorsEditor extends Fragment {
         defaultColors.put("colorControlHighlight", ProjectFile.COLOR_CONTROL_HIGHLIGHT);
         defaultColors.put("colorControlNormal", ProjectFile.COLOR_CONTROL_NORMAL);
 
-        colorsEditorManager = new ColorsEditorManager();
+        colorsEditorManager = new ColorsEditorManager(activity.sc_id, activity.getExplicitResourceRoot());
         colorsEditorManager.defaultColors = defaultColors;
     }
 
@@ -293,8 +293,10 @@ public class ColorsEditor extends Fragment {
 
     public void saveColorsFile() {
         if (hasUnsavedChanges) {
-            XmlUtil.saveXml(contentPath, colorsEditorManager.convertListToXml(colorList, notesMap));
-            hasUnsavedChanges = false;
+            if (activity != null && activity.isPathSafe(contentPath)) {
+                XmlUtil.saveXml(contentPath, colorsEditorManager.convertListToXml(colorList, notesMap));
+                hasUnsavedChanges = false;
+            }
         }
     }
 }
