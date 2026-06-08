@@ -220,7 +220,7 @@ async function main() {
     "nproc",
     "free -m",
     "java -version",
-    `./gradlew ${buildTask} --no-daemon --stacktrace --max-workers=2`,
+    `./gradlew ${buildTask} --no-daemon --stacktrace`,
   ];
 
   try {
