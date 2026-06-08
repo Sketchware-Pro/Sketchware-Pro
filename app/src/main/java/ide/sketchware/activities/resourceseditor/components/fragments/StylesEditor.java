@@ -297,8 +297,8 @@ public class StylesEditor extends Fragment {
         if (hasUnsavedChanges) {
             if (activity != null && activity.isPathSafe(filePath)) {
                 FileUtil.writeFile(filePath, stylesEditorManager.convertStylesToXML(stylesList, notesMap));
+                hasUnsavedChanges = false;
             }
-            hasUnsavedChanges = false;
         }
     }
 

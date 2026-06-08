@@ -189,8 +189,8 @@ public class StringsEditor extends Fragment {
         if (hasUnsavedChanges) {
             if (activity != null && activity.isPathSafe(filePath)) {
                 XmlUtil.saveXml(filePath, stringsEditorManager.convertListMapToXmlStrings(listmap, notesMap));
+                hasUnsavedChanges = false;
             }
-            hasUnsavedChanges = false;
         }
     }
 }

@@ -295,8 +295,8 @@ public class ColorsEditor extends Fragment {
         if (hasUnsavedChanges) {
             if (activity != null && activity.isPathSafe(contentPath)) {
                 XmlUtil.saveXml(contentPath, colorsEditorManager.convertListToXml(colorList, notesMap));
+                hasUnsavedChanges = false;
             }
-            hasUnsavedChanges = false;
         }
     }
 }
