@@ -115,7 +115,7 @@ async function main() {
     .setWorkdir("/home/user")
     .copy(".", "/home/user/sketchware-pro", { user: "user" })
     .runCmd("chown -R user:user /home/user/sketchware-pro", { user: "root" })
-    .runCmd("cd /home/user/sketchware-pro && chmod +x ./gradlew && source /etc/profile.d/android-build.sh && ./gradlew assembleDebug --dry-run --no-daemon --max-workers=2", { user: "user" })
+    .runCmd("cd /home/user/sketchware-pro && chmod +x ./gradlew && source /etc/profile.d/android-build.sh && ./gradlew assembleDebug assembleRelease --no-daemon --max-workers=2", { user: "user" })
     .runCmd("rm -rf /home/user/sketchware-pro", { user: "user" });
 
   console.log(`Building E2B template ${options.name} (${options.cpuCount} CPU, ${options.memoryMB} MB)...`);
