@@ -6,8 +6,9 @@
     android:layout_marginTop="12dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="?attr/colorSurfaceContainer"
-    app:cardCornerRadius="20dp">
+    app:cardBackgroundColor="?attr/colorSecondaryContainer"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp">
 
     <LinearLayout
         android:id="@+id/project_one"
@@ -21,7 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            app:cardBackgroundColor="?attr/colorSurface">
+            app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
+            app:cardCornerRadius="16dp">
 
             <ImageView
                 android:id="@+id/iv_create_new"
@@ -29,7 +31,7 @@
                 android:layout_height="60dp"
                 android:padding="16dp"
                 android:src="@drawable/ic_mtrl_history"
-                app:tint="?attr/colorPrimary" />
+                app:tint="?attr/colorOnSecondaryContainer" />
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
@@ -44,7 +46,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/myprojects_list_menu_title_restore_projects"
-                android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
+                android:textAppearance="?attr/textAppearanceBodyLargeEmphasized"
+                android:textColor="?attr/colorOnSecondaryContainer" />
 
             <TextView
                 android:id="@+id/tv_create_new_description"
@@ -53,7 +56,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Get your projects in a couple of clicks"
                 android:textAppearance="?attr/textAppearanceBodySmall"
-                android:textColor="?attr/colorOnSurfaceVariant" />
+                android:textColor="?attr/colorOnSecondaryContainer" />
         </LinearLayout>
 
         <ImageView
@@ -61,6 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:src="@drawable/ic_chevron_right_white_24dp"
-            app:tint="?attr/colorControlNormal" />
+            app:tint="?attr/colorOnSecondaryContainer" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

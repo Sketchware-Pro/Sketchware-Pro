@@ -3,12 +3,12 @@
     android:color="?attr/colorControlHighlight">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="?attr/colorSurfaceContainer" />
+            <solid android:color="?attr/colorSurfaceContainerLow" />
             <corners
                 android:bottomLeftRadius="4dp"
                 android:bottomRightRadius="4dp"
-                android:topLeftRadius="18dp"
-                android:topRightRadius="18dp" />
+                android:topLeftRadius="20dp"
+                android:topRightRadius="20dp" />
         </shape>
     </item>
 </ripple>

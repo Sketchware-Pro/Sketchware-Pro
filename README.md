@@ -12,7 +12,45 @@
 Welcome to Sketchware Pro! Here you'll find the source code of many classes in Sketchware Pro and, most importantly, the place to contribute to Sketchware Pro.
 
 ## Building the App
-To build the app, you must use Gradle. It's highly recommended to use Android Studio for the best experience.
+The project uses Gradle `8.13`, Android Gradle Plugin `8.12.0`, Java `17`, and
+Android SDK `36`. Android Studio is recommended because it can install and
+configure the required SDK packages automatically.
+
+### Build with Android Studio
+
+1. Install Android Studio and a JDK 17 runtime.
+2. Open the repository root (the directory containing `settings.gradle`).
+3. Let Gradle sync and install Android SDK Platform 36 and Build Tools 35.
+4. Select the `app` configuration and use **Build > Build APK(s)**.
+5. Find the debug APK in `app/build/outputs/apk/debug/app-debug.apk`.
+
+### Build from Windows PowerShell
+
+Set the paths for your machine, then run the Gradle wrapper:
+
+```powershell
+$env:JAVA_HOME = "C:\path\to\jdk-17"
+$env:ANDROID_HOME = "$env:LOCALAPPDATA\Android\Sdk"
+$env:ANDROID_SDK_ROOT = $env:ANDROID_HOME
+$env:Path = "$env:JAVA_HOME\bin;$env:ANDROID_HOME\platform-tools;$env:Path"
+
+.\gradlew.bat assembleDebug
+```
+
+For the release variant:
+
+```powershell
+.\gradlew.bat assembleRelease
+```
+
+The release APK is written to `app/build/outputs/apk/release/`. The current
+project signs release builds with the repository's test key, so replace the
+signing configuration with a private production keystore before distributing
+an APK. Keep production keystores and passwords outside version control.
+
+Firebase uses a generated mock `google-services.json` for local builds.
+Set `GOOGLE_SERVICES_JSON` and `SKETCHUB_API_KEY` in the environment when real
+service integration is required.
 
 ### Source Code Map
 
