@@ -34,11 +34,16 @@ public class CodeViewerActivity extends BaseAppCompatActivity {
         binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         binding.toolbar.setSubtitle(scId);
 
+        // Reyaansh Was Here!
         binding.editor.setTypefaceText(EditorUtils.getTypeface(this));
         binding.editor.setTextSize(14);
         binding.editor.setText(Lx.j(code, false));
-        binding.editor.setEditable(false);
+        binding.editor.setEditable(true); // Editable Code Viewer
+        binding.editor.setFocusable(true);
+        binding.editor.setFocusableInTouchMode(true);
         binding.editor.setWordwrap(false);
+        // Reyaansh Was Here!
+        
         loadColorScheme(scheme);
 
         UI.addSystemWindowInsetToPadding(binding.appBarLayout, true, true, true, false);
