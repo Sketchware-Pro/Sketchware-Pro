@@ -11,54 +11,232 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import mod.hey.studios.util.Helper;
 
-public abstract class MB implements TextWatcher, InputFilter {
 
-    public Context a;
-    public TextInputLayout b;
-    public EditText c;
-    public boolean d;
-    public int e;
 
-    public MB(Context context, TextInputLayout textInputLayout) {
-        a = context;
-        b = textInputLayout;
-        c = textInputLayout.getEditText();
-        c.setFilters(new InputFilter[]{this});
-        c.addTextChangedListener(this);
+
+// =========================================================
+// /*BaseValidatorW*/ MB = Base validator watcher component
+// =========================================================
+
+// PURPOSE:
+    // Shared base for all field validators in the project.
+    // Wires a TextInputLayout + EditText pair to a TextWatcher
+    // and an InputFilter so subclasses only need to override
+    // onTextChanged() and implement their own rules.
+
+// FIELDS (obfuscated names preserved for compatibility):
+    // /*ctx*/      a → Context          : used to resolve @string resources via getString()
+    // /*til*/      b → TextInputLayout  : the outer wrapper, used to show/hide errors
+    // /*et*/       c → EditText         : the inner input field
+    // /*isValid*/  d → boolean          : true = current input is valid, false = invalid
+    // /*strResId*/ e → int (@StringRes) : optional custom error string resource id.
+    //                                     When 0 → subclass uses its own default string.
+    //                                     When set → subclass uses this id instead,
+    //                                     allowing callers to swap the error message
+    //                                     without subclassing.
+    //                                     Example:
+    //                                         at strings.xml →
+    //                                             <string name="invalid_value_max_words">You can use maximum %d words</string>
+    //                                         
+    //                                         validator. /*strResId*/ e = R.string.invalid_value_max_words;
+    //                                         
+    //                                         Then inside the subclass:
+    //                                             int maxLength = 50;
+    //                                             /*ctx*/ a.getString(/*strResId*/ e, maxLength)
+    //                                             resolves to e.g. "You can use maximum 50 words"
+
+// USAGE:
+    // Extend /*BaseValidatorW*/ MB, override onTextChanged(), call Result methods.
+    // Use b() to check validity before form submission.
+
+// =========================================================
+// DESIGN NOTE — Inverted ownership:
+    // Normally a View owns its watcher.
+    //     view.addTextChangedListener(myWatcher);
+    // The watcher is just a passive listener the View calls into.
+    // The View is in charge.
+    //
+    // Here it is flipped. /*BaseValidatorW*/ MB is in charge.
+    // /*BaseValidatorW*/ MB receives a TextInputLayout and immediately wires itself in:
+    //     c.setFilters (new InputFilter[] { this });
+    //     c.addTextChangedListener (this);
+    // The View has no knowledge of /*BaseValidatorW*/ MB at all.
+    // /*BaseValidatorW*/ MB is both the watcher AND the one who registered itself.
+    //
+    // This is an outside-in pattern.
+    // Benefit:
+        // One reusable class you can point at any field anywhere.
+        // No need to touch the View itself.
+        // Just new it and pass the TIL:
+        //     new PackageNameValidator (myTil);
+        //     OR
+        //     new PackageNameValidator (context, myTil); // TODO: DELETE THIS ←←←
+        // Done. The field is now validated.
+    
+
+// =========================================================
+
+// TODO:
+    // ======= RENAME =======
+        // 1. class MB                → BaseValidatorW
+        // 2. field a (Context)       → ctx
+        // 3. field b (TIL)           → til
+        // 4. field c (EditText)      → et
+        // 5. field d (boolean)       → isValid
+        // 6. field e (int @StringRes)→ strResId
+        // 7. method a()  getText     → getText
+        // 8. method a(String) setText→ setText
+        // 9. method b()  isValid     → isValid
+    
+    // ======= CONSTRUCTOR =======
+        // DELETE the "/*BaseValidatorW*/ MB (Context ..., TextInputLayout ...) {...}"
+            // THERE'S ABSOLUTELY NO NEED TO PASS THE CONTEXT SEPARATELY
+            // that constructor is used in multiple places at SW right now,
+            // so it's not safe to delete it now.
+            // it will be deleted later once we update all the references of it.
+            
+        // Please use "/*BaseValidatorW*/ MB (TextInputLayout ...) {...}" instead
+            // Context is now pulled directly from the TIL:
+            //     /*ctx*/ a = textInputLayout.getContext();
+            // A View cannot exist without a Context,
+            // so this is always safe.
+    
+     // ======= CONTEXT =======
+        // Storing Context is not safe and not recommend
+        // it risks memory leaks & crashes
+        // if the validator outlives the Activity.
+        // Field /*ctx*/ a should be removed.
+        // Replace with a getCtx() method that pulls fresh
+        // from the TIL on each call.
+
+// =========================================================
+
+public abstract class /*BaseValidatorW*/ MB implements TextWatcher, InputFilter {
+
+
+
+
+    // =========================================================
+    // FIELDS
+    // =========================================================
+    /*TODO: DELETE THIS ↓↓↓*/ 
+    public Context           /*ctx*/      a; // Application/Activity context. Used for getString().
+    /*TODO: DELETE THIS ↑↑↑*/ 
+    public TextInputLayout   /*til*/      b; // Outer TIL wrapper. Shows error messages.
+    public EditText          /*et*/       c; // Inner EditText. Source of input text.
+    public boolean           /*isValid*/  d; // Validity flag. true = valid input.
+    public int               /*strResId*/ e; // Optional @StringRes override for error messages.
+                                             // 0 means no override — use the default string.
+
+
+
+
+    // =========================================================
+    // CONSTRUCTOR
+    // =========================================================
+    public /*BaseValidatorW*/ MB (TextInputLayout textInputLayout) {
+        /*til*/ b = textInputLayout;
+        /*ctx*/ a = getCtx(); /*TODO: DELETE THIS ←←←*/
+        /*et*/  c = textInputLayout.getEditText();
+
+        // Register this as both a filter and a watcher on the EditText.
+        // InputFilter  → intercepts characters as they are typed.
+        // TextWatcher  → notified after the text changes.
+        /*et*/ c.setFilters (new InputFilter[] { this });
+        /*et*/ c.addTextChangedListener (this);
+    }
+    
+    // And why the hell are we passing the context separately here?
+        // we can just get it from the view
+    // TODO: DELETE THIS ↓↓↓
+    /** @deprecated Use {@link #MB(TextInputLayout)} instead. */
+    @Deprecated (since = "7.0.0", forRemoval = true)
+    public /*BaseValidatorW*/ MB (Context context, TextInputLayout textInputLayout) {
+        /*ctx*/ a = context;
+        /*til*/ b = textInputLayout;
+        /*et*/  c = textInputLayout.getEditText();
+        
+        /*et*/ c.setFilters (new InputFilter[] { this });
+        /*et*/ c.addTextChangedListener (this);
     }
 
-    public String a() {
-        return Helper.getText(c);
+
+
+
+    // =========================================================
+    // PUBLIC METHODS
+    // =========================================================
+
+    // Gets the context directly & safely from til
+    public Context getCtx() {
+        return /*til*/ b.getContext();
+    }
+    
+    // getText() — Returns the current trimmed text from the EditText.
+    public String /*getText*/ a() {
+        return Helper.getText (/*et*/ c);
     }
 
-    public void a(String str) {
-        d = true;
-        c.setText(str);
+    // setText() — Sets the field text programmatically and marks it valid.
+    // isValid = true here because we are setting a known value, not user input.
+    public void /*setText*/ a (String str) {
+        /*isValid*/ d = true;
+        /*et*/      c.setText (str);
     }
+
+    // isValid() — Returns the current validity state.
+    // If invalid, requests focus on the field so the user sees the error.
+    public boolean /*isValid*/ b() {
+        if ( ! /*isValid*/ d ) /*et*/ c.requestFocus();
+        return /*isValid*/ d;
+    }
+
+
+
+
+    // =========================================================
+    // TextWatcher — subclasses override onTextChanged()
+    // =========================================================
 
     @Override
-    public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
-        return null;
-    }
+    public void beforeTextChanged (CharSequence s, int start, int count, int after) {}
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-    }
+    public void onTextChanged (CharSequence s, int start, int before, int count) {}
 
+    // Clears the error when the field becomes empty.
+    // Subclasses should not need to override this.
     @Override
-    public void afterTextChanged(Editable editable) {
+    public void afterTextChanged (Editable editable) {
         if (editable.toString().isEmpty()) {
-            b.setError(null);
-            b.setErrorEnabled(false);
+            /*til*/ b.setError (null);
+            /*til*/ b.setErrorEnabled (false);
         }
     }
 
-    public boolean b() {
-        if (!d) c.requestFocus();
-        return d;
+
+
+
+    // =========================================================
+    // InputFilter
+    // =========================================================
+
+    // Returns null = allow all characters through.
+    // Subclasses can override this to block characters early,
+    // before onTextChanged fires.
+    @Override
+    public CharSequence filter (
+        CharSequence source,
+        int start, int end,
+        Spanned dest,
+        int dstart, int dend
+    ) {
+        return null;
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-    }
+
+
+
 }
+
+
