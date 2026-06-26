@@ -590,7 +590,7 @@ public class Jx {
                     .replaceAll("\\(SensorManager\\) getSystemService", "(SensorManager) getContext().getSystemService")
                     .replaceAll("Typeface.createFromAsset\\(getAssets\\(\\)", "Typeface.createFromAsset(getContext().getAssets()")
                     .replaceAll("= getAssets\\(\\).open", "= getContext().getAssets().open")
-                    .replaceAll("getSharedPreferences", "getContext().getSharedPreferences")
+                    .replaceAll("(?<!\\.)getSharedPreferences", "getContext().getSharedPreferences")
                     .replaceAll("AlertDialog.Builder\\(this\\);", "AlertDialog.Builder(getActivity());")
                     .replaceAll("SpeechRecognizer.createSpeechRecognizer\\(this\\);", "SpeechRecognizer.createSpeechRecognizer(getContext());")
                     .replaceAll("new RequestNetwork\\(this\\);", "new RequestNetwork((Activity) getContext());")
