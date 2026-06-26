@@ -121,9 +121,13 @@ dependencies {
 
 tasks.register('createMockGoogleServices') {
     doLast {
-        if (secrets != null) {
+        if (secrets != null && !secrets.trim().isEmpty()) {
             new File("$projectDir/google-services.json").text = secrets
             return
+        }
+        def rootMockFile = file("google-services.json")
+        if (rootMockFile.exists() && rootMockFile.length() == 0) {
+            rootMockFile.delete()
         }
         def mockFile = file("src/debug/google-services.json")
         if (!mockFile.exists()) {
