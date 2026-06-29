@@ -1,5 +1,5 @@
 <resources>
-    <color name="color_accent">#ff008dcd</color>
+    <color name="color_accent">#ffa2c9f5</color>
 
     <color name="color_text_onSurface">#E2E2E5</color>
     <color name="color_text_onSurfaceVariant">#C1C7CE</color>
@@ -9,12 +9,12 @@
     <color name="inputLayoutStrokeColor">#505050</color>
 
     <!--  main layouts  -->
-    <color name="backgroundColor">#1C1C1C</color>
-    <color name="backgroundOpenColor">#252729</color>
-    <color name="dialogBackgroundColor">#2E2E2E</color>
+    <color name="backgroundColor">#111318</color>
+    <color name="backgroundOpenColor">#1A1C21</color>
+    <color name="dialogBackgroundColor">#1E2025</color>
 
     <!--  views  -->
-    <color name="cardStrokeColor">#2E2E2E</color>
+    <color name="cardStrokeColor">#43474E</color>
 
     <color name="view_property_background_color">#292929</color>
     <color name="view_property_tab_active">#525252</color>

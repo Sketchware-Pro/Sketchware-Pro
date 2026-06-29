@@ -1,7 +1,7 @@
 <resources>
-    <color name="color_accent">#ff008dcd</color>
-    <color name="color_btn_blue_highlight">#ff005e8a</color>
-    <color name="color_btn_blue_normal">#ff008dce</color>
+    <color name="color_accent">#ff355f8a</color>
+    <color name="color_btn_blue_highlight">#ff23486d</color>
+    <color name="color_btn_blue_normal">#ff355f8a</color>
     <color name="color_btn_green_highlight">#ff1d7a73</color>
     <color name="color_btn_ltblue_highlight">#ff0b96d9</color>
     <color name="color_btn_ltblue_normal">#ff33b8f5</color>
@@ -11,25 +11,25 @@
     <color name="color_chk_white_highlight">#ffffccbc</color>
     <color name="color_error_bg">#FFF2F1</color>
     <color name="color_chk_white_normal">#fff5f5f5</color>
-    <color name="color_control_highlight">#20008dcd</color>
-    <color name="color_control_normal">#ff57beee</color>
-    <color name="color_primary">#ff008dcd</color>
-    <color name="color_primary_dark">#ff0084c2</color>
-    <color name="color_secondary">#ff57beee</color>
+    <color name="color_control_highlight">#24355f8a</color>
+    <color name="color_control_normal">#ff52606f</color>
+    <color name="color_primary">#ff355f8a</color>
+    <color name="color_primary_dark">#ff23486d</color>
+    <color name="color_secondary">#ff52606f</color>
     <color name="design_menu_bg">#ffffffff</color>
     <color name="design_menu_text_color">#ff000000</color>
-    <color name="design_tab_background">#ff008dcd</color>
-    <color name="design_tab_indicator_color">#ffffc107</color>
+    <color name="design_tab_background">#ff355f8a</color>
+    <color name="design_tab_indicator_color">#ffd1e4ff</color>
     <color name="design_tab_selected_text_color">#ffffffff</color>
-    <color name="design_tab_text_color">#ffa8cde9</color>
+    <color name="design_tab_text_color">#ffc6d8ed</color>
     <color name="grey">#ff828282</color>
     <color name="light_grey">#ffc6c6c6</color>
     <color name="lighter_grey">#ffeeeeee</color>
-    <color name="list_selected_background">#20008dcd</color>
+    <color name="list_selected_background">#24355f8a</color>
     <color name="main_tab_background">#ffffffff</color>
-    <color name="main_tab_indicator_color">#ff71bce9</color>
-    <color name="main_tab_selected_text_color">#ff007cc9</color>
-    <color name="main_tab_text_color">#ff007cc9</color>
+    <color name="main_tab_indicator_color">#ff355f8a</color>
+    <color name="main_tab_selected_text_color">#ff355f8a</color>
+    <color name="main_tab_text_color">#ff52606f</color>
     <color name="sc_item_bg">#fffff9ac</color>
     <color name="scolor_black_01">#ff1d2129</color>
     <color name="scolor_black_02">#ff757575</color>
@@ -60,7 +60,7 @@
     <color name="monokia_pro_orange">#ffffd866</color>
     <color name="monokia_pro_purple">#ffab9df2</color>
     <color name="monokia_pro_grey">#ff727072</color>
-    <color name="colorBottomBarSW">#ff008dcd</color>
+    <color name="colorBottomBarSW">#ff355f8a</color>
     <color name="color_text_onSurface">#1A1C1E</color>
     <color name="color_text_onSurfaceVariant">#41474D</color>
 
@@ -69,20 +69,20 @@
     <color name="inputLayoutStrokeColor">#D3D3D3</color>
 
     <!--  main layouts  -->
-    <color name="backgroundColor">#FFFFFF</color>
-    <color name="backgroundOpenColor">#F5F5F5</color>
+    <color name="backgroundColor">#F8F9FF</color>
+    <color name="backgroundOpenColor">#F1F3F9</color>
     <color name="dialogBackgroundColor">#FFFFFF</color>
 
     <!--  views  -->
-    <color name="cardStrokeColor">#D1D1D1</color>
+    <color name="cardStrokeColor">#C3C7CF</color>
 
     <color name="view_property_background_color">#ffffff</color>
-    <color name="view_property_tab_active">#ff0084c2</color>
-    <color name="view_property_tab_deactive">#30008dcd</color>
+    <color name="view_property_tab_active">#ff355f8a</color>
+    <color name="view_property_tab_deactive">#30355f8a</color>
     <color name="view_property_tab_active_text">#ffffffff</color>
     <color name="view_property_tab_deactive_text">#ff000000</color>
-    <color name="view_property_grid_background">#30008dcd</color>
-    <color name="view_property_grid_see_all_background">#ff008dcd</color>
+    <color name="view_property_grid_background">#30355f8a</color>
+    <color name="view_property_grid_see_all_background">#ff355f8a</color>
     <color name="view_property_spinner_filter">#ff000000</color>
 
     <color name="splash_bg_color">@color/md_theme_light_background</color>

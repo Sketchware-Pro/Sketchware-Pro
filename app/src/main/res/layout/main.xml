@@ -29,22 +29,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                app:cardBackgroundColor="?colorSurfaceContainer"
-                app:cardCornerRadius="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="4dp"
+                app:cardBackgroundColor="?colorSurfaceContainerHigh"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
                 app:layout_scrollFlags="scroll|enterAlways|snap">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
                     android:layout_marginHorizontal="4dp"
+                    app:contentInsetEnd="12dp"
+                    app:contentInsetStartWithNavigation="8dp"
                     tools:menu="@menu/projects_fragment_menu">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Search for projects..."
+                        android:text="Search projects"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:textColor="?attr/colorOnSurfaceVariant" />
                 </com.google.android.material.appbar.MaterialToolbar>
             </com.google.android.material.card.MaterialCardView>
@@ -64,8 +69,12 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="96dp"
             android:text="New project"
+            android:textColor="?attr/colorOnPrimaryContainer"
+            app:backgroundTint="?attr/colorPrimaryContainer"
             app:icon="@drawable/ic_mtrl_add"
+            app:iconTint="?attr/colorOnPrimaryContainer"
             app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
+            app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
             tools:ignore="ContentDescription" />
 
         <LinearLayout

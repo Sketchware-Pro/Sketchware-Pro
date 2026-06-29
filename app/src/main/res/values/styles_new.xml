@@ -11,7 +11,7 @@
     -->
 
     <style name="Widget.SketchwarePro.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
-        <item name="android:background">?attr/colorSurfaceContainer</item>
+        <item name="android:background">?attr/colorSurfaceContainerLow</item>
         <item name="elevation">0dp</item>
     </style>
 
@@ -107,8 +107,9 @@
     </style>
 
     <style name="Widget.SketchwarePro.CardView" parent="Widget.Material3.CardView.Filled">
-        <item name="cardCornerRadius">18dp</item>
-        <item name="cardBackgroundColor">?attr/colorSurfaceContainer</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardBackgroundColor">?attr/colorSurfaceContainerLow</item>
+        <item name="cardElevation">0dp</item>
     </style>
 
     <style name="Widget.SketchwarePro.Chip" parent="Widget.Material3.Chip.Input.Icon.Elevated">

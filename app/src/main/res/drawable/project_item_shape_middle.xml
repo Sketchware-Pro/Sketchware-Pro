@@ -3,8 +3,8 @@
     android:color="?attr/colorControlHighlight">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="?attr/colorSurfaceContainer" />
-            <corners android:radius="4dp" />
+            <solid android:color="?attr/colorSurfaceContainerLow" />
+            <corners android:radius="6dp" />
         </shape>
     </item>
 </ripple>
