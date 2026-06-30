@@ -26,6 +26,22 @@
             android:spinnerMode="dropdown" />
 
         <ImageButton
+            android:id="@+id/img_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_mtrl_arrow_up" />
+
+        <ImageButton
+            android:id="@+id/img_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_mtrl_arrow_down" />
+
+        <ImageButton
             android:id="@+id/img_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
