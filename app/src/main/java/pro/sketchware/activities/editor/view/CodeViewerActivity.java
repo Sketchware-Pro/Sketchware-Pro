@@ -1,5 +1,7 @@
 package pro.sketchware.activities.editor.view;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -31,18 +33,41 @@ public class CodeViewerActivity extends BaseAppCompatActivity {
         var scheme = getIntent().getStringExtra("scheme");
         var scId = getIntent().getStringExtra("sc_id");
 
-        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        // Changes the back navigation arrow to trigger our data return logic
+        binding.toolbar.setNavigationOnClickListener(v -> saveAndExit());
         binding.toolbar.setSubtitle(scId);
 
         binding.editor.setTypefaceText(EditorUtils.getTypeface(this));
         binding.editor.setTextSize(14);
         binding.editor.setText(Lx.j(code, false));
-        binding.editor.setEditable(false);
         binding.editor.setWordwrap(false);
+        
+        // This utility loads syntax colors but defaults Java files to read-only
         loadColorScheme(scheme);
+
+        // Reyaansh's Universal Fix: Overrides the color scheme locking properties
+        binding.editor.setEditable(true); 
+        binding.editor.setFocusable(true);
+        binding.editor.setFocusableInTouchMode(true);
 
         UI.addSystemWindowInsetToPadding(binding.appBarLayout, true, true, true, false);
         UI.addSystemWindowInsetToMargin(binding.editor, true, false, true, true);
+    }
+
+    // Catches the physical phone hardware back button or swipe gesture
+    @Override
+    public void onBackPressed() {
+        saveAndExit();
+    }
+
+    // Passes the edited code content block cleanly back to the parent screen
+    private void saveAndExit() {
+        if (binding.editor != null) {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("code", binding.editor.getText().toString());
+            setResult(Activity.RESULT_OK, returnIntent);
+        }
+        finish();
     }
 
     private void loadColorScheme(String scheme) {
