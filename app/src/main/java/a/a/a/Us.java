@@ -19,8 +19,8 @@ import java.util.ArrayList;
     // A block view (extends /*BlockTreeNodeW*/ Rs) that, in addition to the
     // usual spec/label rendering, carries its own ArrayList<BlockBean> payload.
     // Always forces blockType = 2 (see setBlockType() in Rs) and always renders
-    // its label as "prefix : value" (Rs only does this for getVar/getArg blocks;
-    // Us does it unconditionally by overriding a(String)).
+    // its label as "prefix : value"
+    // (Rs only does this for getVar/getArg blocks; Us does it unconditionally by buildLabel (String) ).
 
 // NOTE ON CONFIDENCE:
     // Exact original name/intent NOT confirmed — a.a.a is closed-source, unlike
@@ -28,10 +28,10 @@ import java.util.ArrayList;
 
 // FIELDS (obfuscated names preserved for compatibility):
     // /*data*/  sa → ArrayList<BlockBean> : extra block payload this view carries
-    //                                       (e.g. nested statements/args). Exposed
-    //                                       read-only via getData().
+    //                                           (e.g. nested statements/args). Exposed
+    //                                           read-only via getData().
     // /*label*/ ta → TextView             : the "prefix : value" label built in
-    //                                       l() and positioned in k().
+    //                                           l() and positioned in k().
 
 // =========================================================
 
@@ -64,9 +64,11 @@ public class Us extends Rs {
 
    // Builds the "prefix : value" label TextView.
    // If /*subSpecLabel*/ super.c is set, prefixes it before var1 as "c : var1".
-   // (Same logic as Rs.a(String), but applied unconditionally instead of only
-   // for getVar/getArg opcodes — this is what makes Us a "labeled data" block.)
-   private TextView /*buildLabel*/ a(String var1) {
+   // (Same logic as Rs.a(String),
+   //     but applied unconditionally instead of only
+   //     for getVar/getArg opcodes —
+   //     this is what makes Us a "labeled data" block.)
+   private TextView buildLabel (String var1) {
       TextView var2 = new TextView(super.a);
       String var3 = super.c;
       String var4 = var1;
@@ -175,7 +177,7 @@ public class Us extends Rs {
       }
 
       var1 = Math.max(var5 + var6 + var7, super.u + var4 + super.v);
-      ((Ts)this).a((float)var2, (float)var1, true);
+      ( (Ts)this ).a( (float) var2, (float) var1, true );
    }
 
    // Density-scales inherited geometry, classifies /*blockTypeChar*/ super.b into
@@ -290,7 +292,7 @@ public class Us extends Rs {
             super.ea = true;
       }
 
-      this.ta = this.a(super.T);
+      this.ta = this.buildLabel (super.T);
       ((RelativeLayout)this).addView(this.ta);
       // TODO: confirm what color resource 2131034294 maps to (not verified).
       // super.e = ((RelativeLayout)this).getResources().getColor(2131034294);
