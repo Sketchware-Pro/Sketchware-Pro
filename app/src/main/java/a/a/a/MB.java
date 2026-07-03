@@ -25,7 +25,9 @@ import mod.hey.studios.util.Helper;
     // onTextChanged() and implement their own rules.
 
 // FIELDS (obfuscated names preserved for compatibility):
+    /*TODO: DELETE THIS ↓↓↓*/
     // /*ctx*/      a → Context          : used to resolve @string resources via getString()
+    /*TODO: DELETE THIS ↑↑↑*/
     // /*til*/      b → TextInputLayout  : the outer wrapper, used to show/hide errors
     // /*et*/       c → EditText         : the inner input field
     // /*isValid*/  d → boolean          : true = current input is valid, false = invalid
@@ -90,6 +92,18 @@ import mod.hey.studios.util.Helper;
         // 8. method a(String)        → setText ()
         // 9. method b()              → isValid ()
     
+    // ======= PRIVATE FIELDS =======
+        // Make all fields private with getters/setters.
+        // WHY:
+            // Public fields break encapsulation.
+            // Any caller can bypass or crash the validator directly:
+                // validator.d = true; // bypass validation entirely
+                // validator.b = null; // crash the validator
+        // WHY NOT NOW:
+            // Fields are accessed directly across SW — migrate callers first.
+        // PRIORITY:
+            // d (isValid) first — most dangerous, can bypass all validation.
+    
     // ======= CONSTRUCTOR =======
         // DELETE the "/*BaseValidatorW*/ MB (Context ..., TextInputLayout ...) {...}"
             // THERE'S ABSOLUTELY NO NEED TO PASS THE CONTEXT SEPARATELY
@@ -124,11 +138,14 @@ public abstract class /*BaseValidatorW*/ MB implements TextWatcher, InputFilter 
     /*TODO: DELETE THIS ↓↓↓*/
     public Context           /*ctx*/      a; // Application context. Used for getString().
     /*TODO: DELETE THIS ↑↑↑*/
-    public TextInputLayout   /*til*/      b; // Outer TIL wrapper. Shows error messages.
-    public EditText          /*et*/       c; // Inner EditText. Source of input text.
-    public boolean           /*isValid*/  d; // Validity flag. true = valid input.
-    public int               /*strResId*/ e; // Optional @StringRes override for error messages.
-                                             // 0 means no override — use the default string.
+    
+    /*TODO: MAKE PRIVATE ↓↓↓*/
+    /*private*/ public TextInputLayout   /*til*/      b; // Outer TIL wrapper. Shows error messages.
+    /*private*/ public EditText          /*et*/       c; // Inner EditText. Source of input text.
+    /*private*/ public boolean           /*isValid*/  d; // Validity flag. true = valid input.
+    /*private*/ public int               /*strResId*/ e; // Optional @StringRes override for error messages.
+                                                             // 0 means no override — use the default string.
+    /*TODO: MAKE PRIVATE ↑↑↑*/
 
 
 
@@ -177,31 +194,33 @@ public abstract class /*BaseValidatorW*/ MB implements TextWatcher, InputFilter 
     // =========================================================
     // PUBLIC METHODS
     // =========================================================
-
-    // Gets the context directly & safely from til
-    public Context getCtx() {
-        return /*til*/ b.getContext();
-    }
     
-    // getText() — Returns the current trimmed text from the EditText.
-    public String /*getText*/ a() {
-        return Helper.getText (/*et*/ c);
-    }
-
-    // setText() — Sets the field text programmatically and marks it valid.
-    // isValid = true here because we are setting a known value, not user input.
-    public void /*setText*/ a (String str) {
-        /*isValid*/ d = true;
-        /*et*/      c.setText (str);
-    }
-
+    // ======= Getters =======
+    public Context                getCtx()      { return /*til*/ b.getContext(); } // Gets the context directly & safely from til
+    public TextInputLayout        getTil()      { return b; }
+    public EditText               getEt()       { return c; }
+    public int                    getStrResId() { return e; }
+    
+    public String /*getText*/     a()           { return Helper.getText (/*et*/ c); } // Returns the current trimmed text from the EditText.
+    
     // isValid () — Returns the current validity state.
     // If invalid, requests focus on the field so the user sees the error.
-    public boolean /*isValid ()*/ b() {
+    public boolean /*isValid ()*/ b()           {
         if ( ! /*isValid*/ d ) /*et*/ c.requestFocus();
         return /*isValid*/ d;
     }
-
+    
+    
+    
+    // ======= Setters =======
+    public void             setStrResId (@StringRes int resId) { e = resId; }
+    
+    // Sets the field text programmatically and marks it valid.
+    // isValid = true here because we are setting a known value, not user input.
+    public void /*setText*/ a (String str)                     {
+        /*isValid*/ d = true;
+        /*et*/      c.setText (str);
+    }
 
 
 
