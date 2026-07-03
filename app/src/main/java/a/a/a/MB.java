@@ -7,6 +7,8 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import androidx.annotation.StringRes;
+
 import com.google.android.material.textfield.TextInputLayout;
 
 import mod.hey.studios.util.Helper;
