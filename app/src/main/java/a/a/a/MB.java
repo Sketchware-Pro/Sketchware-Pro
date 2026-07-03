@@ -30,24 +30,24 @@ import mod.hey.studios.util.Helper;
     // /*et*/       c → EditText         : the inner input field
     // /*isValid*/  d → boolean          : true = current input is valid, false = invalid
     // /*strResId*/ e → int (@StringRes) : optional custom error string resource id.
-    //                                     When 0 → subclass uses its own default string.
-    //                                     When set → subclass uses this id instead,
-    //                                     allowing callers to swap the error message
-    //                                     without subclassing.
-    //                                     Example:
-    //                                         at strings.xml →
-    //                                             <string name="invalid_value_max_words">You can use maximum %d words</string>
-    //                                         
-    //                                         validator. /*strResId*/ e = R.string.invalid_value_max_words;
-    //                                         
-    //                                         Then inside the subclass:
-    //                                             int maxLength = 50;
-    //                                             /*ctx*/ a.getString(/*strResId*/ e, maxLength)
-    //                                             resolves to e.g. "You can use maximum 50 words"
+    //                                         When 0 → subclass uses its own default string.
+    //                                         When set → subclass uses this id instead,
+    //                                         allowing callers to swap the error message
+    //                                         without subclassing.
+    //                                         Example:
+    //                                             at strings.xml →
+    //                                                 <string name="invalid_value_max_words">You can use maximum %d words</string>
+    //                                             
+    //                                             validator. /*strResId*/ e = R.string.invalid_value_max_words;
+    //                                             
+    //                                             Then inside the subclass:
+    //                                                 int maxLength = 50;
+    //                                                 /*ctx*/ a.getString(/*strResId*/ e, maxLength)
+    //                                                 resolves to e.g. "You can use maximum 50 words"
 
 // USAGE:
     // Extend /*BaseValidatorW*/ MB, override onTextChanged(), call Result methods.
-    // Use b() to check validity before form submission.
+    // Use /*isValid ()*/ b() to check validity before form submission.
 
 // =========================================================
 // DESIGN NOTE — Inverted ownership:
@@ -79,14 +79,16 @@ import mod.hey.studios.util.Helper;
 // TODO:
     // ======= RENAME =======
         // 1. class MB                → BaseValidatorW
+        
         // 2. field a (Context)       → ctx
         // 3. field b (TIL)           → til
         // 4. field c (EditText)      → et
         // 5. field d (boolean)       → isValid
         // 6. field e (int @StringRes)→ strResId
-        // 7. method a()  getText     → getText
-        // 8. method a(String) setText→ setText
-        // 9. method b()  isValid     → isValid
+
+        // 7. method a()              → getText ()
+        // 8. method a(String)        → setText ()
+        // 9. method b()              → isValid ()
     
     // ======= CONSTRUCTOR =======
         // DELETE the "/*BaseValidatorW*/ MB (Context ..., TextInputLayout ...) {...}"
@@ -119,9 +121,9 @@ public abstract class /*BaseValidatorW*/ MB implements TextWatcher, InputFilter 
     // =========================================================
     // FIELDS
     // =========================================================
-    /*TODO: DELETE THIS ↓↓↓*/ 
-    public Context           /*ctx*/      a; // Application/Activity context. Used for getString().
-    /*TODO: DELETE THIS ↑↑↑*/ 
+    /*TODO: DELETE THIS ↓↓↓*/
+    public Context           /*ctx*/      a; // Application context. Used for getString().
+    /*TODO: DELETE THIS ↑↑↑*/
     public TextInputLayout   /*til*/      b; // Outer TIL wrapper. Shows error messages.
     public EditText          /*et*/       c; // Inner EditText. Source of input text.
     public boolean           /*isValid*/  d; // Validity flag. true = valid input.
@@ -136,7 +138,15 @@ public abstract class /*BaseValidatorW*/ MB implements TextWatcher, InputFilter 
     // =========================================================
     public /*BaseValidatorW*/ MB (TextInputLayout textInputLayout) {
         /*til*/ b = textInputLayout;
-        /*ctx*/ a = getCtx(); /*TODO: DELETE THIS ←←←*/
+        /*TODO: DELETE THIS ↓↓↓*/
+        // Storing application context, not activity context.
+        // Activity context risks memory leaks if the validator outlives the activity.
+        // Application context is safe — it lives for the entire app lifetime.
+        // /*ctx*/ a is a public field accessed directly by external SW code,
+        // so we keep it populated until all callers migrate to getCtx().
+        /*ctx*/ a = getCtx().getApplicationContext();
+        /*TODO: DELETE THIS ↑↑↑*/
+        
         /*et*/  c = textInputLayout.getEditText();
 
         // Register this as both a filter and a watcher on the EditText.
@@ -145,10 +155,10 @@ public abstract class /*BaseValidatorW*/ MB implements TextWatcher, InputFilter 
         /*et*/ c.setFilters (new InputFilter[] { this });
         /*et*/ c.addTextChangedListener (this);
     }
-    
+
+    /*TODO: DELETE THIS ↓↓↓*/
     // And why the hell are we passing the context separately here?
         // we can just get it from the view
-    // TODO: DELETE THIS ↓↓↓
     /** @deprecated Use {@link #MB(TextInputLayout)} instead. */
     @Deprecated (since = "7.0.0", forRemoval = true)
     public /*BaseValidatorW*/ MB (Context context, TextInputLayout textInputLayout) {
@@ -159,6 +169,7 @@ public abstract class /*BaseValidatorW*/ MB implements TextWatcher, InputFilter 
         /*et*/ c.setFilters (new InputFilter[] { this });
         /*et*/ c.addTextChangedListener (this);
     }
+    /*TODO: DELETE THIS ↑↑↑*/
 
 
 
@@ -184,9 +195,9 @@ public abstract class /*BaseValidatorW*/ MB implements TextWatcher, InputFilter 
         /*et*/      c.setText (str);
     }
 
-    // isValid() — Returns the current validity state.
+    // isValid () — Returns the current validity state.
     // If invalid, requests focus on the field so the user sees the error.
-    public boolean /*isValid*/ b() {
+    public boolean /*isValid ()*/ b() {
         if ( ! /*isValid*/ d ) /*et*/ c.requestFocus();
         return /*isValid*/ d;
     }
