@@ -25,9 +25,11 @@ import mod.hey.studios.util.Helper;
     // onTextChanged() and implement their own rules.
 
 // FIELDS (obfuscated names preserved for compatibility):
+
     /*TODO: DELETE THIS ↓↓↓*/
     // /*ctx*/      a → Context          : used to resolve @string resources via getString()
     /*TODO: DELETE THIS ↑↑↑*/
+    
     // /*til*/      b → TextInputLayout  : the outer wrapper, used to show/hide errors
     // /*et*/       c → EditText         : the inner input field
     // /*isValid*/  d → boolean          : true = current input is valid, false = invalid
@@ -49,7 +51,7 @@ import mod.hey.studios.util.Helper;
 
 // USAGE:
     // Extend /*BaseValidatorW*/ MB, override onTextChanged(), call Result methods.
-    // Use /*isValid ()*/ b() to check validity before form submission.
+    // Use /*checkAndFocus ()*/ b() to check validity before form submission.
 
 // =========================================================
 // DESIGN NOTE — Inverted ownership:
@@ -90,7 +92,7 @@ import mod.hey.studios.util.Helper;
 
         // 7. method a()              → getText ()
         // 8. method a(String)        → setText ()
-        // 9. method b()              → isValid ()
+        // 9. method b()              → checkAndFocus ()
     
     // ======= PRIVATE FIELDS =======
         // Make all fields private with getters/setters.
@@ -135,6 +137,7 @@ public abstract class /*BaseValidatorW*/ MB implements TextWatcher, InputFilter 
     // =========================================================
     // FIELDS
     // =========================================================
+    
     /*TODO: DELETE THIS ↓↓↓*/
     public Context           /*ctx*/      a; // Application context. Used for getString().
     /*TODO: DELETE THIS ↑↑↑*/
@@ -155,6 +158,7 @@ public abstract class /*BaseValidatorW*/ MB implements TextWatcher, InputFilter 
     // =========================================================
     public /*BaseValidatorW*/ MB (TextInputLayout textInputLayout) {
         /*til*/ b = textInputLayout;
+        
         /*TODO: DELETE THIS ↓↓↓*/
         // Storing application context, not activity context.
         // Activity context risks memory leaks if the validator outlives the activity.
@@ -196,16 +200,17 @@ public abstract class /*BaseValidatorW*/ MB implements TextWatcher, InputFilter 
     // =========================================================
     
     // ======= Getters =======
-    public Context                getCtx()      { return /*til*/ b.getContext(); } // Gets the context directly & safely from til
-    public TextInputLayout        getTil()      { return b; }
-    public EditText               getEt()       { return c; }
-    public int                    getStrResId() { return e; }
+    public Context                      getCtx()      { return /*til*/ b.getContext(); } // Gets the context directly & safely from til
+    public TextInputLayout              getTil()      { return b; }
+    public EditText                     getEt()       { return c; }
+    public boolean                      isValid()     { return d; }
+    public int                          getStrResId() { return e; }
     
-    public String /*getText*/     a()           { return Helper.getText (/*et*/ c); } // Returns the current trimmed text from the EditText.
+    public String /*getText*/           a()           { return Helper.getText (/*et*/ c); } // Returns the current trimmed text from the EditText.
     
-    // isValid () — Returns the current validity state.
+    // Returns the current validity state.
     // If invalid, requests focus on the field so the user sees the error.
-    public boolean /*isValid ()*/ b()           {
+    public boolean /*checkAndFocus ()*/ b()           {
         if ( ! /*isValid*/ d ) /*et*/ c.requestFocus();
         return /*isValid*/ d;
     }
