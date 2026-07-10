@@ -125,7 +125,7 @@ public class /*MyBlockCollectionEntry*/ Us extends Rs {
         // this is the color of blocks
         // at the "My Block Collection" drawer
         // at the "app/src/main/java/com/besome/sketch/editor/LogicEditorActivity.java"
-        super.e = ((RelativeLayout) this).getResources().getColor (R.color.scolor_red_02);
+        super.e = ((RelativeLayout) this).getResources().getColor (pro.sketchware.R.color.scolor_red_02);
         
         this.k();
     }
