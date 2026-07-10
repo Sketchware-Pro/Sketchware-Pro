@@ -34,8 +34,11 @@ class DependencyResolver(
     private val buildSettings: BuildSettings
 ) {
     companion object {
+        private const val GOOGLE_MAVEN_URL = "https://dl.google.com/dl/android/maven2"
+
         private val DEFAULT_REPOS = """
           |[
+          |    {"url": "$GOOGLE_MAVEN_URL", "name": "Google Maven"},
           |    {"url": "https://repo.hortonworks.com/content/repositories/releases", "name": "HortanWorks"},
           |    {"url": "https://maven.atlassian.com/content/repositories/atlassian-public", "name": "Atlassian"},
           |    {"url": "https://jcenter.bintray.com", "name": "JCenter"},
@@ -62,7 +65,15 @@ class DependencyResolver(
             Files.createDirectories(repositoriesJson.parent)
             repositoriesJson.writeText(DEFAULT_REPOS)
         }
-        Gson().fromJson(repositoriesJson.readText(), Helper.TYPE_MAP_LIST).forEach {
+        val configuredRepositories: ArrayList<HashMap<String, Any>> =
+            Gson().fromJson(repositoriesJson.readText(), Helper.TYPE_MAP_LIST)
+        if (configuredRepositories.none { it["url"] == GOOGLE_MAVEN_URL }) {
+            configuredRepositories.add(
+                hashMapOf("url" to GOOGLE_MAVEN_URL, "name" to "Google Maven")
+            )
+            repositoriesJson.writeText(Gson().toJson(configuredRepositories))
+        }
+        configuredRepositories.forEach {
             val url: String? = it["url"] as String?
             if (url != null) {
                 repositories.add(object : Repository {
@@ -102,11 +113,17 @@ class DependencyResolver(
         open fun onTaskCompleted(artifacts: List<String>) {}
         open fun dexingFailed(artifact: Artifact, e: Exception) {}
         open fun invalidPackaging(artifact: Artifact) {}
+        open fun onResolutionError(error: Exception) {}
     }
 
     fun resolveDependency(callback: DependencyResolverCallback) = runBlocking {
         eventReciever = callback
-        val dependency = getArtifact(groupId, artifactId, version) ?: return@runBlocking
+        val dependency = try {
+            getArtifact(groupId, artifactId, version)
+        } catch (error: Exception) {
+            callback.onResolutionError(error)
+            return@runBlocking
+        } ?: return@runBlocking
 
         if (dependency.extension != "jar" && dependency.extension != "aar") {
             callback.invalidPackaging(dependency)
