@@ -12,293 +12,294 @@ import java.util.ArrayList;
 
 
 // =========================================================
-// /*DataBlockW*/ Us = block view that carries attached block data
+// /*MyBlockCollectionEntry*/ Us = a single "My Block Collection" group
 // =========================================================
 
 // PURPOSE:
-    // A block view (extends /*BlockTreeNodeW*/ Rs) that, in addition to the
-    // usual spec/label rendering, carries its own ArrayList<BlockBean> payload.
-    // Always forces blockType = 2 (see setBlockType() in Rs) and always renders
-    // its label as "prefix : value"
-    // (Rs only does this for getVar/getArg blocks; Us does it unconditionally by buildLabel (String) ).
+    // Sketchware has a "My Block Collection" feature: a saved list of named
+    // block-groups, each holding a set of blocks the user bookmarked together.
+    // /*MyBlockCollectionEntry*/ Us (extends /*BlockTreeNode*/ Rs)
+    // is ONE entry in that collection.
+    // it renders as a labeled block and carries the group's saved blocks as its payload.
 
-// NOTE ON CONFIDENCE:
-    // Exact original name/intent NOT confirmed — a.a.a is closed-source, unlike
-    // MB.java's source. "/*DataBlockW*/" is a best-effort label from behavior only.
+// CONFIRMED BEHAVIOR:
+    // - Always forces blockType = 2
+    // - /*MyBlockCollectionEntry*/ Us is the ONLY blockType = 2 I found.
+        // (see setBlockType() in Rs).
+        // /*blockType*/ oa is a drag-and-drop insertion-mode flag,
+        // not a visual-shape flag.
+        // Confirmed from "app/src/main/java/com/besome/sketch/editor/LogicEditorActivity.java" touch/drop + delete handling:
+            // 0 = normal block already living in the editor's block tree.
+                // Goes through the standard reconnect logic (ha/ia/ja, p().k())
+                // when dropped, and the standard single-block delete path
+                // (via getBean().id).
+            // 1 = a palette block representing a single getArg variable getter
+                // (the small parameter blocks shown in the script header).
+                // Set externally via setBlockType(1) right after
+                // BlockUtil.getVariableBlock(...). Dropping it inserts one block.
+            // 2 = a "My Block Collection" entry.
+                // this is what /*MyBlockCollectionEntry*/ Us forces on itself
+                // via super. /*blockType*/ oa = 2.
+                // On drop, the editor calls Us.getData() to grab
+                // the whole saved group and inserts all of those blocks at once,
+                // instead of just one.
+                // On delete, it skips the normal single-block
+                // delete and instead removes the entire named group by its title.
+        // /*MyBlockCollectionEntry*/ Us is the only class that self-assigns blockType = 2
+        // (via its constructor)
+        // setBlockType() itself is public,
+        // so nothing besides convention stops another caller from setting 2 on a plain Rs too.
 
-// FIELDS (obfuscated names preserved for compatibility):
-    // /*data*/  sa → ArrayList<BlockBean> : extra block payload this view carries
-    //                                           (e.g. nested statements/args). Exposed
-    //                                           read-only via getData().
-    // /*label*/ ta → TextView             : the "prefix : value" label built in
-    //                                           l() and positioned in k().
+    // - Always renders its label as "name : value"
+        // (
+            // Rs only does this for getVar/getArg opcodes
+            // /*MyBlockCollectionEntry*/ Us does it unconditionally, since every
+            // collection entry needs its name visible
+        // ).
+
+
+// FIELDS
+    // /*blocks*/ sa → ArrayList<BlockBean> : the blocks saved under this
+    //                                        collection entry. Exposed
+    //                                        read-only via getData().
+    // /*tvName*/   ta → TextView              : the "name : value" label built
+    //                                        in l() and positioned in k().
 
 // =========================================================
 
-public class Us extends Rs {
-   public ArrayList<BlockBean>  /*data*/  sa;
-   public TextView              /*label*/ ta;
+public class /*MyBlockCollectionEntry*/ Us extends Rs {
+    public ArrayList<BlockBean>  /*blocks*/  sa;
+    public TextView              /*tvName*/    ta;
 
 
 
 
-   // =========================================================
-   // CONSTRUCTOR
-   // =========================================================
+    // =========================================================
+    // CONSTRUCTOR
+    // =========================================================
 
-   // var1 ctx, var2 blockTypeChar, var3 labelPrefix, var4 opcode, var5 spec, var6 data
-   // Forwards to Rs(ctx, tag=-1, spec, blockTypeChar, labelPrefix, opcode),
-   // stores the data payload, then forces blockType = 2.
-   public Us(Context var1, String var2, String var3, String var4, String var5, ArrayList<BlockBean> var6) {
-      super(var1, -1, var5, var2, var3, var4);
-      this.sa = var6;
-      super.oa = 2;
-   }
+    // Forwards to Rs (ctx, tag=-1, spec, blockTypeChar, labelPrefix, opcode),
+    // stores the collection's saved blocks,
+    // then forces blockType = 2.
+    public /*MyBlockCollectionEntry*/ Us (
+        Context ctx,
+        String blockTypeChar,
+        String labelPrefix,
+        String opcode,
+        String spec,
+        ArrayList<BlockBean> savedBlocks
+    ) {
+        super (ctx, -1, spec, blockTypeChar, labelPrefix, opcode);
+        this. /*blocks*/ sa = savedBlocks;
+        super. /*blockType*/ oa = 2;
+    }
+    
+    
+    
+    
+    // =========================================================
+    // PUBLIC METHODS
+    // =========================================================
+    
+    // ======= Getters =======
+    
+    // Returns this entry's saved block payload.
+    public ArrayList<BlockBean> /*getBlocks*/ getData() { return this. /*blocks*/ sa; }
+    
+    
+    
+    // ======= Others =======
+    
+    // Density-scales inherited geometry, classifies /*blockTypeChar*/ super.b
+    // into the fa/ga/ea chain-shape flags, builds the name label, applies
+    // the background color, and lays out via k().
+    public void /*initialize*/ l() {
+        ((RelativeLayout) this).setDrawingCacheEnabled (false);
+        
+        this.scaleGeometryForDensity();
+        this.applyShapeFlags (this.classifyBlockShape());
+        
+        this. /*tvName*/ ta = this.createTvName (super.T);
+        ((RelativeLayout) this).addView (this. /*tvName*/ ta);
+        
+        // this is the color of blocks
+        // at the "My Block Collection" drawer
+        // at the "app/src/main/java/com/besome/sketch/editor/LogicEditorActivity.java"
+        super.e = ((RelativeLayout) this).getResources().getColor (R.color.scolor_red_02);
+        
+        this.k();
+    }
+    
+    // Measures a TextView's rendered text bounds. Returns {width, height}.
+    public final int[] /*measureText*/ b (TextView tvName) {
+        Rect textBounds = new Rect();
+        tvName.getPaint().getTextBounds (tvName.getText().toString(), 0, tvName.getText().length(), textBounds);
+        return new int[] { textBounds.width(), textBounds.height() };
+    }
+    
+    // Positions /*tvName*/ ta at (w, u),
+    // then computes and applies this block's final width/height
+    // via computeLabelWidth()/computeLabelHeight().
+    public void /*layoutAndSize*/ k() {
+        this. /*tvName*/ ta.setX ((float) super.w);
+        this. /*tvName*/ ta.setY ((float) super.u);
+        
+        int[] textBounds = this.b (this. /*tvName*/ ta);
+        int computedWidth = this.computeLabelWidth (textBounds[0]);
+        int computedHeight = this.computeLabelHeight (textBounds[1]);
+        
+        ((Ts) this).a ((float) computedWidth, (float) computedHeight, true);
+    }
+    
+    
+    
+    
+    
+    // =========================================================
+    // PRIVATE METHODS
+    // =========================================================
+    // NEW private helpers — split out of k()/l() for readability.
+
+    // Builds the "name : value" label TextView.
+    // If /*name*/ super.c is set,
+    // prefixes it before rawText as
+    // "name : rawText".
+    // (
+        // Same visual logic as Rs.a(String),
+        // but applied unconditionally instead of only for getVar/getArg opcodes.
+        // this is what makes every /*MyBlockCollectionEntry*/ Us entry show its collection name.
+    // )
+    private TextView createTvName (String rawText) {
+        TextView _tvName = new TextView (super. /*ctx*/ a);
+        
+        handleTvNameTxt (_tvName, rawText);
+        handleTvNameShape (_tvName);
+        
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (-2, super.G);
+        params.setMargins (0, 0, 0, 0);
+        _tvName.setLayoutParams (params);
+        
+        return _tvName;
+    }
+    
+    private void handleTvNameTxt (TextView _tvName, String rawText) {
+        String name = super.c;
+        String finalText = rawText;
+
+        if (name != null && name.length() > 0) {
+            StringBuilder textBuilder = new StringBuilder();
+            textBuilder.append (super.c);
+            textBuilder.append (" : ");
+            textBuilder.append (rawText);
+            finalText = textBuilder.toString();
+        }
+        _tvName.setText (finalText);
+    }
+    
+    private void handleTvNameShape (TextView _tvName) {
+        _tvName.setTextSize (10.0F);
+        _tvName.setPadding (0, 0, 0, 0);
+        _tvName.setGravity (16);
+        _tvName.setTextColor (-1); // White
+        _tvName.setTypeface ((Typeface) null, 1);
+    }
+    
+    // Widens contentWidth to the category minimum (W / aa / ca)
+    // based on /*blockTypeChar*/ super.b, and pads it further
+    // if a name is present.
+    private int computeLabelWidth (int textWidth) {
+        int contentWidth = super.w + textWidth + super.x;
+        String name = super.c;
+        int computedWidth = contentWidth;
+        
+        if (name != null && name.length() > 0) {
+            computedWidth = (int) ((float) contentWidth + super.D * 8.0F);
+        }
+        
+        // Widen to /*W*/ super.W minimum for blockType chars "b", "d", "s", "a".
+        if (super.b.equals ("b") || super.b.equals ("d") || super.b.equals ("s") || super.b.equals ("a")) {
+            computedWidth = Math.max (computedWidth, super.W);
+        }
+        
+        // Widen to /*aa*/ super.aa minimum for blockType chars " ", "", "o".
+        if (super.b.equals (" ") || super.b.equals ("") || super.b.equals ("o")) {
+            computedWidth = Math.max (computedWidth, super.aa);
+        }
+        
+        // Widen to /*ca*/ super.ca minimum for blockType chars "c", "e".
+        if (super.b.equals ("c") || super.b.equals ("e")) {
+            computedWidth = Math.max (computedWidth, super.ca);
+        }
+        
+        return computedWidth;
+    }
+
+    // Computes the block's final height from
+    // inherited offsets vs. the measured label height,
+    // whichever is larger.
+    private int computeLabelHeight (int textHeight) {
+        int topOffset = super.u;
+        int labelHeight = super.G;
+        int bottomOffset = super.v;
+        return Math.max (topOffset + labelHeight + bottomOffset, super.u + textHeight + super.v);
+    }
+
+    // Density-scales inherited geometry fields (W / aa / ba / ca / da).
+    private void scaleGeometryForDensity() {
+        float originalTopWidth = (float) super.W;
+        float density = super.D;
+        super.W  = (int) (originalTopWidth * density);
+        super.aa = (int) ((float) super.aa * density);
+        super.ba = (int) ((float) super.ba * density);
+        super.ca = (int) ((float) super.ca * density);
+        super.da = (int) ((float) super.da * density);
+    }
+
+    // Classifies /*blockTypeChar*/ super.b into a shape category.
+    // Restored to switch(String) form — behaviorally identical to the
+    // original decompiled hashCode()+equals() dispatch chain.
+    private int classifyBlockShape() {
+        switch (super.b) {
+            case " ": return 0;
+            case "b": return 1;
+            case "s": return 2;
+            case "d": return 3;
+            case "v": return 4;
+            case "p": return 5;
+            case "l": return 6;
+            case "a": return 7;
+            case "c": return 8;
+            case "e": return 9;
+            case "f": return 10;
+            case "h": return 11;
+            default:  return -1;
+        }
+    }
+
+    // Applies the fa/ga/ea chain-shape flags for the given shape category.
+    // /*fa*/ super.fa = "can chain to a next block" (categories 1-7)
+    // /*ga*/ super.ga = set for category 10
+    // /*ea*/ super.ea = set for category 11 ("h")
+    private void applyShapeFlags (int shapeCategory) {
+        switch (shapeCategory) {
+            case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+                super.fa = true;
+                break;
+            case 10:
+                super.ga = true;
+                break;
+            case 11:
+                super.ea = true;
+                break;
+            default:
+                break;
+        }
+    }
 
 
 
 
-   // =========================================================
-   // PRIVATE METHODS
-   // =========================================================
-
-   // Builds the "prefix : value" label TextView.
-   // If /*subSpecLabel*/ super.c is set, prefixes it before var1 as "c : var1".
-   // (Same logic as Rs.a(String),
-   //     but applied unconditionally instead of only
-   //     for getVar/getArg opcodes —
-   //     this is what makes Us a "labeled data" block.)
-   private TextView buildLabel (String var1) {
-      TextView var2 = new TextView(super.a);
-      String var3 = super.c;
-      String var4 = var1;
-      if (var3 != null) {
-         var4 = var1;
-         if (var3.length() > 0) {
-            StringBuilder var6 = new StringBuilder();
-            var6.append(super.c);
-            var6.append(" : ");
-            var6.append(var1);
-            var4 = var6.toString();
-         }
-      }
-
-      var2.setText(var4);
-      var2.setTextSize(10.0F);
-      var2.setPadding(0, 0, 0, 0);
-      var2.setGravity(16);
-      var2.setTextColor(-1);
-      var2.setTypeface((Typeface)null, 1);
-      RelativeLayout.LayoutParams var5 = new RelativeLayout.LayoutParams(-2, super.G);
-      var5.setMargins(0, 0, 0, 0);
-      var2.setLayoutParams(var5);
-      return var2;
-   }
-
-
-
-
-   // =========================================================
-   // PUBLIC METHODS
-   // =========================================================
-
-   // Measures a TextView's rendered text bounds.
-   // Returns {width, height} in pixels.
-   public final int[] /*measureText*/ b(TextView var1) {
-      Rect var2 = new Rect();
-      var1.getPaint().getTextBounds(var1.getText().toString(), 0, var1.getText().length(), var2);
-      return new int[]{var2.width(), var2.height()};
-   }
-
-   // Returns the attached block-data payload.
-   public ArrayList<BlockBean> getData() {
-      return this.sa;
-   }
-
-   // Positions /*label*/ ta at (w, u) then computes and applies this block's
-   // final width/height (via Ts.a(width, height, resize)), widening the width
-   // to the category minimum (W / aa / ca, per /*blockTypeChar*/ super.b) and
-   // padding it further if a subSpec label is present.
-   public void k() {
-      int var1 = super.w;
-      int var2 = super.u;
-      this.ta.setX((float)var1);
-      this.ta.setY((float)var2);
-      int[] var3 = this.b(this.ta);
-      var2 = var3[0];
-      int var4 = var3[1];
-      var2 = super.w + var2 + super.x;
-      int var5 = super.u;
-      int var6 = super.G;
-      int var7 = super.v;
-      String var15 = super.c;
-      var1 = var2;
-      if (var15 != null) {
-         var1 = var2;
-         if (var15.length() > 0) {
-            var1 = (int)((float)var2 + super.D * 8.0F);
-         }
-      }
-
-      // Widen to /*W*/ super.W minimum for blockType chars "b", "d", "s", "a".
-      label38: {
-         if (!super.b.equals("b") && !super.b.equals("d") && !super.b.equals("s")) {
-            var2 = var1;
-            if (!super.b.equals("a")) {
-               break label38;
-            }
-         }
-
-         var2 = Math.max(var1, super.W);
-      }
-
-      // Widen to /*aa*/ super.aa minimum for blockType chars " ", "", "o".
-      label31: {
-         if (!super.b.equals(" ") && !super.b.equals("")) {
-            var1 = var2;
-            if (!super.b.equals("o")) {
-               break label31;
-            }
-         }
-
-         var1 = Math.max(var2, super.aa);
-      }
-
-      // Widen to /*ca*/ super.ca minimum for blockType chars "c", "e".
-      label25: {
-         if (!super.b.equals("c")) {
-            var2 = var1;
-            if (!super.b.equals("e")) {
-               break label25;
-            }
-         }
-
-         var2 = Math.max(var1, super.ca);
-      }
-
-      var1 = Math.max(var5 + var6 + var7, super.u + var4 + super.v);
-      ( (Ts)this ).a( (float) var2, (float) var1, true );
-   }
-
-   // Density-scales inherited geometry, classifies /*blockTypeChar*/ super.b into
-   // the fa/ga/ea chain-shape flags (same category mapping as Ts.l()/Rs.l()),
-   // builds the label, applies the background color, and lays out via k().
-   public void l() {
-      byte var1;
-      label69: {
-         var1 = 0;
-         ((RelativeLayout)this).setDrawingCacheEnabled(false);
-         float var2 = (float)super.W;
-         float var3 = super.D;
-         super.W = (int)(var2 * var3);
-         super.aa = (int)((float)super.aa * var3);
-         super.ba = (int)((float)super.ba * var3);
-         super.ca = (int)((float)super.ca * var3);
-         super.da = (int)((float)super.da * var3);
-         String var4 = super.b;
-         int var5 = var4.hashCode();
-         if (var5 != 32) {
-            if (var5 != 104) {
-               if (var5 != 108) {
-                  if (var5 != 112) {
-                     if (var5 != 115) {
-                        if (var5 != 118) {
-                           switch (var5) {
-                              case 97:
-                                 if (var4.equals("a")) {
-                                    var1 = 7;
-                                    break label69;
-                                 }
-                                 break;
-                              case 98:
-                                 if (var4.equals("b")) {
-                                    var1 = 1;
-                                    break label69;
-                                 }
-                                 break;
-                              case 99:
-                                 if (var4.equals("c")) {
-                                    var1 = 8;
-                                    break label69;
-                                 }
-                                 break;
-                              case 100:
-                                 if (var4.equals("d")) {
-                                    var1 = 3;
-                                    break label69;
-                                 }
-                                 break;
-                              case 101:
-                                 if (var4.equals("e")) {
-                                    var1 = 9;
-                                    break label69;
-                                 }
-                                 break;
-                              case 102:
-                                 if (var4.equals("f")) {
-                                    var1 = 10;
-                                    break label69;
-                                 }
-                           }
-                        } else if (var4.equals("v")) {
-                           var1 = 4;
-                           break label69;
-                        }
-                     } else if (var4.equals("s")) {
-                        var1 = 2;
-                        break label69;
-                     }
-                  } else if (var4.equals("p")) {
-                     var1 = 5;
-                     break label69;
-                  }
-               } else if (var4.equals("l")) {
-                  var1 = 6;
-                  break label69;
-               }
-            } else if (var4.equals("h")) {
-               var1 = 11;
-               break label69;
-            }
-         } else if (var4.equals(" ")) {
-            break label69;
-         }
-
-         var1 = -1;
-      }
-
-      // /*fa*/ super.fa = "can chain to a next block" (categories 1-7)
-      // /*ga*/ super.ga = set for category 10
-      // /*ea*/ super.ea = set for category 11 ("h")
-      switch (var1) {
-         case 0:
-         case 8:
-         case 9:
-         default:
-            break;
-         case 1:
-         case 2:
-         case 3:
-         case 4:
-         case 5:
-         case 6:
-         case 7:
-            super.fa = true;
-            break;
-         case 10:
-            super.ga = true;
-            break;
-         case 11:
-            super.ea = true;
-      }
-
-      this.ta = this.buildLabel (super.T);
-      ((RelativeLayout)this).addView(this.ta);
-      // TODO: confirm what color resource 2131034294 maps to (not verified).
-      // super.e = ((RelativeLayout)this).getResources().getColor(2131034294);
-      super.e = 0xffffc107; // was: getResources().getColor(2131034294)
-      this.k();
-   }
+    
 }
 
 
