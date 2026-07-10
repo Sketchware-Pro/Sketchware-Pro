@@ -226,6 +226,16 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                 }
 
                 @Override
+                public void onResolutionError(@NonNull Exception error) {
+                    handler.post(() -> {
+                        setDownloadState(false);
+                        SketchwareUtil.showAnErrorOccurredDialog(getActivity(),
+                                "Failed to resolve dependency '" + dependencyName + "': "
+                                        + Log.getStackTraceString(error));
+                    });
+                }
+
+                @Override
                 public void onDependenciesNotFound(@NonNull Artifact dep) {
                     handler.post(() -> {
                         DependencyDownloadItem item = findOrCreateDependencyItem(dep);
