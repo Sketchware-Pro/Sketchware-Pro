@@ -17,7 +17,7 @@
         android:id="@+id/menu_font_add"
         android:icon="@drawable/ic_mtrl_add"
         android:orderInCategory="1"
-        android:title="add"
+        android:title="@string/block_add_list_int_head"
         android:visible="false"
         app:showAsAction="always" />
 </menu>

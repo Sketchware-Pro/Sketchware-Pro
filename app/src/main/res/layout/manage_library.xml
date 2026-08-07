@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="Library Manager" />
+            app:title="@string/design_actionbar_title_library" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView

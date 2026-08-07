@@ -21,7 +21,7 @@
                 android:id="@+id/version_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Version code"
+                android:hint="@string/common_word_project_information_version_code"
                 android:singleLine="true"
                 android:imeOptions="actionNext"
                 android:inputType="number"
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:singleLine="true"
                 android:layout_height="wrap_content"
-                android:hint="Version name"
+                android:hint="@string/common_word_project_information_version_name"
                 android:imeOptions="actionNext"
                 android:digits="0123456789."
                 android:textSize="13sp" />

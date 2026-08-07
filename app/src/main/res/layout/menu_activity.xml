@@ -168,7 +168,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
-                            android:hint="Name"
+                            android:hint="@string/myprojects_settings_version_control_title_name"
                             android:padding="8dp"
                             android:textColor="#ff000000"
                             android:textColorHint="#ff607d8b"

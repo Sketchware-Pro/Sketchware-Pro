@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="value">
+        android:hint="@string/block_calendar_add_body_2">
 
         <EditText
             android:id="@+id/input_value"

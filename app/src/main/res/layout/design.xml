@@ -158,7 +158,7 @@
                         style="?attr/materialSplitButtonLeadingFilledStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Run"
+                        android:text="@string/common_word_run"
                         app:icon="@drawable/ic_mtrl_run" />
 
                     <com.google.android.material.button.MaterialButton

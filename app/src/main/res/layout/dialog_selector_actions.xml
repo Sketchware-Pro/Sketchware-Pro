@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit"
+                android:text="@string/common_word_edit"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -62,7 +62,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Export"
+                android:text="@string/common_word_export"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -90,7 +90,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete"
+            android:text="@string/common_word_delete"
             android:textSize="16sp"/>
 
     </LinearLayout>

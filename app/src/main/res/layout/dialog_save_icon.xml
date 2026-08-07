@@ -29,7 +29,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="16dp"
-        android:hint="Enter icon name"
+        android:hint="@string/design_manager_icon_hint_enter_icon_name"
         app:hintEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText

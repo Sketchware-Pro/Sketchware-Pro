@@ -4,6 +4,6 @@
         android:id="@+id/action_reset"
         android:icon="@drawable/ic_mtrl_reset"
         android:iconTint="?colorPrimary"
-        android:title="Reset"
+        android:title="@string/common_word_reset"
         app:showAsAction="always" />
 </menu>

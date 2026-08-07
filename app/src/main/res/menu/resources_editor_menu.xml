@@ -12,7 +12,7 @@
 
     <item
         android:id="@+id/action_save"
-        android:title="Save"
+        android:title="@string/common_word_save"
         android:icon="@drawable/ic_mtrl_save"
         app:showAsAction="always" />
 

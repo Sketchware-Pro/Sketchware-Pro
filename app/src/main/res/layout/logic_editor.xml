@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:subtitle="onCreate"
-            app:title="Activity" />
+            app:title="@string/common_word_activity" />
 
         <com.besome.sketch.editor.view.ViewLogicEditor
             android:id="@+id/editor"

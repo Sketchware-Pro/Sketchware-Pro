@@ -56,7 +56,7 @@
             android:id="@+id/chip_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Activity"
+            android:text="@string/common_word_activity"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -64,7 +64,7 @@
             android:id="@+id/chip_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="File"
+            android:text="@string/block_category_file"
             android:visibility="gone"
             tools:visibility="visible" />
 

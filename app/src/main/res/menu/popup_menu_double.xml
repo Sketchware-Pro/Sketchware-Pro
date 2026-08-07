@@ -4,12 +4,12 @@
         android:title="Add to AndroidManifest" />
     <item
         android:id="@+id/edit"
-        android:title="Edit" />
+        android:title="@string/common_word_edit" />
     <item android:title="Edit with..." />
     <item
         android:id="@+id/rename"
-        android:title="Rename" />
+        android:title="@string/assets_manager_rename" />
     <item
         android:id="@+id/delete"
-        android:title="Delete" />
+        android:title="@string/common_word_delete" />
 </menu>

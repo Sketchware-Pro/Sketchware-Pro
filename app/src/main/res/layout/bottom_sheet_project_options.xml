@@ -206,7 +206,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:gravity="center_vertical"
-                    android:text="Delete project"
+                    android:text="@string/delete_project_dialog_title"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorError"
                     app:drawableEndCompat="@drawable/ic_mtrl_arrow_right"

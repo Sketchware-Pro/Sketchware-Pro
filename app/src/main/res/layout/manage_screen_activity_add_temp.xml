@@ -264,7 +264,7 @@
                                 style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Activity" />
+                                android:text="@string/common_word_activity" />
 
                             <Button
                                 android:id="@+id/select_fragment"
@@ -301,7 +301,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="Screen orientation"
+                        android:text="@string/design_manager_view_title_screen_orientation"
                         android:textColor="?colorPrimary" />
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
@@ -353,7 +353,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="Keyboard settings"
+                        android:text="@string/design_manager_view_title_keyboad_settings"
                         android:textColor="?colorPrimary" />
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
@@ -412,7 +412,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:text="Cancel" />
+            android:text="@string/common_word_cancel" />
 
         <Button
             android:id="@+id/btn_save"
@@ -420,7 +420,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Save" />
+            android:text="@string/common_word_save" />
 
     </LinearLayout>
 </RelativeLayout>

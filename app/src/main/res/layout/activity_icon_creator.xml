@@ -637,7 +637,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="4dp"
-                        android:text="Image"
+                        android:text="@string/common_word_image"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -810,7 +810,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:gravity="center_vertical"
-                            android:hint="Text"
+                            android:hint="@string/property_text"
                             android:importantForAutofill="noExcludeDescendants"
                             app:layout_constraintEnd_toStartOf="@+id/txt_color_preview_card"
                             app:layout_constraintStart_toStartOf="parent"

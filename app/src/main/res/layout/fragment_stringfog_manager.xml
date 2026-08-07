@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:text="StringFog Manager" />
+        android:text="@string/design_drawer_menu_stringfog" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/sw_pg_enabled"

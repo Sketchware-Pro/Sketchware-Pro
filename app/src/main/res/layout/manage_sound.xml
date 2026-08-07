@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="Sound Manager" />
+            app:title="@string/design_actionbar_title_manager_sound" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"

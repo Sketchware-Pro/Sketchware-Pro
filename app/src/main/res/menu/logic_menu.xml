@@ -5,7 +5,7 @@
         android:id="@+id/menu_logic_showsource"
         android:icon="@drawable/ic_mtrl_code"
         android:orderInCategory="100"
-        android:title="Show Source Code"
+        android:title="@string/design_drawer_menu_title_source_code"
         app:showAsAction="always" />
 
     <item

@@ -49,7 +49,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Enter value"
+            android:hint="@string/property_hint_enter_value"
             android:importantForAutofill="noExcludeDescendants"
             app:errorEnabled="true">
 

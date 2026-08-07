@@ -91,7 +91,7 @@
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
                 android:paddingRight="25dp"
-                android:text="Select"
+                android:text="@string/common_word_select"
                 app:cornerRadius="10dp"
                 app:icon="@drawable/ic_mtrl_add"
                 app:iconGravity="start"

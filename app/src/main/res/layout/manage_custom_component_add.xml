@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="Add new component" />
+            app:title="@string/event_title_add_new_component" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout

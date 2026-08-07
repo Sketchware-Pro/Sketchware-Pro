@@ -8,7 +8,7 @@
     <item
         android:id="@+id/changelog"
         android:icon="@drawable/ic_mtrl_update"
-        android:title="Changelog" />
+        android:title="@string/about_changelog_title" />
 
     <item
         android:id="@+id/program_info"
@@ -23,7 +23,7 @@
     <item
         android:id="@+id/app_settings"
         android:icon="@drawable/ic_mtrl_settings"
-        android:title="Settings" />
+        android:title="@string/common_word_settings" />
     <item android:title="Apps">
         <menu>
             <item
@@ -38,12 +38,12 @@
             <item
                 android:id="@+id/social_discord"
                 android:icon="@drawable/ic_discord"
-                android:title="Discord" />
+                android:title="@string/title_discord_community" />
 
             <item
                 android:id="@+id/social_telegram"
                 android:icon="@drawable/ic_telegram"
-                android:title="Telegram" />
+                android:title="@string/title_telegram_community" />
 
             <item
                 android:id="@+id/social_github"
