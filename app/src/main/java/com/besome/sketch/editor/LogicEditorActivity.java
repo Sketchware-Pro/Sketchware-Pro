@@ -1,5 +1,7 @@
 package com.besome.sketch.editor;
 
+import pro.sketchware.R;
+
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -1362,7 +1364,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         linearLayout.addView(name);
         TextView preview = new TextView(this);
         preview.setLayoutParams(layoutParams);
-        preview.setText("Preview");
+        preview.setText(R.string.common_word_preview);
 
         Typeface typeface;
         if (fontName.equalsIgnoreCase("default_font")) {

@@ -1,5 +1,7 @@
 package pro.sketchware.activities.editor.command;
 
+import pro.sketchware.R;
+
 import static pro.sketchware.utility.GsonUtils.getGson;
 import static pro.sketchware.utility.SketchwareUtil.getDip;
 
@@ -95,7 +97,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         ManageXmlCommandBinding binding = ManageXmlCommandBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setTitle("XML Command Manager");
+        getSupportActionBar().setTitle(R.string.design_drawer_menu_title_xml_command);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         UI.addSystemWindowInsetToPadding(binding.list, false, false, false, true);

@@ -1,5 +1,7 @@
 package pro.sketchware.activities.about.adapters;
 
+import pro.sketchware.R;
+
 import static pro.sketchware.utility.UI.advancedCorners;
 import static pro.sketchware.utility.UI.loadImageFromUrl;
 import static pro.sketchware.utility.UI.rippleRound;
@@ -77,7 +79,7 @@ public class CommitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 activeBackgroundColor = MaterialColors.getColor(itemHolder.binding.tvStatus, R.attr.colorCoolGreenContainer);
                 activeBackgroundTextColor = MaterialColors.getColor(itemHolder.binding.tvStatus, R.attr.colorOnCoolGreenContainer);
             } else {
-                itemHolder.binding.tvStatus.setText("Contributor");
+                itemHolder.binding.tvStatus.setText(R.string.common_word_contributor);
                 activeBackgroundColor = MaterialColors.getColor(itemHolder.binding.tvStatus, R.attr.colorAmberContainer);
                 activeBackgroundTextColor = MaterialColors.getColor(itemHolder.binding.tvStatus, R.attr.colorOnAmberContainer);
             }

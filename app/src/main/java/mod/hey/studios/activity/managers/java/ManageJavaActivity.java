@@ -1,5 +1,7 @@
 package mod.hey.studios.activity.managers.java;
 
+import pro.sketchware.R;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -131,7 +133,7 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
 
     private void setupUI() {
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        binding.topAppBar.setTitle("Java/Kotlin Manager");
+        binding.topAppBar.setTitle(R.string.text_title_menu_java);
         binding.showOptionsButton.setOnClickListener(view -> hideShowOptionsButton(false));
         binding.closeButton.setOnClickListener(view -> hideShowOptionsButton(true));
         binding.createNewButton.setOnClickListener(v -> {
@@ -179,7 +181,7 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
-                .setTitle("Create new")
+                .setTitle(R.string.assets_manager_add_new)
                 .setMessage("File extension will be added automatically based on the file type you select")
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Create", null)

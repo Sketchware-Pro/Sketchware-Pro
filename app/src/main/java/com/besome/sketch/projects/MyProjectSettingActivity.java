@@ -1,5 +1,7 @@
 package com.besome.sketch.projects;
 
+import pro.sketchware.R;
+
 import static mod.hey.studios.util.ProjectFile.getDefaultColor;
 
 import android.content.Context;
@@ -146,7 +148,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         }
         if (updatingExistingProject) {
             /* Set the dialog's title & save button label */
-            binding.toolbar.setTitle("Project Settings");
+            binding.toolbar.setTitle(R.string.design_library_firebase_setting_step1_title);
             HashMap<String, Object> metadata = lC.b(sc_id);
             binding.etPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
             binding.etProjectName.setText(yB.c(metadata, "my_ws_name"));

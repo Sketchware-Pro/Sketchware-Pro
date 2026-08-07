@@ -1,5 +1,7 @@
 package pro.sketchware.activities.main.activities;
 
+import pro.sketchware.R;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -228,7 +230,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
                             if (BackupFactory.zipContainsFile(path, "local_libs")) {
                                 new MaterialAlertDialogBuilder(MainActivity.this)
-                                        .setTitle("Warning")
+                                        .setTitle(R.string.common_word_warning)
                                         .setMessage(BackupRestoreManager.getRestoreIntegratedLocalLibrariesMessage(false, -1, -1, null))
                                         .setPositiveButton("Copy", (dialog, which) -> manager.doRestore(path, true))
                                         .setNegativeButton("Don't copy", (dialog, which) -> manager.doRestore(path, false))

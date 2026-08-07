@@ -1,5 +1,7 @@
 package mod.hey.studios.project.backup;
 
+import pro.sketchware.R;
+
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -145,7 +147,7 @@ public class BackupRestoreManager {
                         boolean restoringMultipleBackups = files.size() > 1;
 
                         new MaterialAlertDialogBuilder(act)
-                                .setTitle("Warning")
+                                .setTitle(R.string.common_word_warning)
                                 .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, i, files.size(),
                                         FileUtil.getFileNameNoExtension(backupFilePath)))
                                 .setPositiveButton("Copy", (dialog, which) -> doRestore(backupFilePath, true))

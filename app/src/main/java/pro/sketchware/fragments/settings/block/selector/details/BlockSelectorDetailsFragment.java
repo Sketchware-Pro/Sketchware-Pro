@@ -1,5 +1,7 @@
 package pro.sketchware.fragments.settings.block.selector.details;
 
+import pro.sketchware.R;
+
 import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.content.DialogInterface;
@@ -122,7 +124,7 @@ public class BlockSelectorDetailsFragment extends qA {
 
     private void showCreateEditDialog(boolean isEdit, int indexA) {
         DialogAddCustomActivityBinding dialogBinding = DialogAddCustomActivityBinding.inflate(LayoutInflater.from(requireContext()));
-        dialogBinding.activityNameInputLayout.setHint("Name");
+        dialogBinding.activityNameInputLayout.setHint(R.string.myprojects_settings_version_control_title_name);
         if (isEdit) {
             dialogBinding.activityNameInput.setText(selectors.get(index).getData().get(indexA));
         }

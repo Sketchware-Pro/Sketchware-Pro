@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.manage.view;
 
+import pro.sketchware.R;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.transition.AutoTransition;
@@ -192,7 +194,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
         binding = ManageScreenActivityAddTempBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.toolbar.setTitle("Create new");
+        binding.toolbar.setTitle(R.string.assets_manager_add_new);
         binding.toolbar.setNavigationOnClickListener(v -> finish());
 
         Intent intent1 = getIntent();

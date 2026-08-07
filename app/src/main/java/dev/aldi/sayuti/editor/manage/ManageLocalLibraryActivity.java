@@ -1,5 +1,7 @@
 package dev.aldi.sayuti.editor.manage;
 
+import pro.sketchware.R;
+
 import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.createLibraryMap;
 import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.deleteSelectedLocalLibraries;
 import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.getAllLocalLibraries;
@@ -414,7 +416,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             }
             if (library.isSelected() && isUsedLibrary(library.getName())) {
                 new MaterialAlertDialogBuilder(ManageLocalLibraryActivity.this)
-                        .setTitle("Warning")
+                        .setTitle(R.string.common_word_warning)
                         .setMessage("This library \"" + library.getName() + "\" already used in your project, removing it may break your project\rDo you want to continue removing it?")
                         .setPositiveButton(Helper.getResString(R.string.common_word_yes), (dialog, which) -> dialog.dismiss())
                         .setNegativeButton(Helper.getResString(R.string.common_word_cancel), (dialog, which) -> {

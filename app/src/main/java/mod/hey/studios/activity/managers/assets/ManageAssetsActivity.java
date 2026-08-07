@@ -1,5 +1,7 @@
 package mod.hey.studios.activity.managers.assets;
 
+import pro.sketchware.R;
+
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -119,7 +121,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
-                .setTitle("Create new")
+                .setTitle(R.string.assets_manager_add_new)
                 .setMessage("If you're creating a file, make sure to add an extension.")
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Create", null)

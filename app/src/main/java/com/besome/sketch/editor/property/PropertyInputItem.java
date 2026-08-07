@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.property;
 
+import pro.sketchware.R;
+
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -955,7 +957,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                         dialog.dismiss();
                         var builder =
                                 new MaterialAlertDialogBuilder(getContext())
-                                        .setTitle("Delete")
+                                        .setTitle(R.string.common_word_delete)
                                         .setMessage("Are you sure you want to delete " + attr + "?")
                                         .setPositiveButton(
                                                 R.string.common_word_yes,

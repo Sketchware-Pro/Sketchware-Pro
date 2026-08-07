@@ -1,5 +1,7 @@
 package mod.hilal.saif.activities.android_manifest;
 
+import pro.sketchware.R;
+
 import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.annotation.SuppressLint;
@@ -315,7 +317,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("AndroidManifest Manager");
+        getSupportActionBar().setTitle(R.string.design_drawer_menu_androidmanifest);
         toolbar.setNavigationOnClickListener(view -> onBackPressed());
     }
 

@@ -1,5 +1,7 @@
 package pro.sketchware.activities.main.fragments.projects;
 
+import pro.sketchware.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -269,7 +271,7 @@ public class ProjectsFragment extends DA {
 
     private void showProjectSortingDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
-        dialog.setTitle("Sort options");
+        dialog.setTitle(R.string.logic_sort_menu);
 
         SortProjectDialogBinding dialogBinding = SortProjectDialogBinding.inflate(LayoutInflater.from(requireActivity()));
         RadioButton sortByName = dialogBinding.sortByName;

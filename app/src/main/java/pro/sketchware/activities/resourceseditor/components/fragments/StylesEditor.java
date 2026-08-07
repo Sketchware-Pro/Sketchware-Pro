@@ -1,5 +1,7 @@
 package pro.sketchware.activities.resourceseditor.components.fragments;
 
+import pro.sketchware.R;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -193,7 +195,7 @@ public class StylesEditor extends Fragment {
             adapter.notifyItemChanged(position);
         });
         dialog.setNeutralButton(Helper.getResString(R.string.common_word_delete), (d, which) -> new MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Warning")
+                .setTitle(R.string.common_word_warning)
                 .setMessage("Are you sure you want to delete " + style.getStyleName() + "?")
                 .setPositiveButton(R.string.common_word_yes, (d2, w) -> {
                     stylesList.remove(position);
@@ -231,7 +233,7 @@ public class StylesEditor extends Fragment {
                     @Override
                     public void onItemLongClick(LinkedHashMap<String, String> attributes, String attr) {
                         new MaterialAlertDialogBuilder(requireContext())
-                                .setTitle("Warning")
+                                .setTitle(R.string.common_word_warning)
                                 .setMessage("Are you sure you want to delete " + attr + "?")
                                 .setPositiveButton(R.string.common_word_yes, (d, w) -> {
                                     attributes.remove(attr);

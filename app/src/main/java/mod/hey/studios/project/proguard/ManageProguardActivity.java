@@ -1,5 +1,7 @@
 package mod.hey.studios.project.proguard;
 
+import pro.sketchware.R;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -120,7 +122,7 @@ public class ManageProguardActivity extends BaseAppCompatActivity
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Code Shrinking Manager");
+        getSupportActionBar().setTitle(R.string.design_drawer_menu_proguard);
         binding.toolbar.setNavigationOnClickListener(view -> onBackPressed());
     }
 }

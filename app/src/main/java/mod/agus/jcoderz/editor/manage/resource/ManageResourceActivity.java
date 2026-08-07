@@ -1,5 +1,7 @@
 package mod.agus.jcoderz.editor.manage.resource;
 
+import pro.sketchware.R;
+
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -123,15 +125,15 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
     private void handleFab() {
         var optionsButton = binding.showOptionsButton;
         if (isInMainDirectory()) {
-            optionsButton.setText("Create new");
+            optionsButton.setText(R.string.assets_manager_add_new);
             hideShowOptionsButton(true);
         } else {
-            optionsButton.setText("Create or import");
+            optionsButton.setText(R.string.assets_manager_options);
         }
     }
 
     private void initToolbar() {
-        binding.topAppBar.setTitle("Resource Manager");
+        binding.topAppBar.setTitle(R.string.text_title_menu_resource);
         binding.topAppBar.setNavigationOnClickListener(v -> onBackPressed());
         binding.showOptionsButton.setOnClickListener(view -> {
             if (isInMainDirectory()) {
@@ -281,7 +283,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         var inputText = dialogBinding.inputText;
 
         var dialog = new MaterialAlertDialogBuilder(this)
-                .setTitle("Rename")
+                .setTitle(R.string.assets_manager_rename)
                 .setView(dialogBinding.getRoot())
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Rename", (dialogInterface, i) -> {

@@ -1,5 +1,7 @@
 package mod.hey.studios.activity.managers.nativelib;
 
+import pro.sketchware.R;
+
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -110,7 +112,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
 
     private void setupUI() {
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        binding.topAppBar.setTitle("Native Library Manager");
+        binding.topAppBar.setTitle(R.string.design_drawer_menu_nativelibs);
 
         binding.showOptionsButton.setOnClickListener(view -> hideShowOptionsButton(false));
         binding.closeButton.setOnClickListener(view -> hideShowOptionsButton(true));
@@ -258,7 +260,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
         var inputText = dialogBinding.inputText;
 
         var dialog = new MaterialAlertDialogBuilder(this)
-                .setTitle("Rename")
+                .setTitle(R.string.assets_manager_rename)
                 .setView(dialogBinding.getRoot())
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Rename", (dialogInterface, i) -> {

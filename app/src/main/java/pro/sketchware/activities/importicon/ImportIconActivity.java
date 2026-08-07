@@ -1,6 +1,8 @@
 // ImportIconActivity.java
 package pro.sketchware.activities.importicon;
 
+import pro.sketchware.R;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -397,7 +399,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
-                .setTitle("Save")
+                .setTitle(R.string.common_word_save)
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Save", null)
                 .create();

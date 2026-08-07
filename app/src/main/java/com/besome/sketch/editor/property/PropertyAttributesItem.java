@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.property;
 
+import pro.sketchware.R;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -298,7 +300,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                 });
                 itemView.setOnLongClickListener(v -> {
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-                    dialog.setTitle("Delete");
+                    dialog.setTitle(R.string.common_word_delete);
                     dialog.setMessage("Are you sure you want to delete " + attr + "?");
                     dialog.setPositiveButton("Yes", (view, which) -> {
                         value.remove(attr);
@@ -334,7 +336,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                 });
                 itemView.setOnLongClickListener(v -> {
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-                    dialog.setTitle("Delete");
+                    dialog.setTitle(R.string.common_word_delete);
                     dialog.setMessage("Are you sure you want to delete " + attr + "?");
                     dialog.setPositiveButton("Yes", (view, which) -> {
                         value.remove(attr);
