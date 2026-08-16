@@ -43,6 +43,9 @@ swiperefreshlayout = "1.2.0"
 viewpager = "1.1.0"
 woodstoxCore = "7.1.1"
 zipalignJava = "1.2.2"
+asm = "9.7"
+stringfog = "5.2.0"
+stringfogXor = "5.0.0"
 
 [libraries]
 dalvik-dx = { module = "com.jakewharton.android.repackaged:dalvik-dx", version.ref = "dalvikDx" }
@@ -110,6 +113,11 @@ stax-api = { module = "javax.xml.stream:stax-api", version.ref = "staxApi" }
 woodstox-core = { module = "com.fasterxml.woodstox:woodstox-core", version.ref = "woodstoxCore" }
 
 zipalign-java = { module = "com.github.Iyxan23:zipalign-java", version.ref = "zipalignJava" }
+
+asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
+stringfog-core = { module = "com.github.megatronking.stringfog:core", version.ref = "stringfog" }
+stringfog-interface = { module = "com.github.megatronking.stringfog:interface", version.ref = "stringfogXor" }
+stringfog-xor = { module = "com.github.megatronking.stringfog:xor", version.ref = "stringfogXor" }
 
 [bundles]
 ui = ["androidx-activity", "androidx-appcompat", "androidx-splashscreen", "androidx-recyclerview",

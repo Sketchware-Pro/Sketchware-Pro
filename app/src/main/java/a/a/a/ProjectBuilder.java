@@ -29,8 +29,7 @@ import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
 import com.android.sdklib.build.DuplicateFileException;
 import com.android.sdklib.build.SealedApkException;
-import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
-import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
+import com.github.megatronking.stringfog.plugin.StringFogInjector;
 import com.iyxan23.zipalignjava.InvalidZipException;
 import com.iyxan23.zipalignjava.ZipAlign;
 
@@ -975,16 +974,9 @@ public class ProjectBuilder {
 
     public void runStringfog() {
         try {
-            StringFogMappingPrinter stringFogMappingPrinter = new StringFogMappingPrinter(new File(yq.binDirectoryPath,
-                    "stringFogMapping.txt"));
-            StringFogClassInjector stringFogClassInjector = new StringFogClassInjector(new String[0],
-                    "UTF-8",
-                    "com.github.megatronking.stringfog.xor.StringFogImpl",
-                    "com.github.megatronking.stringfog.xor.StringFogImpl",
-                    stringFogMappingPrinter);
-            stringFogMappingPrinter.startMappingOutput();
-            stringFogMappingPrinter.ouputInfo("UTF-8", "com.github.megatronking.stringfog.xor.StringFogImpl");
-            stringFogClassInjector.doFog2ClassInDir(new File(yq.compiledClassesPath));
+            File mappingFile = new File(yq.binDirectoryPath, "stringFogMapping.txt");
+            File compiledClassesDir = new File(yq.compiledClassesPath);
+            StringFogInjector.processDirectory(compiledClassesDir, mappingFile);
             KB.a(context, "stringfog/stringfog.zip", yq.compiledClassesPath);
         } catch (Exception e) {
             LogUtil.e("StringFog", "Failed to run StringFog", e);

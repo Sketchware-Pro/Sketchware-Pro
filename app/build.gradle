@@ -92,6 +92,11 @@ dependencies {
     implementation libs.dalvik.dx
     implementation libs.zipalign.java
 
+    implementation libs.asm
+    implementation libs.stringfog.core
+    implementation libs.stringfog.interface
+    implementation libs.stringfog.xor
+
     implementation libs.gson
     implementation libs.scpkix.jdk15on
 
