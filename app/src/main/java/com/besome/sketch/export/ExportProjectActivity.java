@@ -38,7 +38,6 @@ import a.a.a.kC;
 import a.a.a.lC;
 import a.a.a.oB;
 import a.a.a.wq;
-import a.a.a.xq;
 import a.a.a.yB;
 import a.a.a.yq;
 import kellinwood.security.zipsigner.ZipSigner;
@@ -177,7 +176,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             iCVar.i();
 
             /* Extract project type template */
-            project_metadata.a(getApplicationContext(), wq.e(xq.a(sc_id) ? "600" : sc_id));
+            project_metadata.a(getApplicationContext(), wq.e("600"));
 
             /* Start generating project files */
             ProjectBuilder builder = new ProjectBuilder(this, project_metadata);
