@@ -1,6 +1,7 @@
 [versions]
 activity = "1.12.2"
 appcompat = "1.7.1"
+dalvikDx = "16.0.1"
 desugar_jdk_libs_nio = "2.1.5"
 firebaseBom = "34.8.0"
 sora-editor = "0.23.6"
@@ -44,6 +45,7 @@ woodstoxCore = "7.1.1"
 zipalignJava = "1.2.2"
 
 [libraries]
+dalvik-dx = { module = "com.jakewharton.android.repackaged:dalvik-dx", version.ref = "dalvikDx" }
 androidx-activity = { module = "androidx.activity:activity", version.ref = "activity" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }

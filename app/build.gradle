@@ -89,6 +89,7 @@ dependencies {
     }
 
     implementation libs.bundles.shrinker
+    implementation libs.dalvik.dx
     implementation libs.zipalign.java
 
     implementation libs.gson
