@@ -10,6 +10,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
+        android:text="@string/design_manager_view_description_guide_create_custom_view"
         android:textSize="14sp" />
 
     <androidx.recyclerview.widget.RecyclerView

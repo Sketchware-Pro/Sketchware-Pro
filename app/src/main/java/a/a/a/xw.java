@@ -229,7 +229,6 @@ public class xw extends qA {
             g = savedInstanceState.getString("sc_id");
         }
 
-        binding.tvGuide.setText(xB.b().a(getActivity(), R.string.design_manager_view_description_guide_create_custom_view));
         return binding.getRoot();
     }
 
