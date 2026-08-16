@@ -5,13 +5,22 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.apksigner.ApkSignerTool;
+import com.android.apksig.ApkSigner.SignerConfig;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.Arrays;
+import java.nio.file.Files;
+import java.security.KeyFactory;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -21,55 +30,39 @@ public class ApkSigner {
 
     private static final File EXTRACTED_TESTKEY_FILES_DIRECTORY = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "testkey");
 
-    /**
-     * Sign an APK with testkey.
-     *
-     * @param inputPath  The APK file to sign
-     * @param outputPath File to output the signed APK to
-     * @param callback   Callback for System.out during signing. May be null
-     */
     public void signWithTestKey(@NonNull String inputPath, @NonNull String outputPath, @Nullable LogCallback callback) {
         try (LogWriter logger = new LogWriter(callback)) {
             long savedTimeMillis = System.currentTimeMillis();
-            PrintStream oldOut = System.out;
+            logger.write("Signing APK with testkey using direct ApkSigner API...");
 
-            List<String> args = Arrays.asList(
-                    "sign",
-                    "--in",
-                    inputPath,
-                    "--out",
-                    outputPath,
-                    "--key",
-                    new File(EXTRACTED_TESTKEY_FILES_DIRECTORY, "testkey.pk8").getAbsolutePath(),
-                    "--cert",
-                    new File(EXTRACTED_TESTKEY_FILES_DIRECTORY, "testkey.x509.pem").getAbsolutePath()
-            );
+            File keyFile = new File(EXTRACTED_TESTKEY_FILES_DIRECTORY, "testkey.pk8");
+            File certFile = new File(EXTRACTED_TESTKEY_FILES_DIRECTORY, "testkey.x509.pem");
 
-            logger.write("Signing an APK file with these arguments: " + args);
+            PrivateKey privateKey = readPrivateKey(keyFile);
+            X509Certificate certificate = readCertificate(certFile);
 
-            /* If the signing has a callback, we need to change System.out to our logger */
+            SignerConfig signerConfig = new SignerConfig.Builder(
+                    "CERT", privateKey, Collections.singletonList(certificate)
+            ).build();
+
+            com.android.apksig.ApkSigner signer = new com.android.apksig.ApkSigner.Builder(
+                    Collections.singletonList(signerConfig)
+            )
+                    .setInputApk(new File(inputPath))
+                    .setOutputApk(new File(outputPath))
+                    .setV1SigningEnabled(true)
+                    .setV2SigningEnabled(true)
+                    .setV3SigningEnabled(true)
+                    .build();
+
+            signer.sign();
+
+            logger.write("Signing APK took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        } catch (Exception e) {
+            LogCallback.errorCount.incrementAndGet();
             if (callback != null) {
-                try (PrintStream stream = new PrintStream(logger)) {
-                    System.setOut(stream);
-                }
+                callback.onNewLineLogged("Failed to sign APK with testkey: " + Log.getStackTraceString(e));
             }
-
-            try {
-                ApkSignerTool.main(args.toArray(new String[0]));
-            } catch (Exception e) {
-                LogCallback.errorCount.incrementAndGet();
-                logger.write("An error occurred while trying to sign the APK file " + inputPath +
-                        " and outputting it to " + outputPath + ": " + e.getMessage() + "\n" +
-                        "Stack trace: " + Log.getStackTraceString(e));
-            }
-
-            logger.write("Signing an APK file took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
-
-            if (callback != null) {
-                System.setOut(oldOut);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -78,46 +71,58 @@ public class ApkSigner {
                                  @NonNull String keyStoreKeyAlias, @NonNull String keyPassword, @Nullable LogCallback callback) {
         try (LogWriter logger = new LogWriter(callback)) {
             long savedTimeMillis = System.currentTimeMillis();
-            PrintStream oldOut = System.out;
+            logger.write("Signing APK with Keystore using direct ApkSigner API...");
 
-            List<String> args = Arrays.asList(
-                    "sign",
-                    "--in",
-                    inputFilePath,
-                    "--out",
-                    outputFilePath,
-                    "--ks",
-                    keyStorePath,
-                    "--ks-pass",
-                    "pass:" + keyStorePassword,
-                    "--ks-key-alias",
-                    keyStoreKeyAlias,
-                    "--key-pass",
-                    "pass:" + keyPassword
-            );
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            try (InputStream is = new FileInputStream(keyStorePath)) {
+                keyStore.load(is, keyStorePassword.toCharArray());
+            }
 
-            logger.write("Signing an APK with a JKS keystore and these arguments: ");
-
-            if (callback != null) {
-                try (PrintStream stream = new PrintStream(logger)) {
-                    System.setOut(stream);
+            PrivateKey privateKey = (PrivateKey) keyStore.getKey(keyStoreKeyAlias, keyPassword.toCharArray());
+            Certificate[] certChain = keyStore.getCertificateChain(keyStoreKeyAlias);
+            List<X509Certificate> certificates = new ArrayList<>();
+            if (certChain != null) {
+                for (Certificate cert : certChain) {
+                    if (cert instanceof X509Certificate) {
+                        certificates.add((X509Certificate) cert);
+                    }
                 }
             }
 
-            try {
-                ApkSignerTool.main(args.toArray(new String[0]));
-            } catch (Exception e) {
-                LogCallback.errorCount.incrementAndGet();
-                logger.write("Failed to sign APK with JKS keystore: " + Log.getStackTraceString(e));
-            }
+            SignerConfig signerConfig = new SignerConfig.Builder(
+                    keyStoreKeyAlias, privateKey, certificates
+            ).build();
 
-            logger.write("Signing an APK took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+            com.android.apksig.ApkSigner signer = new com.android.apksig.ApkSigner.Builder(
+                    Collections.singletonList(signerConfig)
+            )
+                    .setInputApk(new File(inputFilePath))
+                    .setOutputApk(new File(outputFilePath))
+                    .setV1SigningEnabled(true)
+                    .setV2SigningEnabled(true)
+                    .setV3SigningEnabled(true)
+                    .build();
 
+            signer.sign();
+
+            logger.write("Signing APK took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        } catch (Exception e) {
+            LogCallback.errorCount.incrementAndGet();
             if (callback != null) {
-                System.setOut(oldOut);
+                callback.onNewLineLogged("Failed to sign APK with Keystore: " + Log.getStackTraceString(e));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+    }
+
+    private PrivateKey readPrivateKey(File keyFile) throws Exception {
+        byte[] keyBytes = Files.readAllBytes(keyFile.toPath());
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+        return KeyFactory.getInstance("RSA").generatePrivate(spec);
+    }
+
+    private X509Certificate readCertificate(File certFile) throws Exception {
+        try (InputStream is = new FileInputStream(certFile)) {
+            return (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(is);
         }
     }
 
