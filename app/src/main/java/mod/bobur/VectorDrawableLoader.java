@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.bobur.androidsvg.SVG;
+import com.caverock.androidsvg.SVG;
 
 import java.io.File;
 import java.util.ArrayList;
