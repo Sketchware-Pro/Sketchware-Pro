@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.apksig.ApkSigner.SignerConfig;
+import com.android.apksig.KeyConfig;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,8 +42,9 @@ public class ApkSigner {
             PrivateKey privateKey = readPrivateKey(keyFile);
             X509Certificate certificate = readCertificate(certFile);
 
+            KeyConfig keyConfig = new KeyConfig.Jca(privateKey);
             SignerConfig signerConfig = new SignerConfig.Builder(
-                    "CERT", privateKey, Collections.singletonList(certificate)
+                    "CERT", keyConfig, Collections.singletonList(certificate)
             ).build();
 
             com.android.apksig.ApkSigner signer = new com.android.apksig.ApkSigner.Builder(
@@ -89,8 +91,9 @@ public class ApkSigner {
                 }
             }
 
+            KeyConfig keyConfig = new KeyConfig.Jca(privateKey);
             SignerConfig signerConfig = new SignerConfig.Builder(
-                    keyStoreKeyAlias, privateKey, certificates
+                    keyStoreKeyAlias, keyConfig, certificates
             ).build();
 
             com.android.apksig.ApkSigner signer = new com.android.apksig.ApkSigner.Builder(

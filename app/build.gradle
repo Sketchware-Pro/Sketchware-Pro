@@ -91,6 +91,8 @@ dependencies {
     implementation libs.bundles.shrinker
     implementation libs.dalvik.dx
     implementation libs.zipalign.java
+    implementation libs.apksig
+    implementation libs.conscrypt.android
 
     implementation libs.asm
     implementation libs.stringfog.core

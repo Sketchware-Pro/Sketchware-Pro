@@ -46,6 +46,8 @@ zipalignJava = "1.2.2"
 asm = "9.7"
 stringfog = "5.2.0"
 stringfogXor = "5.0.0"
+apksig = "9.3.1"
+conscrypt = "2.5.2"
 
 [libraries]
 dalvik-dx = { module = "com.jakewharton.android.repackaged:dalvik-dx", version.ref = "dalvikDx" }
@@ -118,6 +120,8 @@ asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 stringfog-core = { module = "com.github.megatronking.stringfog:core", version.ref = "stringfog" }
 stringfog-interface = { module = "com.github.megatronking.stringfog:interface", version.ref = "stringfogXor" }
 stringfog-xor = { module = "com.github.megatronking.stringfog:xor", version.ref = "stringfogXor" }
+apksig = { module = "com.android.tools.build:apksig", version.ref = "apksig" }
+conscrypt-android = { module = "org.conscrypt:conscrypt-android", version.ref = "conscrypt" }
 
 [bundles]
 ui = ["androidx-activity", "androidx-appcompat", "androidx-splashscreen", "androidx-recyclerview",
