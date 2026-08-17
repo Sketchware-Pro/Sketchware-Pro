@@ -12,12 +12,11 @@ on:
       - 'gradlew.bat'
       - 'public-stable-ids.txt'
       - 'settings.gradle'
-    branches-ignore:
-      - 'wip/**'
   workflow_dispatch:
 
 jobs:
   notifyTelegram:
+    if: ${{ !startsWith(github.ref, 'refs/heads/wip/') }}
     name: Notify Telegram
     runs-on: ubuntu-latest
     steps:
@@ -89,6 +88,7 @@ jobs:
           path: app/build/outputs/apk/release/app-release-${{ steps.set_sha.outputs.short_sha }}.apk
 
   aggregateAndSend:
+    if: ${{ !startsWith(github.ref, 'refs/heads/wip/') }}
     name: Send APKs to Telegram
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     needs: build
@@ -135,6 +135,7 @@ jobs:
         continue-on-error: true
 
   updateAppData:
+    if: ${{ !startsWith(github.ref, 'refs/heads/wip/') }}
     name: Update App Data
     runs-on: ubuntu-latest
     steps:
