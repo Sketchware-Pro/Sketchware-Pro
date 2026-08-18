@@ -62,6 +62,7 @@ android {
         buildConfig = true
     }
 
+
     configurations.implementation {
         exclude group: 'javax.inject', module: 'javax.inject'
         exclude group: "org.jetbrains.kotlin", module: "kotlin-scripting-compiler-embeddable"
@@ -69,6 +70,11 @@ android {
         exclude group: "org.jetbrains.kotlin", module: "kotlin-scripting-jvm"
         exclude group: "org.jetbrains.kotlin", module: "kotlin-script-runtime"
     }
+}
+
+configurations.all {
+    exclude group: "xmlpull", module: "xmlpull"
+    exclude group: "net.sf.kxml", module: "kxml2"
 }
 
 dependencies {
@@ -128,52 +134,5 @@ dependencies {
     coreLibraryDesugaring libs.desugar.jdk.libs.nio
 }
 
-tasks.register('createMockGoogleServices') {
-    doLast {
-        if (secrets != null && !secrets.trim().isEmpty()) {
-            new File("$projectDir/google-services.json").text = secrets
-            return
-        }
-        def rootMockFile = file("google-services.json")
-        if (rootMockFile.exists() && rootMockFile.length() == 0) {
-            rootMockFile.delete()
-        }
-        def mockFile = file("src/debug/google-services.json")
-        if (!mockFile.exists()) {
-            mockFile.parentFile.mkdirs()
-            def mockContent = """{
-  "project_info": {
-    "project_number": "123456789000",
-    "firebase_url": "https://mock-project-default-rtdb.firebaseio.com",
-    "project_id": "mock-project",
-    "storage_bucket": "mock-project.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:123456789000:android:mockappid123456",
-        "android_client_info": {
-          "package_name": "${android.defaultConfig.applicationId}"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "mock_AIzaSyBQJCUXVKUjD38-u5pWkqMtesIfFvxAcvs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
-}"""
-            mockFile.text = mockContent
-        }
-    }
-}
+apply from: "$rootDir/gradle/custom-tasks.gradle"
 
-preBuild.dependsOn createMockGoogleServices

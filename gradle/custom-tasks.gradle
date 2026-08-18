@@ -1,0 +1,53 @@
+/**
+ * Creates a mock google-services.json if GOOGLE_SERVICES_JSON environment variable is absent.
+ */
+tasks.register('createMockGoogleServices') {
+    doLast {
+        def secrets = System.getenv("GOOGLE_SERVICES_JSON")
+        if (secrets != null && !secrets.trim().isEmpty()) {
+            new File("$projectDir/google-services.json").text = secrets
+            return
+        }
+        def rootMockFile = file("google-services.json")
+        if (rootMockFile.exists() && rootMockFile.length() == 0) {
+            rootMockFile.delete()
+        }
+        def mockFile = file("src/debug/google-services.json")
+        if (!mockFile.exists()) {
+            mockFile.parentFile.mkdirs()
+            def mockContent = """{
+  "project_info": {
+    "project_number": "123456789000",
+    "firebase_url": "https://mock-project-default-rtdb.firebaseio.com",
+    "project_id": "mock-project",
+    "storage_bucket": "mock-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123456789000:android:mockappid123456",
+        "android_client_info": {
+          "package_name": "${android.defaultConfig.applicationId}"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "mock_AIzaSyBQJCUXVKUjD38-u5pWkqMtesIfFvxAcvs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}"""
+            mockFile.text = mockContent
+        }
+    }
+}
+
+preBuild.dependsOn createMockGoogleServices
