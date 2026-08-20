@@ -19,6 +19,14 @@ public class LocalLibrary {
         return new LocalLibrary(file.getName(), formatFileSize(getFileSize(file)));
     }
 
+    /**
+     * Like {@link #fromFile(File)}, but accepts a pre-computed (e.g. cached)
+     * formatted size instead of recalculating it by walking the directory tree.
+     */
+    public static LocalLibrary fromFile(File file, String formattedSize) {
+        return new LocalLibrary(file.getName(), formattedSize);
+    }
+
     public String getName() {
         return name;
     }
