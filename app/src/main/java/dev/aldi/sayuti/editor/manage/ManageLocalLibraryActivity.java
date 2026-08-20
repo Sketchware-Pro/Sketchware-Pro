@@ -8,7 +8,6 @@ import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.getLocalLibraries
 import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.rewriteLocalLibFile;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -235,7 +234,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
 
     private void runLoadLocalLibrariesTask() {
         k();
-        new Handler().postDelayed(() -> new LoadLocalLibrariesTask(this).execute(), 500L);
+        new LoadLocalLibrariesTask(this).execute();
     }
 
     private List<LocalLibrary> getAdapterLocalLibraries() {
