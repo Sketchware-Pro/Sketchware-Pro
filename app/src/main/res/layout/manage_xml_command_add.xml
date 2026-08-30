@@ -68,7 +68,7 @@
                     android:id="@+id/reference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Reference" />
+                    android:hint="@string/common_word_reference" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -82,7 +82,7 @@
                     android:id="@+id/command"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Select command"
+                    android:hint="@string/common_word_select_command"
                     android:singleLine="true"
                     android:focusable="false" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -98,8 +98,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789"
-                    android:hint="Distance"
-                    android:text="0"
+                    android:hint="@string/common_word_distance"
+                    android:text="@string/common_word_0"
                     android:inputType="number"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -115,8 +115,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789"
-                    android:hint="Frontend"
-                    android:text="0"
+                    android:hint="@string/common_word_frontend"
+                    android:text="@string/common_word_0"
                     android:inputType="number"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -132,8 +132,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789"
-                    android:hint="Backend"
-                    android:text="0"
+                    android:hint="@string/common_word_backend"
+                    android:text="@string/common_word_0"
                     android:inputType="number"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -147,7 +147,7 @@
                     android:id="@+id/changes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Input code"
+                    android:hint="@string/common_word_input_code"
                     android:maxLines="10"
                     android:minHeight="48dp" />
             </com.google.android.material.textfield.TextInputLayout>

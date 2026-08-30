@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="No events"
+            android:text="@string/common_word_no_events"
             android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
 
@@ -81,7 +81,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
-        android:text="New Event"
+        android:text="@string/common_word_new_event"
         app:icon="@drawable/ic_mtrl_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

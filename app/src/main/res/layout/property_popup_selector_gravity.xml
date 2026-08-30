@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="left"
+            android:text="@string/common_word_left"
             android:textSize="16sp" />
 
         <CheckBox
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="right"
+            android:text="@string/common_word_right"
             android:textSize="16sp" />
             
         <CheckBox
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="center"
+            android:text="@string/common_word_center"
             android:textSize="16sp" />
 
         <CheckBox
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="top"
+            android:text="@string/common_word_top"
             android:textSize="16sp" />
 
         <CheckBox
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="bottom"
+            android:text="@string/common_word_bottom"
             android:textSize="16sp" />
 
         <CheckBox

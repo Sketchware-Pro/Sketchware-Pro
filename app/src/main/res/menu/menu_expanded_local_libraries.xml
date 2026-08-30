@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_select_all"
-        android:title="Select all"
+        android:title="@string/common_word_select_all"
         app:showAsAction="never" />
 
     <item

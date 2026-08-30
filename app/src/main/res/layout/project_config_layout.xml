@@ -16,7 +16,7 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="Build Settings" />
+        android:text="@string/common_word_build_settings" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_android_jar"
@@ -51,7 +51,7 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Dexer"
+        android:text="@string/common_word_dexer"
         android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
 
     <RadioGroup
@@ -68,7 +68,7 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Java version"
+        android:text="@string/common_word_java_version"
         android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
 
     <RadioGroup

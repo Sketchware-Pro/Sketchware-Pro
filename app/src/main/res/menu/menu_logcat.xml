@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_auto_scroll"
         android:checkable="true"
-        android:title="Auto scroll"
+        android:title="@string/common_word_auto_scroll"
         app:showAsAction="never" />
 
     <item
@@ -17,7 +17,7 @@
     <item
         android:id="@+id/action_export"
         android:icon="@drawable/ic_mtrl_export"
-        android:title="Export Logcat"
+        android:title="@string/common_word_export_logcat"
         app:showAsAction="always" />
 
     <item

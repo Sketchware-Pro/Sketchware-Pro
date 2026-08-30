@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Selected APK"
+                android:text="@string/common_word_selected_apk"
                 android:textColor="#ff7d7d7d"
                 android:textSize="14sp" />
 

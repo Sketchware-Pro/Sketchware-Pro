@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
-            android:hint="Widget title">
+            android:hint="@string/common_word_widget_title">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/widget_title"
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
-            android:hint="Select category">
+            android:hint="@string/common_word_select_category">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_widget_to"
@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
-            android:hint="XML attributes">
+            android:hint="@string/common_word_xml_attributes">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inject_code"

@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/permission_manager_menu"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="Permissions Manager" />
+            app:title="@string/common_word_permissions_manager" />
 
         <LinearLayout
             android:layout_width="match_parent"

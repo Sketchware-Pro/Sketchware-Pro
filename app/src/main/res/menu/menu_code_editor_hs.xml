@@ -4,30 +4,30 @@
 
     <item
         android:id="@+id/action_undo"
-        android:title="Undo"
+        android:title="@string/common_word_undo"
         android:icon="@drawable/ic_mtrl_undo"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_redo"
-        android:title="Redo"
+        android:title="@string/common_word_redo"
         android:icon="@drawable/ic_mtrl_redo"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_paste"
-        android:title="Paste"
+        android:title="@string/common_word_paste"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_word_wrap"
         android:checkable="true"
-        android:title="Word wrap"
+        android:title="@string/common_word_word_wrap"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_pretty_print"
-        android:title="Pretty print"
+        android:title="@string/common_word_pretty_print"
         app:showAsAction="never" />
 
     <item
@@ -38,7 +38,7 @@
     <item
         android:id="@+id/action_autocomplete"
         android:checkable="true"
-        android:title="Auto complete"
+        android:title="@string/common_word_auto_complete"
         app:showAsAction="never" />
 
     <item

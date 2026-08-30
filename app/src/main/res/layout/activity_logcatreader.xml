@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             app:menu="@menu/menu_logcat"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="Logcat Reader" />
+            app:title="@string/common_word_logcat_reader" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -34,7 +34,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:hint="Search log"
+            android:hint="@string/common_word_search_log"
             android:importantForAutofill="noExcludeDescendants"
             app:boxCornerRadiusBottomEnd="50dp"
             app:boxCornerRadiusBottomStart="50dp"

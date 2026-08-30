@@ -317,7 +317,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="Rewarded Ad"
+                    android:text="@string/common_word_rewarded_ad"
                     android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     android:textStyle="bold" />

@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:imeOptions="actionNext"
-                android:hint="Palette name"
+                android:hint="@string/common_word_palette_name"
                 android:textSize="16sp"
                 android:singleLine="true"/>
 

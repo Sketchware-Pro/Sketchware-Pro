@@ -22,7 +22,7 @@
         app:iconSpaceReserved="false"
         app:key="backup-dir"
         app:summary="The default directory is /Internal storage/.sketchware/backups/."
-        app:title="Backup directory" />
+        app:title="@string/common_word_backup_directory" />
 
     <SwitchPreferenceCompat
         app:iconSpaceReserved="false"

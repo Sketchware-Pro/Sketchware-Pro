@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="4dp"
-            android:text="dp"
+            android:text="@string/common_word_dp"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -62,7 +62,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="left"
+                android:hint="@string/common_word_left"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
-                android:text="dp"
+                android:text="@string/common_word_dp"
                 android:textSize="16sp" />
 
             <!-- Spacer -->
@@ -94,7 +94,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="right"
+                android:hint="@string/common_word_right"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
-                android:text="dp"
+                android:text="@string/common_word_dp"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -129,7 +129,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="top"
+                android:hint="@string/common_word_top"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
-                android:text="dp"
+                android:text="@string/common_word_dp"
                 android:textSize="16sp" />
 
             <!-- Spacer -->
@@ -161,7 +161,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="bottom"
+                android:hint="@string/common_word_bottom"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -179,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
-                android:text="dp"
+                android:text="@string/common_word_dp"
                 android:textSize="16sp" />
         </LinearLayout>
 

@@ -15,7 +15,7 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_collapseMode="pin"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="Theme Settings" />
+            app:title="@string/common_word_theme_settings" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -122,7 +122,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:text="Light"
+                            android:text="@string/common_word_light"
                             android:textAppearance="?attr/textAppearanceBodyLarge" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -155,7 +155,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:text="Dark"
+                            android:text="@string/common_word_dark"
                             android:textAppearance="?attr/textAppearanceBodyLarge" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

@@ -30,7 +30,7 @@
             android:id="@+id/listener_custom_import"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Custom import" />
+            android:hint="@string/common_word_custom_import" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

@@ -13,7 +13,7 @@
         android:background="?attr/colorSurfaceContainer"
         app:menu="@menu/menu_code_editor_hs"
         app:subtitle="UTF-8"
-        app:title="Code Editor" />
+        app:title="@string/common_word_code_editor" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

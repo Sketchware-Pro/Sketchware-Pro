@@ -31,7 +31,7 @@
             android:id="@+id/rb_directinput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Custom value"
+            android:text="@string/common_word_custom_value"
             android:textSize="15sp" />
     </RadioGroup>
 
@@ -67,7 +67,7 @@
             android:id="@+id/tv_input_dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="dp"
+            android:text="@string/common_word_dp"
             android:layout_marginStart="4dp"
             android:textSize="16sp" />
     </LinearLayout>

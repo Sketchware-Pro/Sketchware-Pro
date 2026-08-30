@@ -77,7 +77,7 @@
                     android:id="@+id/ed_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Block name"
+                    android:hint="@string/common_word_block_name"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:lines="1" />
@@ -115,7 +115,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:text="Void"
+                        android:text="@string/common_word_void"
                         app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
@@ -237,7 +237,7 @@
                         android:id="@+id/ed_variable_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Variable name"
+                        android:hint="@string/common_word_variable_name"
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:lines="1" />
@@ -275,7 +275,7 @@
                         android:id="@+id/ed_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Label text"
+                        android:hint="@string/common_word_label_text"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1" />
@@ -295,7 +295,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Custom Parameter"
+                android:text="@string/common_word_custom_parameter"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -314,7 +314,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
-                    android:hint="Parameter"
+                    android:hint="@string/common_word_parameter"
                     app:counterEnabled="true"
                     app:counterMaxLength="100"
                     app:endIconMode="clear_text"
@@ -340,7 +340,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
-                    android:hint="Variable name"
+                    android:hint="@string/common_word_variable_name"
                     app:counterEnabled="true"
                     android:layout_marginTop="8dp"
                     app:counterMaxLength="100"

@@ -63,7 +63,7 @@
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="96dp"
-            android:text="New project"
+            android:text="@string/common_word_new_project"
             app:icon="@drawable/ic_mtrl_add"
             app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
             tools:ignore="ContentDescription" />

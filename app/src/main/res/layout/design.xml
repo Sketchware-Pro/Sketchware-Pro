@@ -133,7 +133,7 @@
                             android:layout_marginHorizontal="8dp"
                             android:layout_weight="1"
                             android:singleLine="true"
-                            android:text="main"
+                            android:text="@string/common_word_main"
                             android:textAppearance="?attr/textAppearanceBodyMedium" />
 
                         <ImageView

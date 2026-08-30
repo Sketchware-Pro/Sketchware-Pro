@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="4dp"
         android:layout_marginTop="18dp"
-        android:text="Style"
+        android:text="@string/common_word_style"
         android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
     <com.google.android.material.chip.ChipGroup
@@ -29,34 +29,34 @@
             android:id="@+id/chip_outline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Outlined" />
+            android:text="@string/common_word_outlined" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_baseline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Baseline" />
+            android:text="@string/common_word_baseline" />
 
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_round"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Round" />
+            android:text="@string/common_word_round" />
 
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_sharp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sharp" />
+            android:text="@string/common_word_sharp" />
 
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_twotone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Two Tone" />
+            android:text="@string/common_word_two_tone" />
 
 
     </com.google.android.material.chip.ChipGroup>
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="4dp"
         android:layout_marginTop="18dp"
-        android:text="Selected color"
+        android:text="@string/common_word_selected_color"
         android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
     <Button

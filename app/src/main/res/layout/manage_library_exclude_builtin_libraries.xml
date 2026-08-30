@@ -165,6 +165,6 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
-        android:text="Exclude library"
+        android:text="@string/common_word_exclude_library"
         app:icon="@drawable/ic_mtrl_add" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

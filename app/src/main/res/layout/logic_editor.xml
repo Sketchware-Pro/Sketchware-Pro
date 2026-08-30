@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:subtitle="onCreate"
+            app:subtitle="@string/common_word_oncreate"
             app:title="@string/common_word_activity" />
 
         <com.besome.sketch.editor.view.ViewLogicEditor

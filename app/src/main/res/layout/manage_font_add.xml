@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Font preview"
+                android:text="@string/common_word_font_preview"
                 android:textColor="#ff7d7d7d"
                 android:textSize="14sp" />
 
@@ -59,7 +59,7 @@
                 android:id="@+id/ed_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Font name"
+                android:hint="@string/common_word_font_name"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
@@ -114,7 +114,7 @@
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
                 android:paddingRight="25dp"
-                android:text="Clear"
+                android:text="@string/common_word_clear"
                 android:visibility="gone"
                 app:cornerRadius="10dp"
                 app:icon="@drawable/ic_mtrl_reset"

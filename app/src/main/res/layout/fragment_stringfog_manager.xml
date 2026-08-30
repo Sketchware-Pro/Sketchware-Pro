@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:checked="true"
-        android:text="Activated" />
+        android:text="@string/common_word_activated" />
 
     <TextView
         android:layout_width="wrap_content"

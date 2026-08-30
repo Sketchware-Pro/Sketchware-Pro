@@ -9,7 +9,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Array name">
+        android:hint="@string/common_word_array_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/array_name"
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Array type">
+        android:hint="@string/common_word_array_type">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/array_type"

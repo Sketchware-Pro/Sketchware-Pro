@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:selectAllOnFocus="true"
-        android:text="TextView"
+        android:text="@string/common_word_textview"
         android:textIsSelectable="true" />
 
 </LinearLayout>
