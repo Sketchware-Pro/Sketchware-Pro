@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name" translatable="false">Sketchware Next</string>
+    <string name="design_manager_font_description_example_sentence" translatable="false">
+    An example sentence for preview
+    预览 的例句
+    عرض مثالي للتوضيح
+    プレビューの例文
+    Пример предложения для предварительного просмотра
+    </string>
+    <string name="firebase_database_url" translatable="false">https://dependable-flag-825.firebaseio.com</string>
+    <string name="link_github_release" translatable="false">https://github.com/Sketchware-Next/Sketchware-Next/releases</string>
+    <string name="link_docs_url" translatable="false">https://docs.sketchware.pro</string>
+    <string name="link_ideas_url" translatable="false">https://discord.gg/4uxhMwCt</string>
+    <string name="link_discord_invite" translatable="false">https://discord.gg/kq39yhT4rX</string>
+    <string name="link_telegram_invite" translatable="false">https://t.me/sketchwarepro</string>
+    <string name="link_about_team" translatable="false">https://sketchware-pro.github.io/Sketchware-Pro/about.json</string>
+    <string name="link_github_commits_url" formatted="false" translatable="false">https://api.github.com/repos/Sketchware-Next/Sketchware-Next/commits?per_page=%s&amp;page=%s</string>
+    <string name="link_github_url" translatable="false">https://github.com/Sketchware-Next/Sketchware-Next</string>
+    <string name="link_sw_assist" translatable="false">https://play.google.com/store/apps/details?id=com.w3wide.swassist</string>
+    <string name="common_word_widget" translatable="false">Widget</string>
+    <string name="common_word_contributor" translatable="false">Contributor</string>
+    <string name="common_word_swassist" translatable="false">SwAssist</string>
+    <string name="common_word_github" translatable="false">GitHub</string>
+    <string name="common_word_fragment" translatable="false">Fragment</string>
+    <string name="common_word_dialogfragment" translatable="false">DialogFragment</string>
+    <string name="common_word_bottomsheetdialogfragment" translatable="false">BottomSheetDialogFragment</string>
+    <string name="common_word_code_editor" translatable="false">Code Editor</string>
+</resources>
