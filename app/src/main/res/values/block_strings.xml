@@ -1,525 +1,525 @@
 <resources>
-    <string name="block_add_list_int_body_1">to</string>
-    <string name="block_add_list_int_head">add</string>
-    <string name="block_add_list_map_body_1">value</string>
-    <string name="block_add_list_map_body_2">to</string>
-    <string name="block_add_list_map_head">add key</string>
-    <string name="block_add_list_str_body_1">to</string>
-    <string name="block_add_list_str_head">add</string>
-    <string name="block_add_map_to_list_body_1">to</string>
-    <string name="block_add_map_to_list_head">add</string>
-    <string name="block_add_source_directly_head">add source directly</string>
-    <string name="block_adview_load_ad_tail">load</string>
-    <string name="block_and_body_1">and</string>
-    <string name="block_move_to_bin">Move to recycle bin</string>
-    <string name="block_bigger_body_1">></string>
-    <string name="block_bluetoothconnect_activate_bluetooth_tail">activate bluetooth</string>
-    <string name="block_bluetoothconnect_get_paired_devices_body_1">get paired devices to</string>
-    <string name="block_bluetoothconnect_get_random_uuid_tail">get random uuid</string>
-    <string name="block_bluetoothconnect_is_bluetooth_activated_tail">is bluetooth activated</string>
-    <string name="block_bluetoothconnect_is_bluetooth_enabled_tail">is bluetooth enabled</string>
-    <string name="block_bluetoothconnect_ready_connection_body_1">ready connection with tag</string>
-    <string name="block_bluetoothconnect_ready_connection_to_uuid_body_1">ready connection to uuid</string>
-    <string name="block_bluetoothconnect_ready_connection_to_uuid_body_2">with tag</string>
-    <string name="block_bluetoothconnect_send_data_body_1">send data</string>
-    <string name="block_bluetoothconnect_send_data_body_2">with tag</string>
-    <string name="block_bluetoothconnect_start_connection_body_1">start connection to address</string>
-    <string name="block_bluetoothconnect_start_connection_body_2">with tag</string>
-    <string name="block_bluetoothconnect_start_connection_to_uuid_body_1">start connection to uuid</string>
-    <string name="block_bluetoothconnect_start_connection_to_uuid_body_2">and address</string>
-    <string name="block_bluetoothconnect_start_connection_to_uuid_body_3">with tag</string>
-    <string name="block_bluetoothconnect_stop_connection_body_1">stop connection with tag</string>
-    <string name="block_break_head">stop</string>
-    <string name="block_calendar_add_body_1">add</string>
-    <string name="block_calendar_add_body_2">value</string>
-    <string name="block_calendar_diff_body_1">-</string>
-    <string name="block_calendar_diff_head">Difference</string>
-    <string name="block_calendar_format_body_1">Format</string>
-    <string name="block_calendar_get_now_tail">getNow</string>
-    <string name="block_calendar_get_time_tail">getTime(ms)</string>
-    <string name="block_calendar_set_body_1">set</string>
-    <string name="block_calendar_set_body_2">value</string>
-    <string name="block_calendar_set_time_body_1">setTime</string>
-    <string name="block_calendar_set_time_tail">ms</string>
-    <string name="block_calendarview_get_date_tail">getDate(ms)</string>
-    <string name="block_calendarview_set_date_body_1">setDate</string>
-    <string name="block_calendarview_set_date_tail">ms</string>
-    <string name="block_calendarview_set_max_date_body_1">setMaxDate</string>
-    <string name="block_calendarview_set_max_date_tail">ms</string>
-    <string name="block_calendarview_set_min_date_body_1">setMinDate</string>
-    <string name="block_calendarview_set_min_date_tail">ms</string>
-    <string name="block_camera_start_take_picture_tail">take picture</string>
-    <string name="block_category_component_func">Component</string>
-    <string name="block_category_control">Control</string>
-    <string name="block_category_file">File</string>
-    <string name="block_category_list">List</string>
-    <string name="block_category_math">Math</string>
-    <string name="block_category_moreblock">More Block</string>
-    <string name="block_category_operator">Operator</string>
-    <string name="block_category_var">Variable</string>
-    <string name="block_category_view_func">View</string>
-    <string name="block_clear_list_head">clear</string>
-    <string name="block_close_drawer_head">closeDrawer</string>
-    <string name="block_contain_list_int_body_1">contains</string>
-    <string name="block_contain_list_map_body_1">contains at</string>
-    <string name="block_contain_list_map_body_2">key</string>
-    <string name="block_contain_list_str_body_1">contains</string>
-    <string name="block_copy_to_clipboard_head">copyToClipboard</string>
-    <string name="block_crop_bitmap_center_body_1">to path</string>
-    <string name="block_crop_bitmap_center_body_2">width</string>
-    <string name="block_crop_bitmap_center_body_3">height</string>
-    <string name="block_crop_bitmap_center_head">crop image center from path</string>
-    <string name="block_decrease_int_tail">decrease 1</string>
-    <string name="block_delete_list_body_1">of</string>
-    <string name="block_delete_list_head">delete at</string>
-    <string name="block_dialog_cancel_button_body_1">Cancel Button</string>
-    <string name="block_dialog_cancel_button_tail">Clicked</string>
-    <string name="block_dialog_dismiss_tail">dismiss</string>
-    <string name="block_dialog_neutral_button_body_1">Neutral Button</string>
-    <string name="block_dialog_neutral_button_tail">Clicked</string>
-    <string name="block_dialog_ok_button_body_1">OK Button</string>
-    <string name="block_dialog_ok_button_tail">Clicked</string>
-    <string name="block_dialog_set_message_body_1">set message</string>
-    <string name="block_dialog_set_title_body_1">set title</string>
-    <string name="block_dialog_show_tail">show</string>
-    <string name="block_divide_body_1">/</string>
-    <string name="block_do_toast_head">Toast</string>
-    <string name="block_else_head">else</string>
-    <string name="block_equal_body_1">=</string>
-    <string name="block_false_head">false</string>
-    <string name="block_file_get_data_body_1">getData key</string>
-    <string name="block_file_picker_start_pick_files_tail">pick files</string>
-    <string name="block_file_remove_data_body_1">removeData key</string>
-    <string name="block_file_set_data_body_1">setData key</string>
-    <string name="block_file_set_data_body_2">value</string>
-    <string name="block_fileutil_copy_body_1">to path</string>
-    <string name="block_fileutil_copy_head">copy file path</string>
-    <string name="block_fileutil_delete_head">delete file path</string>
-    <string name="block_fileutil_ends_with_body_1">ends with</string>
-    <string name="block_fileutil_get_last_segment_path_head">get last segment path of</string>
-    <string name="block_fileutil_is_dir_head">path</string>
-    <string name="block_fileutil_is_dir_tail">is directory</string>
-    <string name="block_fileutil_is_exist_head">is exist file path</string>
-    <string name="block_fileutil_is_file_head">path</string>
-    <string name="block_fileutil_is_file_tail">is file</string>
-    <string name="block_fileutil_length_head">get length of path</string>
-    <string name="block_fileutil_list_dir_body_1">to</string>
-    <string name="block_fileutil_list_dir_head">file list in path</string>
-    <string name="block_fileutil_make_dir_head">make directory path</string>
-    <string name="block_fileutil_move_body_1">to path</string>
-    <string name="block_fileutil_move_head">move file path</string>
-    <string name="block_fileutil_read_head">read file path</string>
-    <string name="block_fileutil_starts_with_body_1">starts with</string>
-    <string name="block_fileutil_write_body_1">to file path</string>
-    <string name="block_fileutil_write_head">write String</string>
-    <string name="block_finish_activity_head">Finish</string>
-    <string name="block_finish_activity_tail">Activity</string>
-    <string name="block_firebase_add_body_1">add key</string>
-    <string name="block_firebase_add_body_2">value</string>
-    <string name="block_firebase_delete_body_1">delete key</string>
-    <string name="block_firebase_get_children_body_1">get children to</string>
-    <string name="block_firebase_get_children_tail">then</string>
-    <string name="block_firebase_get_key_tail">push getKey</string>
-    <string name="block_firebase_push_body_1">push value</string>
-    <string name="block_firebase_start_listen_tail">start Listening</string>
-    <string name="block_firebase_stop_listen_tail">stop Listening</string>
-    <string name="block_firebaseauth_create_user_body_1">createUserWith Email</string>
-    <string name="block_firebaseauth_create_user_body_2">and Password</string>
-    <string name="block_firebaseauth_get_email_tail">FirebaseAuth getEmail</string>
-    <string name="block_firebaseauth_get_uid_tail">FirebaseAuth getUid</string>
-    <string name="block_firebaseauth_is_logged_in_tail">FirebaseAuth isLoggedIn</string>
-    <string name="block_firebaseauth_reset_password_body_1">send password reset email to</string>
-    <string name="block_firebaseauth_signin_anonymously_tail">signInAnonymously</string>
-    <string name="block_firebaseauth_signin_user_body_1">signInWith Email</string>
-    <string name="block_firebaseauth_signin_user_body_2">and Password</string>
-    <string name="block_firebaseauth_signout_tail">FirebaseAuth signOut</string>
-    <string name="block_firebasestorage_delete_body_1">delete file url</string>
-    <string name="block_firebasestorage_download_file_body_1">download file url</string>
-    <string name="block_firebasestorage_download_file_body_2">to file path</string>
-    <string name="block_firebasestorage_upload_file_body_1">upload file path</string>
-    <string name="block_firebasestorage_upload_file_body_2">name as</string>
-    <string name="block_forever_head">forever</string>
-    <string name="block_get_alpha_tail">getAlpha</string>
-    <string name="block_get_at_list_int_body_1">of</string>
-    <string name="block_get_at_list_int_head">get at</string>
-    <string name="block_get_at_list_map_body_1">key</string>
-    <string name="block_get_at_list_map_body_2">of</string>
-    <string name="block_get_at_list_map_head">get value at</string>
-    <string name="block_get_at_list_str_body_1">of</string>
-    <string name="block_get_at_list_str_head">get at</string>
-    <string name="block_get_checked_tail">getChecked</string>
-    <string name="block_get_enable_tail">getEnable</string>
-    <string name="block_get_external_storage_dir_head">get external storage directory</string>
-    <string name="block_get_jpeg_rotate_head">get jpeg rotate from file path</string>
-    <string name="block_get_location_x_tail">getLocationX</string>
-    <string name="block_get_location_y_tail">getLocationY</string>
-    <string name="block_get_map_in_list_body_1">of</string>
-    <string name="block_get_map_in_list_body_2">to</string>
-    <string name="block_get_map_in_list_head">get at</string>
-    <string name="block_get_package_data_dir_head">get package data directory</string>
-    <string name="block_get_public_dir_head">get public directory type</string>
-    <string name="block_get_rotate_tail">getRotation</string>
-    <string name="block_get_scale_x_tail">getScaleX</string>
-    <string name="block_get_scale_y_tail">getScaleY</string>
-    <string name="block_get_text_tail">getText</string>
-    <string name="block_get_translation_x_tail">getTranslationX</string>
-    <string name="block_get_translation_y_tail">getTranslationY</string>
-    <string name="block_gyroscope_start_listen_tail">Sensor start</string>
-    <string name="block_gyroscope_stop_listen_tail">Sensor stop</string>
-    <string name="block_if_else_head">if</string>
-    <string name="block_if_else_tail">then</string>
-    <string name="block_if_head">if</string>
-    <string name="block_if_tail">then</string>
-    <string name="block_increase_int_tail">increase 1</string>
-    <string name="block_indexof_list_int_body_1">in</string>
-    <string name="block_indexof_list_int_head">index</string>
-    <string name="block_indexof_list_str_body_1">in</string>
-    <string name="block_indexof_list_str_head">index</string>
-    <string name="block_insert_list_int_body_1">at</string>
-    <string name="block_insert_list_int_body_2">to</string>
-    <string name="block_insert_list_int_head">insert</string>
-    <string name="block_insert_list_map_body_1">value</string>
-    <string name="block_insert_list_map_body_2">at</string>
-    <string name="block_insert_list_map_body_3">to</string>
-    <string name="block_insert_list_map_head">insert key</string>
-    <string name="block_insert_list_str_body_1">at</string>
-    <string name="block_insert_list_str_body_2">to</string>
-    <string name="block_insert_list_str_head">insert</string>
-    <string name="block_insert_map_to_list_body_1">at</string>
-    <string name="block_insert_map_to_list_body_2">to</string>
-    <string name="block_insert_map_to_list_head">insert</string>
-    <string name="block_intent_get_string_head">Activity getExtra key</string>
-    <string name="block_intent_put_extra_body_1">putExtra key</string>
-    <string name="block_intent_put_extra_body_2">value</string>
-    <string name="block_intent_set_action_body_1">setAction</string>
-    <string name="block_intent_set_data_body_1">setData</string>
-    <string name="block_intent_set_flags_body_1">setFlags</string>
-    <string name="block_intent_set_screen_body_1">setScreen</string>
-    <string name="block_interstitialad_create_tail">create</string>
-    <string name="block_interstitialad_load_ad_tail">load</string>
-    <string name="block_interstitialad_show_tail">show</string>
-    <string name="block_is_drawer_open_head">isDrawerOpen</string>
-    <string name="block_length_list_head">length of</string>
-    <string name="block_list_get_checked_count_tail">getCheckedCount</string>
-    <string name="block_list_get_checked_position_tail">getCheckedPosition</string>
-    <string name="block_list_get_checked_positions_body_1">getCheckedPositions to</string>
-    <string name="block_list_map_to_str_tail">to JSON String</string>
-    <string name="block_list_refresh_tail">refreshData</string>
-    <string name="block_list_set_custom_view_data_body_1">setListCustomViewData</string>
-    <string name="block_list_set_data_body_1">setListViewData</string>
-    <string name="block_list_set_item_checked_body_1">setItemChecked pos</string>
-    <string name="block_list_set_item_checked_body_2">value</string>
-    <string name="block_list_smooth_scrollto_body_1">smoothScrollToPosition</string>
-    <string name="block_locationmanager_remove_updates_tail">remove updates</string>
-    <string name="block_locationmanager_request_location_updates_body_1">request location updates type</string>
-    <string name="block_locationmanager_request_location_updates_body_2">min time</string>
-    <string name="block_locationmanager_request_location_updates_body_3">min distance</string>
-    <string name="block_map_clear_tail">clear</string>
-    <string name="block_map_contain_key_body_1">contain key</string>
-    <string name="block_map_create_new_tail">create new map</string>
-    <string name="block_map_get_all_keys_body_1">get all keys to</string>
-    <string name="block_map_get_body_1">get key</string>
-    <string name="block_map_is_empty_tail">is empty</string>
-    <string name="block_map_put_body_1">put key</string>
-    <string name="block_map_put_body_2">value</string>
-    <string name="block_map_remove_key_body_1">remove key</string>
-    <string name="block_map_size_tail">size</string>
-    <string name="block_map_to_str_tail">to JSON String</string>
-    <string name="block_mapview_add_marker_body_1">add marker id</string>
-    <string name="block_mapview_add_marker_body_2">position lat</string>
-    <string name="block_mapview_add_marker_body_3">lng</string>
-    <string name="block_mapview_move_camera_body_1">move camera lat</string>
-    <string name="block_mapview_move_camera_body_2">lng</string>
-    <string name="block_mapview_set_map_type_body_1">set Map type</string>
-    <string name="block_mapview_set_marker_color_body_1">marker id</string>
-    <string name="block_mapview_set_marker_color_body_2">set color</string>
-    <string name="block_mapview_set_marker_color_body_3">alpha</string>
-    <string name="block_mapview_set_marker_icon_body_1">marker id</string>
-    <string name="block_mapview_set_marker_icon_body_2">set icon</string>
-    <string name="block_mapview_set_marker_info_body_1">marker id</string>
-    <string name="block_mapview_set_marker_info_body_2">set title</string>
-    <string name="block_mapview_set_marker_info_body_3">snippet</string>
-    <string name="block_mapview_set_marker_position_body_1">marker id</string>
-    <string name="block_mapview_set_marker_position_body_2">set position lat</string>
-    <string name="block_mapview_set_marker_position_body_3">lng</string>
-    <string name="block_mapview_set_marker_visible_body_1">marker id</string>
-    <string name="block_mapview_set_marker_visible_body_2">set visible</string>
-    <string name="block_mapview_zoom_in_tail">zoom in</string>
-    <string name="block_mapview_zoom_out_tail">zoom out</string>
-    <string name="block_mapview_zoom_to_body_1">zoom to</string>
-    <string name="block_math_abs_head">absolute value of</string>
-    <string name="block_math_acos_head">arccos</string>
-    <string name="block_math_asin_head">arcsin</string>
-    <string name="block_math_atan_head">arctan</string>
-    <string name="block_math_ceil_head">ceil</string>
-    <string name="block_math_cos_head">cos</string>
-    <string name="block_math_e_head">E(e)</string>
-    <string name="block_math_exp_head">exp</string>
-    <string name="block_math_floor_head">floor</string>
-    <string name="block_math_get_dip_head">getDip</string>
-    <string name="block_math_get_display_height_head">getDisplayHeightPixels</string>
-    <string name="block_math_get_display_width_head">getDisplayWidthPixels</string>
-    <string name="block_math_log10_head">log</string>
-    <string name="block_math_log_head">ln</string>
-    <string name="block_math_max_body_1">and</string>
-    <string name="block_math_max_head">maximum of</string>
-    <string name="block_math_min_body_1">and</string>
-    <string name="block_math_min_head">minimum of</string>
-    <string name="block_math_pi_head">PI(π)</string>
-    <string name="block_math_pow_body_1">to the</string>
-    <string name="block_math_pow_tail">power</string>
-    <string name="block_math_round_head">round</string>
-    <string name="block_math_sin_head">sin</string>
-    <string name="block_math_sqrt_head">square root of</string>
-    <string name="block_math_tan_head">tan</string>
-    <string name="block_math_to_degree_head">Radian</string>
-    <string name="block_math_to_degree_tail">to Degree</string>
-    <string name="block_math_to_radian_head">Degree</string>
-    <string name="block_math_to_radian_tail">to Radian</string>
-    <string name="block_mediaplayer_create_body_1">create</string>
-    <string name="block_mediaplayer_get_current_tail">get current duration</string>
-    <string name="block_mediaplayer_get_duration_tail">get song duration</string>
-    <string name="block_mediaplayer_is_looping_tail">is looping</string>
-    <string name="block_mediaplayer_is_playing_tail">is playing</string>
-    <string name="block_mediaplayer_pause_tail">pause</string>
-    <string name="block_mediaplayer_release_tail">release</string>
-    <string name="block_mediaplayer_reset_tail">reset</string>
-    <string name="block_mediaplayer_seek_body_1">seek to</string>
-    <string name="block_mediaplayer_set_looping_body_1">set looping</string>
-    <string name="block_mediaplayer_start_tail">start</string>
-    <string name="block_minus_body_1">-</string>
-    <string name="block_not_head">not</string>
-    <string name="block_objectanimator_cancel_tail">cancel</string>
-    <string name="block_objectanimator_is_running_tail">is running</string>
-    <string name="block_objectanimator_set_duration_body_1">set duration</string>
-    <string name="block_objectanimator_set_from_to_body_1">set values from</string>
-    <string name="block_objectanimator_set_from_to_body_2">to</string>
-    <string name="block_objectanimator_set_interpolator_body_1">set interpolator</string>
-    <string name="block_objectanimator_set_property_body_1">set property</string>
-    <string name="block_objectanimator_set_repeat_count_body_1">set repeat count</string>
-    <string name="block_objectanimator_set_repeat_mode_body_1">set repeat mode</string>
-    <string name="block_objectanimator_set_target_body_1">set target</string>
-    <string name="block_objectanimator_set_value_body_1">set value</string>
-    <string name="block_objectanimator_start_tail">start</string>
-    <string name="block_open_drawer_head">openDrawer</string>
-    <string name="block_or_body_1">or</string>
-    <string name="block_plus_body_1">+</string>
-    <string name="block_progressbar_set_indeterminate_body_1">setIndeterminate</string>
-    <string name="block_random_body_1">to</string>
-    <string name="block_random_head">pick random</string>
-    <string name="block_repeat_head">repeat</string>
-    <string name="block_request_focus_tail">request focus</string>
-    <string name="block_requestnetwork_set_headers_body_1">set headers</string>
-    <string name="block_requestnetwork_set_params_body_1">set params</string>
-    <string name="block_requestnetwork_set_params_body_2">to request type</string>
-    <string name="block_requestnetwork_start_request_network_body_1">start network request to method</string>
-    <string name="block_requestnetwork_start_request_network_body_2">to url</string>
-    <string name="block_requestnetwork_start_request_network_body_3">with tag</string>
-    <string name="block_resize_bitmap_circle_body_1">to path</string>
-    <string name="block_resize_bitmap_circle_head">resize image to circle from path</string>
-    <string name="block_resize_bitmap_ratio_body_1">to path</string>
-    <string name="block_resize_bitmap_ratio_body_2">max size</string>
-    <string name="block_resize_bitmap_ratio_head">resize image retain ratio from path</string>
-    <string name="block_resize_bitmap_rounded_body_1">to path</string>
-    <string name="block_resize_bitmap_rounded_body_2">round pixels</string>
-    <string name="block_resize_bitmap_rounded_head">resize image rounded from path</string>
-    <string name="block_resize_bitmap_square_body_1">to path</string>
-    <string name="block_resize_bitmap_square_body_2">max size</string>
-    <string name="block_resize_bitmap_square_head">resize image to square from path</string>
-    <string name="block_rest_body_1">%</string>
-    <string name="block_rotate_bitmap_body_1">to path</string>
-    <string name="block_rotate_bitmap_body_2">angle</string>
-    <string name="block_rotate_bitmap_head">rotate image from path</string>
-    <string name="block_scale_bitmap_body_1">to path</string>
-    <string name="block_scale_bitmap_body_2">x</string>
-    <string name="block_scale_bitmap_body_3">y</string>
-    <string name="block_scale_bitmap_head">scale image from path</string>
-    <string name="block_seekbar_get_max_tail">getMax</string>
-    <string name="block_seekbar_get_progress_tail">getProgress</string>
-    <string name="block_seekbar_set_max_body_1">setMax</string>
-    <string name="block_seekbar_set_progress_body_1">setProgress</string>
-    <string name="block_set_alpha_body_1">setAlpha</string>
-    <string name="block_set_at_list_map_body_1">value</string>
-    <string name="block_set_at_list_map_body_2">at</string>
-    <string name="block_set_at_list_map_body_3">to</string>
-    <string name="block_set_at_list_map_head">set key</string>
-    <string name="block_set_bg_color_body_1">setBackgroundColor</string>
-    <string name="block_set_bg_resource_body_1">setBackgroundResource</string>
-    <string name="block_set_bitmap_brightness_body_1">to path</string>
-    <string name="block_set_bitmap_brightness_body_2">value</string>
-    <string name="block_set_bitmap_brightness_head">set image brightness from path</string>
-    <string name="block_set_bitmap_color_filter_body_1">to path</string>
-    <string name="block_set_bitmap_color_filter_body_2">color</string>
-    <string name="block_set_bitmap_color_filter_head">set image color filter from path</string>
-    <string name="block_set_bitmap_contrast_body_1">to path</string>
-    <string name="block_set_bitmap_contrast_body_2">value</string>
-    <string name="block_set_bitmap_contrast_head">set image contrast from path</string>
-    <string name="block_set_checked_body_1">setChecked</string>
-    <string name="block_set_clickable_body_1">setClickable</string>
-    <string name="block_set_color_filter_body_1">setColorFilter</string>
-    <string name="block_set_enable_body_1">setEnable</string>
-    <string name="block_set_hint_body_1">set hint text to</string>
-    <string name="block_set_hint_text_color_body_1">set hint color to</string>
-    <string name="block_set_image_body_1">setImage</string>
-    <string name="block_set_image_file_path_body_1">set image from file path</string>
-    <string name="block_set_image_url_body_1">set image from url</string>
-    <string name="block_set_rotate_body_1">setRotation</string>
-    <string name="block_set_scale_x_body_1">setScaleX</string>
-    <string name="block_set_scale_y_body_1">setScaleY</string>
-    <string name="block_set_text_body_1">setText</string>
-    <string name="block_set_text_color_body_1">setTextColor</string>
-    <string name="block_set_thumb_resource_body_1">setThumbResource</string>
-    <string name="block_set_title_head">Activity set title</string>
-    <string name="block_set_track_resource_body_1">setTrackResource</string>
-    <string name="block_set_translation_x_body_1">setTranslationX</string>
-    <string name="block_set_translation_y_body_1">setTranslationY</string>
-    <string name="block_set_typeface_body_1">setTypeface</string>
-    <string name="block_set_typeface_body_2">with style</string>
-    <string name="block_set_var_bool_body_1">to</string>
-    <string name="block_set_var_bool_head">set</string>
-    <string name="block_set_var_int_body_1">to</string>
-    <string name="block_set_var_int_head">set</string>
-    <string name="block_set_var_str_body_1">to</string>
-    <string name="block_set_var_str_head">set</string>
-    <string name="block_set_visible_body_1">setVisible</string>
-    <string name="block_skew_bitmap_body_1">to path</string>
-    <string name="block_skew_bitmap_body_2">x</string>
-    <string name="block_skew_bitmap_body_3">y</string>
-    <string name="block_skew_bitmap_head">skew image from path</string>
-    <string name="block_smaller_body_1">&lt;</string>
-    <string name="block_soundpool_create_body_1">create max stream count</string>
-    <string name="block_soundpool_load_body_1">load</string>
-    <string name="block_soundpool_load_head">SoundID :</string>
-    <string name="block_soundpool_stream_play_body_1">play Sound ID</string>
-    <string name="block_soundpool_stream_play_body_2">1 +</string>
-    <string name="block_soundpool_stream_play_head">StreamID :</string>
-    <string name="block_soundpool_stream_play_tail">times</string>
-    <string name="block_soundpool_stream_stop_body_1">stop stream ID</string>
-    <string name="block_speechtotext_shutdown_tail">shutdown</string>
-    <string name="block_speechtotext_start_listening_tail">start listening</string>
-    <string name="block_speechtotext_stop_listening_tail">stop listening</string>
-    <string name="block_spn_get_selection_tail">getSelection</string>
-    <string name="block_spn_refresh_tail">refreshData</string>
-    <string name="block_spn_set_data_body_1">setSpinnerData</string>
-    <string name="block_spn_set_selection_body_1">setSelection</string>
-    <string name="block_start_activity_head">StartActivity</string>
-    <string name="block_str_to_list_map_body_1">to</string>
-    <string name="block_str_to_list_map_head">JSON</string>
-    <string name="block_str_to_map_body_1">to</string>
-    <string name="block_str_to_map_head">JSON</string>
-    <string name="block_string_contains_body_1">contains</string>
-    <string name="block_string_equals_body_1">equals</string>
-    <string name="block_string_index_body_1">of</string>
-    <string name="block_string_index_head">index</string>
-    <string name="block_string_join_body_1">and</string>
-    <string name="block_string_join_head">join</string>
-    <string name="block_string_last_index_body_1">of</string>
-    <string name="block_string_last_index_head">last index</string>
-    <string name="block_string_length_head">length of</string>
-    <string name="block_string_replace_all_body_1">replace all RegEx</string>
-    <string name="block_string_replace_all_body_2">with</string>
-    <string name="block_string_replace_body_1">replace all</string>
-    <string name="block_string_replace_body_2">with</string>
-    <string name="block_string_replace_first_body_1">replace first RegEx</string>
-    <string name="block_string_replace_first_body_2">with</string>
-    <string name="block_string_sub_body_1">substring</string>
-    <string name="block_string_sub_body_2">to</string>
-    <string name="block_texttospeech_is_speaking_tail">is speaking</string>
-    <string name="block_texttospeech_set_pitch_body_1">set pitch</string>
-    <string name="block_texttospeech_set_speech_rate_body_1">set speech rate</string>
-    <string name="block_texttospeech_shutdown_tail">shutdown</string>
-    <string name="block_texttospeech_speak_body_1">set speak</string>
-    <string name="block_texttospeech_stop_tail">stop</string>
-    <string name="block_timer_after_body_1">after</string>
-    <string name="block_timer_after_tail">ms</string>
-    <string name="block_timer_cancel_tail">cancel</string>
-    <string name="block_timer_every_body_1">after</string>
-    <string name="block_timer_every_body_2">ms for every</string>
-    <string name="block_timer_every_tail">ms</string>
-    <string name="block_times_body_1">*</string>
-    <string name="block_to_lower_case_head">toLowerCase</string>
-    <string name="block_to_number_head">toNumber</string>
-    <string name="block_to_string_format_body_1">toDecimalFormat</string>
-    <string name="block_to_string_head">toString</string>
-    <string name="block_to_string_tail">without decimal</string>
-    <string name="block_to_string_with_decimal_head">toString</string>
-    <string name="block_to_string_with_decimal_tail">with decimal</string>
-    <string name="block_to_upper_case_head">toUpperCase</string>
-    <string name="block_trim_head">trim</string>
-    <string name="block_true_head">true</string>
-    <string name="block_vibrator_action_body_1">vibrate for</string>
-    <string name="block_vibrator_action_tail">ms</string>
-    <string name="block_view_on_click_head">When</string>
-    <string name="block_view_on_click_tail">clicked</string>
-    <string name="block_webview_can_go_back_tail">canGoBack</string>
-    <string name="block_webview_can_go_forward_tail">canGoForward</string>
-    <string name="block_webview_clear_cache_tail">clearCache</string>
-    <string name="block_webview_clear_history_tail">clearHistory</string>
-    <string name="block_webview_get_url_tail">getUrl</string>
-    <string name="block_webview_go_back_tail">goBack</string>
-    <string name="block_webview_go_forward_tail">goForward</string>
-    <string name="block_webview_load_url_body_1">loadUrl</string>
-    <string name="block_webview_set_cache_mode_body_1">setCacheMode</string>
-    <string name="block_webview_stop_loading_tail">stopLoading</string>
-    <string name="block_webview_zoom_in_tail">zoomIn</string>
-    <string name="block_webview_zoom_out_tail">zoomOut</string>
-    <string name="root_spec_common_define">Define</string>
-    <string name="root_spec_common_when">When</string>
-    <string name="root_spec_initialize_head">On activity create</string>
-    <string name="root_spec_on_ad_closed_head">onAdClosed</string>
-    <string name="root_spec_on_ad_failed_to_load_head">onAdFailedToLoad</string>
-    <string name="root_spec_on_ad_loaded_head">onAdLoaded</string>
-    <string name="root_spec_on_ad_opened_head">onAdOpened</string>
-    <string name="root_spec_on_animation_cancel_head">onAnimationCancel</string>
-    <string name="root_spec_on_animation_end_head">onAnimationEnd</string>
-    <string name="root_spec_on_animation_start_head">onAnimationStart</string>
-    <string name="root_spec_on_back_pressed_head">On back button press</string>
-    <string name="root_spec_on_bind_custom_view_head">onBindCustomView</string>
-    <string name="root_spec_on_cancelled_head">onCancelled</string>
-    <string name="root_spec_on_check_changed_head">checkChanged</string>
-    <string name="root_spec_on_child_added_head">onChildAdded</string>
-    <string name="root_spec_on_child_changed_head">onChildChanged</string>
-    <string name="root_spec_on_child_removed_head">onChildRemoved</string>
-    <string name="root_spec_on_clicked_head">clicked</string>
-    <string name="root_spec_on_connected_head">onConnected</string>
-    <string name="root_spec_on_connection_error_head">onConnectionError</string>
-    <string name="root_spec_on_connection_stopped_head">onConnectionStopped</string>
-    <string name="root_spec_on_create_user_complete_head">onCreateUserComplete</string>
-    <string name="root_spec_on_data_received_head">onDataReceived</string>
-    <string name="root_spec_on_data_sent_head">onDataSent</string>
-    <string name="root_spec_on_date_change_head">onDateChange</string>
-    <string name="root_spec_on_delete_success_head">onDeleteSuccess</string>
-    <string name="root_spec_on_destroy_head">On activity destroyed</string>
-    <string name="root_spec_on_download_success_head">onDownloadSuccess</string>
-    <string name="root_spec_on_error_response_head">onErrorResponse</string>
-    <string name="root_spec_on_failure_head">onFailure</string>
-    <string name="root_spec_on_files_picked_cancel_head">onFilesPickedCancel</string>
-    <string name="root_spec_on_files_picked_head">onFilesPicked</string>
-    <string name="root_spec_on_item_clicked_head">itemClicked</string>
-    <string name="root_spec_on_item_long_clicked_head">itemLongClicked</string>
-    <string name="root_spec_on_item_selected_head">itemSelected</string>
-    <string name="root_spec_on_location_changed_head">onLocationChanged</string>
-    <string name="root_spec_on_map_ready_head">onMapReady</string>
-    <string name="root_spec_on_marker_clicked_head">onMarkerClicked</string>
-    <string name="root_spec_on_page_finished_head">pageFinished</string>
-    <string name="root_spec_on_page_started_head">pageStarted</string>
-    <string name="root_spec_on_pause_head">On activity pause</string>
-    <string name="root_spec_on_picture_taken_cancel_head">onPictureTakenCancel</string>
-    <string name="root_spec_on_picture_taken_head">onPictureTaken</string>
-    <string name="root_spec_on_post_created_head">On activity start-up complete</string>
-    <string name="root_spec_on_progress_changed_head">progressChanged</string>
-    <string name="root_spec_on_reset_password_email_sent_head">onResetPasswordEmailSent</string>
-    <string name="root_spec_on_response_head">onResponse</string>
-    <string name="root_spec_on_resume_head">On activity resume</string>
-    <string name="root_spec_on_sensor_changed_head">onSensorChanged</string>
-    <string name="root_spec_on_sign_in_user_complete_head">onSignInUserComplete</string>
-    <string name="root_spec_on_speech_error_head">onSpeechError</string>
-    <string name="root_spec_on_speech_result_head">onSpeechResult</string>
-    <string name="root_spec_on_start_head">On activity becoming visible</string>
-    <string name="root_spec_on_start_tracking_touch_head">onStartTrackingTouch</string>
-    <string name="root_spec_on_stop_head">On activity no longer visible</string>
-    <string name="root_spec_on_stop_tracking_touch_head">onStopTrackingTouch</string>
-    <string name="root_spec_on_text_changed_head">textChanged</string>
-    <string name="root_spec_on_upload_progress_head">onUploadProgress</string>
-    <string name="root_spec_on_upload_success_head">onUploadSuccess</string>
+    <string name="block_add_list_int_body_1" translatable="false">to</string>
+    <string name="block_add_list_int_head" translatable="false">add</string>
+    <string name="block_add_list_map_body_1" translatable="false">value</string>
+    <string name="block_add_list_map_body_2" translatable="false">to</string>
+    <string name="block_add_list_map_head" translatable="false">add key</string>
+    <string name="block_add_list_str_body_1" translatable="false">to</string>
+    <string name="block_add_list_str_head" translatable="false">add</string>
+    <string name="block_add_map_to_list_body_1" translatable="false">to</string>
+    <string name="block_add_map_to_list_head" translatable="false">add</string>
+    <string name="block_add_source_directly_head" translatable="false">add source directly</string>
+    <string name="block_adview_load_ad_tail" translatable="false">load</string>
+    <string name="block_and_body_1" translatable="false">and</string>
+    <string name="block_move_to_bin" translatable="false">Move to recycle bin</string>
+    <string name="block_bigger_body_1" translatable="false">></string>
+    <string name="block_bluetoothconnect_activate_bluetooth_tail" translatable="false">activate bluetooth</string>
+    <string name="block_bluetoothconnect_get_paired_devices_body_1" translatable="false">get paired devices to</string>
+    <string name="block_bluetoothconnect_get_random_uuid_tail" translatable="false">get random uuid</string>
+    <string name="block_bluetoothconnect_is_bluetooth_activated_tail" translatable="false">is bluetooth activated</string>
+    <string name="block_bluetoothconnect_is_bluetooth_enabled_tail" translatable="false">is bluetooth enabled</string>
+    <string name="block_bluetoothconnect_ready_connection_body_1" translatable="false">ready connection with tag</string>
+    <string name="block_bluetoothconnect_ready_connection_to_uuid_body_1" translatable="false">ready connection to uuid</string>
+    <string name="block_bluetoothconnect_ready_connection_to_uuid_body_2" translatable="false">with tag</string>
+    <string name="block_bluetoothconnect_send_data_body_1" translatable="false">send data</string>
+    <string name="block_bluetoothconnect_send_data_body_2" translatable="false">with tag</string>
+    <string name="block_bluetoothconnect_start_connection_body_1" translatable="false">start connection to address</string>
+    <string name="block_bluetoothconnect_start_connection_body_2" translatable="false">with tag</string>
+    <string name="block_bluetoothconnect_start_connection_to_uuid_body_1" translatable="false">start connection to uuid</string>
+    <string name="block_bluetoothconnect_start_connection_to_uuid_body_2" translatable="false">and address</string>
+    <string name="block_bluetoothconnect_start_connection_to_uuid_body_3" translatable="false">with tag</string>
+    <string name="block_bluetoothconnect_stop_connection_body_1" translatable="false">stop connection with tag</string>
+    <string name="block_break_head" translatable="false">stop</string>
+    <string name="block_calendar_add_body_1" translatable="false">add</string>
+    <string name="block_calendar_add_body_2" translatable="false">value</string>
+    <string name="block_calendar_diff_body_1" translatable="false">-</string>
+    <string name="block_calendar_diff_head" translatable="false">Difference</string>
+    <string name="block_calendar_format_body_1" translatable="false">Format</string>
+    <string name="block_calendar_get_now_tail" translatable="false">getNow</string>
+    <string name="block_calendar_get_time_tail" translatable="false">getTime(ms)</string>
+    <string name="block_calendar_set_body_1" translatable="false">set</string>
+    <string name="block_calendar_set_body_2" translatable="false">value</string>
+    <string name="block_calendar_set_time_body_1" translatable="false">setTime</string>
+    <string name="block_calendar_set_time_tail" translatable="false">ms</string>
+    <string name="block_calendarview_get_date_tail" translatable="false">getDate(ms)</string>
+    <string name="block_calendarview_set_date_body_1" translatable="false">setDate</string>
+    <string name="block_calendarview_set_date_tail" translatable="false">ms</string>
+    <string name="block_calendarview_set_max_date_body_1" translatable="false">setMaxDate</string>
+    <string name="block_calendarview_set_max_date_tail" translatable="false">ms</string>
+    <string name="block_calendarview_set_min_date_body_1" translatable="false">setMinDate</string>
+    <string name="block_calendarview_set_min_date_tail" translatable="false">ms</string>
+    <string name="block_camera_start_take_picture_tail" translatable="false">take picture</string>
+    <string name="block_category_component_func" translatable="false">Component</string>
+    <string name="block_category_control" translatable="false">Control</string>
+    <string name="block_category_file" translatable="false">File</string>
+    <string name="block_category_list" translatable="false">List</string>
+    <string name="block_category_math" translatable="false">Math</string>
+    <string name="block_category_moreblock" translatable="false">More Block</string>
+    <string name="block_category_operator" translatable="false">Operator</string>
+    <string name="block_category_var" translatable="false">Variable</string>
+    <string name="block_category_view_func" translatable="false">View</string>
+    <string name="block_clear_list_head" translatable="false">clear</string>
+    <string name="block_close_drawer_head" translatable="false">closeDrawer</string>
+    <string name="block_contain_list_int_body_1" translatable="false">contains</string>
+    <string name="block_contain_list_map_body_1" translatable="false">contains at</string>
+    <string name="block_contain_list_map_body_2" translatable="false">key</string>
+    <string name="block_contain_list_str_body_1" translatable="false">contains</string>
+    <string name="block_copy_to_clipboard_head" translatable="false">copyToClipboard</string>
+    <string name="block_crop_bitmap_center_body_1" translatable="false">to path</string>
+    <string name="block_crop_bitmap_center_body_2" translatable="false">width</string>
+    <string name="block_crop_bitmap_center_body_3" translatable="false">height</string>
+    <string name="block_crop_bitmap_center_head" translatable="false">crop image center from path</string>
+    <string name="block_decrease_int_tail" translatable="false">decrease 1</string>
+    <string name="block_delete_list_body_1" translatable="false">of</string>
+    <string name="block_delete_list_head" translatable="false">delete at</string>
+    <string name="block_dialog_cancel_button_body_1" translatable="false">Cancel Button</string>
+    <string name="block_dialog_cancel_button_tail" translatable="false">Clicked</string>
+    <string name="block_dialog_dismiss_tail" translatable="false">dismiss</string>
+    <string name="block_dialog_neutral_button_body_1" translatable="false">Neutral Button</string>
+    <string name="block_dialog_neutral_button_tail" translatable="false">Clicked</string>
+    <string name="block_dialog_ok_button_body_1" translatable="false">OK Button</string>
+    <string name="block_dialog_ok_button_tail" translatable="false">Clicked</string>
+    <string name="block_dialog_set_message_body_1" translatable="false">set message</string>
+    <string name="block_dialog_set_title_body_1" translatable="false">set title</string>
+    <string name="block_dialog_show_tail" translatable="false">show</string>
+    <string name="block_divide_body_1" translatable="false">/</string>
+    <string name="block_do_toast_head" translatable="false">Toast</string>
+    <string name="block_else_head" translatable="false">else</string>
+    <string name="block_equal_body_1" translatable="false">=</string>
+    <string name="block_false_head" translatable="false">false</string>
+    <string name="block_file_get_data_body_1" translatable="false">getData key</string>
+    <string name="block_file_picker_start_pick_files_tail" translatable="false">pick files</string>
+    <string name="block_file_remove_data_body_1" translatable="false">removeData key</string>
+    <string name="block_file_set_data_body_1" translatable="false">setData key</string>
+    <string name="block_file_set_data_body_2" translatable="false">value</string>
+    <string name="block_fileutil_copy_body_1" translatable="false">to path</string>
+    <string name="block_fileutil_copy_head" translatable="false">copy file path</string>
+    <string name="block_fileutil_delete_head" translatable="false">delete file path</string>
+    <string name="block_fileutil_ends_with_body_1" translatable="false">ends with</string>
+    <string name="block_fileutil_get_last_segment_path_head" translatable="false">get last segment path of</string>
+    <string name="block_fileutil_is_dir_head" translatable="false">path</string>
+    <string name="block_fileutil_is_dir_tail" translatable="false">is directory</string>
+    <string name="block_fileutil_is_exist_head" translatable="false">is exist file path</string>
+    <string name="block_fileutil_is_file_head" translatable="false">path</string>
+    <string name="block_fileutil_is_file_tail" translatable="false">is file</string>
+    <string name="block_fileutil_length_head" translatable="false">get length of path</string>
+    <string name="block_fileutil_list_dir_body_1" translatable="false">to</string>
+    <string name="block_fileutil_list_dir_head" translatable="false">file list in path</string>
+    <string name="block_fileutil_make_dir_head" translatable="false">make directory path</string>
+    <string name="block_fileutil_move_body_1" translatable="false">to path</string>
+    <string name="block_fileutil_move_head" translatable="false">move file path</string>
+    <string name="block_fileutil_read_head" translatable="false">read file path</string>
+    <string name="block_fileutil_starts_with_body_1" translatable="false">starts with</string>
+    <string name="block_fileutil_write_body_1" translatable="false">to file path</string>
+    <string name="block_fileutil_write_head" translatable="false">write String</string>
+    <string name="block_finish_activity_head" translatable="false">Finish</string>
+    <string name="block_finish_activity_tail" translatable="false">Activity</string>
+    <string name="block_firebase_add_body_1" translatable="false">add key</string>
+    <string name="block_firebase_add_body_2" translatable="false">value</string>
+    <string name="block_firebase_delete_body_1" translatable="false">delete key</string>
+    <string name="block_firebase_get_children_body_1" translatable="false">get children to</string>
+    <string name="block_firebase_get_children_tail" translatable="false">then</string>
+    <string name="block_firebase_get_key_tail" translatable="false">push getKey</string>
+    <string name="block_firebase_push_body_1" translatable="false">push value</string>
+    <string name="block_firebase_start_listen_tail" translatable="false">start Listening</string>
+    <string name="block_firebase_stop_listen_tail" translatable="false">stop Listening</string>
+    <string name="block_firebaseauth_create_user_body_1" translatable="false">createUserWith Email</string>
+    <string name="block_firebaseauth_create_user_body_2" translatable="false">and Password</string>
+    <string name="block_firebaseauth_get_email_tail" translatable="false">FirebaseAuth getEmail</string>
+    <string name="block_firebaseauth_get_uid_tail" translatable="false">FirebaseAuth getUid</string>
+    <string name="block_firebaseauth_is_logged_in_tail" translatable="false">FirebaseAuth isLoggedIn</string>
+    <string name="block_firebaseauth_reset_password_body_1" translatable="false">send password reset email to</string>
+    <string name="block_firebaseauth_signin_anonymously_tail" translatable="false">signInAnonymously</string>
+    <string name="block_firebaseauth_signin_user_body_1" translatable="false">signInWith Email</string>
+    <string name="block_firebaseauth_signin_user_body_2" translatable="false">and Password</string>
+    <string name="block_firebaseauth_signout_tail" translatable="false">FirebaseAuth signOut</string>
+    <string name="block_firebasestorage_delete_body_1" translatable="false">delete file url</string>
+    <string name="block_firebasestorage_download_file_body_1" translatable="false">download file url</string>
+    <string name="block_firebasestorage_download_file_body_2" translatable="false">to file path</string>
+    <string name="block_firebasestorage_upload_file_body_1" translatable="false">upload file path</string>
+    <string name="block_firebasestorage_upload_file_body_2" translatable="false">name as</string>
+    <string name="block_forever_head" translatable="false">forever</string>
+    <string name="block_get_alpha_tail" translatable="false">getAlpha</string>
+    <string name="block_get_at_list_int_body_1" translatable="false">of</string>
+    <string name="block_get_at_list_int_head" translatable="false">get at</string>
+    <string name="block_get_at_list_map_body_1" translatable="false">key</string>
+    <string name="block_get_at_list_map_body_2" translatable="false">of</string>
+    <string name="block_get_at_list_map_head" translatable="false">get value at</string>
+    <string name="block_get_at_list_str_body_1" translatable="false">of</string>
+    <string name="block_get_at_list_str_head" translatable="false">get at</string>
+    <string name="block_get_checked_tail" translatable="false">getChecked</string>
+    <string name="block_get_enable_tail" translatable="false">getEnable</string>
+    <string name="block_get_external_storage_dir_head" translatable="false">get external storage directory</string>
+    <string name="block_get_jpeg_rotate_head" translatable="false">get jpeg rotate from file path</string>
+    <string name="block_get_location_x_tail" translatable="false">getLocationX</string>
+    <string name="block_get_location_y_tail" translatable="false">getLocationY</string>
+    <string name="block_get_map_in_list_body_1" translatable="false">of</string>
+    <string name="block_get_map_in_list_body_2" translatable="false">to</string>
+    <string name="block_get_map_in_list_head" translatable="false">get at</string>
+    <string name="block_get_package_data_dir_head" translatable="false">get package data directory</string>
+    <string name="block_get_public_dir_head" translatable="false">get public directory type</string>
+    <string name="block_get_rotate_tail" translatable="false">getRotation</string>
+    <string name="block_get_scale_x_tail" translatable="false">getScaleX</string>
+    <string name="block_get_scale_y_tail" translatable="false">getScaleY</string>
+    <string name="block_get_text_tail" translatable="false">getText</string>
+    <string name="block_get_translation_x_tail" translatable="false">getTranslationX</string>
+    <string name="block_get_translation_y_tail" translatable="false">getTranslationY</string>
+    <string name="block_gyroscope_start_listen_tail" translatable="false">Sensor start</string>
+    <string name="block_gyroscope_stop_listen_tail" translatable="false">Sensor stop</string>
+    <string name="block_if_else_head" translatable="false">if</string>
+    <string name="block_if_else_tail" translatable="false">then</string>
+    <string name="block_if_head" translatable="false">if</string>
+    <string name="block_if_tail" translatable="false">then</string>
+    <string name="block_increase_int_tail" translatable="false">increase 1</string>
+    <string name="block_indexof_list_int_body_1" translatable="false">in</string>
+    <string name="block_indexof_list_int_head" translatable="false">index</string>
+    <string name="block_indexof_list_str_body_1" translatable="false">in</string>
+    <string name="block_indexof_list_str_head" translatable="false">index</string>
+    <string name="block_insert_list_int_body_1" translatable="false">at</string>
+    <string name="block_insert_list_int_body_2" translatable="false">to</string>
+    <string name="block_insert_list_int_head" translatable="false">insert</string>
+    <string name="block_insert_list_map_body_1" translatable="false">value</string>
+    <string name="block_insert_list_map_body_2" translatable="false">at</string>
+    <string name="block_insert_list_map_body_3" translatable="false">to</string>
+    <string name="block_insert_list_map_head" translatable="false">insert key</string>
+    <string name="block_insert_list_str_body_1" translatable="false">at</string>
+    <string name="block_insert_list_str_body_2" translatable="false">to</string>
+    <string name="block_insert_list_str_head" translatable="false">insert</string>
+    <string name="block_insert_map_to_list_body_1" translatable="false">at</string>
+    <string name="block_insert_map_to_list_body_2" translatable="false">to</string>
+    <string name="block_insert_map_to_list_head" translatable="false">insert</string>
+    <string name="block_intent_get_string_head" translatable="false">Activity getExtra key</string>
+    <string name="block_intent_put_extra_body_1" translatable="false">putExtra key</string>
+    <string name="block_intent_put_extra_body_2" translatable="false">value</string>
+    <string name="block_intent_set_action_body_1" translatable="false">setAction</string>
+    <string name="block_intent_set_data_body_1" translatable="false">setData</string>
+    <string name="block_intent_set_flags_body_1" translatable="false">setFlags</string>
+    <string name="block_intent_set_screen_body_1" translatable="false">setScreen</string>
+    <string name="block_interstitialad_create_tail" translatable="false">create</string>
+    <string name="block_interstitialad_load_ad_tail" translatable="false">load</string>
+    <string name="block_interstitialad_show_tail" translatable="false">show</string>
+    <string name="block_is_drawer_open_head" translatable="false">isDrawerOpen</string>
+    <string name="block_length_list_head" translatable="false">length of</string>
+    <string name="block_list_get_checked_count_tail" translatable="false">getCheckedCount</string>
+    <string name="block_list_get_checked_position_tail" translatable="false">getCheckedPosition</string>
+    <string name="block_list_get_checked_positions_body_1" translatable="false">getCheckedPositions to</string>
+    <string name="block_list_map_to_str_tail" translatable="false">to JSON String</string>
+    <string name="block_list_refresh_tail" translatable="false">refreshData</string>
+    <string name="block_list_set_custom_view_data_body_1" translatable="false">setListCustomViewData</string>
+    <string name="block_list_set_data_body_1" translatable="false">setListViewData</string>
+    <string name="block_list_set_item_checked_body_1" translatable="false">setItemChecked pos</string>
+    <string name="block_list_set_item_checked_body_2" translatable="false">value</string>
+    <string name="block_list_smooth_scrollto_body_1" translatable="false">smoothScrollToPosition</string>
+    <string name="block_locationmanager_remove_updates_tail" translatable="false">remove updates</string>
+    <string name="block_locationmanager_request_location_updates_body_1" translatable="false">request location updates type</string>
+    <string name="block_locationmanager_request_location_updates_body_2" translatable="false">min time</string>
+    <string name="block_locationmanager_request_location_updates_body_3" translatable="false">min distance</string>
+    <string name="block_map_clear_tail" translatable="false">clear</string>
+    <string name="block_map_contain_key_body_1" translatable="false">contain key</string>
+    <string name="block_map_create_new_tail" translatable="false">create new map</string>
+    <string name="block_map_get_all_keys_body_1" translatable="false">get all keys to</string>
+    <string name="block_map_get_body_1" translatable="false">get key</string>
+    <string name="block_map_is_empty_tail" translatable="false">is empty</string>
+    <string name="block_map_put_body_1" translatable="false">put key</string>
+    <string name="block_map_put_body_2" translatable="false">value</string>
+    <string name="block_map_remove_key_body_1" translatable="false">remove key</string>
+    <string name="block_map_size_tail" translatable="false">size</string>
+    <string name="block_map_to_str_tail" translatable="false">to JSON String</string>
+    <string name="block_mapview_add_marker_body_1" translatable="false">add marker id</string>
+    <string name="block_mapview_add_marker_body_2" translatable="false">position lat</string>
+    <string name="block_mapview_add_marker_body_3" translatable="false">lng</string>
+    <string name="block_mapview_move_camera_body_1" translatable="false">move camera lat</string>
+    <string name="block_mapview_move_camera_body_2" translatable="false">lng</string>
+    <string name="block_mapview_set_map_type_body_1" translatable="false">set Map type</string>
+    <string name="block_mapview_set_marker_color_body_1" translatable="false">marker id</string>
+    <string name="block_mapview_set_marker_color_body_2" translatable="false">set color</string>
+    <string name="block_mapview_set_marker_color_body_3" translatable="false">alpha</string>
+    <string name="block_mapview_set_marker_icon_body_1" translatable="false">marker id</string>
+    <string name="block_mapview_set_marker_icon_body_2" translatable="false">set icon</string>
+    <string name="block_mapview_set_marker_info_body_1" translatable="false">marker id</string>
+    <string name="block_mapview_set_marker_info_body_2" translatable="false">set title</string>
+    <string name="block_mapview_set_marker_info_body_3" translatable="false">snippet</string>
+    <string name="block_mapview_set_marker_position_body_1" translatable="false">marker id</string>
+    <string name="block_mapview_set_marker_position_body_2" translatable="false">set position lat</string>
+    <string name="block_mapview_set_marker_position_body_3" translatable="false">lng</string>
+    <string name="block_mapview_set_marker_visible_body_1" translatable="false">marker id</string>
+    <string name="block_mapview_set_marker_visible_body_2" translatable="false">set visible</string>
+    <string name="block_mapview_zoom_in_tail" translatable="false">zoom in</string>
+    <string name="block_mapview_zoom_out_tail" translatable="false">zoom out</string>
+    <string name="block_mapview_zoom_to_body_1" translatable="false">zoom to</string>
+    <string name="block_math_abs_head" translatable="false">absolute value of</string>
+    <string name="block_math_acos_head" translatable="false">arccos</string>
+    <string name="block_math_asin_head" translatable="false">arcsin</string>
+    <string name="block_math_atan_head" translatable="false">arctan</string>
+    <string name="block_math_ceil_head" translatable="false">ceil</string>
+    <string name="block_math_cos_head" translatable="false">cos</string>
+    <string name="block_math_e_head" translatable="false">E(e)</string>
+    <string name="block_math_exp_head" translatable="false">exp</string>
+    <string name="block_math_floor_head" translatable="false">floor</string>
+    <string name="block_math_get_dip_head" translatable="false">getDip</string>
+    <string name="block_math_get_display_height_head" translatable="false">getDisplayHeightPixels</string>
+    <string name="block_math_get_display_width_head" translatable="false">getDisplayWidthPixels</string>
+    <string name="block_math_log10_head" translatable="false">log</string>
+    <string name="block_math_log_head" translatable="false">ln</string>
+    <string name="block_math_max_body_1" translatable="false">and</string>
+    <string name="block_math_max_head" translatable="false">maximum of</string>
+    <string name="block_math_min_body_1" translatable="false">and</string>
+    <string name="block_math_min_head" translatable="false">minimum of</string>
+    <string name="block_math_pi_head" translatable="false">PI(π)</string>
+    <string name="block_math_pow_body_1" translatable="false">to the</string>
+    <string name="block_math_pow_tail" translatable="false">power</string>
+    <string name="block_math_round_head" translatable="false">round</string>
+    <string name="block_math_sin_head" translatable="false">sin</string>
+    <string name="block_math_sqrt_head" translatable="false">square root of</string>
+    <string name="block_math_tan_head" translatable="false">tan</string>
+    <string name="block_math_to_degree_head" translatable="false">Radian</string>
+    <string name="block_math_to_degree_tail" translatable="false">to Degree</string>
+    <string name="block_math_to_radian_head" translatable="false">Degree</string>
+    <string name="block_math_to_radian_tail" translatable="false">to Radian</string>
+    <string name="block_mediaplayer_create_body_1" translatable="false">create</string>
+    <string name="block_mediaplayer_get_current_tail" translatable="false">get current duration</string>
+    <string name="block_mediaplayer_get_duration_tail" translatable="false">get song duration</string>
+    <string name="block_mediaplayer_is_looping_tail" translatable="false">is looping</string>
+    <string name="block_mediaplayer_is_playing_tail" translatable="false">is playing</string>
+    <string name="block_mediaplayer_pause_tail" translatable="false">pause</string>
+    <string name="block_mediaplayer_release_tail" translatable="false">release</string>
+    <string name="block_mediaplayer_reset_tail" translatable="false">reset</string>
+    <string name="block_mediaplayer_seek_body_1" translatable="false">seek to</string>
+    <string name="block_mediaplayer_set_looping_body_1" translatable="false">set looping</string>
+    <string name="block_mediaplayer_start_tail" translatable="false">start</string>
+    <string name="block_minus_body_1" translatable="false">-</string>
+    <string name="block_not_head" translatable="false">not</string>
+    <string name="block_objectanimator_cancel_tail" translatable="false">cancel</string>
+    <string name="block_objectanimator_is_running_tail" translatable="false">is running</string>
+    <string name="block_objectanimator_set_duration_body_1" translatable="false">set duration</string>
+    <string name="block_objectanimator_set_from_to_body_1" translatable="false">set values from</string>
+    <string name="block_objectanimator_set_from_to_body_2" translatable="false">to</string>
+    <string name="block_objectanimator_set_interpolator_body_1" translatable="false">set interpolator</string>
+    <string name="block_objectanimator_set_property_body_1" translatable="false">set property</string>
+    <string name="block_objectanimator_set_repeat_count_body_1" translatable="false">set repeat count</string>
+    <string name="block_objectanimator_set_repeat_mode_body_1" translatable="false">set repeat mode</string>
+    <string name="block_objectanimator_set_target_body_1" translatable="false">set target</string>
+    <string name="block_objectanimator_set_value_body_1" translatable="false">set value</string>
+    <string name="block_objectanimator_start_tail" translatable="false">start</string>
+    <string name="block_open_drawer_head" translatable="false">openDrawer</string>
+    <string name="block_or_body_1" translatable="false">or</string>
+    <string name="block_plus_body_1" translatable="false">+</string>
+    <string name="block_progressbar_set_indeterminate_body_1" translatable="false">setIndeterminate</string>
+    <string name="block_random_body_1" translatable="false">to</string>
+    <string name="block_random_head" translatable="false">pick random</string>
+    <string name="block_repeat_head" translatable="false">repeat</string>
+    <string name="block_request_focus_tail" translatable="false">request focus</string>
+    <string name="block_requestnetwork_set_headers_body_1" translatable="false">set headers</string>
+    <string name="block_requestnetwork_set_params_body_1" translatable="false">set params</string>
+    <string name="block_requestnetwork_set_params_body_2" translatable="false">to request type</string>
+    <string name="block_requestnetwork_start_request_network_body_1" translatable="false">start network request to method</string>
+    <string name="block_requestnetwork_start_request_network_body_2" translatable="false">to url</string>
+    <string name="block_requestnetwork_start_request_network_body_3" translatable="false">with tag</string>
+    <string name="block_resize_bitmap_circle_body_1" translatable="false">to path</string>
+    <string name="block_resize_bitmap_circle_head" translatable="false">resize image to circle from path</string>
+    <string name="block_resize_bitmap_ratio_body_1" translatable="false">to path</string>
+    <string name="block_resize_bitmap_ratio_body_2" translatable="false">max size</string>
+    <string name="block_resize_bitmap_ratio_head" translatable="false">resize image retain ratio from path</string>
+    <string name="block_resize_bitmap_rounded_body_1" translatable="false">to path</string>
+    <string name="block_resize_bitmap_rounded_body_2" translatable="false">round pixels</string>
+    <string name="block_resize_bitmap_rounded_head" translatable="false">resize image rounded from path</string>
+    <string name="block_resize_bitmap_square_body_1" translatable="false">to path</string>
+    <string name="block_resize_bitmap_square_body_2" translatable="false">max size</string>
+    <string name="block_resize_bitmap_square_head" translatable="false">resize image to square from path</string>
+    <string name="block_rest_body_1" translatable="false">%</string>
+    <string name="block_rotate_bitmap_body_1" translatable="false">to path</string>
+    <string name="block_rotate_bitmap_body_2" translatable="false">angle</string>
+    <string name="block_rotate_bitmap_head" translatable="false">rotate image from path</string>
+    <string name="block_scale_bitmap_body_1" translatable="false">to path</string>
+    <string name="block_scale_bitmap_body_2" translatable="false">x</string>
+    <string name="block_scale_bitmap_body_3" translatable="false">y</string>
+    <string name="block_scale_bitmap_head" translatable="false">scale image from path</string>
+    <string name="block_seekbar_get_max_tail" translatable="false">getMax</string>
+    <string name="block_seekbar_get_progress_tail" translatable="false">getProgress</string>
+    <string name="block_seekbar_set_max_body_1" translatable="false">setMax</string>
+    <string name="block_seekbar_set_progress_body_1" translatable="false">setProgress</string>
+    <string name="block_set_alpha_body_1" translatable="false">setAlpha</string>
+    <string name="block_set_at_list_map_body_1" translatable="false">value</string>
+    <string name="block_set_at_list_map_body_2" translatable="false">at</string>
+    <string name="block_set_at_list_map_body_3" translatable="false">to</string>
+    <string name="block_set_at_list_map_head" translatable="false">set key</string>
+    <string name="block_set_bg_color_body_1" translatable="false">setBackgroundColor</string>
+    <string name="block_set_bg_resource_body_1" translatable="false">setBackgroundResource</string>
+    <string name="block_set_bitmap_brightness_body_1" translatable="false">to path</string>
+    <string name="block_set_bitmap_brightness_body_2" translatable="false">value</string>
+    <string name="block_set_bitmap_brightness_head" translatable="false">set image brightness from path</string>
+    <string name="block_set_bitmap_color_filter_body_1" translatable="false">to path</string>
+    <string name="block_set_bitmap_color_filter_body_2" translatable="false">color</string>
+    <string name="block_set_bitmap_color_filter_head" translatable="false">set image color filter from path</string>
+    <string name="block_set_bitmap_contrast_body_1" translatable="false">to path</string>
+    <string name="block_set_bitmap_contrast_body_2" translatable="false">value</string>
+    <string name="block_set_bitmap_contrast_head" translatable="false">set image contrast from path</string>
+    <string name="block_set_checked_body_1" translatable="false">setChecked</string>
+    <string name="block_set_clickable_body_1" translatable="false">setClickable</string>
+    <string name="block_set_color_filter_body_1" translatable="false">setColorFilter</string>
+    <string name="block_set_enable_body_1" translatable="false">setEnable</string>
+    <string name="block_set_hint_body_1" translatable="false">set hint text to</string>
+    <string name="block_set_hint_text_color_body_1" translatable="false">set hint color to</string>
+    <string name="block_set_image_body_1" translatable="false">setImage</string>
+    <string name="block_set_image_file_path_body_1" translatable="false">set image from file path</string>
+    <string name="block_set_image_url_body_1" translatable="false">set image from url</string>
+    <string name="block_set_rotate_body_1" translatable="false">setRotation</string>
+    <string name="block_set_scale_x_body_1" translatable="false">setScaleX</string>
+    <string name="block_set_scale_y_body_1" translatable="false">setScaleY</string>
+    <string name="block_set_text_body_1" translatable="false">setText</string>
+    <string name="block_set_text_color_body_1" translatable="false">setTextColor</string>
+    <string name="block_set_thumb_resource_body_1" translatable="false">setThumbResource</string>
+    <string name="block_set_title_head" translatable="false">Activity set title</string>
+    <string name="block_set_track_resource_body_1" translatable="false">setTrackResource</string>
+    <string name="block_set_translation_x_body_1" translatable="false">setTranslationX</string>
+    <string name="block_set_translation_y_body_1" translatable="false">setTranslationY</string>
+    <string name="block_set_typeface_body_1" translatable="false">setTypeface</string>
+    <string name="block_set_typeface_body_2" translatable="false">with style</string>
+    <string name="block_set_var_bool_body_1" translatable="false">to</string>
+    <string name="block_set_var_bool_head" translatable="false">set</string>
+    <string name="block_set_var_int_body_1" translatable="false">to</string>
+    <string name="block_set_var_int_head" translatable="false">set</string>
+    <string name="block_set_var_str_body_1" translatable="false">to</string>
+    <string name="block_set_var_str_head" translatable="false">set</string>
+    <string name="block_set_visible_body_1" translatable="false">setVisible</string>
+    <string name="block_skew_bitmap_body_1" translatable="false">to path</string>
+    <string name="block_skew_bitmap_body_2" translatable="false">x</string>
+    <string name="block_skew_bitmap_body_3" translatable="false">y</string>
+    <string name="block_skew_bitmap_head" translatable="false">skew image from path</string>
+    <string name="block_smaller_body_1" translatable="false">&lt;</string>
+    <string name="block_soundpool_create_body_1" translatable="false">create max stream count</string>
+    <string name="block_soundpool_load_body_1" translatable="false">load</string>
+    <string name="block_soundpool_load_head" translatable="false">SoundID :</string>
+    <string name="block_soundpool_stream_play_body_1" translatable="false">play Sound ID</string>
+    <string name="block_soundpool_stream_play_body_2" translatable="false">1 +</string>
+    <string name="block_soundpool_stream_play_head" translatable="false">StreamID :</string>
+    <string name="block_soundpool_stream_play_tail" translatable="false">times</string>
+    <string name="block_soundpool_stream_stop_body_1" translatable="false">stop stream ID</string>
+    <string name="block_speechtotext_shutdown_tail" translatable="false">shutdown</string>
+    <string name="block_speechtotext_start_listening_tail" translatable="false">start listening</string>
+    <string name="block_speechtotext_stop_listening_tail" translatable="false">stop listening</string>
+    <string name="block_spn_get_selection_tail" translatable="false">getSelection</string>
+    <string name="block_spn_refresh_tail" translatable="false">refreshData</string>
+    <string name="block_spn_set_data_body_1" translatable="false">setSpinnerData</string>
+    <string name="block_spn_set_selection_body_1" translatable="false">setSelection</string>
+    <string name="block_start_activity_head" translatable="false">StartActivity</string>
+    <string name="block_str_to_list_map_body_1" translatable="false">to</string>
+    <string name="block_str_to_list_map_head" translatable="false">JSON</string>
+    <string name="block_str_to_map_body_1" translatable="false">to</string>
+    <string name="block_str_to_map_head" translatable="false">JSON</string>
+    <string name="block_string_contains_body_1" translatable="false">contains</string>
+    <string name="block_string_equals_body_1" translatable="false">equals</string>
+    <string name="block_string_index_body_1" translatable="false">of</string>
+    <string name="block_string_index_head" translatable="false">index</string>
+    <string name="block_string_join_body_1" translatable="false">and</string>
+    <string name="block_string_join_head" translatable="false">join</string>
+    <string name="block_string_last_index_body_1" translatable="false">of</string>
+    <string name="block_string_last_index_head" translatable="false">last index</string>
+    <string name="block_string_length_head" translatable="false">length of</string>
+    <string name="block_string_replace_all_body_1" translatable="false">replace all RegEx</string>
+    <string name="block_string_replace_all_body_2" translatable="false">with</string>
+    <string name="block_string_replace_body_1" translatable="false">replace all</string>
+    <string name="block_string_replace_body_2" translatable="false">with</string>
+    <string name="block_string_replace_first_body_1" translatable="false">replace first RegEx</string>
+    <string name="block_string_replace_first_body_2" translatable="false">with</string>
+    <string name="block_string_sub_body_1" translatable="false">substring</string>
+    <string name="block_string_sub_body_2" translatable="false">to</string>
+    <string name="block_texttospeech_is_speaking_tail" translatable="false">is speaking</string>
+    <string name="block_texttospeech_set_pitch_body_1" translatable="false">set pitch</string>
+    <string name="block_texttospeech_set_speech_rate_body_1" translatable="false">set speech rate</string>
+    <string name="block_texttospeech_shutdown_tail" translatable="false">shutdown</string>
+    <string name="block_texttospeech_speak_body_1" translatable="false">set speak</string>
+    <string name="block_texttospeech_stop_tail" translatable="false">stop</string>
+    <string name="block_timer_after_body_1" translatable="false">after</string>
+    <string name="block_timer_after_tail" translatable="false">ms</string>
+    <string name="block_timer_cancel_tail" translatable="false">cancel</string>
+    <string name="block_timer_every_body_1" translatable="false">after</string>
+    <string name="block_timer_every_body_2" translatable="false">ms for every</string>
+    <string name="block_timer_every_tail" translatable="false">ms</string>
+    <string name="block_times_body_1" translatable="false">*</string>
+    <string name="block_to_lower_case_head" translatable="false">toLowerCase</string>
+    <string name="block_to_number_head" translatable="false">toNumber</string>
+    <string name="block_to_string_format_body_1" translatable="false">toDecimalFormat</string>
+    <string name="block_to_string_head" translatable="false">toString</string>
+    <string name="block_to_string_tail" translatable="false">without decimal</string>
+    <string name="block_to_string_with_decimal_head" translatable="false">toString</string>
+    <string name="block_to_string_with_decimal_tail" translatable="false">with decimal</string>
+    <string name="block_to_upper_case_head" translatable="false">toUpperCase</string>
+    <string name="block_trim_head" translatable="false">trim</string>
+    <string name="block_true_head" translatable="false">true</string>
+    <string name="block_vibrator_action_body_1" translatable="false">vibrate for</string>
+    <string name="block_vibrator_action_tail" translatable="false">ms</string>
+    <string name="block_view_on_click_head" translatable="false">When</string>
+    <string name="block_view_on_click_tail" translatable="false">clicked</string>
+    <string name="block_webview_can_go_back_tail" translatable="false">canGoBack</string>
+    <string name="block_webview_can_go_forward_tail" translatable="false">canGoForward</string>
+    <string name="block_webview_clear_cache_tail" translatable="false">clearCache</string>
+    <string name="block_webview_clear_history_tail" translatable="false">clearHistory</string>
+    <string name="block_webview_get_url_tail" translatable="false">getUrl</string>
+    <string name="block_webview_go_back_tail" translatable="false">goBack</string>
+    <string name="block_webview_go_forward_tail" translatable="false">goForward</string>
+    <string name="block_webview_load_url_body_1" translatable="false">loadUrl</string>
+    <string name="block_webview_set_cache_mode_body_1" translatable="false">setCacheMode</string>
+    <string name="block_webview_stop_loading_tail" translatable="false">stopLoading</string>
+    <string name="block_webview_zoom_in_tail" translatable="false">zoomIn</string>
+    <string name="block_webview_zoom_out_tail" translatable="false">zoomOut</string>
+    <string name="root_spec_common_define" translatable="false">Define</string>
+    <string name="root_spec_common_when" translatable="false">When</string>
+    <string name="root_spec_initialize_head" translatable="false">On activity create</string>
+    <string name="root_spec_on_ad_closed_head" translatable="false">onAdClosed</string>
+    <string name="root_spec_on_ad_failed_to_load_head" translatable="false">onAdFailedToLoad</string>
+    <string name="root_spec_on_ad_loaded_head" translatable="false">onAdLoaded</string>
+    <string name="root_spec_on_ad_opened_head" translatable="false">onAdOpened</string>
+    <string name="root_spec_on_animation_cancel_head" translatable="false">onAnimationCancel</string>
+    <string name="root_spec_on_animation_end_head" translatable="false">onAnimationEnd</string>
+    <string name="root_spec_on_animation_start_head" translatable="false">onAnimationStart</string>
+    <string name="root_spec_on_back_pressed_head" translatable="false">On back button press</string>
+    <string name="root_spec_on_bind_custom_view_head" translatable="false">onBindCustomView</string>
+    <string name="root_spec_on_cancelled_head" translatable="false">onCancelled</string>
+    <string name="root_spec_on_check_changed_head" translatable="false">checkChanged</string>
+    <string name="root_spec_on_child_added_head" translatable="false">onChildAdded</string>
+    <string name="root_spec_on_child_changed_head" translatable="false">onChildChanged</string>
+    <string name="root_spec_on_child_removed_head" translatable="false">onChildRemoved</string>
+    <string name="root_spec_on_clicked_head" translatable="false">clicked</string>
+    <string name="root_spec_on_connected_head" translatable="false">onConnected</string>
+    <string name="root_spec_on_connection_error_head" translatable="false">onConnectionError</string>
+    <string name="root_spec_on_connection_stopped_head" translatable="false">onConnectionStopped</string>
+    <string name="root_spec_on_create_user_complete_head" translatable="false">onCreateUserComplete</string>
+    <string name="root_spec_on_data_received_head" translatable="false">onDataReceived</string>
+    <string name="root_spec_on_data_sent_head" translatable="false">onDataSent</string>
+    <string name="root_spec_on_date_change_head" translatable="false">onDateChange</string>
+    <string name="root_spec_on_delete_success_head" translatable="false">onDeleteSuccess</string>
+    <string name="root_spec_on_destroy_head" translatable="false">On activity destroyed</string>
+    <string name="root_spec_on_download_success_head" translatable="false">onDownloadSuccess</string>
+    <string name="root_spec_on_error_response_head" translatable="false">onErrorResponse</string>
+    <string name="root_spec_on_failure_head" translatable="false">onFailure</string>
+    <string name="root_spec_on_files_picked_cancel_head" translatable="false">onFilesPickedCancel</string>
+    <string name="root_spec_on_files_picked_head" translatable="false">onFilesPicked</string>
+    <string name="root_spec_on_item_clicked_head" translatable="false">itemClicked</string>
+    <string name="root_spec_on_item_long_clicked_head" translatable="false">itemLongClicked</string>
+    <string name="root_spec_on_item_selected_head" translatable="false">itemSelected</string>
+    <string name="root_spec_on_location_changed_head" translatable="false">onLocationChanged</string>
+    <string name="root_spec_on_map_ready_head" translatable="false">onMapReady</string>
+    <string name="root_spec_on_marker_clicked_head" translatable="false">onMarkerClicked</string>
+    <string name="root_spec_on_page_finished_head" translatable="false">pageFinished</string>
+    <string name="root_spec_on_page_started_head" translatable="false">pageStarted</string>
+    <string name="root_spec_on_pause_head" translatable="false">On activity pause</string>
+    <string name="root_spec_on_picture_taken_cancel_head" translatable="false">onPictureTakenCancel</string>
+    <string name="root_spec_on_picture_taken_head" translatable="false">onPictureTaken</string>
+    <string name="root_spec_on_post_created_head" translatable="false">On activity start-up complete</string>
+    <string name="root_spec_on_progress_changed_head" translatable="false">progressChanged</string>
+    <string name="root_spec_on_reset_password_email_sent_head" translatable="false">onResetPasswordEmailSent</string>
+    <string name="root_spec_on_response_head" translatable="false">onResponse</string>
+    <string name="root_spec_on_resume_head" translatable="false">On activity resume</string>
+    <string name="root_spec_on_sensor_changed_head" translatable="false">onSensorChanged</string>
+    <string name="root_spec_on_sign_in_user_complete_head" translatable="false">onSignInUserComplete</string>
+    <string name="root_spec_on_speech_error_head" translatable="false">onSpeechError</string>
+    <string name="root_spec_on_speech_result_head" translatable="false">onSpeechResult</string>
+    <string name="root_spec_on_start_head" translatable="false">On activity becoming visible</string>
+    <string name="root_spec_on_start_tracking_touch_head" translatable="false">onStartTrackingTouch</string>
+    <string name="root_spec_on_stop_head" translatable="false">On activity no longer visible</string>
+    <string name="root_spec_on_stop_tracking_touch_head" translatable="false">onStopTrackingTouch</string>
+    <string name="root_spec_on_text_changed_head" translatable="false">textChanged</string>
+    <string name="root_spec_on_upload_progress_head" translatable="false">onUploadProgress</string>
+    <string name="root_spec_on_upload_success_head" translatable="false">onUploadSuccess</string>
 </resources>
