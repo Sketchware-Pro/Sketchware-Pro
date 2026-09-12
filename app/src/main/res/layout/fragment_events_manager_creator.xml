@@ -83,7 +83,7 @@
                                 android:id="@+id/events_creator_icon"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/publish_images_title_icon"
+                                android:hint="@string/images_title_icon"
                                 android:inputType="number" />
                         </com.google.android.material.textfield.TextInputLayout>
 

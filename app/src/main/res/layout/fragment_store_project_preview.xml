@@ -100,7 +100,7 @@
                 android:paddingHorizontal="24dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="16dp"
-                android:text="@string/publish_images_title_screenshots"
+                android:text="@string/images_title_screenshots"
                 android:textAppearance="?attr/textAppearanceTitleLargeEmphasized" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -319,7 +319,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:text="@string/shared_project_detail_tab_title_comments"
+            android:text="@string/project_detail_tab_title_comments"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/btn_download"
             app:layout_constraintStart_toStartOf="parent"

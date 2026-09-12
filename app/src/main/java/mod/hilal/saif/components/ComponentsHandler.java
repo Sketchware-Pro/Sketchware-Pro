@@ -665,7 +665,7 @@ public class ComponentsHandler {
 
         var components = new Gson().fromJson(content, Helper.TYPE_MAP_LIST);
         if (components == null || components.isEmpty() || !isValidComponentList(components)) {
-            return new Pair<>(Optional.of(Helper.getResString(R.string.publish_message_dialog_invalid_json)), Collections.emptyList());
+            return new Pair<>(Optional.of(Helper.getResString(R.string.message_dialog_invalid_json)), Collections.emptyList());
         }
 
         return new Pair<>(Optional.empty(), components);

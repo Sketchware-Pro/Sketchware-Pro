@@ -242,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
-                        android:text="@string/shared_block_preview_title"
+                        android:text="@string/block_preview_title"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textSize="16sp"
                         android:textStyle="bold" />
