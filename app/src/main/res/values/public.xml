@@ -1,27 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <public name="scolor_red_02" id="0x7f0500b6" type="color" />
-    <public name="activity_0110" id="0x7f070063" type="drawable" />
-    <public name="activity_preset_1" id="0x7f07006d" type="drawable" />
-    <public name="activity_preset_4" id="0x7f070070" type="drawable" />
-    <public name="ic_checkmark_green_48dp" id="0x7f07020b" type="drawable" />
-    <public name="ic_trashcan_white_48dp" id="0x7f0702b3" type="drawable" />
-    <public name="chk_select" id="0x7f0800ad" type="id" />
-    <public name="delete_img_container" id="0x7f0800ef" type="id" />
-    <public name="img_activity" id="0x7f080180" type="id" />
-    <public name="img_delete" id="0x7f08019c" type="id" />
-    <public name="img_preset_setting" id="0x7f0801c0" type="id" />
-    <public name="list_activities" id="0x7f0802d2" type="id" />
-    <public name="tv_guide" id="0x7f0804fd" type="id" />
-    <public name="tv_screen_name" id="0x7f080590" type="id" />
-    <public name="fr_manage_view_list" id="0x7f0b0072" type="layout" />
-    <public name="manage_view_custom_list_item" id="0x7f0b00f2" type="layout" />
-    <public name="common_message_name_unavailable" id="0x7f0e03f6" type="string" />
-    <public name="design_manager_view_description_guide_create_custom_view" id="0x7f0e054b" type="string" />
-    <public name="invalid_value_max_lenth" id="0x7f0e05d8" type="string" />
-    <public name="invalid_value_min_lenth" id="0x7f0e05d9" type="string" />
-    <public name="invalid_value_rule_4" id="0x7f0e05dd" type="string" />
-    <public name="logic_editor_message_reserved_keywords" id="0x7f0e0617" type="string" />
-    <public name="logic_editor_message_variable_name_must_start_letter" id="0x7f0e0619" type="string" />
     <public name="root_spec_common_when" id="0x7f0e082a" type="string" />
 </resources>
