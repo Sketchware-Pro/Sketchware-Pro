@@ -26,6 +26,7 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.ComponentAddItemBinding;
 import pro.sketchware.databinding.LogicAddComponentBinding;
 import pro.sketchware.dialogs.InnerAddComponentBottomSheet;
+import pro.sketchware.utility.AnalyticsHelper;
 
 public class AddComponentBottomSheet extends BottomSheetDialogFragment {
     private String sc_id;
@@ -150,6 +151,7 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
 
     private void showAddComponentDialog(ComponentBean componentBean) {
         InnerAddComponentBottomSheet innerAddComponentBottomSheet = InnerAddComponentBottomSheet.newInstance(sc_id, projectFileBean, componentBean, sheet -> {
+            AnalyticsHelper.logUiComponentAdded(getContext(), ComponentBean.getComponentTypeName(componentBean.type));
             sheet.dismiss();
             dismiss();
             onComponentCreateListener.invoke();

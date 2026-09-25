@@ -23,6 +23,7 @@ import a.a.a.Vs;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PalettesSearchDialogBinding;
+import pro.sketchware.utility.AnalyticsHelper;
 
 public class PaletteSelector extends RecyclerView {
 
@@ -139,6 +140,9 @@ public class PaletteSelector extends RecyclerView {
     }
 
     private void startSearch(DialogInterface dialog, String query) {
+        if (!query.isEmpty()) {
+            AnalyticsHelper.logFeatureSearch(context, query, "logic_blocks");
+        }
         searchValue = query;
         Executors.newSingleThreadExecutor().execute(() ->
                 new Handler(Looper.getMainLooper()).post(() -> {

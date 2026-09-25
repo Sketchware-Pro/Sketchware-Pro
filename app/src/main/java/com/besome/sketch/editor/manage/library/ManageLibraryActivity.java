@@ -38,6 +38,7 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesLibraryItemView;
 import pro.sketchware.R;
+import pro.sketchware.utility.AnalyticsHelper;
 import pro.sketchware.utility.UI;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -216,7 +217,10 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                 case REQUEST_CODE_FIREBASE_ACTIVITY:
                     ProjectLibraryBean libraryBean = data.getParcelableExtra("firebase");
                     initializeLibrary(libraryBean);
-                    if (libraryBean.useYn.equals("Y") && !compatLibraryBean.useYn.equals("Y")) {
+                    if (libraryBean != null && "Y".equals(libraryBean.useYn)) {
+                        AnalyticsHelper.logAddLibrary(this, "Firebase", "built_in");
+                    }
+                    if (libraryBean != null && libraryBean.useYn.equals("Y") && !compatLibraryBean.useYn.equals("Y")) {
                         libraryBean = compatLibraryBean;
                         libraryBean.useYn = "Y";
                         initializeLibrary(libraryBean);
@@ -225,15 +229,27 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                     break;
 
                 case REQUEST_CODE_APPCOMPAT_ACTIVITY, REQUEST_CODE_MATERIAL3_ACTIVITY:
-                    initializeLibrary(data.getParcelableExtra("compat"));
+                    ProjectLibraryBean compatBean = data.getParcelableExtra("compat");
+                    initializeLibrary(compatBean);
+                    if (compatBean != null && "Y".equals(compatBean.useYn)) {
+                        AnalyticsHelper.logAddLibrary(this, requestCode == REQUEST_CODE_MATERIAL3_ACTIVITY ? "Material3" : "AppCompat", "built_in");
+                    }
                     break;
 
                 case REQUEST_CODE_ADMOB_ACTIVITY:
-                    initializeLibrary(data.getParcelableExtra("admob"));
+                    ProjectLibraryBean admobBean = data.getParcelableExtra("admob");
+                    initializeLibrary(admobBean);
+                    if (admobBean != null && "Y".equals(admobBean.useYn)) {
+                        AnalyticsHelper.logAddLibrary(this, "AdMob", "built_in");
+                    }
                     break;
 
                 case REQUEST_CODE_GOOGLE_MAPS_ACTIVITY:
-                    initializeLibrary(data.getParcelableExtra("google_map"));
+                    ProjectLibraryBean mapsBean = data.getParcelableExtra("google_map");
+                    initializeLibrary(mapsBean);
+                    if (mapsBean != null && "Y".equals(mapsBean.useYn)) {
+                        AnalyticsHelper.logAddLibrary(this, "GoogleMaps", "built_in");
+                    }
                     break;
 
                 case REQUEST_CODE_CUSTOM_ITEM_LIBRARY_ACTIVITY:

@@ -53,6 +53,7 @@ import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
 import pro.sketchware.R;
+import pro.sketchware.utility.AnalyticsHelper;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -407,6 +408,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
      * Set content of exported source views
      */
     private void initializeAfterExportedSourceViews(String exportedSrcFilename) {
+        AnalyticsHelper.logExportProject(this, "android_studio", project_metadata != null ? project_metadata.projectName : sc_id, true);
         export_src_filename = exportedSrcFilename;
         export_source_loading_anim.cancelAnimation();
         export_source_loading_anim.setVisibility(View.GONE);
@@ -727,6 +729,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
          */
         @Override // a.a.a.MA
         public void a() {
+            ExportProjectActivity currentActivity = activity.get();
+            if (currentActivity != null) {
+                AnalyticsHelper.logExportProject(currentActivity, buildingAppBundle ? "aab" : "apk", project_metadata != null ? project_metadata.projectName : null, true);
+            }
             activity.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             activity.get().i();
@@ -753,6 +759,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
          */
         @Override // a.a.a.MA
         public void a(String str) {
+            ExportProjectActivity currentActivity = activity.get();
+            if (currentActivity != null) {
+                AnalyticsHelper.logExportProject(currentActivity, buildingAppBundle ? "aab" : "apk", project_metadata != null ? project_metadata.projectName : null, false);
+            }
             activity.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             activity.get().i();

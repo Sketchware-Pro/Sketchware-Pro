@@ -32,6 +32,7 @@ import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.transition.MaterialFadeThrough;
+import pro.sketchware.utility.AnalyticsHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -185,6 +186,9 @@ public class ProjectsFragment extends DA {
 
                         @Override
                         public boolean onQueryTextSubmit(String s) {
+                            if (s != null && !s.trim().isEmpty()) {
+                                AnalyticsHelper.logFeatureSearch(getContext(), s, "projects");
+                            }
                             return false;
                         }
                     });

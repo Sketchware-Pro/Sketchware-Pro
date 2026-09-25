@@ -65,6 +65,7 @@ import mod.agus.jcoderz.beans.ViewBeans;
 import mod.hey.studios.util.ProjectFile;
 import mod.jbk.util.LogUtil;
 import pro.sketchware.R;
+import pro.sketchware.utility.AnalyticsHelper;
 import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.widgets.IconCustomWidget;
 import pro.sketchware.widgets.WidgetsCreatorManager;
@@ -424,6 +425,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     bean.id = generateWidgetId(bean);
                     viewPane.updateViewBeanProperties(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                     jC.a(a).a(b, bean);
+                    AnalyticsHelper.logUiComponentAdded(getContext(), icon.getWidgetName());
                     if (bean.type == 3 && projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
                         jC.a(a).a(projectFileBean.getJavaName(), 1, bean.type, bean.id, "onClick");
                     }

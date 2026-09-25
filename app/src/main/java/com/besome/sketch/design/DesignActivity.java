@@ -64,6 +64,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import pro.sketchware.utility.AnalyticsHelper;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -1196,9 +1197,11 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     return;
                 }
 
+                activity.runOnUiThread(() -> AnalyticsHelper.logExportProject(activity, "debug_apk", activity.sc_id, true));
                 activity.installBuiltApk();
                 isBuildFinished = true;
             } catch (MissingFileException e) {
+                activity.runOnUiThread(() -> AnalyticsHelper.logExportProject(activity, "debug_apk", activity.sc_id, false));
                 isBuildFinished = true;
                 activity.runOnUiThread(() -> {
                     boolean isMissingDirectory = e.isMissingDirectory();
@@ -1225,9 +1228,11 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     dialog.show();
                 });
             } catch (zy zy) {
+                activity.runOnUiThread(() -> AnalyticsHelper.logExportProject(activity, "debug_apk", activity.sc_id, false));
                 isBuildFinished = true;
                 activity.indicateCompileErrorOccurred(zy.getMessage());
             } catch (Throwable tr) {
+                activity.runOnUiThread(() -> AnalyticsHelper.logExportProject(activity, "debug_apk", activity.sc_id, false));
                 isBuildFinished = true;
                 LogUtil.e("DesignActivity$BuildTask", "Failed to build project", tr);
                 activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));

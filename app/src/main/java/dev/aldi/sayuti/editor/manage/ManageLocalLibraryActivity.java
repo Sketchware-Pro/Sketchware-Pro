@@ -46,6 +46,7 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLocallibrariesBinding;
 import pro.sketchware.databinding.ViewItemLocalLibBinding;
 import pro.sketchware.databinding.ViewItemLocalLibSearchBinding;
+import pro.sketchware.utility.AnalyticsHelper;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
@@ -212,6 +213,9 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             public void afterTextChanged(Editable s) {
                 String value = s.toString().trim();
                 searchAdapter.filter(getAdapterLocalLibraries(), value);
+                if (value.length() > 2) {
+                    AnalyticsHelper.logFeatureSearch(ManageLocalLibraryActivity.this, value, "local_libraries");
+                }
             }
 
             @Override
@@ -458,6 +462,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 }
                 localLibrary = createLibraryMap(name, dependency);
                 projectUsedLibs.add(localLibrary);
+                AnalyticsHelper.logAddLibrary(ManageLocalLibraryActivity.this, name, "local_library");
             }
             rewriteLocalLibFile(scId, new Gson().toJson(projectUsedLibs));
         }
@@ -553,6 +558,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 }
                 localLibrary = createLibraryMap(name, dependency);
                 projectUsedLibs.add(localLibrary);
+                AnalyticsHelper.logAddLibrary(ManageLocalLibraryActivity.this, name, "local_library");
             }
             rewriteLocalLibFile(scId, new Gson().toJson(projectUsedLibs));
         }
