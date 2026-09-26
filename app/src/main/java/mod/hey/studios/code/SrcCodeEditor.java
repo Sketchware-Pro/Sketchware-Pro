@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -465,6 +467,26 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                     case "Find & Replace":
                         binding.editor.getSearcher().stopSearch();
                         binding.editor.beginSearchMode();
+                        binding.editor.postDelayed(() -> {
+                            View decor = getWindow().getDecorView();
+                            View searchSrcText = null;
+                            int resId = getResources().getIdentifier("search_src_text", "id", "android");
+                            if (resId != 0) {
+                                searchSrcText = decor.findViewById(resId);
+                            }
+                            if (searchSrcText == null) {
+                                int appcompatResId = androidx.appcompat.R.id.search_src_text;
+                                searchSrcText = decor.findViewById(appcompatResId);
+                            }
+                            if (searchSrcText != null) {
+                                searchSrcText.setFocusableInTouchMode(true);
+                                searchSrcText.requestFocus();
+                                android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                                if (imm != null) {
+                                    imm.showSoftInput(searchSrcText, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
+                                }
+                            }
+                        }, 250);
                         break;
 
                     case "Select theme":
