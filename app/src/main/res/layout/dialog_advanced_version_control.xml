@@ -25,6 +25,7 @@
                 android:singleLine="true"
                 android:imeOptions="actionNext"
                 android:inputType="number"
+                android:maxLength="10"
                 android:textSize="13sp" />
         </com.google.android.material.textfield.TextInputLayout>
 

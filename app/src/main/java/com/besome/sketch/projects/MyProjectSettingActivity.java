@@ -293,14 +293,22 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         versionNameFirstPartPicker.setWrapSelectorWheel(false);
         versionNameSecondPartPicker.setWrapSelectorWheel(false);
 
-        int versionCode = Integer.parseInt(Helper.getText(binding.verCode));
-        int versionCodeMinimum = versionCode - 5;
-        int versionNameFirstPartMinimum = 1;
-        if (versionCodeMinimum <= 0) {
-            versionCodeMinimum = 1;
+        long rawVersionCode;
+        try {
+            rawVersionCode = Long.parseLong(Helper.getText(binding.verCode).trim());
+        } catch (Exception e) {
+            rawVersionCode = 1L;
         }
+        if (rawVersionCode <= 0L) rawVersionCode = 1L;
+        if (rawVersionCode > 2100000000L) {
+            rawVersionCode = 2100000000L;
+        }
+        int versionCode = (int) rawVersionCode;
+        int versionCodeMinimum = Math.max(1, versionCode - 5);
+        int versionNameFirstPartMinimum = 1;
+
         versionCodePicker.setMinValue(versionCodeMinimum);
-        versionCodePicker.setMaxValue(versionCode + 5);
+        versionCodePicker.setMaxValue((int) Math.min(2100000000L, (long) versionCode + 5L));
         versionCodePicker.setValue(versionCode);
 
         String[] split = Helper.getText(binding.verName).split("\\.");
