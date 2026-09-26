@@ -270,7 +270,12 @@ public class AddViewActivity extends BaseAppCompatActivity {
     }
 
     private void handleCreateFile() {
-        String fileName = Helper.getText(binding.edName) + getSuffix(binding.viewTypeSelector);
+        String rawName = Helper.getText(binding.edName).trim();
+        String suffix = getSuffix(binding.viewTypeSelector);
+        if (!suffix.isEmpty() && rawName.endsWith(suffix)) {
+            rawName = rawName.substring(0, rawName.length() - suffix.length());
+        }
+        String fileName = rawName + suffix;
         ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, fileName, getSelectedButtonIndex(binding.screenOrientationSelector), getSelectedButtonIndex(binding.keyboardSettingsSelector), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
         Intent intent = new Intent();
         intent.putExtra("project_file", projectFileBean);
@@ -284,7 +289,15 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
     private void handleEditModeInitialization() {
         nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, new ArrayList<>(), projectFileBean.fileName);
-        binding.edName.setText(projectFileBean.fileName);
+        String displayName = projectFileBean.fileName;
+        if (displayName.endsWith("_bottomdialog_fragment")) {
+            displayName = displayName.substring(0, displayName.length() - "_bottomdialog_fragment".length());
+        } else if (displayName.endsWith("_dialog_fragment")) {
+            displayName = displayName.substring(0, displayName.length() - "_dialog_fragment".length());
+        } else if (displayName.endsWith("_fragment")) {
+            displayName = displayName.substring(0, displayName.length() - "_fragment".length());
+        }
+        binding.edName.setText(displayName);
         binding.edName.setEnabled(false);
         binding.edName.setBackgroundResource(R.color.transparent);
         initItem(projectFileBean.options);
