@@ -172,7 +172,9 @@ public class PaletteSelector extends RecyclerView {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            onTextChanged.accept(s);
+            if (onTextChanged != null) {
+                onTextChanged.accept(s);
+            }
         }
     }
 }
