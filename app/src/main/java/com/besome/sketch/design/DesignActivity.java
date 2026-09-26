@@ -395,6 +395,17 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
 
         startActivity(intent);
+
+        Snackbar.make(coordinatorLayout, "App install prompt launched", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Open App", v -> {
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage(q.packageName);
+                    if (launchIntent != null) {
+                        startActivity(launchIntent);
+                    } else {
+                        SketchwareUtil.toast("App not installed yet or launch activity not found.");
+                    }
+                })
+                .show();
     }
 
     @Override
