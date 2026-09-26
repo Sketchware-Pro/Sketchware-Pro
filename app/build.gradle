@@ -5,7 +5,7 @@ apply plugin: "com.google.gms.google-services"
 apply plugin: "com.google.firebase.crashlytics"
 
 android {
-    compileSdk = 36
+    compileSdk = 37
 
     def gitCommitHash = "git rev-parse HEAD".execute().text.trim()
     def shortCommitHash = "git rev-parse --short HEAD".execute().text.trim()
@@ -72,7 +72,7 @@ android {
     }
 }
 
-configurations.all {
+configurations.configureEach {
     exclude group: "xmlpull", module: "xmlpull"
     exclude group: "net.sf.kxml", module: "kxml2"
 }
