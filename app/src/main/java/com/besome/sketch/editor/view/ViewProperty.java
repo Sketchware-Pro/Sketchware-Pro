@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
@@ -43,9 +44,14 @@ import a.a.a.wB;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyGridItemBinding;
+import pro.sketchware.databinding.PropertyGroupItemBinding;
+import pro.sketchware.databinding.PropertyPopupSaveToFavoriteBinding;
+import pro.sketchware.databinding.ViewPropertyBinding;
 
 public class ViewProperty extends LinearLayout implements Kw {
 
+    public ViewPropertyBinding binding;
     private Context context;
     private final ArrayList<ViewBean> projectActivityViews = new ArrayList<>();
     private String sc_id;
@@ -177,16 +183,16 @@ public class ViewProperty extends LinearLayout implements Kw {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         dialog.setTitle(Helper.getResString(R.string.view_widget_favorites_save_title));
         dialog.setIcon(R.drawable.ic_bookmark_red_48dp);
-        View view = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
-        ((TextView) view.findViewById(R.id.tv_favorites_guide)).setText(Helper.getResString(R.string.view_widget_favorites_save_guide_new));
-        EditText editText = view.findViewById(R.id.ed_input);
+        PropertyPopupSaveToFavoriteBinding dialogBinding = PropertyPopupSaveToFavoriteBinding.inflate(LayoutInflater.from(getContext()));
+        dialogBinding.tvFavoritesGuide.setText(Helper.getResString(R.string.view_widget_favorites_save_guide_new));
+        EditText editText = dialogBinding.edInput;
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        NB validator = new NB(getContext(), view.findViewById(R.id.ti_input), Rp.h().g());
-        dialog.setView(view);
+        NB validator = new NB(getContext(), dialogBinding.tiInput, Rp.h().g());
+        dialog.setView(dialogBinding.getRoot());
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             if (!mB.a() && validator.b()) {
                 String widgetName = Helper.getText(editText);
@@ -237,13 +243,13 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     private void initialize(Context context) {
         this.context = context;
-        wB.a(context, this, R.layout.view_property);
-        layoutPropertyGroup = findViewById(R.id.layout_property_group);
-        CustomHorizontalScrollView hcvProperty = findViewById(R.id.hcv_property);
-        propertyLayout = findViewById(R.id.property_layout);
-        LinearLayout propertyContents = findViewById(R.id.property_contents);
-        layoutPropertySeeAll = findViewById(R.id.layout_property_see_all);
-        viewEvent = findViewById(R.id.view_event);
+        binding = ViewPropertyBinding.inflate(LayoutInflater.from(context), this, true);
+        layoutPropertyGroup = binding.layoutPropertyGroup;
+        CustomHorizontalScrollView hcvProperty = binding.hcvProperty;
+        propertyLayout = binding.propertyLayout;
+        LinearLayout propertyContents = binding.propertyContents;
+        layoutPropertySeeAll = binding.layoutPropertySeeAll;
+        viewEvent = binding.viewEvent;
         hcvProperty.setHorizontalScrollBarEnabled(false);
         hcvProperty.setOnScrollChangedListener((scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (Math.abs(scrollX - oldScrollY) <= 5) {
@@ -278,15 +284,15 @@ public class ViewProperty extends LinearLayout implements Kw {
                 }
             }
         });
-        imgSave = findViewById(R.id.img_save);
+        imgSave = binding.imgSave;
         imgSave.setOnClickListener(v -> {
             if (!mB.a()) {
                 showSaveToCollectionDialog();
             }
         });
-        imgDelete = findViewById(R.id.img_delete);
+        imgDelete = binding.imgDelete;
         imgDelete.setOnClickListener(view -> showDeleteViewBeanWidget());
-        spnWidget = findViewById(R.id.spn_widget);
+        spnWidget = binding.spnWidget;
         idsAdapter = new ViewIdsAdapter(context, projectActivityViews);
         spnWidget.setAdapter(idsAdapter);
         spnWidget.setSelection(0);
@@ -437,6 +443,7 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     private class GroupItem extends LinearLayout implements View.OnClickListener {
 
+        public PropertyGroupItemBinding binding;
         private TextView title;
 
         public GroupItem(Context context) {
@@ -445,8 +452,8 @@ public class ViewProperty extends LinearLayout implements Kw {
         }
 
         private void initialize(Context context) {
-            wB.a(context, this, R.layout.property_group_item);
-            title = findViewById(R.id.tv_title);
+            binding = PropertyGroupItemBinding.inflate(LayoutInflater.from(context), this, true);
+            title = binding.tvTitle;
         }
 
         @Override
@@ -464,6 +471,7 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     private class SeeAllPropertiesFloatingItem extends LinearLayout implements View.OnClickListener {
 
+        public PropertyGridItemBinding binding;
         private final MaterialCardView propertyMenuItem;
         private final ImageView icon;
         private final TextView title;
@@ -472,10 +480,10 @@ public class ViewProperty extends LinearLayout implements Kw {
         public SeeAllPropertiesFloatingItem(Context context) {
             super(context);
 
-            wB.a(context, this, R.layout.property_grid_item);
-            propertyMenuItem = findViewById(R.id.property_menu_item);
-            icon = findViewById(R.id.img_icon);
-            title = findViewById(R.id.tv_title);
+            binding = PropertyGridItemBinding.inflate(LayoutInflater.from(context), this, true);
+            propertyMenuItem = binding.propertyMenuItem;
+            icon = binding.imgIcon;
+            title = binding.tvTitle;
         }
 
         @Override
