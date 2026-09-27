@@ -35,9 +35,11 @@ import a.a.a.wq;
 import a.a.a.yy;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageImageAddBinding;
 
 public class AddImageCollectionActivity extends BaseDialogActivity implements View.OnClickListener {
 
+    public ManageImageAddBinding binding;
     private TextView tv_add_photo;
     private ImageView preview;
     private PB imageNameValidator;
@@ -130,7 +132,8 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         super.onCreate(savedInstanceState);
         e(getString(R.string.design_manager_image_title_add_image));
         d(getString(R.string.common_word_save));
-        setContentView(R.layout.manage_image_add);
+        binding = ManageImageAddBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         Intent intent = getIntent();
         images = intent.getParcelableArrayListExtra("images");
         sc_id = intent.getStringExtra("sc_id");
@@ -138,18 +141,18 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         if (editTarget != null) {
             editing = true;
         }
-        layout_img_inform = findViewById(R.id.layout_img_inform);
-        layout_img_modify = findViewById(R.id.layout_img_modify);
-        chk_collection = findViewById(R.id.chk_collection);
+        layout_img_inform = binding.layoutImgInform;
+        layout_img_modify = binding.layoutImgModify;
+        chk_collection = binding.chkCollection;
         chk_collection.setVisibility(View.GONE);
-        tv_desc = findViewById(R.id.tv_desc);
-        tv_imgcnt = findViewById(R.id.tv_imgcnt);
-        tv_add_photo = findViewById(R.id.tv_add_photo);
-        preview = findViewById(R.id.img_selected);
-        ImageView img_rotate = findViewById(R.id.img_rotate);
-        ImageView img_vertical = findViewById(R.id.img_vertical);
-        ImageView img_horizontal = findViewById(R.id.img_horizontal);
-        ed_input = findViewById(R.id.ed_input);
+        tv_desc = binding.tvDesc;
+        tv_imgcnt = binding.tvImgcnt;
+        tv_add_photo = binding.tvAddPhoto;
+        preview = binding.imgSelected;
+        ImageView img_rotate = binding.imgRotate;
+        ImageView img_vertical = binding.imgVertical;
+        ImageView img_horizontal = binding.imgHorizontal;
+        ed_input = binding.edInput;
         ed_input_edittext = ed_input.getEditText();
         ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
         ed_input.setHint(getString(R.string.design_manager_image_hint_enter_image_name));
