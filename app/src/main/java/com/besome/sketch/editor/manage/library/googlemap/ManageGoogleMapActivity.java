@@ -24,8 +24,11 @@ import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.LibrarySettingsImporter;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryManageGooglemapBinding;
 
 public class ManageGoogleMapActivity extends BaseAppCompatActivity implements View.OnClickListener {
+
+    public ManageLibraryManageGooglemapBinding binding;
     private String sc_id;
     private MaterialSwitch libSwitch;
     private EditText editApiKey;
@@ -106,10 +109,11 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_library_manage_googlemap);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        binding = ManageLibraryManageGooglemapBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
             googleMapLibraryBean = getIntent().getParcelableExtra("google_map");
@@ -122,17 +126,17 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
-        LinearLayout switchLayout = findViewById(R.id.layout_switch);
+        LinearLayout switchLayout = binding.layoutSwitch;
         switchLayout.setOnClickListener(this);
-        libSwitch = findViewById(R.id.lib_switch);
-        editApiKey = findViewById(R.id.ed_api_key);
-        ((TextView) findViewById(R.id.tv_api_key)).setText(Helper.getResString(R.string.design_library_google_map_title_api_key));
-        ((TextView) findViewById(R.id.tv_desc)).setText(Helper.getResString(R.string.design_library_google_maps_description_operate_normally));
-        ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
-        Button btnImport = findViewById(R.id.btn_import);
+        libSwitch = binding.libSwitch;
+        editApiKey = binding.edApiKey;
+        binding.tvApiKey.setText(Helper.getResString(R.string.design_library_google_map_title_api_key));
+        binding.tvDesc.setText(Helper.getResString(R.string.design_library_google_maps_description_operate_normally));
+        binding.tvEnable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
+        Button btnImport = binding.btnImport;
         btnImport.setText(Helper.getResString(R.string.design_library_button_import_from_other_project));
         btnImport.setOnClickListener(this);
-        Button btnOpenDoc = findViewById(R.id.btn_open_doc);
+        Button btnOpenDoc = binding.btnOpenDoc;
         btnOpenDoc.setText(Helper.getResString(R.string.design_library_google_map_button_open_doc));
         btnOpenDoc.setOnClickListener(this);
         configure();
