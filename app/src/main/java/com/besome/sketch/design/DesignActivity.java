@@ -121,6 +121,8 @@ import pro.sketchware.activities.editor.command.ManageXMLCommandActivity;
 import pro.sketchware.activities.editor.view.CodeViewerActivity;
 import pro.sketchware.activities.editor.view.ViewCodeEditorActivity;
 import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
+import pro.sketchware.databinding.DesignBinding;
+import pro.sketchware.databinding.FileSelectorPopupSelectJavaBinding;
 import pro.sketchware.dialogs.BuildSettingsBottomSheet;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -129,6 +131,7 @@ import pro.sketchware.utility.apk.ApkSignatures;
 
 public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public static String sc_id;
+    public DesignBinding binding;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
     private ImageView xmlLayoutOrientation;
@@ -447,7 +450,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     public void onCreate(Bundle savedInstanceState) {
         enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.design);
+        binding = DesignBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         if (!isStoragePermissionGranted()) {
             finish();
         }
@@ -461,22 +465,22 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         r = new DB(getApplicationContext(), "P1");
         t = new DB(getApplicationContext(), "P12");
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = binding.toolbar;
         toolbar.setSubtitle(sc_id);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        drawer = findViewById(R.id.drawer_layout);
+        drawer = binding.drawerLayout;
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        Insetter.builder().margin(WindowInsetsCompat.Type.navigationBars()).applyToView(findViewById(R.id.container));
+        Insetter.builder().margin(WindowInsetsCompat.Type.navigationBars()).applyToView(binding.container);
 
-        coordinatorLayout = findViewById(R.id.layout_coordinator);
-        fileName = findViewById(R.id.file_name);
+        coordinatorLayout = binding.layoutCoordinator;
+        fileName = binding.fileName;
 
-        findViewById(R.id.file_name_container).setOnClickListener(this);
+        binding.fileNameContainer.setOnClickListener(this);
 
-        btnRun = findViewById(R.id.btn_run);
+        btnRun = binding.btnRun;
         btnRun.setOnClickListener(v -> {
             if (currentBuildTask != null && !currentBuildTask.canceled && !currentBuildTask.isBuildFinished) {
                 currentBuildTask.cancelBuild();
@@ -488,7 +492,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             buildTask.execute();
         });
 
-        btnOptions = findViewById(R.id.btn_options);
+        btnOptions = binding.btnOptions;
         btnOptions.setOnClickListener(v -> bottomPopupMenu.show());
 
         bottomPopupMenu = new PopupMenu(this, btnOptions);
@@ -531,8 +535,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         });
         bottomPopupMenu.setOnDismissListener(menu -> btnOptions.setChecked(false));
 
-        xmlLayoutOrientation = findViewById(R.id.img_orientation);
-        viewPager = findViewById(R.id.viewpager);
+        xmlLayoutOrientation = binding.imgOrientation;
+        viewPager = binding.viewpager;
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -585,7 +589,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         });
         viewPager.getAdapter().notifyDataSetChanged();
-        ((TabLayout) findViewById(R.id.tab_layout)).setupWithViewPager(viewPager);
+        binding.tabLayout.setupWithViewPager(viewPager);
 
         IntentFilter filter = new IntentFilter(BuildTask.ACTION_CANCEL_BUILD);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -830,8 +834,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         var dialog = new MaterialAlertDialogBuilder(this).create();
         dialog.setTitle(R.string.design_file_selector_title_java);
         dialog.setIcon(R.drawable.ic_mtrl_java);
-        View customView = a.a.a.wB.a(this, R.layout.file_selector_popup_select_java);
-        RecyclerView recyclerView = customView.findViewById(R.id.file_list);
+        FileSelectorPopupSelectJavaBinding popupBinding = FileSelectorPopupSelectJavaBinding.inflate(getLayoutInflater());
+        RecyclerView recyclerView = popupBinding.fileList;
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         var adapter = new JavaFileAdapter(sc_id);
         adapter.setOnItemClickListener(projectFileBean -> {
@@ -842,7 +846,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             dialog.dismiss();
         });
         recyclerView.setAdapter(adapter);
-        dialog.setView(customView);
+        dialog.setView(popupBinding.getRoot());
         dialog.show();
     }
 
@@ -1068,9 +1072,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
             btnRun = activity.btnRun;
             btnOptions = activity.btnOptions;
-            progressContainer = activity.findViewById(R.id.progress_container);
-            progressText = activity.findViewById(R.id.progress_text);
-            progressBar = activity.findViewById(R.id.progress);
+            progressContainer = activity.binding.progressContainer;
+            progressText = activity.binding.progressText;
+            progressBar = activity.binding.progress;
         }
 
         public void execute() {
