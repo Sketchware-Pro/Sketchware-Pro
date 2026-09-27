@@ -31,8 +31,10 @@ import a.a.a.nv;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.LibrarySettingsImporter;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryFirebaseBinding;
 
 public class FirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
+    public ManageLibraryFirebaseBinding binding;
     private static final int STEP_1 = 0;
     private static final int STEP_2 = 1;
     private static final int STEP_3 = 2;
@@ -176,22 +178,23 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_library_firebase);
+        binding = ManageLibraryFirebaseBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        ImageView icon = findViewById(R.id.icon);
-        cv_console = findViewById(R.id.cv_console);
-        btn_import = findViewById(R.id.btn_import);
-        tv_step_desc = findViewById(R.id.tv_step_desc);
-        Button btn_open_doc = findViewById(R.id.btn_open_doc);
-        tv_step_title = findViewById(R.id.tv_step_title);
-        LinearLayout ll_goto_console = findViewById(R.id.ll_goto_console);
-        TextView tv_goto_console = findViewById(R.id.tv_goto_console);
-        layout_container = findViewById(R.id.layout_container);
-        LinearLayout layout_step_guide = findViewById(R.id.layout_step_guide);
+        ImageView icon = binding.icon;
+        cv_console = binding.cvConsole;
+        btn_import = binding.btnImport;
+        tv_step_desc = binding.tvStepDesc;
+        Button btn_open_doc = binding.btnOpenDoc;
+        tv_step_title = binding.tvStepTitle;
+        LinearLayout ll_goto_console = binding.llGotoConsole;
+        TextView tv_goto_console = binding.tvGotoConsole;
+        layout_container = binding.layoutContainer;
+        LinearLayout layout_step_guide = binding.layoutStepGuide;
 
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.change_firebase_config_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
