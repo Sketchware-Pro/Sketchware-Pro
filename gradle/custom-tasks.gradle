@@ -1,3 +1,7 @@
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
+
 /**
  * Creates a mock google-services.json if GOOGLE_SERVICES_JSON environment variable is absent.
  */
@@ -51,3 +55,55 @@ tasks.register('createMockGoogleServices') {
 }
 
 preBuild.dependsOn createMockGoogleServices
+
+/**
+ * Strips embedded .dex entries from bundletool.jar to prevent R8 bytecode collision errors.
+ */
+@SuppressWarnings('GrMethodMayBeStatic')
+def cleanJarDexEntries(File jarFile) {
+    try {
+        def tempFile = new File(jarFile.parentFile, jarFile.name + ".tmp")
+        def zipFile = new ZipFile(jarFile)
+        def zos = new ZipOutputStream(new FileOutputStream(tempFile))
+        def buffer = new byte[8192]
+        boolean modified = false
+
+        zipFile.entries().each { entry ->
+            if (entry.name.endsWith(".dex")) {
+                modified = true
+            } else {
+                def newEntry = new ZipEntry(entry.name)
+                zos.putNextEntry(newEntry)
+                def is = zipFile.getInputStream(entry)
+                int len
+                while ((len = is.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len)
+                }
+                is.close()
+                zos.closeEntry()
+            }
+        }
+        zos.close()
+        zipFile.close()
+
+        if (modified) {
+            jarFile.delete()
+            tempFile.renameTo(jarFile)
+        } else {
+            tempFile.delete()
+        }
+    } catch (Exception ignored) {
+    }
+}
+
+tasks.configureEach { task ->
+    if (task.name.startsWith("minify") || task.name.contains("R8")) {
+        task.doFirst {
+            project.configurations.findByName("releaseRuntimeClasspath")?.files?.each { file ->
+                if (file.name.contains("bundletool") && file.name.endsWith(".jar") && file.exists()) {
+                    cleanJarDexEntries(file)
+                }
+            }
+        }
+    }
+}
