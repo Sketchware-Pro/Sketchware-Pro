@@ -38,12 +38,14 @@ import a.a.a.yy;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageSoundAddBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class AddSoundActivity extends BaseDialogActivity implements View.OnClickListener {
     private static final int REQUEST_CODE_SOUND_PICKER = 218;
 
+    public ManageSoundAddBinding binding;
     private CheckBox addToCollection;
     private TextInputEditText soundName;
     private TextView nowPlayingFilename;
@@ -128,7 +130,8 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_sound_add);
+        binding = ManageSoundAddBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         e(getString(R.string.design_manager_sound_title_add_sound));
         d(getString(R.string.common_word_save));
         b(getString(R.string.common_word_cancel));
@@ -138,19 +141,19 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         sc_id = intent.getStringExtra("sc_id");
         soundsDirectory = intent.getStringExtra("dir_path");
         int requestCode = intent.getIntExtra("request_code", -1);
-        nowPlayingFilename = findViewById(R.id.file_name);
-        nowPlayingProgress = findViewById(R.id.current_time);
-        nowPlayingTotalDuration = findViewById(R.id.file_length);
-        nowPlayingContainer = findViewById(R.id.layout_control);
-        guide = findViewById(R.id.layout_guide);
-        addToCollection = findViewById(R.id.chk_collection);
-        selectFile = findViewById(R.id.select_file);
-        playPause = findViewById(R.id.play);
-        albumCover = findViewById(R.id.img_album);
-        nowPlayingProgressBar = findViewById(R.id.seek);
+        nowPlayingFilename = binding.fileName;
+        nowPlayingProgress = binding.currentTime;
+        nowPlayingTotalDuration = binding.fileLength;
+        nowPlayingContainer = binding.layoutControl;
+        guide = binding.layoutGuide;
+        addToCollection = binding.chkCollection;
+        selectFile = binding.selectFile;
+        playPause = binding.play;
+        albumCover = binding.imgAlbum;
+        nowPlayingProgressBar = binding.seek;
         nowPlayingContainer.setVisibility(View.GONE);
-        TextInputLayout soundInputLayout = findViewById(R.id.ti_input);
-        soundName = findViewById(R.id.ed_input);
+        TextInputLayout soundInputLayout = binding.tiInput;
+        soundName = binding.edInput;
         soundNameValidator = new WB(this, soundInputLayout, uq.b, existingSoundNames);
         playPause.setEnabled(false);
         playPause.setOnClickListener(this);
