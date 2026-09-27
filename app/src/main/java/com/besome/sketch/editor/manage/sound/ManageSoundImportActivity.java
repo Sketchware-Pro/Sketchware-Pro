@@ -34,8 +34,11 @@ import a.a.a.mB;
 import a.a.a.uq;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageImportListItemBinding;
+import pro.sketchware.databinding.ManageSoundImportBinding;
 
 public class ManageSoundImportActivity extends BaseAppCompatActivity implements View.OnClickListener {
+    public ManageSoundImportBinding binding;
     private QB nameValidator;
     private boolean mediaPlayerIsPrepared;
     private ImageView img_album;
@@ -155,31 +158,32 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         if (!super.j()) {
             finish();
         }
-        setContentView(R.layout.manage_sound_import);
-        ImageView img_backbtn = findViewById(R.id.img_backbtn);
+        binding = ManageSoundImportBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        ImageView img_backbtn = binding.imgBackbtn;
         img_backbtn.setOnClickListener(this);
-        tv_currentnum = findViewById(R.id.tv_currentnum);
-        TextView tv_totalnum = findViewById(R.id.tv_totalnum);
-        TextView tv_sendbtn = findViewById(R.id.tv_sendbtn);
+        tv_currentnum = binding.tvCurrentnum;
+        TextView tv_totalnum = binding.tvTotalnum;
+        TextView tv_sendbtn = binding.tvSendbtn;
         tv_sendbtn.setText(getString(R.string.common_word_import).toUpperCase());
         tv_sendbtn.setOnClickListener(this);
-        TextView tv_samename = findViewById(R.id.tv_samename);
+        TextView tv_samename = binding.tvSamename;
         tv_samename.setText(R.string.design_manager_sound_title_apply_same_naming);
         adapter = new ItemAdapter();
-        RecyclerView recycler_list = findViewById(R.id.recycler_list);
+        RecyclerView recycler_list = binding.recyclerList;
         recycler_list.setAdapter(adapter);
         recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
         projectSounds = getIntent().getParcelableArrayListExtra("project_sounds");
         selectedCollections = getIntent().getParcelableArrayListExtra("selected_collections");
         tv_currentnum.setText(String.valueOf(1));
         tv_totalnum.setText(String.valueOf(selectedCollections.size()));
-        EasyDeleteEditText ed_input = findViewById(R.id.ed_input);
+        EasyDeleteEditText ed_input = binding.edInput;
         ed_input_edittext = ed_input.getEditText();
         ed_input_edittext.setText(selectedCollections.get(0).resName);
         ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
         ed_input.setHint(getString(R.string.design_manager_sound_hint_enter_sound_name));
         nameValidator = new QB(getApplicationContext(), ed_input.getTextInputLayout(), uq.b, getReservedProjectSoundNames(), getReservedSelectedCollectionNames());
-        chk_samename = findViewById(R.id.chk_samename);
+        chk_samename = binding.chkSamename;
         chk_samename.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 nameValidator.c(null);
@@ -189,11 +193,11 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
                 nameValidator.a(1);
             }
         });
-        Button btn_decide = findViewById(R.id.btn_decide);
+        Button btn_decide = binding.btnDecide;
         btn_decide.setText(getString(R.string.design_manager_change_name_button));
         btn_decide.setOnClickListener(this);
-        img_album = findViewById(R.id.img_album);
-        img_play = findViewById(R.id.img_play);
+        img_album = binding.imgAlbum;
+        img_play = binding.imgPlay;
         img_play.setOnClickListener(this);
     }
 
@@ -333,7 +337,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_import_list_item, parent, false));
+            return new ViewHolder(ManageImportListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
 
         @Override
@@ -347,12 +351,12 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             public ImageView img;
             public TextView tv_name;
 
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                layout_item = itemView.findViewById(R.id.layout_item);
-                img_conflict = itemView.findViewById(R.id.img_conflict);
-                img = itemView.findViewById(R.id.img);
-                tv_name = itemView.findViewById(R.id.tv_name);
+            public ViewHolder(ManageImportListItemBinding binding) {
+                super(binding.getRoot());
+                layout_item = binding.layoutItem;
+                img_conflict = binding.imgConflict;
+                img = binding.img;
+                tv_name = binding.tvName;
                 img.setOnClickListener(v -> {
                     if (!mB.a()) {
                         pausePlayback();
