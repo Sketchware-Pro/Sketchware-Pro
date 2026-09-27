@@ -35,10 +35,12 @@ import dev.pranav.filepicker.FilePickerDialogFragment;
 import dev.pranav.filepicker.FilePickerOptions;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryManageFirebaseBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class ManageFirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
+    public ManageLibraryManageFirebaseBinding binding;
     private final String realtime_db = "realtime_db";
     private final String app_id = "app_id";
     private final String api_key = "api_key";
@@ -162,11 +164,12 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_library_manage_firebase);
+        binding = ManageLibraryManageFirebaseBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.design_library_firebase_title_firebase_manager));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -175,25 +178,25 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         s = new DB(getApplicationContext(), "P1");
         firebaseLibraryBean = getIntent().getParcelableExtra("firebase");
         sc_id = savedInstanceState != null ? savedInstanceState.getString("sc_id") : getIntent().getStringExtra("sc_id");
-        LinearLayout switchLayout = findViewById(R.id.layout_switch);
+        LinearLayout switchLayout = binding.layoutSwitch;
         switchLayout.setOnClickListener(this);
-        libSwitch = findViewById(R.id.lib_switch);
-        ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
-        ((TextView) findViewById(R.id.tv_title_project_id)).setText(
+        libSwitch = binding.libSwitch;
+        binding.tvEnable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
+        binding.tvTitleProjectId.setText(
                 Helper.getResString(R.string.design_library_firebase_title_project_id));
-        ((TextView) findViewById(R.id.tv_title_app_id)).setText(
+        binding.tvTitleAppId.setText(
                 Helper.getResString(R.string.design_library_firebase_title_app_id));
-        ((TextView) findViewById(R.id.tv_title_api_key)).setText(
+        binding.tvTitleApiKey.setText(
                 Helper.getResString(R.string.design_library_firebase_title_api_key));
-        ((TextView) findViewById(R.id.tv_title_storage_url)).setText(
+        binding.tvTitleStorageUrl.setText(
                 Helper.getResString(R.string.design_library_firebase_title_storage_bucket_url));
-        tvProjectId = findViewById(R.id.tv_project_id);
-        tvAppId = findViewById(R.id.tv_app_id);
-        tvApiKey = findViewById(R.id.tv_api_key);
-        tvStorageUrl = findViewById(R.id.tv_storage_url);
-        Button btnImport = findViewById(R.id.btn_import);
+        tvProjectId = binding.tvProjectId;
+        tvAppId = binding.tvAppId;
+        tvApiKey = binding.tvApiKey;
+        tvStorageUrl = binding.tvStorageUrl;
+        Button btnImport = binding.btnImport;
         btnImport.setOnClickListener(this);
-        Button btnConsole = findViewById(R.id.btn_console);
+        Button btnConsole = binding.btnConsole;
         btnConsole.setText(Helper.getResString(R.string.design_library_firebase_button_goto_firebase_console));
         btnConsole.setOnClickListener(this);
         configure();
