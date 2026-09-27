@@ -3,6 +3,7 @@ package com.besome.sketch.editor.manage.library.admob;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,8 +23,11 @@ import a.a.a.gB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryAdmobSetUnitBinding;
+import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
 
 public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickListener {
+    public ManageLibraryAdmobSetUnitBinding binding;
     private final ArrayList<String> adUnits = new ArrayList<>();
     private String bannerAdUnitId = "";
     private TextView bannerAdName;
@@ -53,15 +57,15 @@ public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickLis
 
     private void setAdUnit(int position) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-        View rootView = wB.a(getContext(), R.layout.property_popup_selector_single);
-        ViewGroup viewGroup = rootView.findViewById(R.id.rg_content);
+        PropertyPopupSelectorSingleBinding dialogBinding = PropertyPopupSelectorSingleBinding.inflate(LayoutInflater.from(getContext()));
+        ViewGroup viewGroup = dialogBinding.rgContent;
         dialog.setTitle(Helper.getResString(R.string.design_library_admob_dialog_select_unit_title));
 
         for (String adUnit : adUnits) {
             viewGroup.addView(addRadioButton(adUnit));
         }
 
-        dialog.setView(rootView);
+        dialog.setView(dialogBinding.getRoot());
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
@@ -84,29 +88,29 @@ public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickLis
 
     @SuppressLint("SetTextI18n")
     private void initialize(Context context) {
-        wB.a(context, this, R.layout.manage_library_admob_set_unit);
+        binding = ManageLibraryAdmobSetUnitBinding.inflate(LayoutInflater.from(context), this, true);
         gB.b(this, 600, 200, null);
-        bannerAdName = findViewById(R.id.tv_banner_name);
-        bannerAdUnitIdView = findViewById(R.id.tv_banner_id);
-        interstitialAdName = findViewById(R.id.tv_inter_name);
-        interstitialAdUnitIdView = findViewById(R.id.tv_inter_id);
-        rewardedAdName = findViewById(R.id.tv_reward_name);
-        rewardedAdUnitIdView = findViewById(R.id.tv_reward_id);
-        ((TextView) findViewById(R.id.tv_banner_title)).setText(Helper.getResString(R.string.design_library_admob_title_banner));
-        ((TextView) findViewById(R.id.tv_banner_name_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
-        ((TextView) findViewById(R.id.tv_banner_id_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(R.id.tv_inter_title)).setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
-        ((TextView) findViewById(R.id.tv_inter_name_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
-        ((TextView) findViewById(R.id.tv_inter_id_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(R.id.tv_reward_name_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
-        ((TextView) findViewById(R.id.tv_reward_id_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        bannerAdName = binding.tvBannerName;
+        bannerAdUnitIdView = binding.tvBannerId;
+        interstitialAdName = binding.tvInterName;
+        interstitialAdUnitIdView = binding.tvInterId;
+        rewardedAdName = binding.tvRewardName;
+        rewardedAdUnitIdView = binding.tvRewardId;
+        binding.tvBannerTitle.setText(Helper.getResString(R.string.design_library_admob_title_banner));
+        binding.tvBannerNameTitle.setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        binding.tvBannerIdTitle.setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        binding.tvInterTitle.setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
+        binding.tvInterNameTitle.setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        binding.tvInterIdTitle.setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        binding.tvRewardNameTitle.setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        binding.tvRewardIdTitle.setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
 
-        findViewById(R.id.img_select_banner).setOnClickListener(this);
-        findViewById(R.id.img_select_inter).setOnClickListener(this);
-        findViewById(R.id.img_select_reward).setOnClickListener(this);
-        findViewById(R.id.tv_banner_edit).setOnClickListener(this);
-        findViewById(R.id.tv_inter_edit).setOnClickListener(this);
-        findViewById(R.id.tv_reward_edit).setOnClickListener(this);
+        binding.imgSelectBanner.setOnClickListener(this);
+        binding.imgSelectInter.setOnClickListener(this);
+        binding.imgSelectReward.setOnClickListener(this);
+        binding.tvBannerEdit.setOnClickListener(this);
+        binding.tvInterEdit.setOnClickListener(this);
+        binding.tvRewardEdit.setOnClickListener(this);
     }
 
     @Override
