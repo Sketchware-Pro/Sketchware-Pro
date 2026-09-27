@@ -43,9 +43,12 @@ import a.a.a.ro;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.CommonCategoryTriangleItemBinding;
+import pro.sketchware.databinding.PropertyBinding;
 
 public class PropertyActivity extends BaseAppCompatActivity implements Kw {
 
+    public PropertyBinding binding;
     private final ArrayList<Integer> propertyGroups = new ArrayList<>();
     private ProjectFileBean projectFileBean;
     private ViewBean viewBean;
@@ -155,11 +158,12 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.property);
+        binding = PropertyBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        content = findViewById(R.id.content);
-        CustomScrollView scrollView = findViewById(R.id.scroll_view);
-        RecyclerView propertyGroupList = findViewById(R.id.property_group_list);
+        content = binding.content;
+        CustomScrollView scrollView = binding.scrollView;
+        RecyclerView propertyGroupList = binding.propertyGroupList;
 
         if (!j()) {
             finish();
@@ -167,9 +171,9 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
 
         ro w = new ro(getApplicationContext());
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.edit_view_properties_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -303,7 +307,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_category_triangle_item, parent, false));
+            return new ViewHolder(CommonCategoryTriangleItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -311,11 +315,11 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
             public TextView tvName;
             public View pointerLeft;
 
-            public ViewHolder(View itemView) {
-                super(itemView);
-                imgIcon = itemView.findViewById(R.id.img_icon);
-                tvName = itemView.findViewById(R.id.tv_name);
-                pointerLeft = itemView.findViewById(R.id.pointer_left);
+            public ViewHolder(CommonCategoryTriangleItemBinding binding) {
+                super(binding.getRoot());
+                imgIcon = binding.imgIcon;
+                tvName = binding.tvName;
+                pointerLeft = binding.pointerLeft;
                 pointerLeft.setBackgroundResource(R.drawable.triangle_point_left_primary);
                 itemView.setOnClickListener(this);
             }
