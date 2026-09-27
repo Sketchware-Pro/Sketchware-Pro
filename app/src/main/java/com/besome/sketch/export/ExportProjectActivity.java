@@ -53,12 +53,15 @@ import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ExportProjectBinding;
 import pro.sketchware.utility.AnalyticsHelper;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class ExportProjectActivity extends BaseAppCompatActivity {
+
+    public ExportProjectBinding binding;
 
     private final oB file_utility = new oB();
     /**
@@ -92,28 +95,29 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.export_project);
+        binding = ExportProjectBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        ImageView sign_apk_ic = findViewById(R.id.sign_apk_ic);
-        ImageView export_aab_ic = findViewById(R.id.export_aab_ic);
-        TextView sign_apk_title = findViewById(R.id.sign_apk_title);
-        sign_apk_button = findViewById(R.id.sign_apk_button);
-        ImageView export_source_ic = findViewById(R.id.export_source_ic);
-        TextView export_aab_title = findViewById(R.id.export_aab_title);
-        export_aab_button = findViewById(R.id.export_aab_button);
-        TextView export_source_title = findViewById(R.id.export_source_title);
-        sign_apk_output_path = findViewById(R.id.sign_apk_output_path);
-        export_source_button = findViewById(R.id.export_source_button);
-        sign_apk_output_stage = findViewById(R.id.sign_apk_output_stage);
-        sign_apk_loading_anim = findViewById(R.id.sign_apk_loading_anim);
-        export_source_output_path = findViewById(R.id.export_source_output_path);
-        export_source_send_button = findViewById(R.id.export_source_send_button);
-        export_source_output_stage = findViewById(R.id.export_source_output_stage);
-        export_source_loading_anim = findViewById(R.id.export_source_loading_anim);
+        ImageView sign_apk_ic = binding.signApkIc;
+        ImageView export_aab_ic = binding.exportAabIc;
+        TextView sign_apk_title = binding.signApkTitle;
+        sign_apk_button = binding.signApkButton;
+        ImageView export_source_ic = binding.exportSourceIc;
+        TextView export_aab_title = binding.exportAabTitle;
+        export_aab_button = binding.exportAabButton;
+        TextView export_source_title = binding.exportSourceTitle;
+        sign_apk_output_path = binding.signApkOutputPath;
+        export_source_button = binding.exportSourceButton;
+        sign_apk_output_stage = binding.signApkOutputStage;
+        sign_apk_loading_anim = binding.signApkLoadingAnim;
+        export_source_output_path = binding.exportSourceOutputPath;
+        export_source_send_button = binding.exportSourceSendButton;
+        export_source_output_stage = binding.exportSourceOutputStage;
+        export_source_loading_anim = binding.exportSourceLoadingAnim;
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.myprojects_export_project_actionbar_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
