@@ -26,11 +26,14 @@ import a.a.a.SB;
 import a.a.a.Uu;
 import a.a.a.bB;
 import a.a.a.gB;
-import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryAdmobListingBinding;
+import pro.sketchware.databinding.ManageLibrarySettingAdmobAdunitAddBinding;
+import pro.sketchware.databinding.ManageLibrarySettingAdmobAdunitItemBinding;
 
 public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListener {
+    public ManageLibraryAdmobListingBinding binding;
     private AdUnitsAdapter adUnitsAdapter;
     private ArrayList<AdUnitBean> adUnitBeanArrayList = new ArrayList<>();
     private TextView tvWarning;
@@ -48,20 +51,20 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         dialog.setTitle(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_title));
         dialog.setIcon(R.drawable.ic_mtrl_add);
-        View rootView = wB.a(getContext(), R.layout.manage_library_setting_admob_adunit_add);
+        ManageLibrarySettingAdmobAdunitAddBinding dialogBinding = ManageLibrarySettingAdmobAdunitAddBinding.inflate(LayoutInflater.from(getContext()));
 
-        TextInputLayout tiName = rootView.findViewById(R.id.ti_name);
+        TextInputLayout tiName = dialogBinding.tiName;
         tiName.setHint(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_hint_adunit_name));
-        EditText edName = rootView.findViewById(R.id.ed_name);
+        EditText edName = dialogBinding.edName;
         SB nameValidator = new SB(getContext(), tiName, 1, 50);
 
-        TextInputLayout tiAdUnitId = rootView.findViewById(R.id.ti_adunit_id);
+        TextInputLayout tiAdUnitId = dialogBinding.tiAdunitId;
         tiAdUnitId.setHint(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_hint_adunit_id));
-        EditText edAdUnitId = rootView.findViewById(R.id.ed_adunit_id);
+        EditText edAdUnitId = dialogBinding.edAdunitId;
         SB adUnitValidator = new SB(getContext(), tiAdUnitId, 1, 100);
 
         edName.setPrivateImeOptions("defaultInputmode=english;");
-        dialog.setView(rootView);
+        dialog.setView(dialogBinding.getRoot());
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_add), (v, which) -> {
             if (!nameValidator.b()) {
                 edName.requestFocus();
@@ -95,15 +98,14 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
     }
 
     private void initialize(Context context) {
-        wB.a(context, this, R.layout.manage_library_admob_listing);
+        binding = ManageLibraryAdmobListingBinding.inflate(LayoutInflater.from(context), this, true);
         gB.b(this, 600, 200, null);
-        findViewById(R.id.layout_manual_add_ad_unit).setOnClickListener(this);
-        tvWarning = findViewById(R.id.tv_warning);
+        binding.layoutManualAddAdUnit.setOnClickListener(this);
+        tvWarning = binding.tvWarning;
 
-        TextView addManually = findViewById(R.id.tv_manual_add_ad_unit);
-        addManually.setText(Helper.getResString(R.string.design_library_admob_button_manual_add_to_adunit));
+        binding.tvManualAddAdUnit.setText(Helper.getResString(R.string.design_library_admob_button_manual_add_to_adunit));
 
-        RecyclerView listAdUnit = findViewById(R.id.list_ad_unit);
+        RecyclerView listAdUnit = binding.listAdUnit;
         listAdUnit.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         adUnitsAdapter = new AdUnitsAdapter();
         listAdUnit.setAdapter(adUnitsAdapter);
@@ -164,7 +166,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_adunit_item, parent, false));
+            return new ViewHolder(ManageLibrarySettingAdmobAdunitItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
@@ -172,11 +174,11 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
             public final TextView tvUnitId;
             public final ImageView imgDelete;
 
-            public ViewHolder(View itemView) {
-                super(itemView);
-                tvName = itemView.findViewById(R.id.tv_name);
-                tvUnitId = itemView.findViewById(R.id.tv_unit_id);
-                imgDelete = itemView.findViewById(R.id.img_delete);
+            public ViewHolder(ManageLibrarySettingAdmobAdunitItemBinding binding) {
+                super(binding.getRoot());
+                tvName = binding.tvName;
+                tvUnitId = binding.tvUnitId;
+                imgDelete = binding.imgDelete;
                 imgDelete.setOnClickListener(view -> deleteAdUnit(getLayoutPosition()));
             }
         }
