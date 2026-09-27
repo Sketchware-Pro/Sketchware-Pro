@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -23,8 +21,12 @@ import a.a.a.mB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.KeystoreNewBinding;
 
 public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClickListener {
+
+    public KeystoreNewBinding binding;
+
     private final int validityInYears = 25;
     private RB organizationValidator;
     private RB localityValidator;
@@ -140,10 +142,12 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
             finish();
         }
 
-        setContentView(R.layout.keystore_new);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        binding = KeystoreNewBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_new_certificate));
         getSupportActionBar().setSubtitle("Export path: " + wq.D);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -151,32 +155,29 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         E = new iI();
 
-
-        Button var2 = findViewById(R.id.btn_keystore_save);
-        var2.setOnClickListener(this);
-        var2 = findViewById(R.id.btn_keystore_cancel);
-        var2.setOnClickListener(this);
-        alias = findViewById(R.id.et_keystore_alias);
-        TextInputLayout tilAlias = findViewById(R.id.ti_keystore_alias);
-        password = findViewById(R.id.et_keystore_passwd);
-        TextInputLayout tilPassword = findViewById(R.id.ti_keystore_passwd);
-        passwordConfirm = findViewById(R.id.et_keystore_passwd1);
-        TextInputLayout tilPasswordConfirm = findViewById(R.id.ti_keystore_passwd1);
-        EditText validity = findViewById(R.id.et_valid_year);
+        binding.btnKeystoreSave.setOnClickListener(this);
+        binding.btnKeystoreCancel.setOnClickListener(this);
+        alias = binding.etKeystoreAlias;
+        TextInputLayout tilAlias = binding.tiKeystoreAlias;
+        password = binding.etKeystorePasswd;
+        TextInputLayout tilPassword = binding.tiKeystorePasswd;
+        passwordConfirm = binding.etKeystorePasswd1;
+        TextInputLayout tilPasswordConfirm = binding.tiKeystorePasswd1;
+        EditText validity = binding.etValidYear;
         validity.setText(String.valueOf(validityInYears));
-        ((TextView) findViewById(R.id.tv_cert_title)).setText(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_certificate));
-        commonName = findViewById(R.id.et_dn_cn);
-        TextInputLayout tilCommonName = findViewById(R.id.ti_dn_cn);
-        organizationalUnit = findViewById(R.id.et_dn_ou);
-        TextInputLayout tilOrganizationalUnit = findViewById(R.id.ti_dn_ou);
-        organization = findViewById(R.id.et_dn_o);
-        TextInputLayout tilOrganization = findViewById(R.id.ti_dn_o);
-        locality = findViewById(R.id.et_dn_l);
-        TextInputLayout tilLocality = findViewById(R.id.ti_dn_l);
-        state = findViewById(R.id.et_dn_st);
-        TextInputLayout tilState = findViewById(R.id.ti_dn_st);
-        country = findViewById(R.id.et_dn_c);
-        TextInputLayout tilCountry = findViewById(R.id.ti_dn_c);
+        binding.tvCertTitle.setText(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_certificate));
+        commonName = binding.etDnCn;
+        TextInputLayout tilCommonName = binding.tiDnCn;
+        organizationalUnit = binding.etDnOu;
+        TextInputLayout tilOrganizationalUnit = binding.tiDnOu;
+        organization = binding.etDnO;
+        TextInputLayout tilOrganization = binding.tiDnO;
+        locality = binding.etDnL;
+        TextInputLayout tilLocality = binding.tiDnL;
+        state = binding.etDnSt;
+        TextInputLayout tilState = binding.tiDnSt;
+        country = binding.etDnC;
+        TextInputLayout tilCountry = binding.tiDnC;
 
 
         aliasValidator = new VB(getApplicationContext(), tilAlias);
