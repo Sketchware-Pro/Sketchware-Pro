@@ -72,9 +72,11 @@ android {
     }
 }
 
-configurations.configureEach {
-    exclude group: "xmlpull", module: "xmlpull"
-    exclude group: "net.sf.kxml", module: "kxml2"
+configurations.configureEach { configuration ->
+    if (!configuration.name.toLowerCase().contains("lint")) {
+        configuration.exclude group: "xmlpull", module: "xmlpull"
+        configuration.exclude group: "net.sf.kxml", module: "kxml2"
+    }
 }
 
 dependencies {
