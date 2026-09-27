@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -61,8 +62,16 @@ import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.BlockUtil;
 import mod.jbk.util.SoundPlayingAdapter;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageCollectionBinding;
+import pro.sketchware.databinding.ManageCollectionBlockListItemBinding;
+import pro.sketchware.databinding.ManageCollectionMoreBlockListItemBinding;
+import pro.sketchware.databinding.ManageCollectionWidgetListItemBinding;
+import pro.sketchware.databinding.ManageFontListItemBinding;
+import pro.sketchware.databinding.ManageImageListItemBinding;
+import pro.sketchware.databinding.ManageSoundListItemBinding;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
+    public ManageCollectionBinding binding;
     private static final int REQUEST_CODE_ADD_IMAGE_DIALOG = 267;
     private static final int REQUEST_CODE_SHOW_IMAGE_DETAILS = 268;
     private static final int REQUEST_CODE_ADD_SOUND_DIALOG = 269;
@@ -345,9 +354,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private void initialize() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         Objects.requireNonNull(getSupportActionBar()).setTitle(Helper.getResString(R.string.design_actionbar_title_manager_collection));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -357,18 +366,18 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
         });
 
-        noItemsNote = findViewById(R.id.tv_no_collections);
+        noItemsNote = binding.tvNoCollections;
         noItemsNote.setText(Helper.getResString(R.string.event_message_no_events));
-        categories = findViewById(R.id.category_list);
-        collection = findViewById(R.id.collection_list);
+        categories = binding.categoryList;
+        collection = binding.collectionList;
         collectionAdapter = new CollectionAdapter(collection);
         collection.setAdapter(collectionAdapter);
-        fab = findViewById(R.id.fab);
+        fab = binding.fab;
         fab.setOnClickListener(this);
-        actionButtonGroup = findViewById(R.id.layout_btn_group);
+        actionButtonGroup = binding.layoutBtnGroup;
 
-        MaterialButton delete = findViewById(R.id.btn_delete);
-        MaterialButton cancel = findViewById(R.id.btn_cancel);
+        Button delete = binding.btnDelete;
+        Button cancel = binding.btnCancel;
         delete.setText(Helper.getResString(R.string.common_word_delete));
         cancel.setText(Helper.getResString(R.string.common_word_cancel));
         delete.setOnClickListener(this);
@@ -439,7 +448,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             finish();
         }
 
-        setContentView(R.layout.manage_collection);
+        binding = ManageCollectionBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         initialize();
     }
 
@@ -827,19 +837,20 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         @Override
         @NonNull
         public SoundPlayingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             return switch (viewType) {
                 case 0 ->
-                        new ImageCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
+                        new ImageCollectionViewHolder(ManageImageListItemBinding.inflate(inflater, parent, false));
                 case 1 ->
-                        new SoundCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
+                        new SoundCollectionViewHolder(ManageSoundListItemBinding.inflate(inflater, parent, false));
                 case 2 ->
-                        new FontCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_font_list_item, parent, false));
+                        new FontCollectionViewHolder(ManageFontListItemBinding.inflate(inflater, parent, false));
                 case 3 ->
-                        new WidgetCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_widget_list_item, parent, false));
+                        new WidgetCollectionViewHolder(ManageCollectionWidgetListItemBinding.inflate(inflater, parent, false));
                 case 4 ->
-                        new BlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_block_list_item, parent, false));
+                        new BlockCollectionViewHolder(ManageCollectionBlockListItemBinding.inflate(inflater, parent, false));
                 default ->
-                        new MoreBlockCollectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_collection_more_block_list_item, parent, false));
+                        new MoreBlockCollectionViewHolder(ManageCollectionMoreBlockListItemBinding.inflate(inflater, parent, false));
             };
         }
 
@@ -875,14 +886,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             public final TextView name;
             public final LinearLayout deleteContainer;
 
-            public BlockCollectionViewHolder(View itemView) {
-                super(itemView);
-                cardView = itemView.findViewById(R.id.layout_item);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                blockIcon = itemView.findViewById(R.id.img_block);
-                delete = itemView.findViewById(R.id.img_delete);
-                name = itemView.findViewById(R.id.tv_block_name);
-                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+            public BlockCollectionViewHolder(ManageCollectionBlockListItemBinding binding) {
+                super(binding.getRoot());
+                cardView = binding.layoutItem;
+                checkBox = binding.chkSelect;
+                blockIcon = binding.imgBlock;
+                delete = binding.imgDelete;
+                name = binding.tvBlockName;
+                deleteContainer = binding.deleteImgContainer;
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
                     lastSelectedItemPosition = getLayoutPosition();
@@ -913,16 +924,16 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             public final TextView preview;
             public final LinearLayout deleteContainer;
 
-            public FontCollectionViewHolder(View itemView) {
-                super(itemView);
-                cardView = itemView.findViewById(R.id.layout_item);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                fontIcon = itemView.findViewById(R.id.img_font);
+            public FontCollectionViewHolder(ManageFontListItemBinding binding) {
+                super(binding.getRoot());
+                cardView = binding.layoutItem;
+                checkBox = binding.chkSelect;
+                fontIcon = binding.imgFont;
                 fontIcon.setVisibility(View.GONE);
-                delete = itemView.findViewById(R.id.img_delete);
-                name = itemView.findViewById(R.id.tv_font_name);
-                deleteContainer = itemView.findViewById(R.id.delete_img_container);
-                preview = itemView.findViewById(R.id.tv_font_preview);
+                delete = binding.imgDelete;
+                name = binding.tvFontName;
+                deleteContainer = binding.deleteImgContainer;
+                preview = binding.tvFontPreview;
                 preview.setText(Helper.getResString(R.string.common_word_preview));
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
@@ -953,14 +964,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             public final ImageView ninePatchIcon;
             public final LinearLayout deleteContainer;
 
-            public ImageCollectionViewHolder(View itemView) {
-                super(itemView);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                name = itemView.findViewById(R.id.tv_image_name);
-                image = itemView.findViewById(R.id.img);
-                delete = itemView.findViewById(R.id.img_delete);
-                deleteContainer = itemView.findViewById(R.id.delete_img_container);
-                ninePatchIcon = itemView.findViewById(R.id.img_nine_patch);
+            public ImageCollectionViewHolder(ManageImageListItemBinding binding) {
+                super(binding.getRoot());
+                checkBox = binding.chkSelect;
+                name = binding.tvImageName;
+                image = binding.img;
+                delete = binding.imgDelete;
+                deleteContainer = binding.deleteImgContainer;
+                ninePatchIcon = binding.imgNinePatch;
                 checkBox.setVisibility(View.GONE);
                 image.setOnClickListener(v -> {
                     lastSelectedItemPosition = getLayoutPosition();
@@ -990,14 +1001,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             public final TextView name;
             public final RelativeLayout blockArea;
 
-            public MoreBlockCollectionViewHolder(View itemView) {
-                super(itemView);
-                cardView = itemView.findViewById(R.id.layout_item);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                delete = itemView.findViewById(R.id.img_delete);
-                deleteContainer = itemView.findViewById(R.id.delete_img_container);
-                name = itemView.findViewById(R.id.tv_block_name);
-                blockArea = itemView.findViewById(R.id.block_area);
+            public MoreBlockCollectionViewHolder(ManageCollectionMoreBlockListItemBinding binding) {
+                super(binding.getRoot());
+                cardView = binding.layoutItem;
+                checkBox = binding.chkSelect;
+                delete = binding.imgDelete;
+                deleteContainer = binding.deleteImgContainer;
+                name = binding.tvBlockName;
+                blockArea = binding.blockArea;
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
                     lastSelectedItemPosition = getLayoutPosition();
@@ -1033,18 +1044,18 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
             private AudioMetadata audioMetadata;
 
-            public SoundCollectionViewHolder(View itemView) {
-                super(itemView);
-                cardView = itemView.findViewById(R.id.layout_item);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                album = itemView.findViewById(R.id.img_album);
-                name = itemView.findViewById(R.id.tv_sound_name);
-                play = itemView.findViewById(R.id.img_play);
-                delete = itemView.findViewById(R.id.img_delete);
-                currentPosition = itemView.findViewById(R.id.tv_currenttime);
-                playbackProgress = itemView.findViewById(R.id.prog_playtime);
-                totalDuration = itemView.findViewById(R.id.tv_endtime);
-                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+            public SoundCollectionViewHolder(ManageSoundListItemBinding binding) {
+                super(binding.getRoot());
+                cardView = binding.layoutItem;
+                checkBox = binding.chkSelect;
+                album = binding.imgAlbum;
+                name = binding.tvSoundName;
+                play = binding.imgPlay;
+                delete = binding.imgDelete;
+                currentPosition = binding.tvCurrenttime;
+                playbackProgress = binding.progPlaytime;
+                totalDuration = binding.tvEndtime;
+                deleteContainer = binding.deleteImgContainer;
                 checkBox.setVisibility(View.GONE);
                 play.setOnClickListener(v -> {
                     if (selectingToBeDeletedItems) {
@@ -1089,14 +1100,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             public final TextView name;
             public final LinearLayout deleteContainer;
 
-            public WidgetCollectionViewHolder(View itemView) {
-                super(itemView);
-                cardView = itemView.findViewById(R.id.layout_item);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                widgetIcon = itemView.findViewById(R.id.img_widget);
-                delete = itemView.findViewById(R.id.img_delete);
-                name = itemView.findViewById(R.id.tv_widget_name);
-                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+            public WidgetCollectionViewHolder(ManageCollectionWidgetListItemBinding binding) {
+                super(binding.getRoot());
+                cardView = binding.layoutItem;
+                checkBox = binding.chkSelect;
+                widgetIcon = binding.imgWidget;
+                delete = binding.imgDelete;
+                name = binding.tvWidgetName;
+                deleteContainer = binding.deleteImgContainer;
                 checkBox.setVisibility(View.GONE);
                 cardView.setOnClickListener(v -> {
                     lastSelectedItemPosition = getLayoutPosition();
