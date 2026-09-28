@@ -39,12 +39,14 @@ import mod.bobur.VectorDrawableLoader;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ImagePickerItemBinding;
+import pro.sketchware.databinding.PropertyResourceItemBinding;
 import pro.sketchware.databinding.SearchWithRecyclerViewBinding;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.SvgUtils;
 
 public class PropertyResourceItem extends RelativeLayout implements View.OnClickListener {
 
+    public PropertyResourceItemBinding binding;
     private final SvgUtils svgUtils;
     private final FilePathUtil fpu = new FilePathUtil();
     private final Map<String, View> imageCache = new HashMap<>();
@@ -88,8 +90,8 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
                 m = R.drawable.ic_mtrl_background_dots;
             }
             if (l.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(R.id.img_icon)).setImageResource(m);
-                ((TextView) findViewById(R.id.tv_title)).setText(getContext().getString(identifier));
+                binding.propertyMenuItem.imgIcon.setImageResource(m);
+                binding.propertyMenuItem.tvTitle.setText(getContext().getString(identifier));
             } else {
                 h.setImageResource(m);
             }
@@ -160,13 +162,13 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
     }
 
     public final void a(Context context, boolean z, boolean z2) {
-        wB.a(context, this, R.layout.property_resource_item);
-        e = findViewById(R.id.tv_name);
-        f = findViewById(R.id.tv_value);
-        g = findViewById(R.id.view_image);
-        h = findViewById(R.id.img_left_icon);
-        k = findViewById(R.id.property_item);
-        l = findViewById(R.id.property_menu_item);
+        binding = PropertyResourceItemBinding.inflate(LayoutInflater.from(context), this, true);
+        e = binding.tvName;
+        f = binding.tvValue;
+        g = binding.viewImage;
+        h = binding.imgLeftIcon;
+        k = binding.propertyItem;
+        l = binding.propertyMenuItem.getRoot();
         d = z2;
     }
 

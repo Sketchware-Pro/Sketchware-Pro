@@ -2,6 +2,7 @@ package com.besome.sketch.editor.property;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,14 +13,16 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import a.a.a.Kw;
 import a.a.a.mB;
-import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyInputItemBinding;
+import pro.sketchware.databinding.PropertyPopupInputSizeBinding;
 import pro.sketchware.lib.validator.MinMaxInputValidator;
 
 @SuppressLint("ViewConstructor")
 public class PropertySizeItem extends RelativeLayout implements View.OnClickListener {
 
+    public PropertyInputItemBinding binding;
     private Context context;
     private String key = "";
     private int value = 1;
@@ -47,8 +50,8 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
             tvName.setText(Helper.getResString(identifier));
             icon = R.drawable.ic_mtrl_expand;
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
+                binding.propertyMenuItem.imgIcon.setImageResource(icon);
+                binding.propertyMenuItem.tvTitle.setText(Helper.getResString(identifier));
             } else {
                 imgLeftIcon.setImageResource(icon);
             }
@@ -94,12 +97,12 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
 
     private void initialize(Context context, boolean z) {
         this.context = context;
-        wB.a(context, this, R.layout.property_input_item);
-        tvName = findViewById(R.id.tv_name);
-        tvValue = findViewById(R.id.tv_value);
-        imgLeftIcon = findViewById(R.id.img_left_icon);
-        propertyItem = findViewById(R.id.property_item);
-        propertyMenuItem = findViewById(R.id.property_menu_item);
+        binding = PropertyInputItemBinding.inflate(LayoutInflater.from(context), this, true);
+        tvName = binding.tvName;
+        tvValue = binding.tvValue;
+        imgLeftIcon = binding.imgLeftIcon;
+        propertyItem = binding.propertyItem;
+        propertyMenuItem = binding.propertyMenuItem.getRoot();
 //        if (z) {
 //            propertyMenuItem.setSoundEffectsEnabled(true);
 //            propertyMenuItem.setOnClickListener(this);
@@ -110,11 +113,11 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         dialog.setTitle(Helper.getText(tvName));
         dialog.setIcon(icon);
-        View view = wB.a(getContext(), R.layout.property_popup_input_size);
-        EditText input = view.findViewById(R.id.et_input);
-        MinMaxInputValidator validator = new MinMaxInputValidator(context, view.findViewById(R.id.ti_input), 0, 999);
+        PropertyPopupInputSizeBinding popupBinding = PropertyPopupInputSizeBinding.inflate(LayoutInflater.from(getContext()));
+        EditText input = popupBinding.etInput;
+        MinMaxInputValidator validator = new MinMaxInputValidator(context, popupBinding.tiInput, 0, 999);
         validator.a(String.valueOf(value));
-        dialog.setView(view);
+        dialog.setView(popupBinding.getRoot());
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             if (validator.b()) {
                 setValue(Integer.parseInt(Helper.getText(input)));

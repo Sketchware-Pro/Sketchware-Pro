@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -15,13 +16,14 @@ import java.util.Objects;
 
 import a.a.a.Kw;
 import a.a.a.mB;
-import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyColorItemBinding;
 
 @SuppressLint("ViewConstructor")
 public class PropertyColorItem extends RelativeLayout implements View.OnClickListener {
 
+    public PropertyColorItemBinding binding;
     private Context context;
     private String key;
     private String sc_id;
@@ -56,8 +58,8 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         if (identifier > 0) {
             tvName.setText(Helper.getResString(identifier));
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(R.id.img_icon)).setImageResource(R.drawable.ic_mtrl_palette);
-                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
+                binding.propertyMenuItem.imgIcon.setImageResource(R.drawable.ic_mtrl_palette);
+                binding.propertyMenuItem.tvTitle.setText(Helper.getResString(identifier));
                 return;
             }
             imgLeftIcon.setImageResource(R.drawable.ic_mtrl_palette);
@@ -127,13 +129,13 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
 
     private void initialize(Context context, boolean z) {
         this.context = context;
-        wB.a(context, this, R.layout.property_color_item);
-        tvName = findViewById(R.id.tv_name);
-        tvValue = findViewById(R.id.tv_value);
-        viewColor = findViewById(R.id.view_color);
-        imgLeftIcon = findViewById(R.id.img_left_icon);
-        propertyItem = findViewById(R.id.property_item);
-        propertyMenuItem = findViewById(R.id.property_menu_item);
+        binding = PropertyColorItemBinding.inflate(LayoutInflater.from(context), this, true);
+        tvName = binding.tvName;
+        tvValue = binding.tvValue;
+        viewColor = binding.viewColor;
+        imgLeftIcon = binding.imgLeftIcon;
+        propertyItem = binding.propertyItem;
+        propertyMenuItem = binding.propertyMenuItem.getRoot();
 //        if (z) {
 //            propertyMenuItem.setOnClickListener(this);
 //            propertyMenuItem.setSoundEffectsEnabled(true);

@@ -1,7 +1,5 @@
 package com.besome.sketch.editor.property;
 
-import pro.sketchware.R;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -31,7 +29,6 @@ import java.util.List;
 
 import a.a.a.Kw;
 import a.a.a.mB;
-import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyInputItemBinding;
@@ -73,6 +70,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
             "android:layout_above", "android:layout_below"
     );
 
+    public PropertyInputItemBinding binding;
     private final ArrayList<ViewBean> beans = new ArrayList<>();
     private String key = "";
     private HashMap<String, String> value = new HashMap<>();
@@ -91,12 +89,12 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
     }
 
     private void initialize(Context context, boolean z) {
-        wB.a(context, this, R.layout.property_input_item);
-        tvName = findViewById(R.id.tv_name);
-        tvValue = findViewById(R.id.tv_value);
-        imgLeftIcon = findViewById(R.id.img_left_icon);
-        propertyItem = findViewById(R.id.property_item);
-        propertyMenuItem = findViewById(R.id.property_menu_item);
+        binding = PropertyInputItemBinding.inflate(LayoutInflater.from(context), this, true);
+        tvName = binding.tvName;
+        tvValue = binding.tvValue;
+        imgLeftIcon = binding.imgLeftIcon;
+        propertyItem = binding.propertyItem;
+        propertyMenuItem = binding.propertyMenuItem.getRoot();
 //        if (z) {
 //            propertyMenuItem.setOnClickListener(this);
 //            propertyMenuItem.setSoundEffectsEnabled(true);
@@ -115,8 +113,8 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
             tvName.setText(Helper.getResString(identifier));
             int icon = R.drawable.ic_property_parent_attr;
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
+                binding.propertyMenuItem.imgIcon.setImageResource(icon);
+                binding.propertyMenuItem.tvTitle.setText(Helper.getResString(identifier));
                 return;
             }
             tvValue.setText("Configure parent attributes");
@@ -282,7 +280,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                 binding.tvName.setText(attr);
                 binding.tvValue.setText("@id/" + value.get(attr));
                 binding.imgLeftIcon.setImageResource(R.drawable.ic_mtrl_code);
-                binding.getRoot().findViewById(R.id.property_menu_item).setVisibility(View.GONE);
+                binding.propertyMenuItem.getRoot().setVisibility(View.GONE);
                 itemView.setOnClickListener(v -> {
                     var filteredIds = new ArrayList<>(ids);
                     filteredIds.remove(value.get(attr));
@@ -327,7 +325,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
             void bind(String attr) {
                 binding.tvName.setText(attr);
                 binding.imgLeftIcon.setImageResource(R.drawable.ic_mtrl_code);
-                binding.getRoot().findViewById(R.id.property_menu_item).setVisibility(View.GONE);
+                binding.propertyMenuItem.getRoot().setVisibility(View.GONE);
                 binding.switchValue.setChecked(Boolean.parseBoolean(value.get(attr)));
                 itemView.setOnClickListener(v -> {
                     binding.switchValue.setChecked(!binding.switchValue.isChecked());

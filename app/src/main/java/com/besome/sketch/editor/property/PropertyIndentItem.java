@@ -14,15 +14,16 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import a.a.a.Kw;
 import a.a.a.mB;
-import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyInputItemBinding;
 import pro.sketchware.databinding.PropertyPopupInputIndentBinding;
 import pro.sketchware.lib.validator.MinMaxInputValidator;
 
 @SuppressLint("ViewConstructor")
 public class PropertyIndentItem extends RelativeLayout implements View.OnClickListener {
 
+    public PropertyInputItemBinding binding;
     /**
      * Left margin in dp
      */
@@ -73,8 +74,8 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                     break;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
+                binding.propertyMenuItem.imgIcon.setImageResource(icon);
+                binding.propertyMenuItem.tvTitle.setText(Helper.getResString(identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);
@@ -117,12 +118,12 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
 
     private void initialize(Context context, boolean z) {
         this.context = context;
-        wB.a(context, this, R.layout.property_input_item);
-        tvName = findViewById(R.id.tv_name);
-        tvValue = findViewById(R.id.tv_value);
-        imgLeftIcon = findViewById(R.id.img_left_icon);
-        propertyItem = findViewById(R.id.property_item);
-        propertyMenuItem = findViewById(R.id.property_menu_item);
+        binding = PropertyInputItemBinding.inflate(LayoutInflater.from(context), this, true);
+        tvName = binding.tvName;
+        tvValue = binding.tvValue;
+        imgLeftIcon = binding.imgLeftIcon;
+        propertyItem = binding.propertyItem;
+        propertyMenuItem = binding.propertyMenuItem.getRoot();
 //        if (z) {
 //            propertyMenuItem.setSoundEffectsEnabled(true);
 //            propertyMenuItem.setOnClickListener(this);
@@ -144,17 +145,17 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         dialog.setTitle(propertyType);
         dialog.setIcon(icon);
 
-        PropertyPopupInputIndentBinding binding = PropertyPopupInputIndentBinding.inflate(LayoutInflater.from(getContext()));
-        View view = binding.getRoot();
+        PropertyPopupInputIndentBinding popupBinding = PropertyPopupInputIndentBinding.inflate(LayoutInflater.from(getContext()));
+        View view = popupBinding.getRoot();
 
-        binding.tiAll.setHint(String.format(Helper.getResString(R.string.property_enter_value), propertyType.toLowerCase()));
-        binding.chkPtyAll.setText(String.format("%s on all sides", propertyType));
+        popupBinding.tiAll.setHint(String.format(Helper.getResString(R.string.property_enter_value), propertyType.toLowerCase()));
+        popupBinding.chkPtyAll.setText(String.format("%s on all sides", propertyType));
 
-        MinMaxInputValidator ti_all = new MinMaxInputValidator(context, binding.tiAll, 0, 999);
-        MinMaxInputValidator ti_left = new MinMaxInputValidator(context, binding.tiLeft, 0, 999);
-        MinMaxInputValidator ti_right = new MinMaxInputValidator(context, binding.tiRight, 0, 999);
-        MinMaxInputValidator ti_top = new MinMaxInputValidator(context, binding.tiTop, 0, 999);
-        MinMaxInputValidator ti_bottom = new MinMaxInputValidator(context, binding.tiBottom, 0, 999);
+        MinMaxInputValidator ti_all = new MinMaxInputValidator(context, popupBinding.tiAll, 0, 999);
+        MinMaxInputValidator ti_left = new MinMaxInputValidator(context, popupBinding.tiLeft, 0, 999);
+        MinMaxInputValidator ti_right = new MinMaxInputValidator(context, popupBinding.tiRight, 0, 999);
+        MinMaxInputValidator ti_top = new MinMaxInputValidator(context, popupBinding.tiTop, 0, 999);
+        MinMaxInputValidator ti_bottom = new MinMaxInputValidator(context, popupBinding.tiBottom, 0, 999);
 
         ti_left.a(String.valueOf(j));
         ti_top.a(String.valueOf(k));
@@ -163,29 +164,29 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
 
         if (j == k && k == l && l == m) { // All sides are equal
             ti_all.a(String.valueOf(j));
-            binding.chkPtyAll.setChecked(true);
+            popupBinding.chkPtyAll.setChecked(true);
         } else {
-            binding.individualPaddingView.setVisibility(VISIBLE);
-            binding.allPaddingView.setVisibility(GONE);
+            popupBinding.individualPaddingView.setVisibility(VISIBLE);
+            popupBinding.allPaddingView.setVisibility(GONE);
         }
 
-        binding.chkPtyAll.setOnClickListener(v -> {
-            if (binding.chkPtyAll.isChecked()) {
-                binding.individualPaddingView.setVisibility(GONE);
-                binding.allPaddingView.setVisibility(VISIBLE);
-                binding.etLeft.setText(Helper.getText(binding.etAll));
-                binding.etLeft.clearFocus();
-                binding.etTop.clearFocus();
-                binding.etRight.clearFocus();
-                binding.etBottom.clearFocus();
+        popupBinding.chkPtyAll.setOnClickListener(v -> {
+            if (popupBinding.chkPtyAll.isChecked()) {
+                popupBinding.individualPaddingView.setVisibility(GONE);
+                popupBinding.allPaddingView.setVisibility(VISIBLE);
+                popupBinding.etLeft.setText(Helper.getText(popupBinding.etAll));
+                popupBinding.etLeft.clearFocus();
+                popupBinding.etTop.clearFocus();
+                popupBinding.etRight.clearFocus();
+                popupBinding.etBottom.clearFocus();
             } else {
-                binding.individualPaddingView.setVisibility(VISIBLE);
-                binding.allPaddingView.setVisibility(GONE);
-                binding.etAll.clearFocus();
+                popupBinding.individualPaddingView.setVisibility(VISIBLE);
+                popupBinding.allPaddingView.setVisibility(GONE);
+                popupBinding.etAll.clearFocus();
             }
         });
 
-        binding.etAll.addTextChangedListener(new TextWatcher() {
+        popupBinding.etAll.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -196,33 +197,33 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
 
             @Override
             public void afterTextChanged(Editable s) {
-                ti_left.a(Helper.getText(binding.etAll));
-                ti_top.a(Helper.getText(binding.etAll));
-                ti_right.a(Helper.getText(binding.etAll));
-                ti_bottom.a(Helper.getText(binding.etAll));
+                ti_left.a(Helper.getText(popupBinding.etAll));
+                ti_top.a(Helper.getText(popupBinding.etAll));
+                ti_right.a(Helper.getText(popupBinding.etAll));
+                ti_bottom.a(Helper.getText(popupBinding.etAll));
             }
         });
 
-        binding.tvDpAll.setVisibility(View.GONE);
-        binding.tvDpBottom.setVisibility(View.GONE);
-        binding.tvDpLeft.setVisibility(View.GONE);
-        binding.tvDpRight.setVisibility(View.GONE);
-        binding.tvDpTop.setVisibility(View.GONE);
+        popupBinding.tvDpAll.setVisibility(View.GONE);
+        popupBinding.tvDpBottom.setVisibility(View.GONE);
+        popupBinding.tvDpLeft.setVisibility(View.GONE);
+        popupBinding.tvDpRight.setVisibility(View.GONE);
+        popupBinding.tvDpTop.setVisibility(View.GONE);
 
-        binding.tiAll.setSuffixText("dp");
-        binding.tiBottom.setSuffixText("dp");
-        binding.tiLeft.setSuffixText("dp");
-        binding.tiRight.setSuffixText("dp");
-        binding.tiTop.setSuffixText("dp");
+        popupBinding.tiAll.setSuffixText("dp");
+        popupBinding.tiBottom.setSuffixText("dp");
+        popupBinding.tiLeft.setSuffixText("dp");
+        popupBinding.tiRight.setSuffixText("dp");
+        popupBinding.tiTop.setSuffixText("dp");
 
         dialog.setView(view);
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
-            if (binding.chkPtyAll.isChecked()) {
+            if (popupBinding.chkPtyAll.isChecked()) {
                 if (ti_all.b() && ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
-                    int left = Integer.parseInt(Helper.getText(binding.etLeft));
-                    int top = Integer.parseInt(Helper.getText(binding.etTop));
-                    int right = Integer.parseInt(Helper.getText(binding.etRight));
-                    int bottom = Integer.parseInt(Helper.getText(binding.etBottom));
+                    int left = Integer.parseInt(Helper.getText(popupBinding.etLeft));
+                    int top = Integer.parseInt(Helper.getText(popupBinding.etTop));
+                    int right = Integer.parseInt(Helper.getText(popupBinding.etRight));
+                    int bottom = Integer.parseInt(Helper.getText(popupBinding.etBottom));
                     a(left, top, right, bottom);
                     if (valueChangeListener != null) {
                         valueChangeListener.a(key, new int[]{left, top, right, bottom});
@@ -230,10 +231,10 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                     }
                 }
             } else if (ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
-                int left = Integer.parseInt(Helper.getText(binding.etLeft));
-                int top = Integer.parseInt(Helper.getText(binding.etTop));
-                int right = Integer.parseInt(Helper.getText(binding.etRight));
-                int bottom = Integer.parseInt(Helper.getText(binding.etBottom));
+                int left = Integer.parseInt(Helper.getText(popupBinding.etLeft));
+                int top = Integer.parseInt(Helper.getText(popupBinding.etTop));
+                int right = Integer.parseInt(Helper.getText(popupBinding.etRight));
+                int bottom = Integer.parseInt(Helper.getText(popupBinding.etBottom));
                 a(left, top, right, bottom);
                 if (valueChangeListener != null) {
                     valueChangeListener.a(key, new int[]{left, top, right, bottom});

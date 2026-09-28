@@ -2,6 +2,7 @@ package com.besome.sketch.editor.property;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,13 +12,14 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 
 import a.a.a.Kw;
 import a.a.a.mB;
-import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.PropertySwitchItemSinglelineBinding;
 
 @SuppressLint("ViewConstructor")
 public class PropertySwitchSingleLineItem extends LinearLayout implements View.OnClickListener {
 
+    public PropertySwitchItemSinglelineBinding binding;
     private String key = "";
     private boolean value = false;
     private TextView tvName;
@@ -34,12 +36,12 @@ public class PropertySwitchSingleLineItem extends LinearLayout implements View.O
     }
 
     private void initialize(Context context, boolean z) {
-        wB.a(context, this, R.layout.property_switch_item_singleline);
-        tvName = findViewById(R.id.tv_name);
-        switchValue = findViewById(R.id.switch_value);
-        imgLeftIcon = findViewById(R.id.img_left_icon);
-        propertyItem = findViewById(R.id.property_item);
-        propertyMenuItem = findViewById(R.id.property_menu_item);
+        binding = PropertySwitchItemSinglelineBinding.inflate(LayoutInflater.from(context), this, true);
+        tvName = binding.tvName;
+        switchValue = binding.switchValue;
+        imgLeftIcon = binding.imgLeftIcon;
+        propertyItem = binding.propertyItem;
+        propertyMenuItem = binding.propertyMenuItem.getRoot();
 //        if (z) {
 //            propertyMenuItem.setOnClickListener(this);
 //            propertyMenuItem.setSoundEffectsEnabled(true);
@@ -73,8 +75,8 @@ public class PropertySwitchSingleLineItem extends LinearLayout implements View.O
                     icon = R.drawable.ic_mtrl_touch;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
+                binding.propertyMenuItem.imgIcon.setImageResource(icon);
+                binding.propertyMenuItem.tvTitle.setText(Helper.getResString(identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);

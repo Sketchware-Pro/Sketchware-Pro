@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,10 +24,12 @@ import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
+import pro.sketchware.databinding.PropertySelectorItemBinding;
 
 @SuppressLint("ViewConstructor")
 public class PropertyCustomViewItem extends RelativeLayout implements View.OnClickListener {
 
+    public PropertySelectorItemBinding binding;
     private String key = "";
     private String value = "";
     private TextView tvName;
@@ -94,12 +97,12 @@ public class PropertyCustomViewItem extends RelativeLayout implements View.OnCli
     }
 
     private void a(boolean var2) {
-        wB.a(getContext(), this, R.layout.property_selector_item);
-        tvName = findViewById(R.id.tv_name);
-        tvValue = findViewById(R.id.tv_value);
-        propertyItem = findViewById(R.id.property_item);
-        propertyMenuItem = findViewById(R.id.property_menu_item);
-        imgLeftIcon = findViewById(R.id.img_left_icon);
+        binding = PropertySelectorItemBinding.inflate(LayoutInflater.from(getContext()), this, true);
+        tvName = binding.tvName;
+        tvValue = binding.tvValue;
+        propertyItem = binding.propertyItem;
+        propertyMenuItem = binding.propertyMenuItem.getRoot();
+        imgLeftIcon = binding.imgLeftIcon;
 //        if (var2) {
 //            propertyMenuItem.setOnClickListener(this);
 //            propertyMenuItem.setSoundEffectsEnabled(true);
@@ -117,10 +120,8 @@ public class PropertyCustomViewItem extends RelativeLayout implements View.OnCli
             tvName.setText(var2);
             f = R.drawable.ic_mtrl_interface;
             if (propertyMenuItem.getVisibility() == View.VISIBLE) {
-                ImageView var3 = findViewById(R.id.img_icon);
-                TextView var4 = findViewById(R.id.tv_title);
-                var3.setImageResource(f);
-                var4.setText(var2);
+                binding.propertyMenuItem.imgIcon.setImageResource(f);
+                binding.propertyMenuItem.tvTitle.setText(var2);
             } else {
                 imgLeftIcon.setImageResource(f);
             }

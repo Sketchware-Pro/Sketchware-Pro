@@ -1,6 +1,7 @@
 package com.besome.sketch.editor.property;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
@@ -8,11 +9,11 @@ import android.widget.TextView;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
 
-import a.a.a.wB;
-import pro.sketchware.R;
+import pro.sketchware.databinding.PropertySwitchItemBinding;
 
 public class PropertySwitchItem extends RelativeLayout implements View.OnClickListener {
 
+    public PropertySwitchItemBinding binding;
     private int key = -1;
     private boolean value = false;
     private TextView tvName;
@@ -25,10 +26,10 @@ public class PropertySwitchItem extends RelativeLayout implements View.OnClickLi
     }
 
     private void initialize(Context context) {
-        wB.a(context, this, R.layout.property_switch_item);
-        tvName = findViewById(R.id.tv_name);
-        tvDesc = findViewById(R.id.tv_desc);
-        switchValue = findViewById(R.id.switch_value);
+        binding = PropertySwitchItemBinding.inflate(LayoutInflater.from(context), this, true);
+        tvName = binding.tvName;
+        tvDesc = binding.tvDesc;
+        switchValue = binding.switchValue;
         setOnClickListener(this);
         setSoundEffectsEnabled(true);
     }

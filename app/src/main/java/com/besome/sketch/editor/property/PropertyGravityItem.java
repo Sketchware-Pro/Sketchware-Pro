@@ -3,6 +3,7 @@ package com.besome.sketch.editor.property;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -14,13 +15,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import a.a.a.Kw;
 import a.a.a.mB;
 import a.a.a.sq;
-import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyPopupSelectorGravityBinding;
+import pro.sketchware.databinding.PropertySelectorItemBinding;
 
 @SuppressLint("ViewConstructor")
 public class PropertyGravityItem extends RelativeLayout implements View.OnClickListener {
 
+    public PropertySelectorItemBinding binding;
     private String key = "";
     private int gravityValue = -1;
     private TextView tvName;
@@ -47,8 +50,8 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
             tvName.setText(Helper.getResString(identifier));
             icon = R.drawable.ic_mtrl_center;
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
+                binding.propertyMenuItem.imgIcon.setImageResource(icon);
+                binding.propertyMenuItem.tvTitle.setText(Helper.getResString(identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);
@@ -95,12 +98,12 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
     }
 
     private void initialize(Context context, boolean z) {
-        wB.a(context, this, R.layout.property_selector_item);
-        tvName = findViewById(R.id.tv_name);
-        tvValue = findViewById(R.id.tv_value);
-        imgLeftIcon = findViewById(R.id.img_left_icon);
-        propertyItem = findViewById(R.id.property_item);
-        propertyMenuItem = findViewById(R.id.property_menu_item);
+        binding = PropertySelectorItemBinding.inflate(LayoutInflater.from(context), this, true);
+        tvName = binding.tvName;
+        tvValue = binding.tvValue;
+        imgLeftIcon = binding.imgLeftIcon;
+        propertyItem = binding.propertyItem;
+        propertyMenuItem = binding.propertyMenuItem.getRoot();
 //        if (z) {
 //            propertyMenuItem.setOnClickListener(this);
 //            propertyMenuItem.setSoundEffectsEnabled(true);
@@ -112,14 +115,14 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
         dialog.setTitle(Helper.getText(tvName));
         dialog.setIcon(icon);
 
-        View view = wB.a(getContext(), R.layout.property_popup_selector_gravity);
-        CheckBox chk_left = view.findViewById(R.id.chk_left);
-        CheckBox chk_right = view.findViewById(R.id.chk_right);
-        CheckBox chk_hcenter = view.findViewById(R.id.chk_hcenter);
-        CheckBox chk_top = view.findViewById(R.id.chk_top);
-        CheckBox chk_bottom = view.findViewById(R.id.chk_bottom);
-        CheckBox chk_vcenter = view.findViewById(R.id.chk_vcenter);
-        CheckBox chk_center = view.findViewById(R.id.chk_center);
+        PropertyPopupSelectorGravityBinding popupBinding = PropertyPopupSelectorGravityBinding.inflate(LayoutInflater.from(getContext()));
+        CheckBox chk_left = popupBinding.chkLeft;
+        CheckBox chk_right = popupBinding.chkRight;
+        CheckBox chk_hcenter = popupBinding.chkHcenter;
+        CheckBox chk_top = popupBinding.chkTop;
+        CheckBox chk_bottom = popupBinding.chkBottom;
+        CheckBox chk_vcenter = popupBinding.chkVcenter;
+        CheckBox chk_center = popupBinding.chkCenter;
 
         if (gravityValue == Gravity.CENTER) {
             chk_center.setChecked(true);
@@ -149,7 +152,7 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
             }
         }
 
-        dialog.setView(view);
+        dialog.setView(popupBinding.getRoot());
 
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
             int value = Gravity.NO_GRAVITY;

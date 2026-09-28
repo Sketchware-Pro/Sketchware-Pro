@@ -60,7 +60,6 @@ import a.a.a.jC;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.uq;
-import a.a.a.wB;
 import a.a.a.yB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -78,6 +77,7 @@ import pro.sketchware.utility.FileUtil;
 @SuppressLint("ViewConstructor")
 public class PropertyInputItem extends RelativeLayout implements View.OnClickListener {
 
+    public PropertyInputItemBinding binding;
     private final String stringsStart = "@string/";
     private final ArrayList<HashMap<String, Object>> stringsListMap = new ArrayList<>();
     private Context context;
@@ -137,8 +137,8 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         if (identifier > 0) {
             tvName.setText(Helper.getResString(identifier));
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                setIcon(findViewById(R.id.img_icon));
-                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
+                setIcon(binding.propertyMenuItem.imgIcon);
+                binding.propertyMenuItem.tvTitle.setText(Helper.getResString(identifier));
                 return;
             }
             setIcon(imgLeftIcon);
@@ -459,12 +459,12 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void initialize(Context context, boolean z) {
         this.context = context;
-        wB.a(context, this, R.layout.property_input_item);
-        tvName = findViewById(R.id.tv_name);
-        tvValue = findViewById(R.id.tv_value);
-        imgLeftIcon = findViewById(R.id.img_left_icon);
-        propertyItem = findViewById(R.id.property_item);
-        propertyMenuItem = findViewById(R.id.property_menu_item);
+        binding = PropertyInputItemBinding.inflate(LayoutInflater.from(context), this, true);
+        tvName = binding.tvName;
+        tvValue = binding.tvValue;
+        imgLeftIcon = binding.imgLeftIcon;
+        propertyItem = binding.propertyItem;
+        propertyMenuItem = binding.propertyMenuItem.getRoot();
 //        if (z) {
 //            propertyMenuItem.setSoundEffectsEnabled(true);
 //            propertyMenuItem.setOnClickListener(this);
@@ -1317,7 +1317,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                 binding.tvName.setText(attr);
                 binding.tvValue.setText(attributes.get(attr));
                 binding.imgLeftIcon.setImageResource(R.drawable.ic_mtrl_code);
-                binding.getRoot().findViewById(R.id.property_menu_item).setVisibility(View.GONE);
+                binding.propertyMenuItem.getRoot().setVisibility(View.GONE);
                 itemView.setOnClickListener(
                         view -> {
                             if (listener != null) listener.onItemClick(attributes, attr);

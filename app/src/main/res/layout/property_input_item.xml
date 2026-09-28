@@ -39,5 +39,7 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
-    <include layout="@layout/property_grid_item" />
+    <include
+        android:id="@+id/property_menu_item"
+        layout="@layout/property_grid_item" />
 </RelativeLayout>

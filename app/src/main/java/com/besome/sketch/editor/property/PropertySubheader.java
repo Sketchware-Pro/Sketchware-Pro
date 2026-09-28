@@ -1,16 +1,17 @@
 package com.besome.sketch.editor.property;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import a.a.a.wB;
-import pro.sketchware.R;
+import pro.sketchware.databinding.PropertySubheaderBinding;
 
 public class PropertySubheader extends RelativeLayout {
 
+    public PropertySubheaderBinding binding;
     private ImageView imgAdd;
     private TextView tvName;
 
@@ -20,9 +21,9 @@ public class PropertySubheader extends RelativeLayout {
     }
 
     private void initialize(Context context) {
-        wB.a(context, this, R.layout.property_subheader);
-        tvName = findViewById(R.id.tv_name);
-        imgAdd = findViewById(R.id.img_add);
+        binding = PropertySubheaderBinding.inflate(LayoutInflater.from(context), this, true);
+        tvName = binding.tvName;
+        imgAdd = binding.imgAdd;
     }
 
     public void setHeaderName(String str) {

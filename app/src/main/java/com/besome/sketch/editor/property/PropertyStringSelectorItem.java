@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,10 +21,13 @@ import a.a.a.sq;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
+import pro.sketchware.databinding.PropertySelectorItemBinding;
 
 @SuppressLint("ViewConstructor")
 public class PropertyStringSelectorItem extends RelativeLayout implements View.OnClickListener {
 
+    public PropertySelectorItemBinding binding;
     private String key = "";
     private String value = "";
     private TextView tvName;
@@ -63,8 +67,8 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
                     break;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
+                binding.propertyMenuItem.imgIcon.setImageResource(icon);
+                binding.propertyMenuItem.tvTitle.setText(Helper.getResString(identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);
@@ -106,12 +110,12 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
     }
 
     private void initialize(Context context, boolean z) {
-        wB.a(context, this, R.layout.property_selector_item);
-        tvName = findViewById(R.id.tv_name);
-        tvValue = findViewById(R.id.tv_value);
-        imgLeftIcon = findViewById(R.id.img_left_icon);
-        propertyItem = findViewById(R.id.property_item);
-        propertyMenuItem = findViewById(R.id.property_menu_item);
+        binding = PropertySelectorItemBinding.inflate(LayoutInflater.from(context), this, true);
+        tvName = binding.tvName;
+        tvValue = binding.tvValue;
+        imgLeftIcon = binding.imgLeftIcon;
+        propertyItem = binding.propertyItem;
+        propertyMenuItem = binding.propertyMenuItem.getRoot();
 //        if (z) {
 //            propertyMenuItem.setOnClickListener(this);
 //            propertyMenuItem.setSoundEffectsEnabled(true);
@@ -122,8 +126,8 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         dialog.setTitle(Helper.getText(tvName));
         dialog.setIcon(icon);
-        View view = wB.a(getContext(), R.layout.property_popup_selector_single);
-        radioGroupContent = view.findViewById(R.id.rg_content);
+        PropertyPopupSelectorSingleBinding popupBinding = PropertyPopupSelectorSingleBinding.inflate(LayoutInflater.from(getContext()));
+        radioGroupContent = popupBinding.rgContent;
 
         String[] items = switch (key) {
             case "property_ad_size" -> sq.k;
@@ -144,7 +148,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
             }
         }
 
-        dialog.setView(view);
+        dialog.setView(popupBinding.getRoot());
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
             int childCount = radioGroupContent.getChildCount();
             int counter = 0;

@@ -13,15 +13,16 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import a.a.a.Kw;
 import a.a.a.mB;
 import a.a.a.sq;
-import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupMeasurementBinding;
+import pro.sketchware.databinding.PropertySelectorItemBinding;
 import pro.sketchware.lib.validator.MinMaxInputValidator;
 
 @SuppressLint("ViewConstructor")
 public class PropertyMeasureItem extends RelativeLayout implements View.OnClickListener {
 
+    public PropertySelectorItemBinding binding;
     private String key = "";
     private int measureValue = -1;
     private TextView tvName;
@@ -58,8 +59,8 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         if (identifier > 0) {
             tvName.setText(Helper.getResString(identifier));
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                setIcon(findViewById(R.id.img_icon));
-                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
+                setIcon(binding.propertyMenuItem.imgIcon);
+                binding.propertyMenuItem.tvTitle.setText(Helper.getResString(identifier));
                 return;
             }
             setIcon(imgLeftIcon);
@@ -113,12 +114,12 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
     }
 
     private void initialize(Context context, boolean z) {
-        wB.a(context, this, R.layout.property_selector_item);
-        tvName = findViewById(R.id.tv_name);
-        tvValue = findViewById(R.id.tv_value);
-        imgLeftIcon = findViewById(R.id.img_left_icon);
-        propertyItem = findViewById(R.id.property_item);
-        propertyMenuItem = findViewById(R.id.property_menu_item);
+        binding = PropertySelectorItemBinding.inflate(LayoutInflater.from(context), this, true);
+        tvName = binding.tvName;
+        tvValue = binding.tvValue;
+        imgLeftIcon = binding.imgLeftIcon;
+        propertyItem = binding.propertyItem;
+        propertyMenuItem = binding.propertyMenuItem.getRoot();
 //        if (z) {
 //            propertyMenuItem.setOnClickListener(this);
 //            propertyMenuItem.setSoundEffectsEnabled(true);
@@ -130,48 +131,48 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         dialog.setTitle(Helper.getText(tvName));
         dialog.setIcon(imgLeftIconDrawableResId);
 
-        PropertyPopupMeasurementBinding binding = PropertyPopupMeasurementBinding.inflate(LayoutInflater.from(getContext()));
-        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
+        PropertyPopupMeasurementBinding popupBinding = PropertyPopupMeasurementBinding.inflate(LayoutInflater.from(getContext()));
+        popupBinding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
 
-        MinMaxInputValidator minMaxInputValidator = new MinMaxInputValidator(getContext(), binding.tiInput, 0, 999);
+        MinMaxInputValidator minMaxInputValidator = new MinMaxInputValidator(getContext(), popupBinding.tiInput, 0, 999);
 
-        binding.rgWidthHeight.setOnCheckedChangeListener((group, checkedId) -> {
+        popupBinding.rgWidthHeight.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rb_directinput) {
-                binding.directInput.setVisibility(VISIBLE);
-                minMaxInputValidator.a(Helper.getText(binding.edInput));
+                popupBinding.directInput.setVisibility(VISIBLE);
+                minMaxInputValidator.a(Helper.getText(popupBinding.edInput));
             } else {
-                binding.directInput.setVisibility(GONE);
+                popupBinding.directInput.setVisibility(GONE);
             }
         });
-        binding.rgWidthHeight.clearCheck();
+        popupBinding.rgWidthHeight.clearCheck();
         if (measureValue >= 0) {
             if (isCustomValue) {
-                binding.rgWidthHeight.check(R.id.rb_directinput);
+                popupBinding.rgWidthHeight.check(R.id.rb_directinput);
                 minMaxInputValidator.a(String.valueOf(measureValue));
-                binding.directInput.setVisibility(VISIBLE);
+                popupBinding.directInput.setVisibility(VISIBLE);
             } else {
-                binding.rgWidthHeight.check(R.id.rb_wrapcontent);
+                popupBinding.rgWidthHeight.check(R.id.rb_wrapcontent);
             }
         } else if (measureValue == LayoutParams.MATCH_PARENT) {
-            binding.rgWidthHeight.check(R.id.rb_matchparent);
+            popupBinding.rgWidthHeight.check(R.id.rb_matchparent);
         } else if (isWrapContent) {
-            binding.rgWidthHeight.check(R.id.rb_wrapcontent);
+            popupBinding.rgWidthHeight.check(R.id.rb_wrapcontent);
         } else {
-            binding.rgWidthHeight.check(R.id.rb_matchparent);
+            popupBinding.rgWidthHeight.check(R.id.rb_matchparent);
         }
 
-        binding.tvInputDp.setVisibility(View.GONE);
-        binding.tiInput.setSuffixText("dp");
+        popupBinding.tvInputDp.setVisibility(View.GONE);
+        popupBinding.tiInput.setSuffixText("dp");
 
-        dialog.setView(binding.getRoot());
+        dialog.setView(popupBinding.getRoot());
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
-            int checkedRadioButtonId = binding.rgWidthHeight.getCheckedRadioButtonId();
+            int checkedRadioButtonId = popupBinding.rgWidthHeight.getCheckedRadioButtonId();
             if (checkedRadioButtonId == R.id.rb_matchparent) {
                 setValue(LayoutParams.MATCH_PARENT);
             } else if (checkedRadioButtonId == R.id.rb_wrapcontent) {
                 setValue(LayoutParams.WRAP_CONTENT);
             } else if (minMaxInputValidator.b()) {
-                setValue(Integer.parseInt(Helper.getText(binding.edInput)));
+                setValue(Integer.parseInt(Helper.getText(popupBinding.edInput)));
             } else {
                 return;
             }
