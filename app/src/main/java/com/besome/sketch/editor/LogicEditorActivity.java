@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -1916,6 +1917,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         binding = LogicEditorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            binding.editor.setForceDarkAllowed(false);
+            binding.editor.getBlockPane().setForceDarkAllowed(false);
+        }
         if (!super.isStoragePermissionGranted()) {
             finish();
         }
