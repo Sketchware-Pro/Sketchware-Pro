@@ -294,7 +294,7 @@ public class Ox {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
 
         XmlBuilder widgetTag = convert.isEmpty() ? new XmlBuilder(viewBean.getClassInfo().getClassName()) :
-                new XmlBuilder(convert.replaceAll(" ", ""));
+                new XmlBuilder(convert.replace(" ", ""));
         if (convert.equals("include")) {
             if (!toNotAdd.contains("layout") && !injectHandler.contains("layout")) {
                 widgetTag.addAttribute("", "layout", "@layout/" + viewBean.id);
@@ -435,7 +435,7 @@ public class Ox {
             }
         }
         if (!viewBean.inject.isEmpty()) {
-            widgetTag.addAttributeValue(viewBean.inject.replaceAll(" ", ""));
+            widgetTag.addAttributeValue(viewBean.inject.replace(" ", ""));
         }
 
         if (!viewBean.parentAttributes.isEmpty()) {
