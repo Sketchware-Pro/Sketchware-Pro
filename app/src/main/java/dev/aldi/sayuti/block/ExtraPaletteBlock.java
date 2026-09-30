@@ -542,7 +542,7 @@ public class ExtraPaletteBlock {
                 logicEditor.a(" ", "removeView");
                 logicEditor.a(" ", "removeViews");
                 logicEditor.a(" ", "addView");
-                logicEditor.a("v", "viewGetChildAt");
+                logicEditor.a("", "v", "View", "viewGetChildAt");
                 logicEditor.a(" ", "addViews");
                 logicEditor.a(" ", "setGravity");
                 logicEditor.a(" ", "setColorFilterView");

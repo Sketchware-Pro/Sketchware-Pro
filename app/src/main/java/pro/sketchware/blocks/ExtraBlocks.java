@@ -148,7 +148,7 @@ public class ExtraBlocks {
             logicEditor.a("Menu Item", 0xff555555);
             logicEditor.a(" ", "menuItemSetVisible");
             logicEditor.a(" ", "menuItemSetEnabled");
-            logicEditor.a("v", "menuFindItem");
+            logicEditor.a("", "v", "MenuItem", "menuFindItem");
         }
     }
 

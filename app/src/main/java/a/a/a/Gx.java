@@ -88,6 +88,7 @@ public class Gx {
                 break;
 
             case "View":
+                classInfos = "View";
                 break;
 
             case "TextView":
