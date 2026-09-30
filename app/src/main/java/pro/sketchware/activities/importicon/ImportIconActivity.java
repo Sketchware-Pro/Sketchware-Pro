@@ -4,6 +4,7 @@ package pro.sketchware.activities.importicon;
 import pro.sketchware.R;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -145,7 +146,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         sc_id = getIntent().getStringExtra("sc_id");
         alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
 
-        binding.imageList.setLayoutManager(new GridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
+        binding.imageList.setLayoutManager(new SafeGridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
         adapter = new IconAdapter(this, selected_icon_type, selected_color, this);
         binding.imageList.setAdapter(adapter);
         k();
@@ -235,11 +236,17 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
 
         icons = new ArrayList<>();
         currentPage = 0; // Reset currentPage to zero
+        isLastPage = false;
         Log.d("icons", allIconPaths.toString());
         runOnUiThread(this::loadMoreItems);
     }
 
     private void loadMoreItems() {
+        if (allIconPaths == null || allIconPaths.isEmpty()) {
+            isLoading = false;
+            return;
+        }
+
         int ITEMS_PER_PAGE = 40;
         int start = currentPage * ITEMS_PER_PAGE;
         int end = Math.min(start + ITEMS_PER_PAGE, allIconPaths.size());
@@ -258,19 +265,26 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
 
 
     private void filterIcons(String query) {
-        if (query.isEmpty()) {
+        if (allIconPaths == null) {
+            return;
+        }
+
+        if (query == null || query.trim().isEmpty()) {
             icons.clear();
             currentPage = 0;
+            isLastPage = false;
             loadMoreItems();
             return;
         }
 
-        var filteredIcons = new ArrayList<Pair<String, String>>(allIconPaths.size());
+        var filteredIcons = new ArrayList<Pair<String, String>>();
+        String lowerQuery = query.trim().toLowerCase();
         for (Pair<String, String> icon : allIconPaths) {
-            if (icon.first.toLowerCase().contains(query.toLowerCase())) {
+            if (icon.first != null && icon.first.toLowerCase().contains(lowerQuery)) {
                 filteredIcons.add(icon);
             }
         }
+        isLastPage = true;
         icons.clear();
         icons.addAll(filteredIcons);
         adapter.submitList(new ArrayList<>(icons));
@@ -407,7 +421,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         dialog.setOnShowListener(dialogInterface -> {
             Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
-                if (iconNameValidator.b() && selectedIconPosition >= 0) {
+                if (iconNameValidator.b() && selectedIconPosition >= 0 && adapter != null && selectedIconPosition < adapter.getCurrentList().size()) {
                     String resFullname = adapter.getCurrentList().get(selectedIconPosition).second + File.separator + selected_icon_type + ".svg";
                     Intent intent = new Intent();
                     intent.putExtra("iconName", Helper.getText(dialogBinding.inputText));
@@ -423,6 +437,10 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                 dialogInterface.dismiss();
             });
         });
+
+        if (adapter == null || iconPosition < 0 || iconPosition >= adapter.getCurrentList().size()) {
+            return;
+        }
 
         svgUtils.loadImage(dialogBinding.icon, adapter.getCurrentList().get(iconPosition).second + File.separator + selected_icon_type + ".svg");
         dialogBinding.icon.setColorFilter(selected_color, PorterDuff.Mode.SRC_IN);
@@ -442,6 +460,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     @Override
     public void onIconSelected(int position) {
         if (!mB.a()) {
+            if (adapter == null || position < 0 || position >= adapter.getCurrentList().size()) {
+                return;
+            }
             selectedIconPosition = position;
             setIconName(position);
             showSaveDialog(position);
@@ -510,6 +531,21 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         @Override
         public void a(String str) {
             activity.get().h();
+        }
+    }
+
+    private static class SafeGridLayoutManager extends GridLayoutManager {
+        public SafeGridLayoutManager(Context context, int spanCount) {
+            super(context, spanCount);
+        }
+
+        @Override
+        public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+            try {
+                super.onLayoutChildren(recycler, state);
+            } catch (IndexOutOfBoundsException e) {
+                Log.e("ImportIconActivity", "Inconsistency detected in SafeGridLayoutManager", e);
+            }
         }
     }
 }
