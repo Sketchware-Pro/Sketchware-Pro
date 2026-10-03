@@ -1453,14 +1453,13 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 jC.b(sc_id).m();
                 jC.a(sc_id).j();
                 jC.d(sc_id).x();
-                jC.c(sc_id).l();
+                activity.saveVersionCodeInformationToProject();
+                jC.d(sc_id).f();
+                jC.d(sc_id).g();
+                jC.d(sc_id).e();
                 activity.runOnUiThread(() -> {
                     bB.a(activity.getApplicationContext(), Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
-                    activity.saveVersionCodeInformationToProject();
                     activity.h();
-                    jC.d(sc_id).f();
-                    jC.d(sc_id).g();
-                    jC.d(sc_id).e();
                 });
             }
         }
@@ -1488,9 +1487,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 jC.d(sc_id).x();
                 jC.c(sc_id).l();
                 jC.d(sc_id).h();
+                activity.saveVersionCodeInformationToProject();
                 activity.runOnUiThread(() -> {
                     bB.a(activity.getApplicationContext(), Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
-                    activity.saveVersionCodeInformationToProject();
                     activity.h();
                     activity.finish();
                 });
