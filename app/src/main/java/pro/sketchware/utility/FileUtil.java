@@ -180,16 +180,23 @@ public class FileUtil {
     }
 
     public static String readFileIfExist(String path) {
+        if (path == null || path.isEmpty()) {
+            return "";
+        }
+        File file = new File(path);
+        if (!file.exists() || !file.isFile() || file.length() == 0) {
+            return "";
+        }
         StringBuilder sb = new StringBuilder();
-        try (FileReader fr = new FileReader(path)) {
+        try (FileReader fr = new FileReader(file)) {
             char[] buff = new char[1024];
             int length;
 
             while ((length = fr.read(buff)) > 0) {
-                sb.append(new String(buff, 0, length));
+                sb.append(buff, 0, length);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("FileUtil", "Failed to read file: " + path, e);
         }
 
         return sb.toString();
