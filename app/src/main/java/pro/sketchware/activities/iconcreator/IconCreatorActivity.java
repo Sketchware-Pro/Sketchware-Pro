@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.Executors;
 
 import a.a.a.HB;
 import a.a.a.iB;
@@ -197,17 +198,44 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         binding.appIcoItems.setOnClickListener(v -> showCustomIconOptions());
 
         binding.save.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), MyProjectSettingActivity.class);
-            saveChanges();
-            saveIconToRes();
-            intent.putExtra("appIco", captureAppIco(binding.appIcoCard));
-            if (binding.adaptiveCheck.isChecked()) {
-                intent.putExtra("isIconAdaptive", binding.adaptiveCheck.isChecked());
-                saveForegroundToRes();
-            }
+            binding.save.setEnabled(false);
+            k();
 
-            setResult(RESULT_OK, intent);
-            finish();
+            Bitmap appIcoCard = captureAppIco(binding.appIcoCard);
+            boolean isAdaptive = binding.adaptiveCheck.isChecked();
+            Bitmap foreground = isAdaptive ? captureForeground(binding.appIcoItems, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg) : null;
+            Bitmap monochrome = isAdaptive ? captureForeground(binding.appIcoItems, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg) : null;
+            Bitmap background = isAdaptive ? captureAppIco(binding.appIcoBg) : null;
+
+            HashMap<String, Object> data = collectSavedData();
+            String currentTexturesFilePath = texturesFilePath;
+            String currentIconFilePath = iconFilePath;
+            Bitmap currentAppIconBitmap = appIconBitmap;
+            String baseDirectory = baseDir();
+
+            Executors.newSingleThreadExecutor().execute(() -> {
+                try {
+                    FileUtil.writeFile(baseDirectory + "data.json", new Gson().toJson(data));
+                    saveIconsToStorage(baseDirectory, currentTexturesFilePath, currentIconFilePath, currentAppIconBitmap);
+                    saveIconToRes(appIcoCard);
+                    if (isAdaptive) {
+                        saveForegroundToRes(foreground, monochrome, background);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                runOnUiThread(() -> {
+                    h();
+                    Intent intent = new Intent(getApplicationContext(), MyProjectSettingActivity.class);
+                    intent.putExtra("appIco", appIcoCard);
+                    if (isAdaptive) {
+                        intent.putExtra("isIconAdaptive", true);
+                    }
+                    setResult(RESULT_OK, intent);
+                    finish();
+                });
+            });
         });
 
         binding.bgType.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
@@ -524,34 +552,39 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         create.show();
     }
 
-    private void saveIconToRes() {
-        saveBitmapTo(captureAppIco(binding.appIcoCard), getIconPath("mipmap-hdpi", "ic_launcher.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoCard), getIconPath("mipmap-mdpi", "ic_launcher.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoCard), getIconPath("mipmap-xhdpi", "ic_launcher.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoCard), getIconPath("mipmap-xxhdpi", "ic_launcher.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoCard), getIconPath("mipmap-xxxhdpi", "ic_launcher.png"));
-
+    private void saveIconToRes(Bitmap icon) {
+        if (icon == null) return;
+        saveBitmapTo(icon, getIconPath("mipmap-hdpi", "ic_launcher.png"));
+        saveBitmapTo(icon, getIconPath("mipmap-mdpi", "ic_launcher.png"));
+        saveBitmapTo(icon, getIconPath("mipmap-xhdpi", "ic_launcher.png"));
+        saveBitmapTo(icon, getIconPath("mipmap-xxhdpi", "ic_launcher.png"));
+        saveBitmapTo(icon, getIconPath("mipmap-xxxhdpi", "ic_launcher.png"));
     }
 
-    private void saveForegroundToRes() {
-        saveBitmapTo(captureForeground(binding.appIcoItems, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_foreground.png"));
+    private void saveForegroundToRes(Bitmap foreground, Bitmap monochrome, Bitmap background) {
+        if (foreground != null) {
+            saveBitmapTo(foreground, getIconPath("mipmap-mdpi", "ic_launcher_foreground.png"));
+            saveBitmapTo(foreground, getIconPath("mipmap-hdpi", "ic_launcher_foreground.png"));
+            saveBitmapTo(foreground, getIconPath("mipmap-xhdpi", "ic_launcher_foreground.png"));
+            saveBitmapTo(foreground, getIconPath("mipmap-xxhdpi", "ic_launcher_foreground.png"));
+            saveBitmapTo(foreground, getIconPath("mipmap-xxxhdpi", "ic_launcher_foreground.png"));
+        }
 
-        saveBitmapTo(captureForeground(binding.appIcoItems, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_monochrome.png"));
+        if (monochrome != null) {
+            saveBitmapTo(monochrome, getIconPath("mipmap-mdpi", "ic_launcher_monochrome.png"));
+            saveBitmapTo(monochrome, getIconPath("mipmap-hdpi", "ic_launcher_monochrome.png"));
+            saveBitmapTo(monochrome, getIconPath("mipmap-xhdpi", "ic_launcher_monochrome.png"));
+            saveBitmapTo(monochrome, getIconPath("mipmap-xxhdpi", "ic_launcher_monochrome.png"));
+            saveBitmapTo(monochrome, getIconPath("mipmap-xxxhdpi", "ic_launcher_monochrome.png"));
+        }
 
-        saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_background.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_background.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_background.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_background.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_background.png"));
-
+        if (background != null) {
+            saveBitmapTo(background, getIconPath("mipmap-mdpi", "ic_launcher_background.png"));
+            saveBitmapTo(background, getIconPath("mipmap-hdpi", "ic_launcher_background.png"));
+            saveBitmapTo(background, getIconPath("mipmap-xhdpi", "ic_launcher_background.png"));
+            saveBitmapTo(background, getIconPath("mipmap-xxhdpi", "ic_launcher_background.png"));
+            saveBitmapTo(background, getIconPath("mipmap-xxxhdpi", "ic_launcher_background.png"));
+        }
     }
 
     private void loadSelectedTexture(int selectedTextureType) {
@@ -564,7 +597,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         }
     }
 
-    private void saveChanges() {
+    private HashMap<String, Object> collectSavedData() {
         HashMap<String, Object> data = new HashMap<>();
         data.put("gradient_background_type", binding.bgGradient.isChecked());
         data.put("background_color", bgClr);
@@ -592,30 +625,26 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         data.put("badge_text_color", badgeTxtClr);
         data.put("badge_bg_color", badgeClr);
         data.put("adaptive_icon", binding.adaptiveCheck.isChecked());
-        FileUtil.writeFile(baseDir() + "data.json", new Gson().toJson(data));
-        saveIconsToStorage();
+        return data;
     }
 
-    public void saveIconsToStorage() {
-        if (texturesFilePath != null && !texturesFilePath.equals(baseDir() + "texture.png")) {
-            FileUtil.copyFile(texturesFilePath, baseDir() + "texture.png");
+    public void saveIconsToStorage(String baseDir, String texturesPath, String iconPath, Bitmap appIcon) {
+        if (texturesPath != null && !texturesPath.equals(baseDir + "texture.png")) {
+            FileUtil.copyFile(texturesPath, baseDir + "texture.png");
         }
-        if (iconFilePath != null && !iconFilePath.equals(baseDir() + "app_icon.png")) {
-            FileUtil.copyFile(iconFilePath, baseDir() + "app_icon.png");
+        if (iconPath != null && !iconPath.equals(baseDir + "app_icon.png")) {
+            FileUtil.copyFile(iconPath, baseDir + "app_icon.png");
         }
-        if (appIconBitmap != null) {
+        if (appIcon != null) {
             try {
-                String path = baseDir() + "app_icon.png";
+                String path = baseDir + "app_icon.png";
                 File file = new File(path);
                 file.getParentFile().mkdirs();
 
-                FileOutputStream fos = new FileOutputStream(file);
-                appIconBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                fos.flush();
-                fos.close();
-
-                iconFilePath = path;
-
+                try (FileOutputStream fos = new FileOutputStream(file)) {
+                    appIcon.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    fos.flush();
+                }
             } catch (Exception ignored) {
             }
         }
