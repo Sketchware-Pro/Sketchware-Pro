@@ -151,7 +151,9 @@ public class InnerAddComponentBottomSheet extends BottomSheetDialogFragment {
                 if (checks() && getContext() != null) {
                     bB.a(requireContext(), Helper.getResString(R.string.component_message_component_block_added), bB.TOAST_WARNING).show();
                     mB.a(requireContext(), binding.edInput);
-                    onSaveClickListener.onSaveClick(InnerAddComponentBottomSheet.this);
+                    if (onSaveClickListener != null) {
+                        onSaveClickListener.onSaveClick(InnerAddComponentBottomSheet.this);
+                    }
                 }
             }
         });

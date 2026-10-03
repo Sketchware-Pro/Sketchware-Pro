@@ -135,7 +135,6 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-        onComponentCreateListener = null;
     }
 
     @Override
@@ -153,8 +152,10 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
         InnerAddComponentBottomSheet innerAddComponentBottomSheet = InnerAddComponentBottomSheet.newInstance(sc_id, projectFileBean, componentBean, sheet -> {
             AnalyticsHelper.logUiComponentAdded(getContext(), ComponentBean.getComponentTypeName(componentBean.type));
             sheet.dismiss();
+            if (onComponentCreateListener != null) {
+                onComponentCreateListener.invoke();
+            }
             dismiss();
-            onComponentCreateListener.invoke();
         });
         innerAddComponentBottomSheet.show(getParentFragmentManager(), null);
     }
