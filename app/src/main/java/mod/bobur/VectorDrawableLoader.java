@@ -55,11 +55,26 @@ public class VectorDrawableLoader {
     }
 
     public void setImageVectorFromFile(ImageView imageView, String filePath) throws Exception {
-        VectorDrawableParser attrs = new VectorDrawableParser(FileUtil.readFile(filePath));
-        String svg = attrs.toSvg();
+        if (filePath == null || filePath.isEmpty()) {
+            return;
+        }
+        File file = new File(filePath);
+        if (!file.exists() || file.length() == 0) {
+            return;
+        }
+        String content = FileUtil.readFile(filePath);
+        if (content == null || content.trim().isEmpty()) {
+            return;
+        }
+        try {
+            VectorDrawableParser attrs = new VectorDrawableParser(content);
+            String svg = attrs.toSvg();
 
-        SVG svgObj = SVG.getFromString(svg);
-        Picture picture = svgObj.renderToPicture();
-        imageView.setImageDrawable(new PictureDrawable(picture));
+            SVG svgObj = SVG.getFromString(svg);
+            Picture picture = svgObj.renderToPicture();
+            imageView.setImageDrawable(new PictureDrawable(picture));
+        } catch (Exception e) {
+            Log.w("VectorDrawableLoader", "Failed to render vector drawable: " + filePath, e);
+        }
     }
 }

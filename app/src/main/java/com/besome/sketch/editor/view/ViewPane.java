@@ -600,8 +600,7 @@ public class ViewPane extends RelativeLayout {
                             vectorDrawableLoader.setImageVectorFromFile((ImageView) view, vectorDrawableLoader.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                         }
                     } catch (Exception unused2) {
-                        crashlytics.recordException(unused2);
-                        FileUtil.deleteFile(new VectorDrawableLoader().getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
+                        Log.w("ViewPane", "Failed to load image: " + viewBean.image.resName, unused2);
                         viewBean.image.resName = "default_image";
                         ((ImageView) view).setImageResource(R.drawable.default_image);
                     }
