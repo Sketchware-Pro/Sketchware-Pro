@@ -1,6 +1,6 @@
 package mod.hey.studios.editor.manage.block.v2;
 
-import static com.google.android.material.color.MaterialColors.harmonizeWithPrimary;
+import com.google.android.material.color.MaterialColors;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -82,10 +82,26 @@ public class BlockLoader {
 
     private static void loadCustomBlocks() {
         ArrayList<HashMap<String, Object>> palettes = new PaletteSelector().getPaletteSelector();
+        HashMap<Integer, Integer> paletteColorByIndex = new HashMap<>();
+        for (int j = 0, palettesSize = palettes.size(); j < palettesSize; j++) {
+            HashMap<String, Object> palette = palettes.get(j);
+            Object paletteIndex = palette.get("index");
+            Object paletteColor = palette.get("color");
+            if (paletteIndex instanceof Integer && paletteColor instanceof Integer) {
+                paletteColorByIndex.put((Integer) paletteIndex, (Integer) paletteColor);
+            }
+        }
 
         blocks = new ArrayList<>();
 
         ArrayList<HashMap<String, Object>> arrList = ExtraBlockFile.getExtraBlockData();
+
+        Context context = new ContextThemeWrapper(SketchApplication.getContext(), R.style.Theme_SketchwarePro);
+        int primaryColor = 0;
+        try {
+            primaryColor = MaterialColors.getColor(context, R.attr.colorPrimary, MaterialColors.class.getCanonicalName());
+        } catch (Exception ignored) {
+        }
 
         for (int i = 0; i < arrList.size(); i++) {
             HashMap<String, Object> map = arrList.get(i);
@@ -135,8 +151,8 @@ public class BlockLoader {
 
                 if (color instanceof String) {
                     try {
-                        Context context = new ContextThemeWrapper(SketchApplication.getContext(), R.style.Theme_SketchwarePro);
-                        int harmonizedColor = harmonizeWithPrimary(context, Color.parseColor((String) color));
+                        int parsedColor = Color.parseColor((String) color);
+                        int harmonizedColor = primaryColor != 0 ? MaterialColors.harmonize(parsedColor, primaryColor) : parsedColor;
                         info.setColor(harmonizedColor);
                     } catch (IllegalArgumentException e) {
                         SketchwareUtil.toastError("Invalid color in Custom Block #" + (i + 1));
@@ -151,29 +167,12 @@ public class BlockLoader {
                     if (mapPalette instanceof String) {
                         try {
                             int mapPaletteNumber = Integer.parseInt((String) mapPalette);
-
-                            for (int j = 0, palettesSize = palettes.size(); j < palettesSize; j++) {
-                                HashMap<String, Object> palette = palettes.get(j);
-                                Object paletteIndex = palette.get("index");
-
-                                if (paletteIndex instanceof Integer) {
-                                    int indexInt = (Integer) paletteIndex;
-
-                                    if (mapPaletteNumber == indexInt) {
-                                        Object paletteColor = palette.get("color");
-
-                                        if (paletteColor instanceof Integer) {
-                                            try {
-                                                info.setPaletteColor((Integer) paletteColor);
-                                            } catch (IllegalArgumentException e) {
-                                                SketchwareUtil.toastError("Invalid color in Custom Block palette #" + (j + 1));
-                                            }
-                                        } else {
-                                            SketchwareUtil.toastError("Invalid color value type in Custom Block palette #" + (j + 1));
-                                        }
-                                    }
-                                } else {
-                                    SketchwareUtil.toastError("Invalid palette index value type in Custom Block palette #" + (j + 1));
+                            Integer paletteColor = paletteColorByIndex.get(mapPaletteNumber);
+                            if (paletteColor != null) {
+                                try {
+                                    info.setPaletteColor(paletteColor);
+                                } catch (IllegalArgumentException e) {
+                                    SketchwareUtil.toastError("Invalid color in Custom Block palette #" + mapPaletteNumber);
                                 }
                             }
                         } catch (NumberFormatException e) {
