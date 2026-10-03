@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.export.ExportProjectActivity;
 import com.besome.sketch.lib.ui.LoadingDialog;
 import com.besome.sketch.projects.MyProjectSettingActivity;
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -156,13 +157,26 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
             String iconFolder = wq.e() + File.separator + scId;
             File iconFile = new File(iconFolder, "icon.png");
             if (iconFile.exists()) {
-                Uri uri;
-                String providerPath = activity.getPackageName() + ".provider";
-                uri = FileProvider.getUriForFile(activity, providerPath, iconFile);
-                holder.binding.imgIcon.setImageURI(uri);
+                if (!activity.isFinishing() && !activity.isDestroyed()) {
+                    Glide.with(activity)
+                            .load(iconFile)
+                            .placeholder(R.drawable.default_icon)
+                            .error(R.drawable.default_icon)
+                            .into(holder.binding.imgIcon);
+                } else {
+                    holder.binding.imgIcon.setImageResource(R.drawable.default_icon);
+                }
             } else {
+                if (!activity.isFinishing() && !activity.isDestroyed()) {
+                    Glide.with(activity).clear(holder.binding.imgIcon);
+                }
                 holder.binding.imgIcon.setImageResource(R.drawable.default_icon);
             }
+        } else {
+            if (!activity.isFinishing() && !activity.isDestroyed()) {
+                Glide.with(activity).clear(holder.binding.imgIcon);
+            }
+            holder.binding.imgIcon.setImageResource(R.drawable.default_icon);
         }
 
         if (isPinned(projectMap)) {
