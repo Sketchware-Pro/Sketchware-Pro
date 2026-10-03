@@ -20,6 +20,8 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import a.a.a.lC;
 import dev.pranav.filepicker.FilePickerCallback;
@@ -140,25 +142,35 @@ public class BackupRestoreManager {
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
             public void onFilesSelected(@NotNull List<? extends File> files) {
-                for (int i = 0; i < files.size(); i++) {
-                    String backupFilePath = files.get(i).getAbsolutePath();
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(() -> {
+                    for (int i = 0; i < files.size(); i++) {
+                        String backupFilePath = files.get(i).getAbsolutePath();
+                        int currentIndex = i;
+                        boolean hasLocalLibs = BackupFactory.zipContainsFile(backupFilePath, "local_libs");
 
-                    if (BackupFactory.zipContainsFile(backupFilePath, "local_libs")) {
-                        boolean restoringMultipleBackups = files.size() > 1;
+                        act.runOnUiThread(() -> {
+                            if (act.isFinishing() || act.isDestroyed()) {
+                                return;
+                            }
+                            if (hasLocalLibs) {
+                                boolean restoringMultipleBackups = files.size() > 1;
 
-                        new MaterialAlertDialogBuilder(act)
-                                .setTitle(R.string.common_word_warning)
-                                .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, i, files.size(),
-                                        FileUtil.getFileNameNoExtension(backupFilePath)))
-                                .setPositiveButton("Copy", (dialog, which) -> doRestore(backupFilePath, true))
-                                .setNegativeButton("Don't copy", (dialog, which) -> doRestore(backupFilePath, false))
-                                .setNeutralButton(R.string.common_word_cancel, null)
-                                .show();
-
-                    } else {
-                        doRestore(backupFilePath, false);
+                                new MaterialAlertDialogBuilder(act)
+                                        .setTitle(R.string.common_word_warning)
+                                        .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, currentIndex, files.size(),
+                                                FileUtil.getFileNameNoExtension(backupFilePath)))
+                                        .setPositiveButton("Copy", (dialog, which) -> doRestore(backupFilePath, true))
+                                        .setNegativeButton("Don't copy", (dialog, which) -> doRestore(backupFilePath, false))
+                                        .setNeutralButton(R.string.common_word_cancel, null)
+                                        .show();
+                            } else {
+                                doRestore(backupFilePath, false);
+                            }
+                        });
                     }
-                }
+                    executor.shutdown();
+                });
             }
         };
 
