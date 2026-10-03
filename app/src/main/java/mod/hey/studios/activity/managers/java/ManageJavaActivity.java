@@ -29,6 +29,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -270,16 +272,20 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
             public void onFilesSelected(@NotNull List<? extends File> files) {
-                for (File file : files) {
-                    String fileContent = FileUtil.readFile(file.getAbsolutePath());
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(() -> {
+                    for (File file : files) {
+                        String fileContent = FileUtil.readFile(file.getAbsolutePath());
 
-                    if (fileContent.contains("package ")) {
-                        fileContent = fileContent.replaceFirst(PACKAGE_DECL_REGEX, "package " + getCurrentPkgName() + (file.getName().endsWith(".java") ? ";" : "") + "\n");
+                        if (fileContent.contains("package ")) {
+                            fileContent = fileContent.replaceFirst(PACKAGE_DECL_REGEX, "package " + getCurrentPkgName() + (file.getName().endsWith(".java") ? ";" : "") + "\n");
+                        }
+
+                        FileUtil.writeFile(new File(current_path, file.getName()).getAbsolutePath(), fileContent);
                     }
-
-                    FileUtil.writeFile(new File(current_path, file.getName()).getAbsolutePath(), fileContent);
-                    refresh();
-                }
+                    runOnUiThread(ManageJavaActivity.this::refresh);
+                    executor.shutdown();
+                });
             }
         };
 

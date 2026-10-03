@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
@@ -172,14 +174,18 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
             public void onFilesSelected(@NotNull List<? extends File> files) {
-                for (File file : files) {
-                    try {
-                        FileUtil.copyDirectory(file, new File(current_path, file.getName()));
-                        refresh();
-                    } catch (IOException e) {
-                        SketchwareUtil.toastError("Couldn't import file! [" + e.getMessage() + "]");
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(() -> {
+                    for (File file : files) {
+                        try {
+                            FileUtil.copyDirectory(file, new File(current_path, file.getName()));
+                        } catch (IOException e) {
+                            runOnUiThread(() -> SketchwareUtil.toastError("Couldn't import file! [" + e.getMessage() + "]"));
+                        }
                     }
-                }
+                    runOnUiThread(ManageAssetsActivity.this::refresh);
+                    executor.shutdown();
+                });
             }
         };
 

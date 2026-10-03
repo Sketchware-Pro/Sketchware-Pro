@@ -30,6 +30,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
@@ -239,16 +241,21 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
             public void onFilesSelected(@NotNull List<? extends File> files) {
-                for (File file : files) {
-                    try {
-                        FileUtil.copyDirectory(file, new File(nativeLibrariesPath + File.separator + Uri.fromFile(file).getLastPathSegment()));
-                    } catch (IOException e) {
-                        SketchwareUtil.toastError("Couldn't import library! [" + e.getMessage() + "]");
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(() -> {
+                    for (File file : files) {
+                        try {
+                            FileUtil.copyDirectory(file, new File(nativeLibrariesPath + File.separator + Uri.fromFile(file).getLastPathSegment()));
+                        } catch (IOException e) {
+                            runOnUiThread(() -> SketchwareUtil.toastError("Couldn't import library! [" + e.getMessage() + "]"));
+                        }
                     }
-                }
-
-                handleAdapter(nativeLibrariesPath);
-                handleFab();
+                    runOnUiThread(() -> {
+                        handleAdapter(nativeLibrariesPath);
+                        handleFab();
+                    });
+                    executor.shutdown();
+                });
             }
         };
 
