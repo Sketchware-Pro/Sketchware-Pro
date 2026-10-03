@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
@@ -262,15 +264,21 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                     SketchwareUtil.toastError("No files selected");
                     return;
                 }
-                for (File file : files) {
-                    try {
-                        FileUtil.copyDirectory(file, new File(temp + File.separator + file.getName()));
-                    } catch (IOException e) {
-                        SketchwareUtil.toastError("Couldn't import resource! [" + e.getMessage() + "]");
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(() -> {
+                    for (File file : files) {
+                        try {
+                            FileUtil.copyDirectory(file, new File(temp + File.separator + file.getName()));
+                        } catch (IOException e) {
+                            runOnUiThread(() -> SketchwareUtil.toastError("Couldn't import resource! [" + e.getMessage() + "]"));
+                        }
                     }
-                }
-                handleAdapter(temp);
-                handleFab();
+                    runOnUiThread(() -> {
+                        handleAdapter(temp);
+                        handleFab();
+                    });
+                    executor.shutdown();
+                });
             }
         };
 
