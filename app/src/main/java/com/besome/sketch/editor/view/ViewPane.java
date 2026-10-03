@@ -482,18 +482,26 @@ public class ViewPane extends RelativeLayout {
                         view.setBackgroundResource(getContext().getResources().getIdentifier(viewBean.layout.backgroundResource, "drawable", getContext().getPackageName()));
                     } else {
                         String backgroundRes = resourcesManager.f(viewBean.layout.backgroundResource);
-                        if (backgroundRes.endsWith(".9.png")) {
-                            Bitmap decodedBitmap = zB.a(backgroundRes);
-                            byte[] ninePatchChunk = decodedBitmap.getNinePatchChunk();
-                            if (NinePatch.isNinePatchChunk(ninePatchChunk)) {
-                                view.setBackground(new NinePatchDrawable(getResources(), decodedBitmap, ninePatchChunk, new Rect(), null));
+                        if (backgroundRes != null) {
+                            if (backgroundRes.endsWith(".9.png")) {
+                                Bitmap decodedBitmap = zB.a(backgroundRes);
+                                if (decodedBitmap != null) {
+                                    byte[] ninePatchChunk = decodedBitmap.getNinePatchChunk();
+                                    if (NinePatch.isNinePatchChunk(ninePatchChunk)) {
+                                        view.setBackground(new NinePatchDrawable(getResources(), decodedBitmap, ninePatchChunk, new Rect(), null));
+                                    } else {
+                                        view.setBackground(new BitmapDrawable(getResources(), backgroundRes));
+                                    }
+                                } else {
+                                    view.setBackground(new BitmapDrawable(getResources(), backgroundRes));
+                                }
                             } else {
-                                view.setBackground(new BitmapDrawable(getResources(), backgroundRes));
+                                Bitmap decodeFile2 = BitmapFactory.decodeFile(backgroundRes);
+                                if (decodeFile2 != null) {
+                                    int round2 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
+                                    view.setBackground(new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(decodeFile2, decodeFile2.getWidth() * round2, decodeFile2.getHeight() * round2, true)));
+                                }
                             }
-                        } else {
-                            Bitmap decodeFile2 = BitmapFactory.decodeFile(backgroundRes);
-                            int round2 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
-                            view.setBackground(new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(decodeFile2, decodeFile2.getWidth() * round2, decodeFile2.getHeight() * round2, true)));
                         }
                     }
                 } catch (Exception e) {
@@ -581,7 +589,11 @@ public class ViewPane extends RelativeLayout {
                                 svgUtils.loadScaledSvgIntoImageView((ImageView) view, fpu.getSvgFullPath(sc_id, viewBean.image.resName), round3);
                             } else {
                                 Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
-                                ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                                if (decodeFile3 != null) {
+                                    ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                                } else {
+                                    ((ImageView) view).setImageResource(R.drawable.default_image);
+                                }
                             }
                         } else {
                             VectorDrawableLoader vectorDrawableLoader = new VectorDrawableLoader();
