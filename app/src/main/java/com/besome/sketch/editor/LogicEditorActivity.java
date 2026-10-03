@@ -1381,11 +1381,16 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (fontName.equalsIgnoreCase("default_font")) {
             typeface = Typeface.DEFAULT;
         } else {
-            try {
-                typeface = Typeface.createFromFile(jC.d(scId).d(fontName));
-            } catch (RuntimeException e) {
-                crashlytics.log("Loading font preview");
-                crashlytics.recordException(e);
+            String fontPath = jC.d(scId).d(fontName);
+            File fontFile = fontPath != null ? new File(fontPath) : null;
+            if (fontFile != null && fontFile.exists() && fontFile.length() > 0) {
+                try {
+                    typeface = Typeface.createFromFile(fontFile);
+                } catch (Exception e) {
+                    typeface = Typeface.DEFAULT;
+                    preview.setText("Couldn't load font");
+                }
+            } else {
                 typeface = Typeface.DEFAULT;
                 preview.setText("Couldn't load font");
             }
