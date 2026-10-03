@@ -94,20 +94,19 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
     }
 
     private void checkDir() {
-        if (FileUtil.isExistFile(fpu.getPathResource(numProj))) {
-            temp = fpu.getPathResource(numProj);
-            handleAdapter(temp);
-            handleFab();
-            return;
+        String resPath = fpu.getPathResource(numProj);
+        File resDir = new File(resPath);
+        if (!resDir.exists()) {
+            new File(resPath, "anim").mkdirs();
+            new File(resPath, "drawable").mkdirs();
+            new File(resPath, "drawable-xhdpi").mkdirs();
+            new File(resPath, "layout").mkdirs();
+            new File(resPath, "menu").mkdirs();
+            new File(resPath, "values").mkdirs();
         }
-        FileUtil.makeDir(fpu.getPathResource(numProj));
-        FileUtil.makeDir(fpu.getPathResource(numProj) + "/anim");
-        FileUtil.makeDir(fpu.getPathResource(numProj) + "/drawable");
-        FileUtil.makeDir(fpu.getPathResource(numProj) + "/drawable-xhdpi");
-        FileUtil.makeDir(fpu.getPathResource(numProj) + "/layout");
-        FileUtil.makeDir(fpu.getPathResource(numProj) + "/menu");
-        FileUtil.makeDir(fpu.getPathResource(numProj) + "/values");
-        checkDir();
+        temp = resPath;
+        handleAdapter(temp);
+        handleFab();
     }
 
     private void handleAdapter(String str) {
