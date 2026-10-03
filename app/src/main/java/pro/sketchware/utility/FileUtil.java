@@ -146,6 +146,8 @@ public class FileUtil {
     }
 
     public static void createNewFileIfNotPresent(String path) {
+        if (path == null || path.isEmpty()) return;
+
         int lastSep = path.lastIndexOf(File.separator);
         if (lastSep > 0) {
             String dirPath = path.substring(0, lastSep);
@@ -219,7 +221,7 @@ public class FileUtil {
 
         try (FileInputStream fis = new FileInputStream(sourcePath);
              FileOutputStream fos = new FileOutputStream(destPath, false)) {
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[32768];
             int length;
 
             while ((length = fis.read(buffer)) > 0) {
@@ -243,7 +245,7 @@ public class FileUtil {
             if (parentFile == null || parentFile.exists() || parentFile.mkdirs()) {
                 try (FileInputStream fileInputStream = new FileInputStream(source);
                      FileOutputStream fileOutputStream = new FileOutputStream(copyInto)) {
-                    byte[] bArr = new byte[2048];
+                    byte[] bArr = new byte[32768];
                     while (true) {
                         int read = fileInputStream.read(bArr);
                         if (read <= 0) {
@@ -272,7 +274,7 @@ public class FileUtil {
 
     public static void extractFileFromZip(InputStream inputStream, File file) throws IOException {
         try (OutputStream outputStream = new FileOutputStream(file)) {
-            byte[] bArr = new byte[1024];
+            byte[] bArr = new byte[8192];
             while (true) {
                 int read = inputStream.read(bArr);
                 if (read > 0) {
@@ -321,16 +323,23 @@ public class FileUtil {
     }
 
     public static boolean isExistFile(String path) {
+        if (path == null || path.isEmpty()) {
+            return false;
+        }
         return new File(path).exists();
     }
 
     public static void makeDir(String path) {
-        if (!isExistFile(path)) {
-            try {
-                new File(path).mkdirs();
-            } catch (SecurityException e) {
-                Log.e("FileUtil", "Error creating directory: " + path, e);
+        if (path == null || path.isEmpty()) {
+            return;
+        }
+        try {
+            File dir = new File(path);
+            if (!dir.exists()) {
+                dir.mkdirs();
             }
+        } catch (SecurityException e) {
+            Log.e("FileUtil", "Error creating directory: " + path, e);
         }
     }
 
