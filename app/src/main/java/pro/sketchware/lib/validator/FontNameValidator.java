@@ -43,26 +43,27 @@ public class FontNameValidator extends MB {
         } else if (trim.equals("default_image") || "NONE".equalsIgnoreCase(trim) || (!trim.equals(h) && (fontNames != null && fontNames.contains(trim)))) {
             a2 = a.getString(R.string.common_message_name_unavailable);
         } else {
-            int count = 0;
-            while (true) {
-                if (count < reservedKeywords.length) {
-                    if (charSequence.toString().equals(reservedKeywords[count])) {
-                        msgRes = R.string.logic_editor_message_reserved_keywords;
+            boolean isReserved = false;
+            if (reservedKeywords != null) {
+                for (String keyword : reservedKeywords) {
+                    if (charSequence.toString().equals(keyword)) {
+                        isReserved = true;
                         break;
                     }
-                    count++;
-                } else if (Character.isLetter(charSequence.charAt(0))) {
-                    if (pattern.matcher(charSequence.toString()).matches()) {
-                        b.setError(null);
-                        d = true;
-                        return;
-                    }
-                    b.setError(a.getString(R.string.invalid_value_rule_4));
-                    d = false;
-                    return;
-                } else {
-                    msgRes = R.string.logic_editor_message_variable_name_must_start_letter;
                 }
+            }
+            if (isReserved) {
+                msgRes = R.string.logic_editor_message_reserved_keywords;
+            } else if (!Character.isLetter(charSequence.charAt(0))) {
+                msgRes = R.string.logic_editor_message_variable_name_must_start_letter;
+            } else if (pattern.matcher(charSequence.toString()).matches()) {
+                b.setError(null);
+                d = true;
+                return;
+            } else {
+                b.setError(a.getString(R.string.invalid_value_rule_4));
+                d = false;
+                return;
             }
             a2 = a.getString(msgRes);
         }
