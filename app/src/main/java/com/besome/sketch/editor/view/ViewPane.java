@@ -13,6 +13,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
@@ -132,6 +133,45 @@ public class ViewPane extends RelativeLayout {
     private int defaultTextColor = 0; // need to save the original color before changes, cause using getDefaultColor() returns the current text color
     private int defaultHintColor = 0;
     private Material3LibraryManager material3LibraryManager;
+
+    private static final LruCache<String, Bitmap> BITMAP_CACHE = new LruCache<String, Bitmap>((int) (Runtime.getRuntime().maxMemory() / 1024) / 8) {
+        @Override
+        protected int sizeOf(String key, Bitmap bitmap) {
+            return bitmap.getByteCount() / 1024;
+        }
+    };
+
+    private Bitmap getCachedScaledBitmap(String path, int scaleFactor) {
+        if (path == null) return null;
+        String cacheKey = path + "@" + scaleFactor;
+        Bitmap cached = BITMAP_CACHE.get(cacheKey);
+        if (cached != null && !cached.isRecycled()) {
+            return cached;
+        }
+
+        try {
+            File file = new File(path);
+            if (!file.exists() || file.length() == 0) return null;
+
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            if (bitmap == null) return null;
+
+            Bitmap scaled;
+            if (scaleFactor > 1) {
+                scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * scaleFactor, bitmap.getHeight() * scaleFactor, true);
+                if (scaled != bitmap) {
+                    bitmap.recycle();
+                }
+            } else {
+                scaled = bitmap;
+            }
+
+            BITMAP_CACHE.put(cacheKey, scaled);
+            return scaled;
+        } catch (Throwable t) {
+            return null;
+        }
+    }
 
     public ViewPane(Context context) {
         super(context);
@@ -432,14 +472,8 @@ public class ViewPane extends RelativeLayout {
                                         }
                                     }, fpu.getSvgFullPath(sc_id, viewBean.image.resName), scaleFactor);
                                 } else {
-                                    Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-                                    if (bitmap != null) {
-                                        Bitmap scaledBitmap = Bitmap.createScaledBitmap(
-                                                bitmap,
-                                                bitmap.getWidth() * scaleFactor,
-                                                bitmap.getHeight() * scaleFactor,
-                                                true
-                                        );
+                                    Bitmap scaledBitmap = getCachedScaledBitmap(imagePath, scaleFactor);
+                                    if (scaledBitmap != null) {
                                         fab.setImageBitmap(scaledBitmap);
                                     }
                                 }
@@ -496,10 +530,10 @@ public class ViewPane extends RelativeLayout {
                                     view.setBackground(new BitmapDrawable(getResources(), backgroundRes));
                                 }
                             } else {
-                                Bitmap decodeFile2 = BitmapFactory.decodeFile(backgroundRes);
-                                if (decodeFile2 != null) {
-                                    int round2 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
-                                    view.setBackground(new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(decodeFile2, decodeFile2.getWidth() * round2, decodeFile2.getHeight() * round2, true)));
+                                int round2 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
+                                Bitmap scaledBitmap = getCachedScaledBitmap(backgroundRes, round2);
+                                if (scaledBitmap != null) {
+                                    view.setBackground(new BitmapDrawable(getResources(), scaledBitmap));
                                 }
                             }
                         }
@@ -588,9 +622,9 @@ public class ViewPane extends RelativeLayout {
                                 FilePathUtil fpu = new FilePathUtil();
                                 svgUtils.loadScaledSvgIntoImageView((ImageView) view, fpu.getSvgFullPath(sc_id, viewBean.image.resName), round3);
                             } else {
-                                Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
-                                if (decodeFile3 != null) {
-                                    ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                                Bitmap scaledBitmap = getCachedScaledBitmap(imagelocation, round3);
+                                if (scaledBitmap != null) {
+                                    ((ImageView) view).setImageBitmap(scaledBitmap);
                                 } else {
                                     ((ImageView) view).setImageResource(R.drawable.default_image);
                                 }
