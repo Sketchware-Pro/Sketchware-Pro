@@ -1,5 +1,7 @@
 package pro.sketchware.lib.highlighter;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -18,8 +20,34 @@ import java.util.regex.Matcher;
  */
 public class SimpleHighlighter {
 
+    private static final int MAX_HIGHLIGHT_LENGTH = 15000;
+    private static final long DEBOUNCE_DELAY_MS = 150L;
+
     private final EditText mEditor;
     private final List<SyntaxScheme> syntaxList;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    private boolean mIsHighlighting = false;
+
+    private final Runnable mHighlightRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Editable text = mEditor.getText();
+            if (text == null) {
+                return;
+            }
+            if (text.length() > MAX_HIGHLIGHT_LENGTH) {
+                removeSpans(text, ForegroundColorSpan.class);
+                return;
+            }
+            mIsHighlighting = true;
+            try {
+                removeSpans(text, ForegroundColorSpan.class);
+                createHighlightSpans(syntaxList, text);
+            } finally {
+                mIsHighlighting = false;
+            }
+        }
+    };
 
     public SimpleHighlighter(EditText editor) {
         mEditor = editor;
@@ -28,8 +56,7 @@ public class SimpleHighlighter {
     }
 
     private void init() {
-        removeSpans(mEditor.getText(), ForegroundColorSpan.class);
-        createHighlightSpans(syntaxList, mEditor.getText());
+        mHandler.post(mHighlightRunnable);
 
         mEditor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -42,8 +69,11 @@ public class SimpleHighlighter {
 
             @Override
             public void afterTextChanged(Editable s) {
-                removeSpans(s, ForegroundColorSpan.class);
-                createHighlightSpans(syntaxList, s);
+                if (mIsHighlighting) {
+                    return;
+                }
+                mHandler.removeCallbacks(mHighlightRunnable);
+                mHandler.postDelayed(mHighlightRunnable, DEBOUNCE_DELAY_MS);
             }
         });
     }
