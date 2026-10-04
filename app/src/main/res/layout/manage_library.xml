@@ -18,11 +18,34 @@
             app:title="@string/design_actionbar_title_library" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <EditText
+        android:id="@+id/search_libraries"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/palette_search_bg"
+        android:drawableStart="@drawable/ic_search_palette"
+        android:drawablePadding="8dp"
+        android:hint="@string/library_search_hint"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingHorizontal="14dp"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:fillViewport="true">
 
         <LinearLayout
             android:id="@+id/contents"
@@ -30,4 +53,5 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </ScrollView>
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

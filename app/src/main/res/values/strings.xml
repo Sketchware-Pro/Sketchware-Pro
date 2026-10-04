@@ -935,4 +935,5 @@ ACTION_VIEW
     <string name="view_drop_components_here">Drop components here</string>
     <string name="component_search_hint">Search components…</string>
     <string name="firebase_reveal_value">Show or hide value</string>
+    <string name="library_search_hint">Search libraries…</string>
 </resources>
