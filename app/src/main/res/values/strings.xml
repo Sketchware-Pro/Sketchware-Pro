@@ -932,4 +932,5 @@ ACTION_VIEW
     <string name="view_search_widgets">Search widgets…</string>
     <string name="view_toggle_widgets">Widgets</string>
     <string name="view_widget_new_compact">Widget</string>
+    <string name="view_drop_components_here">Drop components here</string>
 </resources>

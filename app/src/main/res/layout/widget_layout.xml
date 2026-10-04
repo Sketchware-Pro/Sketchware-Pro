@@ -1,5 +1,18 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/img_drag_handle"
+        android:layout_width="10dp"
+        android:layout_height="14dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="4dp"
+        android:alpha="0.7"
+        android:contentDescription="@null"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_drag_handle_dots"
+        app:tint="?attr/colorOutline" />
 
     <ImageView
         android:id="@+id/img_widget"

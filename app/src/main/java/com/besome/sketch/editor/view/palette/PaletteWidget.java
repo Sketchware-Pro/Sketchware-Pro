@@ -58,6 +58,7 @@ public class PaletteWidget extends LinearLayout {
     private TextView titleLayouts;
     private TextView titleWidgets;
     private CustomScrollView scrollView;
+    private String searchQuery = "";
     private boolean layoutsCollapsed;
     private boolean widgetsCollapsed;
 
@@ -182,19 +183,41 @@ public class PaletteWidget extends LinearLayout {
 
     /** Shows only the widgets whose name contains the query (case-insensitive). Purely visual. */
     public void filter(String query) {
-        String q = query == null ? "" : query.trim().toLowerCase(java.util.Locale.ROOT);
-        filterContainer(layoutContainer, q);
-        filterContainer(widgetsContainer, q);
+        searchQuery = query == null ? "" : query.trim().toLowerCase(java.util.Locale.ROOT);
+        applySectionState(layoutContainer);
+        applySectionState(widgetsContainer);
     }
 
-    private void filterContainer(LinearLayout container, String q) {
+    /** Header of a collapsible sub-section ("AndroidX", "List", ...) inside the layouts/widgets containers. */
+    private static final class SectionHeader {
+        final String title;
+        boolean collapsed;
+
+        SectionHeader(String title) {
+            this.title = title;
+        }
+
+        String label() {
+            return (collapsed ? "\u25B8  " : "\u25BE  ") + title;
+        }
+    }
+
+    /**
+     * Recomputes the visibility of every child of a container from the active search query and the
+     * collapsed state of the sub-section header preceding it. While searching, sections are ignored.
+     */
+    private void applySectionState(LinearLayout container) {
+        boolean collapsed = false;
         for (int i = 0; i < container.getChildCount(); i++) {
             View child = container.getChildAt(i);
-            if (child instanceof com.besome.sketch.lib.base.BaseWidget widget) {
-                boolean match = q.isEmpty() || widget.getWidgetName().toLowerCase(java.util.Locale.ROOT).contains(q);
-                child.setVisibility(match ? View.VISIBLE : View.GONE);
-            } else if (child instanceof TextView) {
-                child.setVisibility(q.isEmpty() ? View.VISIBLE : View.GONE);
+            if (child.getTag() instanceof SectionHeader header) {
+                collapsed = header.collapsed;
+                child.setVisibility(searchQuery.isEmpty() ? View.VISIBLE : View.GONE);
+            } else if (child instanceof com.besome.sketch.lib.base.BaseWidget widget) {
+                boolean visible = searchQuery.isEmpty()
+                        ? !collapsed
+                        : widget.getWidgetName().toLowerCase(java.util.Locale.ROOT).contains(searchQuery);
+                child.setVisibility(visible ? View.VISIBLE : View.GONE);
             }
         }
     }
@@ -207,12 +230,22 @@ public class PaletteWidget extends LinearLayout {
         LinearLayout target = targetType == 0 ? layoutContainer : widgetsContainer;
 
         TextView titleView = new TextView(getContext());
-        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(dpToPx(4), dpToPx(2), dpToPx(4), dpToPx(2));
         titleView.setLayoutParams(layoutParams);
-        titleView.setText(title);
+        var header = new SectionHeader(title);
+        titleView.setTag(header);
+        titleView.setText(header.label());
         titleView.setTextSize(12);
-        titleView.setTextColor(MaterialColors.getColor(titleView, R.attr.colorPrimary));
+        titleView.setTypeface(null, android.graphics.Typeface.BOLD);
+        titleView.setTextColor(MaterialColors.getColor(titleView, R.attr.colorOnSurfaceVariant));
+        titleView.setMinHeight(dpToPx(32));
+        titleView.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        titleView.setOnClickListener(v -> {
+            header.collapsed = !header.collapsed;
+            titleView.setText(header.label());
+            applySectionState(target);
+        });
         target.addView(titleView);
     }
 

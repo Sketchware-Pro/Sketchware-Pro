@@ -96,6 +96,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private View palettePanel;
     private com.google.android.material.button.MaterialButton togglePaletteButton;
     private boolean paletteExpanded = true;
+    private TextView dropHint;
     private String a;
     private LinearLayout aa;
     private String b;
@@ -527,6 +528,32 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 text -> paletteWidget.filter(text.toString())));
     }
 
+    /** Empty-state hint over the preview; shown only while the screen has no widgets. */
+    private void updateDropHint() {
+        boolean empty;
+        int count = viewPane.getChildCount();
+        if (count == 0) {
+            empty = true;
+        } else if (count == 1 && viewPane.getChildAt(0) instanceof ViewGroup root) {
+            empty = root.getChildCount() == 0;
+        } else {
+            empty = false;
+        }
+        dropHint.setVisibility(empty ? View.VISIBLE : View.GONE);
+        if (!empty) return;
+
+        int w = (int) (viewPane.getWidth() * viewPane.getScaleX() * 0.8f);
+        int h = (int) (96 * dip);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) dropHint.getLayoutParams();
+        if (params.width != w || params.height != h) {
+            params.width = w;
+            params.height = h;
+            dropHint.setLayoutParams(params);
+        }
+        dropHint.setX(viewPane.getX() + viewPane.getWidth() / 2f - w / 2f);
+        dropHint.setY(viewPane.getY() + viewPane.getHeight() / 2f - h / 2f);
+    }
+
     private void applyPaletteExpanded() {
         palettePanel.setVisibility(paletteExpanded ? View.VISIBLE : View.GONE);
         togglePaletteButton.setIconResource(paletteExpanded ? R.drawable.ic_mtrl_close : R.drawable.ic_mtrl_component);
@@ -611,6 +638,18 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         viewPane.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, displayHeight));
         viewPane.setOnTouchListener(this);
         shape.addView(viewPane);
+
+        dropHint = new TextView(context);
+        dropHint.setText(R.string.view_drop_components_here);
+        dropHint.setGravity(Gravity.CENTER);
+        dropHint.setTextSize(13f);
+        dropHint.setTypeface(null, Typeface.BOLD);
+        dropHint.setTextColor(0xff5a626e);
+        dropHint.setBackgroundResource(R.drawable.bg_drop_zone);
+        dropHint.setClickable(false);
+        dropHint.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        shape.addView(dropHint, new FrameLayout.LayoutParams(0, 0));
+        viewPane.getViewTreeObserver().addOnGlobalLayoutListener(this::updateDropHint);
 
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         useVibrate = new DB(context, "P12").a("P12I0", true);
