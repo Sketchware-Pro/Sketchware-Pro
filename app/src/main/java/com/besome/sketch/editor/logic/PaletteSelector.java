@@ -42,12 +42,27 @@ public class PaletteSelector extends RecyclerView {
             Helper.getResString(R.string.block_category_moreblock)
     };
 
-    private final int[] MainCategoriesColors = {
+    private final int[] MainCategoriesColors = desaturate(new int[]{
             0xffee7d16, 0xffcc5b22, 0xffe1a92a,
             0xff5cb722, 0xff23b9a9, 0xffa1887f,
             0xff4a6cd4, 0xff2ca5e2, 0xff7c83db,
             0xff8a55d7
-    };
+    });
+
+    /** Softens the category colours by blending each ~28% toward a neutral grey, for a calmer palette. */
+    private static int[] desaturate(int[] colors) {
+        int[] out = new int[colors.length];
+        for (int i = 0; i < colors.length; i++) {
+            int c = colors[i];
+            int r = (c >> 16) & 0xff, g = (c >> 8) & 0xff, b = c & 0xff;
+            int grey = (r + g + b) / 3;
+            r = Math.round(r * 0.72f + grey * 0.28f);
+            g = Math.round(g * 0.72f + grey * 0.28f);
+            b = Math.round(b * 0.72f + grey * 0.28f);
+            out[i] = 0xff000000 | (r << 16) | (g << 8) | b;
+        }
+        return out;
+    }
 
     private final int[] MainCategoriesIds = {
             0, 1, 2, 3, 4, 5, 6, 7, -1, 8

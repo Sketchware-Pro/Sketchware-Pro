@@ -38,7 +38,7 @@
     <LinearLayout
         android:id="@+id/canvas_controls"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="36dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginEnd="12dp"
@@ -49,9 +49,10 @@
 
         <ImageButton
             android:id="@+id/btn_zoom_out"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
             android:contentDescription="@string/logic_zoom_out"
             android:src="@drawable/ic_zoom_out_canvas"
             android:tint="?attr/colorOnSurface" />
@@ -69,9 +70,10 @@
 
         <ImageButton
             android:id="@+id/btn_zoom_in"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
             android:contentDescription="@string/logic_zoom_in"
             android:src="@drawable/ic_zoom_in_canvas"
             android:tint="?attr/colorOnSurface" />
@@ -80,8 +82,9 @@
             android:id="@+id/btn_canvas_center"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:minWidth="64dp"
+            android:layout_height="36dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="10dp"
             android:text="@string/logic_canvas_center"
             android:textSize="12sp" />
 
@@ -89,8 +92,9 @@
             android:id="@+id/btn_canvas_fit"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:minWidth="64dp"
+            android:layout_height="36dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="10dp"
             android:text="@string/logic_canvas_fit"
             android:textSize="12sp" />
     </LinearLayout>

@@ -29,4 +29,6 @@
 
     <color name="color_error_bg">#261008</color>
 
+    <color name="event_accent">#ffff8f82</color>
+    <color name="event_on_accent">#ff2a0b07</color>
 </resources>

@@ -1,8 +1,8 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="80dp"
-    android:layout_height="128dp"
+    android:layout_width="76dp"
+    android:layout_height="108dp"
     android:clickable="true"
     android:focusable="true"
     app:cardBackgroundColor="@android:color/transparent"
@@ -15,10 +15,10 @@
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
-            app:cardCornerRadius="18dp">
+            app:cardCornerRadius="16dp">
 
             <ImageView
                 android:id="@+id/icon"
@@ -34,11 +34,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="2dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:ellipsize="end"
             android:gravity="center_horizontal"
-            android:lines="2"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:maxLines="2"
+            android:textAppearance="?attr/textAppearanceBodySmall"
             android:textColor="?attr/colorOnSurface"
             tools:text="SharedPreferences" />
 

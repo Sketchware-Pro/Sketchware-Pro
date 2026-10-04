@@ -58,6 +58,9 @@ public class PaletteWidget extends LinearLayout {
     private TextView titleLayouts;
     private TextView titleWidgets;
     private CustomScrollView scrollView;
+    private String searchQuery = "";
+    private boolean layoutsCollapsed;
+    private boolean widgetsCollapsed;
 
     public PaletteWidget(Context context) {
         super(context);
@@ -160,6 +163,63 @@ public class PaletteWidget extends LinearLayout {
         titleWidgets.setText(Helper.getResString(R.string.view_panel_title_widgets));
         scrollView = findViewById(R.id.scv);
         cardView = findViewById(R.id.cardView);
+        titleLayouts.setOnClickListener(v -> {
+            layoutsCollapsed = !layoutsCollapsed;
+            updateSection(titleLayouts, layoutContainer, R.string.view_panel_title_layouts, layoutsCollapsed);
+        });
+        titleWidgets.setOnClickListener(v -> {
+            widgetsCollapsed = !widgetsCollapsed;
+            updateSection(titleWidgets, widgetsContainer, R.string.view_panel_title_widgets, widgetsCollapsed);
+        });
+        updateSection(titleLayouts, layoutContainer, R.string.view_panel_title_layouts, false);
+        updateSection(titleWidgets, widgetsContainer, R.string.view_panel_title_widgets, false);
+    }
+
+    /** Accordion header: a chevron plus the section title; collapsing only hides the section's container. */
+    private void updateSection(TextView title, LinearLayout container, int titleRes, boolean collapsed) {
+        title.setText((collapsed ? "\u25B8  " : "\u25BE  ") + Helper.getResString(titleRes));
+        container.setVisibility(collapsed ? View.GONE : View.VISIBLE);
+    }
+
+    /** Shows only the widgets whose name contains the query (case-insensitive). Purely visual. */
+    public void filter(String query) {
+        searchQuery = query == null ? "" : query.trim().toLowerCase(java.util.Locale.ROOT);
+        applySectionState(layoutContainer);
+        applySectionState(widgetsContainer);
+    }
+
+    /** Header of a collapsible sub-section ("AndroidX", "List", ...) inside the layouts/widgets containers. */
+    private static final class SectionHeader {
+        final String title;
+        boolean collapsed;
+
+        SectionHeader(String title) {
+            this.title = title;
+        }
+
+        String label() {
+            return (collapsed ? "\u25B8  " : "\u25BE  ") + title;
+        }
+    }
+
+    /**
+     * Recomputes the visibility of every child of a container from the active search query and the
+     * collapsed state of the sub-section header preceding it. While searching, sections are ignored.
+     */
+    private void applySectionState(LinearLayout container) {
+        boolean collapsed = false;
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View child = container.getChildAt(i);
+            if (child.getTag() instanceof SectionHeader header) {
+                collapsed = header.collapsed;
+                child.setVisibility(searchQuery.isEmpty() ? View.VISIBLE : View.GONE);
+            } else if (child instanceof com.besome.sketch.lib.base.BaseWidget widget) {
+                boolean visible = searchQuery.isEmpty()
+                        ? !collapsed
+                        : widget.getWidgetName().toLowerCase(java.util.Locale.ROOT).contains(searchQuery);
+                child.setVisibility(visible ? View.VISIBLE : View.GONE);
+            }
+        }
     }
 
     public void removeWidgets() {
@@ -170,12 +230,22 @@ public class PaletteWidget extends LinearLayout {
         LinearLayout target = targetType == 0 ? layoutContainer : widgetsContainer;
 
         TextView titleView = new TextView(getContext());
-        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(dpToPx(4), dpToPx(2), dpToPx(4), dpToPx(2));
         titleView.setLayoutParams(layoutParams);
-        titleView.setText(title);
+        var header = new SectionHeader(title);
+        titleView.setTag(header);
+        titleView.setText(header.label());
         titleView.setTextSize(12);
-        titleView.setTextColor(MaterialColors.getColor(titleView, R.attr.colorPrimary));
+        titleView.setTypeface(null, android.graphics.Typeface.BOLD);
+        titleView.setTextColor(MaterialColors.getColor(titleView, R.attr.colorOnSurfaceVariant));
+        titleView.setMinHeight(dpToPx(32));
+        titleView.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        titleView.setOnClickListener(v -> {
+            header.collapsed = !header.collapsed;
+            titleView.setText(header.label());
+            applySectionState(target);
+        });
         target.addView(titleView);
     }
 
@@ -241,7 +311,7 @@ public class PaletteWidget extends LinearLayout {
     }
 
     public void setLayoutVisible(int visibility) {
-        layoutContainer.setVisibility(visibility);
+        layoutContainer.setVisibility(visibility == View.VISIBLE && layoutsCollapsed ? View.GONE : visibility);
         titleLayouts.setVisibility(visibility);
     }
 
@@ -254,7 +324,7 @@ public class PaletteWidget extends LinearLayout {
     }
 
     public void setWidgetVisible(int visibility) {
-        widgetsContainer.setVisibility(visibility);
+        widgetsContainer.setVisibility(visibility == View.VISIBLE && widgetsCollapsed ? View.GONE : visibility);
         titleWidgets.setVisibility(visibility);
     }
 

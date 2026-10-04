@@ -4,7 +4,13 @@
     style="?attr/materialCardViewElevatedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="4dp"
+    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="0dp"
+    app:strokeColor="?attr/colorOutlineVariant"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +20,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginVertical="8dp">
+            android:layout_marginVertical="10dp">
 
             <TextView
                 android:id="@+id/tv_event_type"
@@ -44,7 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="40dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/tv_block_count"
                 android:layout_toRightOf="@id/img_icon"
                 android:orientation="vertical">
 
@@ -95,6 +102,20 @@
                         tools:text="@string/event_onclick" />
                 </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_block_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/img_menu"
+                android:background="@drawable/bg_event_badge"
+                android:fontFamily="sans-serif-medium"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="11sp"
+                tools:text="3 blocks" />
 
             <ImageView
                 android:id="@+id/img_menu"

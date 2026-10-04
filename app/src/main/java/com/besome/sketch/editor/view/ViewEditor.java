@@ -93,6 +93,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private boolean S = true;
     private boolean T = false;
     private LinearLayout paletteGroup;
+    private View palettePanel;
+    private com.google.android.material.button.MaterialButton togglePaletteButton;
+    private boolean paletteExpanded = true;
+    private TextView dropHint;
+    private TextView zoomLabel;
+    private float previewZoom = 1f;
     private String a;
     private LinearLayout aa;
     private String b;
@@ -502,6 +508,76 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
+    /**
+     * The widget palette can be collapsed so the preview gets the whole width, and filtered with the
+     * search field. The preview scale is recomputed from the palette's current width in {@link #a()}.
+     */
+    private void setupWidgetPaletteUi(Context context) {
+        palettePanel = findViewById(R.id.layout_palette);
+        togglePaletteButton = findViewById(R.id.btn_toggle_palette);
+        android.content.SharedPreferences prefs = context.getSharedPreferences("view_editor_ui", Context.MODE_PRIVATE);
+        paletteExpanded = prefs.getBoolean("palette_expanded", true);
+        applyPaletteExpanded();
+        togglePaletteButton.setOnClickListener(v -> {
+            paletteExpanded = !paletteExpanded;
+            prefs.edit().putBoolean("palette_expanded", paletteExpanded).apply();
+            applyPaletteExpanded();
+            isLayoutChanged = true;
+            requestLayout();
+        });
+        android.widget.EditText search = findViewById(R.id.search_widgets);
+        search.addTextChangedListener(new com.besome.sketch.editor.logic.PaletteSelector.SimpleTextWatcher(
+                text -> paletteWidget.filter(text.toString())));
+        zoomLabel = findViewById(R.id.tv_vzoom);
+        findViewById(R.id.btn_vzoom_in).setOnClickListener(v -> setPreviewZoom(previewZoom + 0.25f));
+        findViewById(R.id.btn_vzoom_out).setOnClickListener(v -> setPreviewZoom(previewZoom - 0.25f));
+        findViewById(R.id.btn_vfit).setOnClickListener(v -> setPreviewZoom(1f));
+        findViewById(R.id.btn_vcenter).setOnClickListener(v -> setPreviewZoom(1f));
+    }
+
+    /**
+     * View-only preview zoom (50%-200%). Folds into the fit scale on the next layout pass. Fit/Center
+     * reset to 100%. Hit-testing reads viewPane.getScaleX(), which includes this factor, so widget
+     * placement stays consistent; at other-than-100% the phone may sit off-centre (no scroll).
+     */
+    private void setPreviewZoom(float zoom) {
+        previewZoom = Math.max(0.5f, Math.min(2.0f, Math.round(zoom * 4f) / 4f));
+        if (zoomLabel != null) zoomLabel.setText(Math.round(previewZoom * 100) + "%");
+        isLayoutChanged = true;
+        requestLayout();
+    }
+
+    /** Empty-state hint over the preview; shown only while the screen has no widgets. */
+    private void updateDropHint() {
+        boolean empty;
+        int count = viewPane.getChildCount();
+        if (count == 0) {
+            empty = true;
+        } else if (count == 1 && viewPane.getChildAt(0) instanceof ViewGroup root) {
+            empty = root.getChildCount() == 0;
+        } else {
+            empty = false;
+        }
+        dropHint.setVisibility(empty ? View.VISIBLE : View.GONE);
+        if (!empty) return;
+
+        int w = (int) (viewPane.getWidth() * viewPane.getScaleX() * 0.8f);
+        int h = (int) (96 * dip);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) dropHint.getLayoutParams();
+        if (params.width != w || params.height != h) {
+            params.width = w;
+            params.height = h;
+            dropHint.setLayoutParams(params);
+        }
+        dropHint.setX(viewPane.getX() + viewPane.getWidth() / 2f - w / 2f);
+        dropHint.setY(viewPane.getY() + viewPane.getHeight() / 2f - h / 2f);
+    }
+
+    private void applyPaletteExpanded() {
+        palettePanel.setVisibility(paletteExpanded ? View.VISIBLE : View.GONE);
+        togglePaletteButton.setIconResource(paletteExpanded ? R.drawable.ic_mtrl_close : R.drawable.ic_mtrl_component);
+    }
+
     private void initialize(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             setAccessibilityPaneTitle("ViewEditor");
@@ -520,6 +596,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         paletteGroup = findViewById(R.id.palette_group);
 
         addPaletteGroupItems();
+        setupWidgetPaletteUi(context);
 
         findViewById(R.id.btn_editproperties).setOnClickListener(this);
         findViewById(R.id.img_close).setOnClickListener(this);
@@ -580,6 +657,18 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         viewPane.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, displayHeight));
         viewPane.setOnTouchListener(this);
         shape.addView(viewPane);
+
+        dropHint = new TextView(context);
+        dropHint.setText(R.string.view_drop_components_here);
+        dropHint.setGravity(Gravity.CENTER);
+        dropHint.setTextSize(13f);
+        dropHint.setTypeface(null, Typeface.BOLD);
+        dropHint.setTextColor(0xff5a626e);
+        dropHint.setBackgroundResource(R.drawable.bg_drop_zone);
+        dropHint.setClickable(false);
+        dropHint.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        shape.addView(dropHint, new FrameLayout.LayoutParams(0, 0));
+        viewPane.getViewTreeObserver().addOnGlobalLayoutListener(this::updateDropHint);
 
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         useVibrate = new DB(context, "P12").a("P12I0", true);
@@ -886,7 +975,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         int var5 = (int) (dip * (!isLandscapeMode ? 20.0F : 10.0F));
         int statusBarHeight = GB.f(getContext());
         int toolBarHeight = GB.a(getContext());
-        int var9 = displayWidth - (int) (120.0F * dip);
+        int var9 = displayWidth - (paletteExpanded ? (int) (104.0F * dip) : 0);
         int var8 = displayHeight - statusBarHeight - toolBarHeight - (int) (dip * 48.0F) - (int) (dip * 48.0F);
         if (screenType == 0 && da) {
             Log.d("ViewEditor", "hmmm");
@@ -895,6 +984,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
         float var11 = Math.min((float) var9 / (float) displayWidth, (float) var8 / (float) displayHeight);
         float var3 = Math.min((float) (var9 - var4 * 2) / (float) displayWidth, (float) (var8 - var5 * 2) / (float) displayHeight);
+        // Manual preview zoom folded into the fit scale so viewPane.getScaleX() (read by hit-testing) stays consistent.
+        var11 *= previewZoom;
+        var3 *= previewZoom;
 
         aa.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, displayHeight));
         aa.setScaleX(var11);
