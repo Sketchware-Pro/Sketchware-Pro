@@ -1991,7 +1991,17 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         Math.max(0, (content.getHeight() - viewLogicEditor.getHeight()) / 2));
             }
         });
-        binding.btnCanvasFit.setOnClickListener(v -> viewLogicEditor.scrollTo(0, 0));
+        binding.btnCanvasFit.setOnClickListener(v -> {
+            setCanvasZoom(1f);
+            viewLogicEditor.scrollTo(0, 0);
+        });
+        binding.btnZoomIn.setOnClickListener(v -> setCanvasZoom(viewLogicEditor.getZoom() + 0.25f));
+        binding.btnZoomOut.setOnClickListener(v -> setCanvasZoom(viewLogicEditor.getZoom() - 0.25f));
+    }
+
+    private void setCanvasZoom(float zoom) {
+        viewLogicEditor.setZoom(zoom);
+        binding.tvZoom.setText(Math.round(viewLogicEditor.getZoom() * 100) + "%");
     }
 
     private void showPaletteCategory(int navItemId) {
@@ -2108,6 +2118,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             return true;
         }
         if (actionMasked == MotionEvent.ACTION_DOWN) {
+            if (v instanceof Rs paletteBlock && paletteBlock.getBlockType() != 0) {
+                setCanvasZoom(1f);
+            }
             isDragged = false;
             handler.postDelayed(longPressed, ViewConfiguration.getLongPressTimeout() / 2);
             int[] locationOnScreen = new int[2];
@@ -2451,6 +2464,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     private void r() {
         if (currentTouchedView != null) {
+            float zoom = viewLogicEditor.getZoom();
+            if (zoom != 1f) {
+                // Drag and drop work in unscaled screen coordinates: go back to 100% first and
+                // re-anchor the touched block's origin, which the zoom reset moved.
+                if (currentTouchedView instanceof Rs touchedBlock && touchedBlock.getBlockType() == 0) {
+                    int[] paneOrigin = new int[2];
+                    o.getLocationOnScreen(paneOrigin);
+                    s = paneOrigin[0] + (s - paneOrigin[0]) / zoom;
+                    t = paneOrigin[1] + (t - paneOrigin[1]) / zoom;
+                }
+                setCanvasZoom(1f);
+            }
             m.setDragEnabled(false);
             viewLogicEditor.setScrollEnabled(false);
             O.setDragEnabled(false);

@@ -19,6 +19,7 @@ public class ViewLogicEditor extends LogicEditorScrollView {
     private final int[] posArea = new int[2];
     private final Paint gridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final float gridSpacing;
+    private float zoom = 1f;
     private boolean isFirst = true;
 
     public ViewLogicEditor(Context context) {
@@ -53,16 +54,47 @@ public class ViewLogicEditor extends LogicEditorScrollView {
      */
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        float startX = (float) Math.floor(getScrollX() / gridSpacing) * gridSpacing;
-        float startY = (float) Math.floor(getScrollY() / gridSpacing) * gridSpacing;
+        float spacing = gridSpacing * zoom;
+        float startX = (float) Math.floor(getScrollX() / spacing) * spacing;
+        float startY = (float) Math.floor(getScrollY() / spacing) * spacing;
         float endX = getScrollX() + getWidth();
         float endY = getScrollY() + getHeight();
-        for (float x = startX; x <= endX; x += gridSpacing) {
-            for (float y = startY; y <= endY; y += gridSpacing) {
+        for (float x = startX; x <= endX; x += spacing) {
+            for (float y = startY; y <= endY; y += spacing) {
                 canvas.drawPoint(x, y, gridPaint);
             }
         }
         super.dispatchDraw(canvas);
+    }
+
+    public float getZoom() {
+        return zoom;
+    }
+
+    /**
+     * Visual-only zoom: the block pane is scaled around its top-left corner and the scroll offset is
+     * adjusted to keep the viewport centre. Callers must reset it to 1 before the engine reads block
+     * positions (drag and drop), because those are computed from unscaled screen coordinates.
+     */
+    public void setZoom(float newZoom) {
+        newZoom = Math.max(0.5f, Math.min(1.5f, newZoom));
+        if (newZoom == zoom) return;
+        float oldZoom = zoom;
+        zoom = newZoom;
+
+        float centerX = getScrollX() + getWidth() / 2f;
+        float centerY = getScrollY() + getHeight() / 2f;
+        blockPane.setPivotX(0);
+        blockPane.setPivotY(0);
+        blockPane.setScaleX(zoom);
+        blockPane.setScaleY(zoom);
+
+        int maxX = Math.max(0, Math.round(blockPane.getWidth() * zoom) - getWidth());
+        int maxY = Math.max(0, Math.round(blockPane.getHeight() * zoom) - getHeight());
+        int x = Math.round(centerX / oldZoom * zoom - getWidth() / 2f);
+        int y = Math.round(centerY / oldZoom * zoom - getHeight() / 2f);
+        scrollTo(Math.max(0, Math.min(x, maxX)), Math.max(0, Math.min(y, maxY)));
+        invalidate();
     }
 
     public BlockPane getBlockPane() {
