@@ -16,6 +16,8 @@
         android:layout_gravity="center"
         android:layout_marginStart="3dp"
         android:layout_marginEnd="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="@string/common_word_widget"
         android:textAppearance="?attr/textAppearanceBodySmall"
         android:textSize="11sp" />

@@ -58,6 +58,8 @@ public class PaletteWidget extends LinearLayout {
     private TextView titleLayouts;
     private TextView titleWidgets;
     private CustomScrollView scrollView;
+    private boolean layoutsCollapsed;
+    private boolean widgetsCollapsed;
 
     public PaletteWidget(Context context) {
         super(context);
@@ -160,6 +162,41 @@ public class PaletteWidget extends LinearLayout {
         titleWidgets.setText(Helper.getResString(R.string.view_panel_title_widgets));
         scrollView = findViewById(R.id.scv);
         cardView = findViewById(R.id.cardView);
+        titleLayouts.setOnClickListener(v -> {
+            layoutsCollapsed = !layoutsCollapsed;
+            updateSection(titleLayouts, layoutContainer, R.string.view_panel_title_layouts, layoutsCollapsed);
+        });
+        titleWidgets.setOnClickListener(v -> {
+            widgetsCollapsed = !widgetsCollapsed;
+            updateSection(titleWidgets, widgetsContainer, R.string.view_panel_title_widgets, widgetsCollapsed);
+        });
+        updateSection(titleLayouts, layoutContainer, R.string.view_panel_title_layouts, false);
+        updateSection(titleWidgets, widgetsContainer, R.string.view_panel_title_widgets, false);
+    }
+
+    /** Accordion header: a chevron plus the section title; collapsing only hides the section's container. */
+    private void updateSection(TextView title, LinearLayout container, int titleRes, boolean collapsed) {
+        title.setText((collapsed ? "\u25B8  " : "\u25BE  ") + Helper.getResString(titleRes));
+        container.setVisibility(collapsed ? View.GONE : View.VISIBLE);
+    }
+
+    /** Shows only the widgets whose name contains the query (case-insensitive). Purely visual. */
+    public void filter(String query) {
+        String q = query == null ? "" : query.trim().toLowerCase(java.util.Locale.ROOT);
+        filterContainer(layoutContainer, q);
+        filterContainer(widgetsContainer, q);
+    }
+
+    private void filterContainer(LinearLayout container, String q) {
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View child = container.getChildAt(i);
+            if (child instanceof com.besome.sketch.lib.base.BaseWidget widget) {
+                boolean match = q.isEmpty() || widget.getWidgetName().toLowerCase(java.util.Locale.ROOT).contains(q);
+                child.setVisibility(match ? View.VISIBLE : View.GONE);
+            } else if (child instanceof TextView) {
+                child.setVisibility(q.isEmpty() ? View.VISIBLE : View.GONE);
+            }
+        }
     }
 
     public void removeWidgets() {
@@ -241,7 +278,7 @@ public class PaletteWidget extends LinearLayout {
     }
 
     public void setLayoutVisible(int visibility) {
-        layoutContainer.setVisibility(visibility);
+        layoutContainer.setVisibility(visibility == View.VISIBLE && layoutsCollapsed ? View.GONE : visibility);
         titleLayouts.setVisibility(visibility);
     }
 
@@ -254,7 +291,7 @@ public class PaletteWidget extends LinearLayout {
     }
 
     public void setWidgetVisible(int visibility) {
-        widgetsContainer.setVisibility(visibility);
+        widgetsContainer.setVisibility(visibility == View.VISIBLE && widgetsCollapsed ? View.GONE : visibility);
         titleWidgets.setVisibility(visibility);
     }
 

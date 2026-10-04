@@ -929,4 +929,7 @@ ACTION_VIEW
         <item quantity="one">%d block</item>
         <item quantity="other">%d blocks</item>
     </plurals>
+    <string name="view_search_widgets">Search widgets…</string>
+    <string name="view_toggle_widgets">Widgets</string>
+    <string name="view_widget_new_compact">Widget</string>
 </resources>

@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:id="@+id/layout_palette"
-        android:layout_width="120dp"
+        android:layout_width="132dp"
         android:layout_height="match_parent"
         android:background="?attr/colorSurface"
         android:orientation="vertical">
@@ -16,6 +16,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
+
+        <EditText
+            android:id="@+id/search_widgets"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginHorizontal="6dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/palette_search_bg"
+            android:drawableStart="@drawable/ic_search_palette"
+            android:drawablePadding="6dp"
+            android:hint="@string/view_search_widgets"
+            android:imeOptions="actionSearch"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingHorizontal="10dp"
+            android:singleLine="true"
+            android:textSize="12sp" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -39,10 +58,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toEndOf="@+id/layout_palette"
-        android:background="?attr/colorSurface"
+        android:background="?attr/colorSurfaceContainer"
         android:forceDarkAllowed="false"
         tools:ignore="UnusedAttribute" />
 
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_toggle_palette"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/layout_palette"
+        android:alpha="0.95"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:minWidth="0dp"
+        android:paddingHorizontal="12dp"
+        android:text="@string/view_toggle_widgets"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_mtrl_component"
+        app:iconSize="18dp" />
 
     <com.besome.sketch.editor.view.ViewDummy
         android:id="@+id/dummy"

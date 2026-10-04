@@ -93,6 +93,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private boolean S = true;
     private boolean T = false;
     private LinearLayout paletteGroup;
+    private View palettePanel;
+    private com.google.android.material.button.MaterialButton togglePaletteButton;
+    private boolean paletteExpanded = true;
     private String a;
     private LinearLayout aa;
     private String b;
@@ -502,6 +505,33 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
+    /**
+     * The widget palette can be collapsed so the preview gets the whole width, and filtered with the
+     * search field. The preview scale is recomputed from the palette's current width in {@link #a()}.
+     */
+    private void setupWidgetPaletteUi(Context context) {
+        palettePanel = findViewById(R.id.layout_palette);
+        togglePaletteButton = findViewById(R.id.btn_toggle_palette);
+        android.content.SharedPreferences prefs = context.getSharedPreferences("view_editor_ui", Context.MODE_PRIVATE);
+        paletteExpanded = prefs.getBoolean("palette_expanded", true);
+        applyPaletteExpanded();
+        togglePaletteButton.setOnClickListener(v -> {
+            paletteExpanded = !paletteExpanded;
+            prefs.edit().putBoolean("palette_expanded", paletteExpanded).apply();
+            applyPaletteExpanded();
+            isLayoutChanged = true;
+            requestLayout();
+        });
+        android.widget.EditText search = findViewById(R.id.search_widgets);
+        search.addTextChangedListener(new com.besome.sketch.editor.logic.PaletteSelector.SimpleTextWatcher(
+                text -> paletteWidget.filter(text.toString())));
+    }
+
+    private void applyPaletteExpanded() {
+        palettePanel.setVisibility(paletteExpanded ? View.VISIBLE : View.GONE);
+        togglePaletteButton.setIconResource(paletteExpanded ? R.drawable.ic_mtrl_close : R.drawable.ic_mtrl_component);
+    }
+
     private void initialize(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             setAccessibilityPaneTitle("ViewEditor");
@@ -520,6 +550,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         paletteGroup = findViewById(R.id.palette_group);
 
         addPaletteGroupItems();
+        setupWidgetPaletteUi(context);
 
         findViewById(R.id.btn_editproperties).setOnClickListener(this);
         findViewById(R.id.img_close).setOnClickListener(this);
@@ -886,7 +917,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         int var5 = (int) (dip * (!isLandscapeMode ? 20.0F : 10.0F));
         int statusBarHeight = GB.f(getContext());
         int toolBarHeight = GB.a(getContext());
-        int var9 = displayWidth - (int) (120.0F * dip);
+        int var9 = displayWidth - (paletteExpanded ? (int) (132.0F * dip) : 0);
         int var8 = displayHeight - statusBarHeight - toolBarHeight - (int) (dip * 48.0F) - (int) (dip * 48.0F);
         if (screenType == 0 && da) {
             Log.d("ViewEditor", "hmmm");
