@@ -934,4 +934,5 @@ ACTION_VIEW
     <string name="view_widget_new_compact">Widget</string>
     <string name="view_drop_components_here">Drop components here</string>
     <string name="component_search_hint">Search components…</string>
+    <string name="firebase_reveal_value">Show or hide value</string>
 </resources>
