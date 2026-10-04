@@ -470,6 +470,15 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             EventBean eventBean = getActiveList().get(position);
+            ArrayList<BlockBean> eventBlocks = jC.a(sc_id).a(currentActivity.getJavaName(), eventBean.targetId + "_" + eventBean.eventName);
+            int blockCount = eventBlocks == null ? 0 : eventBlocks.size();
+            holder.blockCount.setText(getResources().getQuantityString(R.plurals.logic_blocks_count, blockCount, blockCount));
+            holder.blockCount.setBackgroundResource(blockCount > 0 ? R.drawable.bg_event_badge_active : R.drawable.bg_event_badge);
+            if (blockCount > 0) {
+                holder.blockCount.setTextColor(requireContext().getColor(R.color.event_on_accent));
+            } else {
+                holder.blockCount.setTextColor(holder.blockCountDefaultColors);
+            }
             holder.targetType.setVisibility(View.VISIBLE);
             holder.previewContainer.setVisibility(View.VISIBLE);
             holder.preview.setVisibility(View.VISIBLE);
@@ -634,6 +643,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             public final TextView type;
             public final TextView name;
             public final TextView description;
+            public final TextView blockCount;
+            public final android.content.res.ColorStateList blockCountDefaultColors;
 
             public ViewHolder(View itemView) {
                 super(itemView, 200);
@@ -644,6 +655,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 type = itemView.findViewById(R.id.tv_event_type);
                 name = itemView.findViewById(R.id.tv_event_name);
                 description = itemView.findViewById(R.id.tv_event_text);
+                blockCount = itemView.findViewById(R.id.tv_block_count);
+                blockCountDefaultColors = blockCount.getTextColors();
                 menu = itemView.findViewById(R.id.img_menu);
                 preview = itemView.findViewById(R.id.img_preview);
                 previewContainer = itemView.findViewById(R.id.ll_preview);

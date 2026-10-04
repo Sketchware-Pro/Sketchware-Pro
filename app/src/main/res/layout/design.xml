@@ -35,7 +35,9 @@
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent" />
+                    android:background="@android:color/transparent"
+                    app:tabIndicatorColor="@color/event_accent"
+                    app:tabSelectedTextColor="@color/event_accent" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -109,7 +111,10 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
-                    app:contentPadding="8dp">
+                    app:cardCornerRadius="16dp"
+                    app:contentPadding="10dp"
+                    app:strokeColor="?attr/colorOutlineVariant"
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -158,15 +163,22 @@
                         style="?attr/materialSplitButtonLeadingFilledStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:minHeight="52dp"
                         android:text="@string/common_word_run"
-                        app:icon="@drawable/ic_mtrl_run" />
+                        android:textColor="@color/event_on_accent"
+                        app:backgroundTint="@color/event_accent"
+                        app:icon="@drawable/ic_mtrl_run"
+                        app:iconTint="@color/event_on_accent" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_options"
                         style="?attr/materialSplitButtonIconFilledStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:minHeight="52dp"
+                        app:backgroundTint="@color/event_accent"
                         app:icon="@drawable/m3_split_button_chevron_avd"
+                        app:iconTint="@color/event_on_accent"
                         app:iconSize="24dp" />
 
                 </com.google.android.material.button.MaterialSplitButton>
