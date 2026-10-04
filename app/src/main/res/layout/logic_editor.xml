@@ -3,27 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             style="@style/Widget.SketchwarePro.Toolbar.SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:subtitle="@string/common_word_oncreate"
             app:title="@string/common_word_activity" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dividerColor="?attr/colorSurfaceContainerHighest" />
 
         <com.besome.sketch.editor.view.ViewLogicEditor
             android:id="@+id/editor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="4dp"
+            android:layout_marginHorizontal="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="6dp"
             android:forceDarkAllowed="false"
             tools:ignore="UnusedAttribute" />
     </LinearLayout>
@@ -40,22 +49,27 @@
         android:id="@+id/layout_palette"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clipChildren="false"
         android:orientation="vertical">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_toggle_palette"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_margin="@dimen/action_button_margin"
+            android:contentDescription="@string/common_word_block"
             android:src="@drawable/block_flled_white"
-            tools:ignore="ContentDescription" />
+            app:fabCustomSize="48dp" />
 
         <LinearLayout
             android:id="@+id/area_palette"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="16dp"
-            android:orientation="horizontal">
+            android:background="@drawable/bg_logic_palette_sheet"
+            android:clipToOutline="true"
+            android:elevation="12dp"
+            android:orientation="horizontal"
+            android:paddingTop="4dp">
 
             <com.besome.sketch.editor.logic.PaletteBlock
                 android:id="@+id/palette_block"

@@ -106,6 +106,20 @@ public class PaletteSelector extends RecyclerView {
         return searchValue.isEmpty() || title.toLowerCase().contains(searchValue.toLowerCase());
     }
 
+
+    /**
+     * Updates the palette filter directly from the inline search field.
+     * Keeping the filtering inside PaletteSelector avoids duplicating palette logic in the Activity.
+     */
+    public void setSearchQuery(String query) {
+        String normalized = query == null ? "" : query.trim();
+        if (normalized.equals(searchValue)) {
+            return;
+        }
+        searchValue = normalized;
+        initializePalettes();
+    }
+
     public void showSearchDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
         PalettesSearchDialogBinding binding = PalettesSearchDialogBinding.inflate(((Activity) context).getLayoutInflater());
@@ -143,13 +157,8 @@ public class PaletteSelector extends RecyclerView {
         if (!query.isEmpty()) {
             AnalyticsHelper.logFeatureSearch(context, query, "logic_blocks");
         }
-        searchValue = query;
-        Executors.newSingleThreadExecutor().execute(() ->
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    initializePalettes();
-                    dialog.dismiss();
-                })
-        );
+        setSearchQuery(query);
+        dialog.dismiss();
     }
 
     public void setOnBlockCategorySelectListener(Vs listener) {

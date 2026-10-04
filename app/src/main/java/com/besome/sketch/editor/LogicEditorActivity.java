@@ -1528,7 +1528,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 width = height;
             }
             if (2 == i) {
-                i2 = width - ((int) wB.a(this, 320.0f));
+                i2 = width - ((int) wB.a(this, 360.0f));
                 a2 = ViewGroup.LayoutParams.MATCH_PARENT;
             } else {
                 a2 = viewLogicEditor.getHeight() - K.getHeight();
@@ -1621,7 +1621,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         RelativeLayout.LayoutParams layoutParams;
         int orientation;
         if (2 == i) {
-            K.setLayoutParams(new LinearLayout.LayoutParams((int) wB.a(this, 320.0f), ViewGroup.LayoutParams.MATCH_PARENT));
+            K.setLayoutParams(new LinearLayout.LayoutParams((int) wB.a(this, 360.0f), ViewGroup.LayoutParams.MATCH_PARENT));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.CENTER | Gravity.BOTTOM;
             int dimension = (int) getResources().getDimension(R.dimen.action_button_margin);
@@ -1633,7 +1633,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             layoutParams.topMargin = GB.a((Context) this);
             orientation = LinearLayout.HORIZONTAL;
         } else {
-            K.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) wB.a(this, 240.0f)));
+            K.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) wB.a(this, 300.0f)));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.CENTER | Gravity.RIGHT;
             int dimension2 = (int) getResources().getDimension(R.dimen.action_button_margin);
@@ -1665,7 +1665,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         boolean var2 = X;
         if (i == 2) {
             if (!var2) {
-                J.setTranslationX(wB.a(this, 320.0F));
+                J.setTranslationX(wB.a(this, 360.0F));
             } else {
                 J.setTranslationX(0.0F);
             }
@@ -1673,7 +1673,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         } else {
             if (!var2) {
                 J.setTranslationX(0.0F);
-                J.setTranslationY(wB.a(this, 240.0F));
+                J.setTranslationY(wB.a(this, 300.0F));
             } else {
                 J.setTranslationX(0.0F);
                 J.setTranslationY(0.0F);
@@ -1682,15 +1682,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         if (i == 2) {
             U = ObjectAnimator.ofFloat(J, View.TRANSLATION_X, 0.0F);
-            V = ObjectAnimator.ofFloat(J, View.TRANSLATION_X, wB.a(this, 320.0F));
+            V = ObjectAnimator.ofFloat(J, View.TRANSLATION_X, wB.a(this, 360.0F));
         } else {
             U = ObjectAnimator.ofFloat(J, View.TRANSLATION_Y, 0.0F);
-            V = ObjectAnimator.ofFloat(J, View.TRANSLATION_Y, wB.a(this, 240.0F));
+            V = ObjectAnimator.ofFloat(J, View.TRANSLATION_Y, wB.a(this, 300.0F));
         }
 
-        U.setDuration(500L);
+        U.setDuration(260L);
         U.setInterpolator(new DecelerateInterpolator());
-        V.setDuration(300L);
+        V.setDuration(220L);
         V.setInterpolator(new DecelerateInterpolator());
         W = true;
     }
@@ -1970,7 +1970,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         openBlocksMenuButton.setOnClickListener(v -> e(!X));
         logicTopMenu = binding.topMenu;
         O = binding.rightDrawer;
-        paletteBlockBinding.searchHeader.setOnClickListener(v -> paletteSelector.showSearchDialog());
+        paletteBlockBinding.searchHeader.addTextChangedListener(new BaseTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable editable) {
+                paletteSelector.setSearchQuery(editable == null ? "" : editable.toString());
+            }
+        });
         extraPaletteBlock = new ExtraPaletteBlock(this, isViewBindingEnabled);
 
         svgUtils = new SvgUtils(this);

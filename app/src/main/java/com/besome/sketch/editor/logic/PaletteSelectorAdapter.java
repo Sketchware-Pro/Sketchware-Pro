@@ -70,10 +70,19 @@ public class PaletteSelectorAdapter extends RecyclerView.Adapter<PaletteSelector
         holder.binding.bg.getLayoutParams().width = position == selectedPosition ? ViewGroup.LayoutParams.MATCH_PARENT : (int) wB.a(context, 4f);
 
         holder.itemView.setOnClickListener(v -> {
-            selectedPosition = holder.getAbsoluteAdapterPosition();
-            notifyDataSetChanged();
+            int newPosition = holder.getAbsoluteAdapterPosition();
+            if (newPosition == RecyclerView.NO_POSITION || newPosition == selectedPosition) {
+                return;
+            }
+            int oldPosition = selectedPosition;
+            selectedPosition = newPosition;
+            if (oldPosition >= 0) {
+                notifyItemChanged(oldPosition);
+            }
+            notifyItemChanged(selectedPosition);
             if (onBlockCategorySelectListener != null) {
-                onBlockCategorySelectListener.a(id, color);
+                paletteSelectorRecord selected = paletteList.get(selectedPosition);
+                onBlockCategorySelectListener.a(selected.index(), harmonizeWithPrimary(context, selected.color()));
             }
         });
     }
@@ -87,8 +96,12 @@ public class PaletteSelectorAdapter extends RecyclerView.Adapter<PaletteSelector
         for (int i = 0; i < paletteList.size(); i++) {
             int paletteId = paletteList.get(i).index();
             if (paletteId == tag) {
+                int oldPosition = selectedPosition;
                 selectedPosition = i;
-                notifyDataSetChanged();
+                if (oldPosition >= 0) {
+                    notifyItemChanged(oldPosition);
+                }
+                notifyItemChanged(selectedPosition);
                 if (onBlockCategorySelectListener != null) {
                     onBlockCategorySelectListener.a(paletteId, paletteList.get(i).color());
                 }
@@ -99,8 +112,12 @@ public class PaletteSelectorAdapter extends RecyclerView.Adapter<PaletteSelector
 
     public void selectPosition(int pos) {
         if (pos >= 0 && pos < paletteList.size()) {
+            int oldPosition = selectedPosition;
             selectedPosition = pos;
-            notifyDataSetChanged();
+            if (oldPosition >= 0) {
+                notifyItemChanged(oldPosition);
+            }
+            notifyItemChanged(selectedPosition);
             if (onBlockCategorySelectListener != null) {
                 onBlockCategorySelectListener.a(paletteList.get(pos).index(), paletteList.get(pos).color());
             }

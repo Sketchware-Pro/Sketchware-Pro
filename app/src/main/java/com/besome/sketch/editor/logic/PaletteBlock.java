@@ -67,7 +67,7 @@ public class PaletteBlock extends LinearLayout {
     public TextView a(String title) {
         var textView = new TextView(context);
         textView.setText(title);
-        textView.setTextSize(10.0F);
+        textView.setTextSize(11.0F);
         textView.setTypeface(null, Typeface.BOLD);
         textView.setGravity(Gravity.CENTER);
         textView.setPadding((int) (f * 8.0F), 0, (int) (f * 8.0F), 0);
@@ -99,7 +99,7 @@ public class PaletteBlock extends LinearLayout {
         TextView textView = new TextView(context);
         textView.setText(title);
         textView.setTextColor(getColor(context, isDarkThemeEnabled(context) ? R.attr.colorOnSurface : R.attr.colorOnSurfaceInverse));
-        textView.setTextSize(10.0F);
+        textView.setTextSize(11.0F);
         textView.setGravity(Gravity.CENTER | Gravity.LEFT);
         textView.setPadding((int) (f * 12.0F), 0, (int) (f * 12.0F), 0);
         cardView.addView(textView);
