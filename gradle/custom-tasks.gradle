@@ -1,5 +1,5 @@
 /**
- * Creates a mock google-services.json if GOOGLE_SERVICES_JSON environment variable is absent.
+ * Creates a mock app/google-services.json (all build variants) if GOOGLE_SERVICES_JSON environment variable is absent.
  */
 tasks.register('createMockGoogleServices') {
     doLast {
@@ -12,7 +12,8 @@ tasks.register('createMockGoogleServices') {
         if (rootMockFile.exists() && rootMockFile.length() == 0) {
             rootMockFile.delete()
         }
-        def mockFile = file("src/debug/google-services.json")
+        // Module-level file, so that every variant (debug and release) finds it.
+        def mockFile = rootMockFile
         if (!mockFile.exists()) {
             mockFile.parentFile.mkdirs()
             def mockContent = """{
@@ -51,3 +52,7 @@ tasks.register('createMockGoogleServices') {
 }
 
 preBuild.dependsOn createMockGoogleServices
+
+tasks.matching { it.name.startsWith("process") && it.name.endsWith("GoogleServices") }.configureEach {
+    dependsOn createMockGoogleServices
+}
