@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:id="@+id/layout_palette"
-        android:layout_width="132dp"
+        android:layout_width="104dp"
         android:layout_height="match_parent"
         android:background="?attr/colorSurface"
         android:orientation="vertical">
@@ -69,17 +69,18 @@
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
         android:layout_toEndOf="@+id/layout_palette"
-        android:alpha="0.95"
+        android:alpha="0.92"
+        android:contentDescription="@string/view_toggle_widgets"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:minWidth="0dp"
-        android:paddingHorizontal="12dp"
-        android:text="@string/view_toggle_widgets"
-        android:textSize="12sp"
+        android:paddingHorizontal="8dp"
         app:icon="@drawable/ic_mtrl_component"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
         app:iconSize="18dp" />
 
     <com.besome.sketch.editor.view.ViewDummy
