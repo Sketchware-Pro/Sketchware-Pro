@@ -42,25 +42,39 @@ public class PaletteBlock extends LinearLayout {
         f = wB.a(context, 1.0F);
     }
 
+    /**
+     * Presents a palette block on a rounded tonal card. The block view itself is unchanged
+     * (same touch listener, same drag behaviour); the card is purely a visual container.
+     */
+    private void addBlockCard(Rs blockView) {
+        int padding = (int) (f * 8.0F);
+        var card = new MaterialCardView(context);
+        var params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.bottomMargin = (int) (f * 8.0F);
+        card.setLayoutParams(params);
+        card.setRadius(f * 12.0F);
+        card.setCardElevation(0.0F);
+        card.setCardBackgroundColor(getColor(context, R.attr.colorSurfaceContainerHigh));
+        card.setStrokeColor(getColor(context, R.attr.colorOutlineVariant));
+        card.setStrokeWidth(Math.max(1, (int) f));
+        card.setContentPadding(padding, padding, padding, padding);
+        card.addView(blockView);
+        binding.blockBuilder.addView(card);
+    }
+
     public Ts a(String var1, String var2, String var3) {
-        View view = new View(context);
-        view.setLayoutParams(getLayoutParams(8.0F));
-        binding.blockBuilder.addView(view);
         Rs blockView = new Rs(context, -1, var1, var2, var3);
         blockView.setContentDescription(generateContentDescription(var3));
         blockView.setBlockType(1);
-        binding.blockBuilder.addView(blockView);
+        addBlockCard(blockView);
         return blockView;
     }
 
     public Ts a(String var1, String var2, String var3, String var4) {
-        View view = new View(context);
-        view.setLayoutParams(getLayoutParams(8.0F));
-        binding.blockBuilder.addView(view);
         Rs blockView = new Rs(context, -1, var1, var2, var3, var4);
         blockView.setContentDescription(generateContentDescription(var4));
         blockView.setBlockType(1);
-        binding.blockBuilder.addView(blockView);
+        addBlockCard(blockView);
         return blockView;
     }
 
