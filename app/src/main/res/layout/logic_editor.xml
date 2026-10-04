@@ -47,7 +47,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/action_button_margin"
+            android:alpha="0.85"
             android:src="@drawable/block_flled_white"
+            app:backgroundTint="?attr/colorSecondaryContainer"
+            app:elevation="2dp"
+            app:fabSize="mini"
+            app:pressedTranslationZ="4dp"
+            app:tint="?attr/colorOnSecondaryContainer"
             tools:ignore="ContentDescription" />
 
         <LinearLayout

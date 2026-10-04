@@ -1970,7 +1970,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         openBlocksMenuButton.setOnClickListener(v -> e(!X));
         logicTopMenu = binding.topMenu;
         O = binding.rightDrawer;
-        paletteBlockBinding.searchHeader.setOnClickListener(v -> paletteSelector.showSearchDialog());
+        paletteBlockBinding.searchHeader.addTextChangedListener(new PaletteSelector.SimpleTextWatcher(text -> paletteSelector.setSearchQuery(text.toString())));
         extraPaletteBlock = new ExtraPaletteBlock(this, isViewBindingEnabled);
 
         svgUtils = new SvgUtils(this);

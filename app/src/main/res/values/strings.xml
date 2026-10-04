@@ -886,7 +886,7 @@ ACTION_VIEW
     <string name="searching">Searching…</string>
     <string name="restoring">Restoring…</string>
     <string name="search_error_message">Nothing found,\ntry again with something else</string>
-    <string name="search_header">"  Search…"</string>
+    <string name="search_header">Search blocks…</string>
     <string name="strings_xml">strings.xml</string>
     <string name="xml_strings">XML Strings</string>
 

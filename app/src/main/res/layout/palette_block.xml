@@ -40,23 +40,35 @@
     </com.besome.sketch.lib.ui.CustomScrollView>
 
     <LinearLayout
-        android:layout_width="120dp"
+        android:layout_width="132dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <EditText
             android:id="@+id/search_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/palette_search_bg"
+            android:drawableStart="@drawable/ic_search_palette"
+            android:drawablePadding="6dp"
+            android:hint="@string/search_header"
+            android:imeOptions="actionSearch"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLines="1"
             android:paddingHorizontal="10dp"
-            android:text="@string/search_header" />
+            android:singleLine="true"
+            android:textSize="13sp" />
 
         <com.besome.sketch.editor.logic.PaletteSelector
             android:id="@+id/palette_selector"
-            android:layout_width="120dp"
+            android:layout_width="132dp"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     </LinearLayout>
