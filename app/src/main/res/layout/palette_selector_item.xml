@@ -1,19 +1,28 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="24dp"
-    android:paddingTop="2dp"
-    android:paddingBottom="2dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="3dp">
 
-    <View
-        android:id="@+id/bg"
-        android:layout_width="4dp"
-        android:layout_height="match_parent" />
-
-    <TextView
-        android:id="@+id/tv_category"
+    <LinearLayout
+        android:id="@+id/chip"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="8dp"
-        android:textSize="13sp" />
-</RelativeLayout>
+        android:layout_height="36dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp">
+
+        <View
+            android:id="@+id/bg"
+            android:layout_width="8dp"
+            android:layout_height="8dp" />
+
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:textSize="13sp" />
+    </LinearLayout>
+</FrameLayout>

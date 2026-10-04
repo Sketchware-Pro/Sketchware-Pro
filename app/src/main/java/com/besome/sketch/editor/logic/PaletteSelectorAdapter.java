@@ -2,14 +2,17 @@ package com.besome.sketch.editor.logic;
 
 import static com.besome.sketch.editor.logic.PaletteSelector.paletteSelectorRecord;
 import static com.google.android.material.color.MaterialColors.harmonizeWithPrimary;
-import static com.google.android.material.color.MaterialColors.isColorLight;
 import static pro.sketchware.utility.ThemeUtils.getColor;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -61,13 +64,23 @@ public class PaletteSelectorAdapter extends RecyclerView.Adapter<PaletteSelector
         String title = item.text();
         int color = harmonizeWithPrimary(context, item.color());
 
+        boolean selected = position == selectedPosition;
         holder.binding.tvCategory.setText(title);
-        holder.binding.bg.setBackgroundColor(color);
-        holder.binding.tvCategory.setTextColor(
-                position == selectedPosition ?
-                        isColorLight(color) ? getColor(context, R.attr.colorOnSurface) : getColor(context, R.attr.colorOnSurfaceInverse)
-                        : getColor(context, R.attr.colorOnSurface));
-        holder.binding.bg.getLayoutParams().width = position == selectedPosition ? ViewGroup.LayoutParams.MATCH_PARENT : (int) wB.a(context, 4f);
+
+        GradientDrawable dot = new GradientDrawable();
+        dot.setShape(GradientDrawable.OVAL);
+        dot.setColor(color);
+        holder.binding.bg.setBackground(dot);
+
+        GradientDrawable chipBackground = new GradientDrawable();
+        chipBackground.setCornerRadius(wB.a(context, 18f));
+        chipBackground.setColor(selected ? ColorUtils.setAlphaComponent(color, 0x40) : Color.TRANSPARENT);
+        chipBackground.setStroke((int) wB.a(context, 1f), selected ? color : getColor(context, R.attr.colorOutlineVariant));
+        holder.binding.chip.setBackground(chipBackground);
+
+        holder.binding.tvCategory.setTextColor(getColor(context, selected ? R.attr.colorOnSurface : R.attr.colorOnSurfaceVariant));
+        holder.binding.tvCategory.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
+        holder.binding.bg.animate().scaleX(selected ? 1.5f : 1f).scaleY(selected ? 1.5f : 1f).setDuration(150).start();
 
         holder.itemView.setOnClickListener(v -> {
             selectedPosition = holder.getAbsoluteAdapterPosition();

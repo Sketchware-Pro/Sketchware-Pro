@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_mtrl_code"
         android:orderInCategory="100"
         android:title="@string/design_drawer_menu_title_source_code"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_logic_undo"
@@ -27,6 +27,13 @@
         android:icon="@drawable/ic_mtrl_bookmark"
         android:orderInCategory="100"
         android:title="@string/common_word_blocks_collection"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_logic_save"
+        android:icon="@drawable/ic_mtrl_save"
+        android:orderInCategory="100"
+        android:title="@string/myprojects_settings_button_save"
         app:showAsAction="always" />
 
 </menu>

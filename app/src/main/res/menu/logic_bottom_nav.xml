@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_blocks"
+        android:icon="@drawable/ic_mtrl_block"
+        android:title="@string/logic_nav_blocks" />
+    <item
+        android:id="@+id/nav_variables"
+        android:icon="@drawable/ic_mtrl_checklist"
+        android:title="@string/logic_nav_variables" />
+    <item
+        android:id="@+id/nav_components"
+        android:icon="@drawable/ic_mtrl_component"
+        android:title="@string/logic_nav_components" />
+</menu>

@@ -152,6 +152,18 @@ public class PaletteSelector extends RecyclerView {
         );
     }
 
+    /**
+     * Filters categories as the user types in the inline search field.
+     */
+    public void setSearchQuery(String query) {
+        String trimmed = query == null ? "" : query.trim();
+        if (allPalettes == null || trimmed.equals(searchValue)) {
+            return;
+        }
+        searchValue = trimmed;
+        initializePalettes();
+    }
+
     public void setOnBlockCategorySelectListener(Vs listener) {
         initialize(listener);
     }
