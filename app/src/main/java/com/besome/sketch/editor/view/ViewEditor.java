@@ -97,6 +97,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private com.google.android.material.button.MaterialButton togglePaletteButton;
     private boolean paletteExpanded = true;
     private TextView dropHint;
+    private TextView zoomLabel;
+    private float previewZoom = 1f;
     private String a;
     private LinearLayout aa;
     private String b;
@@ -526,6 +528,23 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         android.widget.EditText search = findViewById(R.id.search_widgets);
         search.addTextChangedListener(new com.besome.sketch.editor.logic.PaletteSelector.SimpleTextWatcher(
                 text -> paletteWidget.filter(text.toString())));
+        zoomLabel = findViewById(R.id.tv_vzoom);
+        findViewById(R.id.btn_vzoom_in).setOnClickListener(v -> setPreviewZoom(previewZoom + 0.25f));
+        findViewById(R.id.btn_vzoom_out).setOnClickListener(v -> setPreviewZoom(previewZoom - 0.25f));
+        findViewById(R.id.btn_vfit).setOnClickListener(v -> setPreviewZoom(1f));
+        findViewById(R.id.btn_vcenter).setOnClickListener(v -> setPreviewZoom(1f));
+    }
+
+    /**
+     * View-only preview zoom (50%-200%). Folds into the fit scale on the next layout pass. Fit/Center
+     * reset to 100%. Hit-testing reads viewPane.getScaleX(), which includes this factor, so widget
+     * placement stays consistent; at other-than-100% the phone may sit off-centre (no scroll).
+     */
+    private void setPreviewZoom(float zoom) {
+        previewZoom = Math.max(0.5f, Math.min(2.0f, Math.round(zoom * 4f) / 4f));
+        if (zoomLabel != null) zoomLabel.setText(Math.round(previewZoom * 100) + "%");
+        isLayoutChanged = true;
+        requestLayout();
     }
 
     /** Empty-state hint over the preview; shown only while the screen has no widgets. */
@@ -965,6 +984,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
         float var11 = Math.min((float) var9 / (float) displayWidth, (float) var8 / (float) displayHeight);
         float var3 = Math.min((float) (var9 - var4 * 2) / (float) displayWidth, (float) (var8 - var5 * 2) / (float) displayHeight);
+        // Manual preview zoom folded into the fit scale so viewPane.getScaleX() (read by hit-testing) stays consistent.
+        var11 *= previewZoom;
+        var3 *= previewZoom;
 
         aa.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, displayHeight));
         aa.setScaleX(var11);
