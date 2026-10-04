@@ -917,4 +917,10 @@ ACTION_VIEW
     <string name="unknown_attr">Unknown Attribute</string>
     <string name="attr_already_exist">This attribute already exists</string>
 
+    <string name="logic_nav_blocks">Blocks</string>
+    <string name="logic_nav_variables">My Variables</string>
+    <string name="logic_nav_components">Components</string>
+    <string name="logic_canvas_center">Center</string>
+    <string name="logic_canvas_fit">Fit</string>
+    <string name="logic_saved">Saved</string>
 </resources>

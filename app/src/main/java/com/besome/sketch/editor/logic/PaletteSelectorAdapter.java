@@ -73,8 +73,9 @@ public class PaletteSelectorAdapter extends RecyclerView.Adapter<PaletteSelector
         holder.binding.bg.setBackground(dot);
 
         GradientDrawable chipBackground = new GradientDrawable();
-        chipBackground.setCornerRadius(wB.a(context, 12f));
-        chipBackground.setColor(selected ? ColorUtils.setAlphaComponent(color, 0x33) : Color.TRANSPARENT);
+        chipBackground.setCornerRadius(wB.a(context, 18f));
+        chipBackground.setColor(selected ? ColorUtils.setAlphaComponent(color, 0x40) : Color.TRANSPARENT);
+        chipBackground.setStroke((int) wB.a(context, 1f), selected ? color : getColor(context, R.attr.colorOutlineVariant));
         holder.binding.chip.setBackground(chipBackground);
 
         holder.binding.tvCategory.setTextColor(getColor(context, selected ? R.attr.colorOnSurface : R.attr.colorOnSurfaceVariant));

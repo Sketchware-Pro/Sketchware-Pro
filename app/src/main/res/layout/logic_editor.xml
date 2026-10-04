@@ -1,9 +1,15 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<RelativeLayout
     android:id="@+id/layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="0dp"
+    android:layout_weight="1">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,6 +32,37 @@
             android:layout_margin="4dp"
             android:forceDarkAllowed="false"
             tools:ignore="UnusedAttribute" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/canvas_controls"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginEnd="12dp"
+        android:alpha="0.92"
+        android:background="@drawable/canvas_control_bg"
+        android:elevation="3dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_canvas_center"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:minWidth="64dp"
+            android:text="@string/logic_canvas_center"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_canvas_fit"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:minWidth="64dp"
+            android:text="@string/logic_canvas_fit"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <com.besome.sketch.editor.LogicEditorDrawer
@@ -83,3 +120,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/logic_bottom_nav" />
+</LinearLayout>

@@ -141,6 +141,7 @@ import pro.sketchware.databinding.SearchWithRecyclerViewBinding;
 import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.menu.ExtraMenuBean;
 import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.SvgUtils;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
@@ -1633,7 +1634,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             layoutParams.topMargin = GB.a((Context) this);
             orientation = LinearLayout.HORIZONTAL;
         } else {
-            K.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) wB.a(this, 240.0f)));
+            K.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) wB.a(this, 280.0f)));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.CENTER | Gravity.RIGHT;
             int dimension2 = (int) getResources().getDimension(R.dimen.action_button_margin);
@@ -1673,7 +1674,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         } else {
             if (!var2) {
                 J.setTranslationX(0.0F);
-                J.setTranslationY(wB.a(this, 240.0F));
+                J.setTranslationY(wB.a(this, 280.0F));
             } else {
                 J.setTranslationX(0.0F);
                 J.setTranslationY(0.0F);
@@ -1685,7 +1686,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             V = ObjectAnimator.ofFloat(J, View.TRANSLATION_X, wB.a(this, 320.0F));
         } else {
             U = ObjectAnimator.ofFloat(J, View.TRANSLATION_Y, 0.0F);
-            V = ObjectAnimator.ofFloat(J, View.TRANSLATION_Y, wB.a(this, 240.0F));
+            V = ObjectAnimator.ofFloat(J, View.TRANSLATION_Y, wB.a(this, 280.0F));
         }
 
         U.setDuration(500L);
@@ -1970,10 +1971,36 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         openBlocksMenuButton.setOnClickListener(v -> e(!X));
         logicTopMenu = binding.topMenu;
         O = binding.rightDrawer;
+        setupBottomNavAndCanvasControls();
         paletteBlockBinding.searchHeader.addTextChangedListener(new PaletteSelector.SimpleTextWatcher(text -> paletteSelector.setSearchQuery(text.toString())));
         extraPaletteBlock = new ExtraPaletteBlock(this, isViewBindingEnabled);
 
         svgUtils = new SvgUtils(this);
+    }
+
+    private void setupBottomNavAndCanvasControls() {
+        binding.bottomNav.setOnItemSelectedListener(item -> {
+            showPaletteCategory(item.getItemId());
+            return true;
+        });
+        binding.bottomNav.setOnItemReselectedListener(item -> showPaletteCategory(item.getItemId()));
+        binding.btnCanvasCenter.setOnClickListener(v -> {
+            View content = viewLogicEditor.getChildAt(0);
+            if (content != null) {
+                viewLogicEditor.scrollTo(Math.max(0, (content.getWidth() - viewLogicEditor.getWidth()) / 2),
+                        Math.max(0, (content.getHeight() - viewLogicEditor.getHeight()) / 2));
+            }
+        });
+        binding.btnCanvasFit.setOnClickListener(v -> viewLogicEditor.scrollTo(0, 0));
+    }
+
+    private void showPaletteCategory(int navItemId) {
+        e(true);
+        if (navItemId == R.id.nav_variables) {
+            paletteSelector.performClickPalette(0);
+        } else if (navItemId == R.id.nav_components) {
+            paletteSelector.performClickPalette(7);
+        }
     }
 
     @Override
@@ -1995,6 +2022,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             redo();
         } else if (itemId == R.id.menu_logic_undo) {
             undo();
+        } else if (itemId == R.id.menu_logic_save) {
+            bC.d(scId).b(s());
+            SketchwareUtil.toast(getString(R.string.logic_saved));
         } else if (itemId == R.id.menu_logic_showsource) {
             showSourceCode();
         }
