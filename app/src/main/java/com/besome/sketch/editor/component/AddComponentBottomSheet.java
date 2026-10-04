@@ -57,6 +57,9 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
         initializeComponentBeans();
     }
 
+    private java.util.ArrayList<ComponentBean> filteredList;
+    private ComponentsAdapter componentsAdapter;
+
     private void initializeComponentBeans() {
         componentList = new ArrayList<>();
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_INTENT));
@@ -113,9 +116,13 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
         flexboxLayoutManager.setAlignItems(AlignItems.CENTER);
 
         binding.title.setText(Helper.getResString(R.string.component_title_add_component));
+        filteredList = new ArrayList<>(componentList);
+        componentsAdapter = new ComponentsAdapter();
         binding.componentList.setHasFixedSize(true);
-        binding.componentList.setAdapter(new ComponentsAdapter());
+        binding.componentList.setAdapter(componentsAdapter);
         binding.componentList.setLayoutManager(flexboxLayoutManager);
+        binding.searchComponents.addTextChangedListener(
+                new com.besome.sketch.editor.logic.PaletteSelector.SimpleTextWatcher(text -> filterComponents(text.toString())));
 
         binding.componentList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -129,6 +136,18 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
                 binding.dividerBottom.setVisibility(last < total - 1 ? View.VISIBLE : View.GONE);
             }
         });
+    }
+
+    /** Filters the picker by component display name (case-insensitive). */
+    private void filterComponents(String query) {
+        String q = query == null ? "" : query.trim().toLowerCase(java.util.Locale.ROOT);
+        filteredList.clear();
+        for (ComponentBean bean : componentList) {
+            if (q.isEmpty() || ComponentBean.getComponentName(requireContext(), bean.type).toLowerCase(java.util.Locale.ROOT).contains(q)) {
+                filteredList.add(bean);
+            }
+        }
+        if (componentsAdapter != null) componentsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -172,7 +191,7 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
 
         @Override
         public void onBindViewHolder(@NonNull ComponentBeanViewHolder holder, int position) {
-            var componentBean = componentList.get(position);
+            var componentBean = filteredList.get(position);
             holder.bind(componentBean);
         }
 
@@ -185,7 +204,7 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
 
         @Override
         public int getItemCount() {
-            return componentList.size();
+            return filteredList.size();
         }
 
         private class ComponentBeanViewHolder extends RecyclerView.ViewHolder {
