@@ -16,7 +16,6 @@
             android:background="?attr/colorSurfaceContainerLow"
             android:fitsSystemWindows="false"
             app:itemIconTint="@color/event_rail_item"
-            app:itemMinHeightForText="56dp"
             app:itemPaddingTop="10dp"
             app:itemPaddingBottom="10dp"
             app:itemTextColor="@color/event_rail_item"
