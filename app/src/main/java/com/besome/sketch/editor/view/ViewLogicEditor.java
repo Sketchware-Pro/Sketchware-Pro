@@ -43,7 +43,7 @@ public class ViewLogicEditor extends LogicEditorScrollView {
 
         float density = getResources().getDisplayMetrics().density;
         gridSpacing = 20 * density;
-        gridPaint.setColor(ColorUtils.setAlphaComponent(MaterialColors.getColor(this, R.attr.colorOnSurface), 0x26));
+        gridPaint.setColor(ColorUtils.setAlphaComponent(MaterialColors.getColor(this, R.attr.colorOnSurface), 0x14));
         gridPaint.setStrokeWidth(1.5f * density);
         gridPaint.setStrokeCap(Paint.Cap.ROUND);
     }
