@@ -353,9 +353,47 @@ public class ViewProperty extends LinearLayout implements Kw {
             imgDelete.setVisibility(VISIBLE);
             imgUp.setVisibility(VISIBLE);
             imgDown.setVisibility(VISIBLE);
+            updateMoveButtonsState(viewBean);
         }
         viewPropertyItems.setProjectFileBean(projectFile);
         e();
+    }
+
+    private void updateMoveButtonsState(ViewBean viewBean) {
+        ImageButton imgUp = binding.imgUp;
+        ImageButton imgDown = binding.imgDown;
+        if (viewBean == null || viewBean.parent == null) {
+            setMoveButtonEnabled(imgUp, false);
+            setMoveButtonEnabled(imgDown, false);
+            return;
+        }
+
+        ArrayList<ViewBean> siblings = new ArrayList<>();
+        for (ViewBean child : projectActivityViews) {
+            if (child.parent != null && child.parent.equals(viewBean.parent)) {
+                siblings.add(child);
+            }
+        }
+        siblings.sort((a, b) -> Integer.compare(a.index, b.index));
+
+        int myPos = -1;
+        for (int i = 0; i < siblings.size(); i++) {
+            if (siblings.get(i).id.equals(viewBean.id)) {
+                myPos = i;
+                break;
+            }
+        }
+
+        boolean canMoveUp = myPos > 0;
+        boolean canMoveDown = myPos >= 0 && myPos < siblings.size() - 1;
+
+        setMoveButtonEnabled(imgUp, canMoveUp);
+        setMoveButtonEnabled(imgDown, canMoveDown);
+    }
+
+    private void setMoveButtonEnabled(ImageButton button, boolean enabled) {
+        button.setEnabled(enabled);
+        button.setAlpha(enabled ? 1.0f : 0.38f);
     }
 
     public void a(String sc_id, ProjectFileBean projectFileBean) {
@@ -367,7 +405,11 @@ public class ViewProperty extends LinearLayout implements Kw {
     public void a(String str) {
         for (int i = 0; i < projectActivityViews.size(); i++) {
             if (projectActivityViews.get(i).id.equals(str)) {
-                spnWidget.setSelection(i);
+                if (spnWidget.getSelectedItemPosition() == i) {
+                    selectView(projectActivityViews.get(i));
+                } else {
+                    spnWidget.setSelection(i);
+                }
                 return;
             }
         }

@@ -119,6 +119,7 @@ public class ViewEditorFragment extends qA {
                 
                 invalidateOptionsMenu();
                 
+                n();
                 viewProperty.a(viewBean.id);
                 viewEditor.updateSelection(viewBean.id);
                 viewProperty.e();
