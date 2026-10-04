@@ -110,7 +110,7 @@ public class LogicEditorScrollView extends FrameLayout {
                 }
                 min = Math.max(-getScrollX(), i2);
             } else {
-                int right = ((child.getRight() - getScrollX()) - getWidth()) - getPaddingRight();
+                int right = ((child.getLeft() + Math.round(child.getWidth() * child.getScaleX()) - getScrollX()) - getWidth()) - getPaddingRight();
                 min = right > 0 ? Math.min(right, i2) : 0;
             }
             if (i3 <= 0) {
@@ -119,7 +119,7 @@ public class LogicEditorScrollView extends FrameLayout {
                 }
                 i = Math.max(-getScrollY(), i3);
             } else {
-                int bottom = ((child.getBottom() - getScrollY()) - getHeight()) - getPaddingBottom();
+                int bottom = ((child.getTop() + Math.round(child.getHeight() * child.getScaleY()) - getScrollY()) - getHeight()) - getPaddingBottom();
                 if (bottom > 0) {
                     i = Math.min(bottom, i3);
                 }
@@ -136,8 +136,8 @@ public class LogicEditorScrollView extends FrameLayout {
             return false;
         }
         View firstView = getChildAt(0);
-        int width = firstView.getWidth();
-        int height = firstView.getHeight();
+        int width = Math.round(firstView.getWidth() * firstView.getScaleX());
+        int height = Math.round(firstView.getHeight() * firstView.getScaleY());
         if (getWidth() < getPaddingLeft() + width + getPaddingRight()) return true;
         return getHeight() < getPaddingTop() + height + getPaddingBottom();
     }

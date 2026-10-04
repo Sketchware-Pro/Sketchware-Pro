@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/palette_sheet_bg"
     android:clipToOutline="true"
+    android:elevation="8dp"
     android:orientation="vertical">
 
     <View
