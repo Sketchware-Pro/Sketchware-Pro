@@ -11,13 +11,15 @@
 
         <com.google.android.material.navigationrail.NavigationRailView
             android:id="@+id/palette"
-            android:layout_width="wrap_content"
+            android:layout_width="68dp"
             android:layout_height="match_parent"
             android:background="?attr/colorSurfaceContainerLow"
             android:fitsSystemWindows="false"
             app:itemIconTint="@color/event_rail_item"
+            app:itemMinHeightForText="56dp"
+            app:itemPaddingTop="10dp"
+            app:itemPaddingBottom="10dp"
             app:itemTextColor="@color/event_rail_item"
-            app:itemPaddingBottom="28dp"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/logic_palette" />
 
@@ -107,6 +109,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         app:backgroundTint="@color/event_accent"
+        app:fabSize="mini"
         app:srcCompat="@drawable/ic_add_white_36dp"
         app:tint="@color/event_on_accent"
         tools:ignore="ContentDescription" />
