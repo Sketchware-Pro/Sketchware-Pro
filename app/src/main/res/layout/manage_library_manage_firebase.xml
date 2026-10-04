@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             style="?attr/materialCardViewFilledStyle"
-            app:cardBackgroundColor="?attr/colorSurfaceContainer">
+            app:cardBackgroundColor="?attr/colorSurfaceContainer"
+            app:cardCornerRadius="16dp">
 
             <LinearLayout
                 android:id="@+id/layout_switch"
@@ -94,7 +95,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="?attr/materialCardViewFilledStyle"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                    app:cardCornerRadius="14dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -144,7 +146,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="?attr/materialCardViewFilledStyle"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                    app:cardCornerRadius="14dp">
 
                     <TextView
                         android:id="@+id/tv_app_id"
@@ -186,7 +189,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="?attr/materialCardViewFilledStyle"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                    app:cardCornerRadius="14dp">
 
                     <TextView
                         android:id="@+id/tv_api_key"
@@ -228,7 +232,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="?attr/materialCardViewFilledStyle"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                    app:cardCornerRadius="14dp">
 
                     <TextView
                         android:id="@+id/tv_storage_url"
@@ -254,6 +259,8 @@
             style="@style/Widget.Material3Expressive.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Import from google-services.json" />
+            android:text="Import from google-services.json"
+            android:textColor="@color/event_on_accent"
+            app:backgroundTint="@color/event_accent" />
     </LinearLayout>
 </LinearLayout>
