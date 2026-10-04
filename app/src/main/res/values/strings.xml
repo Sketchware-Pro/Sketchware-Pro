@@ -936,4 +936,10 @@ ACTION_VIEW
     <string name="component_search_hint">Search components…</string>
     <string name="firebase_reveal_value">Show or hide value</string>
     <string name="library_search_hint">Search libraries…</string>
+    <string name="component_category_all">All</string>
+    <string name="component_category_storage">Storage</string>
+    <string name="component_category_media">Media</string>
+    <string name="component_category_network">Network</string>
+    <string name="component_category_sensors">Sensors</string>
+    <string name="component_category_system">System</string>
 </resources>
