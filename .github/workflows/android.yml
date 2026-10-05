@@ -68,8 +68,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
 
       - name: Build Release APK
-        env:
-          SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
         run: gradle assembleRelease
 
       - name: Set short SHA

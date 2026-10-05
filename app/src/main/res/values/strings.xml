@@ -535,7 +535,6 @@ But, components should be added manually for working correctly."</string>
     <string name="main_drawer_title_system_settings">System Settings</string>
     <string name="main_tab_title_competitions">Competitions</string>
     <string name="main_tab_title_myproject">My Projects</string>
-    <string name="main_tab_title_projects_store">Projects store</string>
     <string name="main_tab_title_tutorials">Tutorials</string>
     <string name="manage_export_url_actionbar_title">Manage Exported URLs</string>
     <string name="manage_export_url_list_app_name">App Name</string>
@@ -704,7 +703,6 @@ ACTION_VIEW
     <string name="property_visibility">Visibility</string>
     <string name="property_animate_layout_changes">Animate layout changes</string>
     <string name="images_title_icon">Icon</string>
-    <string name="images_title_screenshots">Screenshots</string>
     <string name="message_dialog_invalid_json">The json file is invalid. Please double check the file</string>
     <string name="s1">Save image</string>
     <string name="s2">Allow Ad to store image in Picture gallery?</string>
@@ -724,7 +722,6 @@ ACTION_VIEW
     <string name="search_result_message_no_data">No search result to show. :(</string>
     <string name="search_result_title">Search Result of %s</string>
     <string name="block_preview_title">Block Preview</string>
-    <string name="project_detail_tab_title_comments">Comments</string>
     <string name="sign_apk_desc_export_apk_file">APK file is generated. APK file is generated in the save directory below. Please check the save directory.</string>
     <string name="sign_apk_desc_generate_apk_file">Click sign button below and generate an APK file!</string>
     <string name="sign_apk_title_apk_file_save_path">Save Directory</string>

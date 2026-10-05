@@ -20,8 +20,6 @@ android {
         versionName = "v7.1.0"
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
-
-        buildConfigField("String", "SKETCHUB_API_KEY", "\"${System.getenv("SKETCHUB_API_KEY")}\"")
     }
 
     buildTypes {
