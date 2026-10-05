@@ -90,4 +90,5 @@
 
     <color name="event_accent">#ffcc4437</color>
     <color name="event_on_accent">#ffffffff</color>
+    <color name="ic_launcher_background">#0D0D10</color>
 </resources>

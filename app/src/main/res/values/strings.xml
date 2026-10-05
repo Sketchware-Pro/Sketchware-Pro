@@ -762,7 +762,7 @@ ACTION_VIEW
     <string name="title_compatible_chrome_browser">Chrome Browser Required</string>
     <string name="title_discord_community">Discord</string>
     <string name="title_telegram_community">Telegram</string>
-    <string name="title_sketchware">Sketchware Pro</string>
+    <string name="title_sketchware">New World Sketchware</string>
     <string name="view_panel_title_layouts">Layouts</string>
     <string name="view_panel_title_properties">Properties</string>
     <string name="view_panel_title_widgets">Widgets</string>
@@ -858,7 +858,7 @@ ACTION_VIEW
     <string name="assets_manager_rename">Rename</string>
 
     <!--  about the team screen  -->
-    <string name="about_title">About Sketchware Pro</string>
+    <string name="about_title">About New World Sketchware</string>
     <string name="about_team_title">The team</string>
     <string name="about_specialthanks_title">Special Thanks</string>
     <string name="about_changelog_title">Changelog</string>
