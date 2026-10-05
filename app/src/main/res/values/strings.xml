@@ -920,4 +920,9 @@ ACTION_VIEW
     <string name="component_category_network">Network</string>
     <string name="component_category_sensors">Sensors</string>
     <string name="component_category_system">System</string>
+    <string name="projects_subtitle">Manage your Sketchware Pro projects</string>
+    <string name="projects_sort_newest">Newest</string>
+    <string name="projects_sort_oldest">Oldest</string>
+    <string name="projects_sort_az">A–Z</string>
+    <string name="projects_sort_za">Z–A</string>
 </resources>

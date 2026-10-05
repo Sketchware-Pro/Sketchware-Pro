@@ -169,6 +169,7 @@ public class ProjectsFragment extends DA {
         });
 
         binding.iconSort.setOnClickListener(v -> showProjectSortingDialog());
+        setupSortChips();
         binding.specialAction.getRoot().setOnClickListener(v -> restoreProject());
 
         menuProvider = new MenuProvider() {
@@ -312,10 +313,43 @@ public class ProjectsFragment extends DA {
             }
             preference.a("sortBy", sortValue, true);
             v.dismiss();
+            syncSortChips();
             refreshProjectsList();
         });
         dialog.setNegativeButton("Cancel", null);
         dialog.show();
+    }
+
+    private static final int[] SORT_CHIP_VALUES = {
+            ProjectComparator.SORT_BY_ID | ProjectComparator.SORT_ORDER_DESCENDING,
+            ProjectComparator.SORT_BY_ID | ProjectComparator.SORT_ORDER_ASCENDING,
+            ProjectComparator.SORT_BY_NAME | ProjectComparator.SORT_ORDER_ASCENDING,
+            ProjectComparator.SORT_BY_NAME | ProjectComparator.SORT_ORDER_DESCENDING
+    };
+
+    /** Quick-sort chips (Newest / Oldest / A-Z / Z-A) mapped onto the existing persisted sort preference. */
+    private void setupSortChips() {
+        int[] labels = {R.string.projects_sort_newest, R.string.projects_sort_oldest, R.string.projects_sort_az, R.string.projects_sort_za};
+        for (int i = 0; i < labels.length; i++) {
+            com.google.android.material.chip.Chip chip = new com.google.android.material.chip.Chip(requireContext());
+            chip.setText(labels[i]);
+            chip.setCheckable(true);
+            final int value = SORT_CHIP_VALUES[i];
+            chip.setOnClickListener(v -> {
+                preference.a("sortBy", value, true);
+                syncSortChips();
+                refreshProjectsList();
+            });
+            binding.sortChips.addView(chip);
+        }
+        syncSortChips();
+    }
+
+    private void syncSortChips() {
+        int current = preference.a("sortBy", ProjectComparator.DEFAULT);
+        for (int i = 0; i < binding.sortChips.getChildCount(); i++) {
+            ((com.google.android.material.chip.Chip) binding.sortChips.getChildAt(i)).setChecked(SORT_CHIP_VALUES[i] == current);
+        }
     }
 
     private static class ProjectDiffCallback extends DiffUtil.Callback {
