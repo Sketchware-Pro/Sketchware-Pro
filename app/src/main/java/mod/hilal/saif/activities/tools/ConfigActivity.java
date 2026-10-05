@@ -155,8 +155,8 @@ public class ConfigActivity extends BaseAppCompatActivity {
             case SETTING_ALWAYS_SHOW_BLOCKS,
                  SETTING_ROOT_AUTO_INSTALL_PROJECTS, SETTING_SHOW_BUILT_IN_BLOCKS,
                  SETTING_SHOW_EVERY_SINGLE_BLOCK, SETTING_USE_NEW_VERSION_CONTROL,
-                 SETTING_USE_ASD_HIGHLIGHTER -> false;
-            case SETTING_BACKGROUND_BUILDING -> true;
+                 SETTING_USE_ASD_HIGHLIGHTER,
+                 SETTING_BACKGROUND_BUILDING -> false;
             case SETTING_BACKUP_DIRECTORY -> "/.sketchware/backups/";
             case SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING -> true;
             case SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH ->
@@ -270,13 +270,24 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 boolean enabled = Boolean.TRUE.equals(newValue);
                 if (enabled && !Settings.canDrawOverlays(requireContext())) {
                     new MaterialAlertDialogBuilder(requireContext())
-                            .setTitle("Overlay permission required")
-                            .setMessage("Background building needs display over other apps permission to show the floating progress window while Sketchware Pro is paused.")
-                            .setPositiveButton("Grant", (dialog, which) -> startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + requireContext().getPackageName()))))
-                            .setNegativeButton(R.string.common_word_cancel, null)
+                            .setTitle("Display Over Other Apps Permission")
+                            .setMessage("Background building requires permission to display over other apps to show floating progress while Sketchware Pro is running in the background. Please enable this permission in settings.")
+                            .setPositiveButton("Settings", (dialog, which) -> {
+                                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                        Uri.parse("package:" + requireContext().getPackageName()));
+                                startActivity(intent);
+                            })
+                            .setNegativeButton(R.string.common_word_cancel, (dialog, which) -> {
+                                backgroundBuilding.setChecked(false);
+                                getDataStore().putBoolean(SETTING_BACKGROUND_BUILDING, false);
+                            })
+                            .setOnCancelListener(dialog -> {
+                                backgroundBuilding.setChecked(false);
+                                getDataStore().putBoolean(SETTING_BACKGROUND_BUILDING, false);
+                            })
                             .show();
                 }
-                getDataStore().putBoolean("P12I3", enabled);
+                getDataStore().putBoolean(SETTING_BACKGROUND_BUILDING, enabled);
                 return true;
             });
 
@@ -322,6 +333,18 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 dialog.show();
                 return true;
             });
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            SwitchPreferenceCompat backgroundBuilding = findPreference(SETTING_BACKGROUND_BUILDING);
+            if (backgroundBuilding != null && backgroundBuilding.isChecked()) {
+                if (!Settings.canDrawOverlays(requireContext())) {
+                    backgroundBuilding.setChecked(false);
+                    getDataStore().putBoolean(SETTING_BACKGROUND_BUILDING, false);
+                }
+            }
         }
 
         public DataStore getDataStore() {

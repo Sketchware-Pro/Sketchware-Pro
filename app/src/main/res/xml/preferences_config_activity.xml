@@ -55,7 +55,7 @@
         app:title="Backup filename format" />
 
     <SwitchPreferenceCompat
-        app:defaultValue="true"
+        app:defaultValue="false"
         app:iconSpaceReserved="false"
         app:key="background-building"
         app:summary="Show floating build progress when Sketchware Pro is paused. Requires overlay permission."
