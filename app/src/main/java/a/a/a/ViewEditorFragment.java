@@ -81,6 +81,11 @@ public class ViewEditorFragment extends qA {
         });
         viewProperty.setOnEventClickListener(eventBean -> toLogicEditorActivity(eventBean.targetId, eventBean.eventName, eventBean.eventName));
         viewProperty.setOnPropertyTargetChangeListener(viewEditor::updateSelection);
+        viewEditor.setOnFocusPreviewChangedListener(focus -> {
+            if (requireActivity() instanceof DesignActivity designActivity) {
+                designActivity.setFocusPreviewUi(focus);
+            }
+        });
         viewEditor.setOnWidgetSelectedListener(new cy() {
             @Override
             public void a() {
@@ -290,6 +295,7 @@ public class ViewEditorFragment extends qA {
         viewEditor.addWidget(PaletteWidget.b.k, "", "CalendarView", "CalendarView");
         widgetsCreatorManager.addWidgetsByTitle("Date & Time");
         widgetsCreatorManager.addExtraClasses();
+        viewEditor.paletteWidget.refreshSections();
     }
 
     private void startAnimation() {

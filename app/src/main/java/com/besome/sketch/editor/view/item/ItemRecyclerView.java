@@ -94,7 +94,7 @@ public class ItemRecyclerView extends RecyclerView implements ItemView, EditorLi
         if (hasSelection) {
             paint.setColor(0x9599d5d0);
             rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
-            canvas.drawRect(rect, paint);
+            com.besome.sketch.editor.view.SelectionOverlay.draw(canvas, rect.left, rect.top, rect.right, rect.bottom, paint);
         } else {
             paint.setColor(0x60000000);
             int measuredWidth = getMeasuredWidth();

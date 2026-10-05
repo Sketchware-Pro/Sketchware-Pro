@@ -68,7 +68,7 @@ public class ItemMaterialButton extends MaterialButton implements ItemView {
     public void onDraw(Canvas canvas) {
         if (hasSelection) {
             rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
-            canvas.drawRect(rect, paint);
+            com.besome.sketch.editor.view.SelectionOverlay.draw(canvas, rect.left, rect.top, rect.right, rect.bottom, paint);
         }
         super.onDraw(canvas);
     }

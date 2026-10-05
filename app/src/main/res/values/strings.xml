@@ -906,6 +906,7 @@ ACTION_VIEW
     </plurals>
     <string name="view_search_widgets">Search widgets…</string>
     <string name="view_toggle_widgets">Widgets</string>
+    <string name="view_focus_preview">Focus preview</string>
     <string name="view_widget_new_compact">Widget</string>
     <string name="view_drop_components_here">Drop components here</string>
     <string name="component_search_hint">Search components…</string>

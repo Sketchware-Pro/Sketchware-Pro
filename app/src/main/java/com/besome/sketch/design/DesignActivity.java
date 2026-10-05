@@ -415,6 +415,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.END)) {
             drawer.closeDrawer(GravityCompat.END);
+        } else if (viewTabAdapter.viewEditor.isFocusPreview()) {
+            viewTabAdapter.viewEditor.exitFocusPreview();
         } else if (viewTabAdapter.isPropertyViewVisible()) {
             hideViewPropertyView();
         } else {
@@ -428,6 +430,13 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 showSaveBeforeQuittingDialog();
             }
         }
+    }
+
+    /** Focus preview: hides the tabs and the footer so the view preview fills the screen. */
+    public void setFocusPreviewUi(boolean focus) {
+        int visibility = focus ? View.GONE : View.VISIBLE;
+        binding.tabLayout.setVisibility(visibility);
+        binding.bottomBar.setVisibility(visibility);
     }
 
     public void hideViewPropertyView() {

@@ -206,7 +206,7 @@ public class ItemVerticalScrollView extends FrameLayout implements ItemView, Scr
             if (isSelected) {
                 paint.setColor(0x9599d5d0);
                 rect.set(scrollX, scrollY, measuredWidthX, measuredHeightY);
-                canvas.drawRect(rect, paint);
+                com.besome.sketch.editor.view.SelectionOverlay.draw(canvas, rect.left, rect.top, rect.right, rect.bottom, paint);
             }
             paint.setColor(0xaad50000);
             canvas.drawLine((float) scrollX, (float) scrollY, (float) measuredWidthX, (float) scrollY, paint);
