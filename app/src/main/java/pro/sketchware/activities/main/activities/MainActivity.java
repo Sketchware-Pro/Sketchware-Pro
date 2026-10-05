@@ -20,10 +20,8 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.splashscreen.SplashScreen;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -47,7 +45,6 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.tyron.backup.SingleCopyTask;
 import pro.sketchware.R;
-import pro.sketchware.activities.about.AboutActivity;
 import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
 import pro.sketchware.activities.main.fragments.projects_store.ProjectsStoreFragment;
 import pro.sketchware.databinding.MainBinding;
@@ -60,17 +57,9 @@ import pro.sketchware.utility.UI;
 public class MainActivity extends BasePermissionAppCompatActivity {
     private static final String PROJECTS_FRAGMENT_TAG = "projects_fragment";
     private static final String PROJECTS_STORE_FRAGMENT_TAG = "projects_store_fragment";
-    private ActionBarDrawerToggle drawerToggle;
     private DB u;
     private Snackbar storageAccessDenied;
     private MainBinding binding;
-    private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
-        @Override
-        public void handleOnBackPressed() {
-            setEnabled(false);
-            binding.drawerLayout.closeDrawers();
-        }
-    };
     private ProjectsFragment projectsFragment;
     private ProjectsStoreFragment projectsStoreFragment;
     private Fragment activeFragment;
@@ -123,10 +112,6 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case 105:
-                    DataResetter.a(this, data.getBooleanExtra("onlyConfig", true));
-                    break;
-
                 case 111:
                     invalidateOptionsMenu();
                     break;
@@ -146,12 +131,6 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                     break;
             }
         }
-    }
-
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -180,30 +159,11 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             u.a("U1I0", Integer.valueOf(u1I0 + 1));
         }
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(null);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(null);
 
-        drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, R.string.app_name, R.string.app_name);
-        binding.drawerLayout.addDrawerListener(drawerToggle);
-        binding.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-            }
-
-            @Override
-            public void onDrawerOpened(@NonNull View drawerView) {
-                closeDrawer.setEnabled(true);
-                getOnBackPressedDispatcher().addCallback(closeDrawer);
-            }
-
-            @Override
-            public void onDrawerClosed(@NonNull View drawerView) {
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-            }
-        });
+        binding.toolbar.setNavigationIcon(R.drawable.ic_mtrl_menu);
+        binding.toolbar.setNavigationContentDescription(R.string.common_word_settings);
+        binding.toolbar.setNavigationOnClickListener(v -> showActionsMenu(v));
 
         boolean hasStorageAccess = isStoragePermissionGranted();
         if (!hasStorageAccess) {
@@ -340,39 +300,29 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         currentNavItemId = R.id.item_sketchub;
     }
 
-    @NonNull
-    private BottomSheetDialogView getBottomSheetDialogView() {
-        BottomSheetDialogView bottomSheetDialog = new BottomSheetDialogView(this);
-        bottomSheetDialog.setTitle("Major changes in v7.0.0");
-        bottomSheetDialog.setDescription("""
-                There have been major changes since v6.3.0 fix1, \
-                and it's very important to know them all if you want your projects to still work.
-                
-                You can view all changes whenever you want at the About Sketchware Pro screen.""");
-
-        bottomSheetDialog.setPositiveButton("View changes", (dialog, which) -> {
-            ConfigActivity.setSetting(ConfigActivity.SETTING_CRITICAL_UPDATE_REMINDER, true);
-            Intent launcher = new Intent(this, AboutActivity.class);
-            launcher.putExtra("select", "changelog");
-            startActivity(launcher);
-        });
-        bottomSheetDialog.setCancelable(false);
-        return bottomSheetDialog;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
+    /** Small menu replacing the former navigation drawer: only Settings and Create keystore remain. */
+    private void showActionsMenu(View anchor) {
+        androidx.appcompat.widget.PopupMenu popup = new androidx.appcompat.widget.PopupMenu(this, anchor);
+        popup.getMenuInflater().inflate(R.menu.main_actions_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            Intent intent = null;
+            if (id == R.id.app_settings) {
+                intent = new Intent(this, mod.hilal.saif.activities.tools.AppSettings.class);
+            } else if (id == R.id.create_release_keystore) {
+                intent = new Intent(this, com.besome.sketch.tools.NewKeyStoreActivity.class);
+            }
+            if (intent == null) return false;
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
+        });
+        popup.show();
     }
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
         if (isFirebaseInitialized(this)) {
             FirebaseMessaging.getInstance().subscribeToTopic("all");
         }

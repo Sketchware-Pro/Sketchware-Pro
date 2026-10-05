@@ -633,20 +633,8 @@ But, components should be added manually for working correctly."</string>
     <string name="picker_color_title_delete_custom_attr">Delete Custom Attribute</string>
     <string name="preset_setting_edit_warning">If you apply a Preset, exiting View data will be deleted. Continue?</string>
     <string name="preset_setting_title">Preset Settings</string>
-    <string name="program_information_actionbar_title">Program Information</string>
-    <string name="program_information_button_check_update">Check for Updates</string>
-    <string name="program_information_button_reset_system">Reset settings</string>
     <string name="program_information_reset_system_complete_initialize">All of the data was initialized</string>
-    <string name="program_information_reset_system_confirm_description">"All projects will be reset.
-Do you want to continue?"</string>
-    <string name="program_information_reset_system_title">Reset</string>
-    <string name="program_information_reset_system_title_all_settings">Reset all settings</string>
-    <string name="program_information_reset_system_title_all_settings_data">Reset all settings and data</string>
-    <string name="program_information_title_docs">Docs</string>
     <string name="program_information_title_open_source_license">Open Source Licenses</string>
-    <string name="program_information_title_service_terms">Service terms</string>
-    <string name="program_information_title_share_with_friends">Share with Friends</string>
-    <string name="program_information_title_suggest_ideas">Suggest Ideas</string>
     <string name="program_information_title_system_information">System Information</string>
     <string name="property_ad_size">Ad size</string>
     <string name="property_alpha">Alpha</string>
@@ -760,8 +748,6 @@ ACTION_VIEW
     <string name="title_company_tel">Telephone</string>
     <string name="title_company_url">Website</string>
     <string name="title_compatible_chrome_browser">Chrome Browser Required</string>
-    <string name="title_discord_community">Discord</string>
-    <string name="title_telegram_community">Telegram</string>
     <string name="title_sketchware">New World Sketchware</string>
     <string name="view_panel_title_layouts">Layouts</string>
     <string name="view_panel_title_properties">Properties</string>
@@ -858,14 +844,6 @@ ACTION_VIEW
     <string name="assets_manager_rename">Rename</string>
 
     <!--  about the team screen  -->
-    <string name="about_title">About New World Sketchware</string>
-    <string name="about_team_title">The team</string>
-    <string name="about_specialthanks_title">Special Thanks</string>
-    <string name="about_changelog_title">Changelog</string>
-    <string name="about_beta_changes_title">Beta Changes</string>
-    <string name="about_loading_title">Getting data…</string>
-    <string name="about_loading_subtitle">Don\'t worry, it won\'t take more than a second.</string>
-    <string name="about_joindiscord">Join our Discord server</string>
 
     <!--  links  -->
     <string name="github_api_error_message">Something went wrong. Please wait and try again.</string>

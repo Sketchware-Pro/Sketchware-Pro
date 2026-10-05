@@ -50,7 +50,6 @@
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name="com.besome.sketch.help.LicenseActivity" />
-        <activity android:name="com.besome.sketch.help.ProgramInfoActivity" />
         <activity
             android:name="com.besome.sketch.help.SystemSettingActivity"
             android:configChanges="orientation|screenSize" />
@@ -261,9 +260,6 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="mod.hilal.saif.activities.tools.AppSettings"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="pro.sketchware.activities.about.AboutActivity"
             android:configChanges="orientation|screenSize" />
         <activity android:name="mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity" />
         <activity
