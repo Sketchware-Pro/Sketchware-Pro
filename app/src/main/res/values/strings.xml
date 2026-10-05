@@ -922,4 +922,9 @@ ACTION_VIEW
     <string name="projects_sort_oldest">Oldest</string>
     <string name="projects_sort_az">A–Z</string>
     <string name="projects_sort_za">Z–A</string>
+    <string name="np_step_basic">Basic info</string>
+    <string name="np_step_theme">Theme</string>
+    <string name="np_step_create">Create</string>
+    <string name="np_project_icon">Project icon</string>
+    <string name="np_change_icon">Change icon</string>
 </resources>

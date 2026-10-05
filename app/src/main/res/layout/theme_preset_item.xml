@@ -7,65 +7,76 @@
     android:background="@drawable/theme_preset_item_selector"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="6dp">
 
+    <!-- Mini app preview: status bar (primaryDark), toolbar (primary), body (highlight) with a
+         control line (controlNormal) and a FAB-like accent square. -->
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="80dp"
-        android:layout_height="48dp"
+        android:layout_width="64dp"
+        android:layout_height="72dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
         app:cardPreventCornerOverlap="true"
-        app:strokeColor="?attr/colorOutline"
+        app:strokeColor="?attr/colorOutlineVariant"
         app:strokeWidth="1dp">
 
         <LinearLayout
             android:id="@+id/theme_colors_preview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <View
-                android:id="@+id/color_accent"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:background="#03DAC5" />
-
-            <View
-                android:id="@+id/color_primary"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:background="#6200EE" />
+            android:orientation="vertical">
 
             <View
                 android:id="@+id/color_primary_dark"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
                 tools:background="#3700B3" />
 
             <View
-                android:id="@+id/color_control_highlight"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:background="#E8EAF6" />
+                android:id="@+id/color_primary"
+                android:layout_width="match_parent"
+                android:layout_height="14dp"
+                tools:background="#6200EE" />
 
-            <View
-                android:id="@+id/color_control_normal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:background="#BDBDBD" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
+                <View
+                    android:id="@+id/color_control_highlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:background="#E8EAF6" />
+
+                <View
+                    android:id="@+id/color_control_normal"
+                    android:layout_width="30dp"
+                    android:layout_height="4dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="8dp"
+                    tools:background="#BDBDBD" />
+
+                <View
+                    android:id="@+id/color_accent"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="6dp"
+                    tools:background="#03DAC5" />
+            </FrameLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/theme_name"
-        android:layout_width="wrap_content"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="12sp"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textSize="11sp"
         tools:text="Material Purple" />
 
-</LinearLayout> 
+</LinearLayout>
