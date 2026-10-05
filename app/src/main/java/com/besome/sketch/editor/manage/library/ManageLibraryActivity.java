@@ -120,6 +120,16 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         startActivityForResult(intent, REQUEST_CODE_APPCOMPAT_ACTIVITY);
     }
 
+    /** Shows only the library rows whose title contains the query (case-insensitive). */
+    private void filterLibraries(String query) {
+        String q = query == null ? "" : query.trim().toLowerCase(java.util.Locale.ROOT);
+        for (LibraryItemView itemView : libraryItems) {
+            CharSequence title = itemView.title.getText();
+            boolean match = q.isEmpty() || (title != null && title.toString().toLowerCase(java.util.Locale.ROOT).contains(q));
+            itemView.setVisibility(match ? View.VISIBLE : View.GONE);
+        }
+    }
+
     private void initializeLibrary(@Nullable ProjectLibraryBean libraryBean) {
         if (libraryBean != null) {
             switch (libraryBean.libType) {
@@ -337,6 +347,10 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         libraryItemLayout = findViewById(R.id.contents);
+
+        android.widget.EditText searchLibraries = findViewById(R.id.search_libraries);
+        searchLibraries.addTextChangedListener(new com.besome.sketch.editor.logic.PaletteSelector.SimpleTextWatcher(
+                text -> filterLibraries(text.toString())));
 
         ViewCompat.setOnApplyWindowInsetsListener(libraryItemLayout, (v, windowInsets) -> {
             var insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;

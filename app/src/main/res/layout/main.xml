@@ -1,14 +1,9 @@
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/layout_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/layout_coordinator"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
@@ -62,37 +57,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="96dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/common_word_new_project"
+            android:textColor="@color/event_on_accent"
+            app:backgroundTint="@color/event_accent"
             app:icon="@drawable/ic_mtrl_add"
+            app:iconTint="@color/event_on_accent"
             app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
             tools:ignore="ContentDescription" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="vertical">
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerColor="?attr/colorSurfaceContainerHighest" />
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_nav"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:menu="@menu/main_menu" />
-
-        </LinearLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <com.besome.sketch.MainDrawer
-        android:id="@+id/left_drawer"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start" />
-
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

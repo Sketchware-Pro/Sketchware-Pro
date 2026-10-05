@@ -28,21 +28,106 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            android:paddingBottom="40dp">
+            android:paddingBottom="24dp">
+
+            <!-- Progress: Basic info -> Theme -> Create -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/step_basic_dot"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_step_active"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/event_on_accent"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/step_basic_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/np_step_basic"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <TextView
+                    android:id="@+id/step_theme_dot"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_step_idle"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/step_theme_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/np_step_theme"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <TextView
+                    android:id="@+id/step_create_dot"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_step_idle"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/step_create_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/np_step_create"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="12dp"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <FrameLayout
                     android:id="@+id/app_icon_layout"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/circle_bg_grey">
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:background="@drawable/bg_icon_tile">
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/app_icon"
@@ -50,23 +135,43 @@
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
                         android:src="@drawable/default_icon"
-                        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
+                        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large" />
                 </FrameLayout>
 
-                <TextView
-                    android:id="@+id/tv_change_icon"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/myprojects_settings_description_create_icon"
-                    android:textSize="12sp" />
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/np_project_icon"
+                        android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                    <TextView
+                        android:id="@+id/tv_change_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_change_icon"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:text="@string/np_change_icon"
+                        android:textColor="@color/event_accent"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_app_name"
+                style="@style/Widget.SketchwarePro.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 app:startIconDrawable="@drawable/ic_mtrl_android">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -79,10 +184,12 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_package_name"
+                style="@style/Widget.SketchwarePro.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:placeholderText="com.my.newproject"
+                app:errorEnabled="true"
                 app:startIconDrawable="@drawable/ic_mtrl_package">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -95,6 +202,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_project_name"
+                style="@style/Widget.SketchwarePro.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -112,7 +220,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="17dp"
-                app:strokeColor="?attr/colorOutline">
+                app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -179,7 +291,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                app:strokeColor="?attr/colorOutline">
+                app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -211,7 +327,7 @@
 
                         <Button
                             android:id="@+id/btn_generate_random_theme"
-                            style="@style/Widget.Material3Expressive.Button.ElevatedButton"
+                            style="?attr/materialButtonOutlinedStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/theme_generate_random"
@@ -247,8 +363,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                android:layout_marginBottom="64dp"
-                app:strokeColor="?attr/colorOutline">
+                android:layout_marginBottom="88dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -335,29 +455,36 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="?attr/colorSurface"
+        android:elevation="8dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp">
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp">
 
         <Button
             android:id="@+id/cancel"
-            style="@style/Widget.Material3Expressive.Button.TonalButton"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:text="@string/common_word_cancel" />
+            android:text="@string/common_word_cancel"
+            android:textColor="?attr/colorOnSurfaceVariant" />
 
         <Button
             android:id="@+id/ok_button"
-            style="@style/Widget.Material3Expressive.Button"
+            style="@style/Widget.Material3.Button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/common_word_create" />
+            android:layout_height="52dp"
+            android:layout_weight="2"
+            android:text="@string/common_word_create"
+            android:textColor="@color/event_on_accent"
+            app:backgroundTint="@color/event_accent" />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -76,16 +76,12 @@
     <string name="common_word_pretty_print">Pretty print</string>
     <string name="common_word_auto_complete">Auto complete</string>
     <string name="common_word_projects">Projects</string>
-    <string name="common_word_store">Store</string>
     <string name="common_word_import_events">Import events</string>
     <string name="common_word_export_events">Export events</string>
     <string name="str_edit">EDIT</string>
     <string name="str_remove">remove</string>
     <string name="common_word_blocks_collection">Blocks collection</string>
-    <string name="common_word_app_information">App information</string>
     <string name="common_word_create_keystore">Create keystore</string>
-    <string name="common_word_apps">Apps</string>
-    <string name="common_word_related_links">Related links</string>
     <string name="common_word_style_name">Style name</string>
     <string name="common_word_style_parent">Style Parent</string>
     <string name="common_word_reference">Reference</string>

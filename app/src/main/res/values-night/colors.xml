@@ -31,4 +31,5 @@
 
     <color name="event_accent">#ffff8f82</color>
     <color name="event_on_accent">#ff2a0b07</color>
+    <color name="event_accent_container">#ff3a2220</color>
 </resources>

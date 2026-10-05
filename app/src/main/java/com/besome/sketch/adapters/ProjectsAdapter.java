@@ -191,7 +191,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         holder.binding.projectName.setText(yB.c(projectMap, "my_app_name"));
         holder.binding.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
         holder.binding.tvPublished.setVisibility(View.VISIBLE);
-        holder.binding.tvPublished.setText(scId);
+        holder.binding.tvPublished.setText("#" + scId);
         holder.itemView.setTag("custom");
 
         holder.binding.getRoot().setOnClickListener(v -> {

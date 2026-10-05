@@ -535,7 +535,6 @@ But, components should be added manually for working correctly."</string>
     <string name="main_drawer_title_system_settings">System Settings</string>
     <string name="main_tab_title_competitions">Competitions</string>
     <string name="main_tab_title_myproject">My Projects</string>
-    <string name="main_tab_title_projects_store">Projects store</string>
     <string name="main_tab_title_tutorials">Tutorials</string>
     <string name="manage_export_url_actionbar_title">Manage Exported URLs</string>
     <string name="manage_export_url_list_app_name">App Name</string>
@@ -633,20 +632,8 @@ But, components should be added manually for working correctly."</string>
     <string name="picker_color_title_delete_custom_attr">Delete Custom Attribute</string>
     <string name="preset_setting_edit_warning">If you apply a Preset, exiting View data will be deleted. Continue?</string>
     <string name="preset_setting_title">Preset Settings</string>
-    <string name="program_information_actionbar_title">Program Information</string>
-    <string name="program_information_button_check_update">Check for Updates</string>
-    <string name="program_information_button_reset_system">Reset settings</string>
     <string name="program_information_reset_system_complete_initialize">All of the data was initialized</string>
-    <string name="program_information_reset_system_confirm_description">"All projects will be reset.
-Do you want to continue?"</string>
-    <string name="program_information_reset_system_title">Reset</string>
-    <string name="program_information_reset_system_title_all_settings">Reset all settings</string>
-    <string name="program_information_reset_system_title_all_settings_data">Reset all settings and data</string>
-    <string name="program_information_title_docs">Docs</string>
     <string name="program_information_title_open_source_license">Open Source Licenses</string>
-    <string name="program_information_title_service_terms">Service terms</string>
-    <string name="program_information_title_share_with_friends">Share with Friends</string>
-    <string name="program_information_title_suggest_ideas">Suggest Ideas</string>
     <string name="program_information_title_system_information">System Information</string>
     <string name="property_ad_size">Ad size</string>
     <string name="property_alpha">Alpha</string>
@@ -716,7 +703,6 @@ ACTION_VIEW
     <string name="property_visibility">Visibility</string>
     <string name="property_animate_layout_changes">Animate layout changes</string>
     <string name="images_title_icon">Icon</string>
-    <string name="images_title_screenshots">Screenshots</string>
     <string name="message_dialog_invalid_json">The json file is invalid. Please double check the file</string>
     <string name="s1">Save image</string>
     <string name="s2">Allow Ad to store image in Picture gallery?</string>
@@ -736,7 +722,6 @@ ACTION_VIEW
     <string name="search_result_message_no_data">No search result to show. :(</string>
     <string name="search_result_title">Search Result of %s</string>
     <string name="block_preview_title">Block Preview</string>
-    <string name="project_detail_tab_title_comments">Comments</string>
     <string name="sign_apk_desc_export_apk_file">APK file is generated. APK file is generated in the save directory below. Please check the save directory.</string>
     <string name="sign_apk_desc_generate_apk_file">Click sign button below and generate an APK file!</string>
     <string name="sign_apk_title_apk_file_save_path">Save Directory</string>
@@ -760,9 +745,7 @@ ACTION_VIEW
     <string name="title_company_tel">Telephone</string>
     <string name="title_company_url">Website</string>
     <string name="title_compatible_chrome_browser">Chrome Browser Required</string>
-    <string name="title_discord_community">Discord</string>
-    <string name="title_telegram_community">Telegram</string>
-    <string name="title_sketchware">Sketchware Pro</string>
+    <string name="title_sketchware">New World Sketchware</string>
     <string name="view_panel_title_layouts">Layouts</string>
     <string name="view_panel_title_properties">Properties</string>
     <string name="view_panel_title_widgets">Widgets</string>
@@ -858,14 +841,6 @@ ACTION_VIEW
     <string name="assets_manager_rename">Rename</string>
 
     <!--  about the team screen  -->
-    <string name="about_title">About Sketchware Pro</string>
-    <string name="about_team_title">The team</string>
-    <string name="about_specialthanks_title">Special Thanks</string>
-    <string name="about_changelog_title">Changelog</string>
-    <string name="about_beta_changes_title">Beta Changes</string>
-    <string name="about_loading_title">Getting data…</string>
-    <string name="about_loading_subtitle">Don\'t worry, it won\'t take more than a second.</string>
-    <string name="about_joindiscord">Join our Discord server</string>
 
     <!--  links  -->
     <string name="github_api_error_message">Something went wrong. Please wait and try again.</string>
@@ -934,4 +909,24 @@ ACTION_VIEW
     <string name="view_widget_new_compact">Widget</string>
     <string name="view_drop_components_here">Drop components here</string>
     <string name="component_search_hint">Search components…</string>
+    <string name="firebase_reveal_value">Show or hide value</string>
+    <string name="library_search_hint">Search libraries…</string>
+    <string name="component_category_all">All</string>
+    <string name="component_category_storage">Storage</string>
+    <string name="component_category_media">Media</string>
+    <string name="component_category_network">Network</string>
+    <string name="component_category_sensors">Sensors</string>
+    <string name="component_category_system">System</string>
+    <string name="projects_subtitle">Manage your Sketchware Pro projects</string>
+    <string name="projects_sort_newest">Newest</string>
+    <string name="projects_sort_oldest">Oldest</string>
+    <string name="projects_sort_az">A–Z</string>
+    <string name="projects_sort_za">Z–A</string>
+    <string name="np_step_basic">Basic info</string>
+    <string name="np_step_theme">Theme</string>
+    <string name="np_step_create">Create</string>
+    <string name="np_project_icon">Project icon</string>
+    <string name="np_change_icon">Change icon</string>
+    <string name="design_drawer_project_settings">Project settings</string>
+    <string name="design_drawer_search_hint">Search settings…</string>
 </resources>

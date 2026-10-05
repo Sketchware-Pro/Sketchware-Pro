@@ -90,6 +90,8 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // The New Project / project settings screen uses the light Material theme.
+        getDelegate().setLocalNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         binding = MyprojectSettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -121,6 +123,11 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         projectAppNameValidator = new AppNameValidator(getApplicationContext(), binding.tilAppName);
         projectPackageNameValidator = new PackageNameValidator(getApplicationContext(), binding.tilPackageName);
         projectNameValidator = new VB(getApplicationContext(), binding.tilProjectName);
+        com.besome.sketch.editor.logic.PaletteSelector.SimpleTextWatcher stepsWatcher =
+                new com.besome.sketch.editor.logic.PaletteSelector.SimpleTextWatcher(text -> binding.getRoot().post(this::updateSteps));
+        binding.etAppName.addTextChangedListener(stepsWatcher);
+        binding.etPackageName.addTextChangedListener(stepsWatcher);
+        binding.etProjectName.addTextChangedListener(stepsWatcher);
         binding.tilPackageName.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 if (!shownPackageNameChangeWarning && !Helper.getText((EditText) v).trim().contains("com.my.newproject")) {
@@ -197,6 +204,8 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             }
         }
         syncThemeColors();
+
+        binding.getRoot().post(this::updateSteps);
     }
 
     @Override
@@ -423,6 +432,35 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
     private String getIconsFolderPath() {
         return wq.e() + File.separator + sc_id + File.separator + "mipmaps" + File.separator;
+    }
+
+    /**
+     * Progress indicator: Basic info -> Theme -> Create. Once the three fields are valid the first two
+     * steps are done and Create becomes the active step.
+     */
+    private void updateSteps() {
+        boolean basicValid = !Helper.getText(binding.etAppName).trim().isEmpty()
+                && !Helper.getText(binding.etPackageName).trim().isEmpty()
+                && !Helper.getText(binding.etProjectName).trim().isEmpty()
+                && isInputValid();
+        setStep(binding.stepBasicDot, binding.stepBasicLabel, basicValid ? 2 : 1);
+        setStep(binding.stepThemeDot, binding.stepThemeLabel, basicValid ? 2 : 0);
+        setStep(binding.stepCreateDot, binding.stepCreateLabel, basicValid ? 1 : 0);
+    }
+
+    /** state: 0 = idle, 1 = active, 2 = done. */
+    private void setStep(TextView dot, TextView label, int state) {
+        int onSurface = pro.sketchware.utility.ThemeUtils.getColor(dot, R.attr.colorOnSurface);
+        int onSurfaceVariant = pro.sketchware.utility.ThemeUtils.getColor(dot, R.attr.colorOnSurfaceVariant);
+        dot.setBackgroundResource(state == 1 ? R.drawable.bg_step_active : state == 2 ? R.drawable.bg_step_done : R.drawable.bg_step_idle);
+        dot.setText(state == 2 ? "\u2713" : String.valueOf(stepNumber(dot)));
+        dot.setTextColor(state == 1 ? androidx.core.content.ContextCompat.getColor(this, R.color.event_on_accent)
+                : state == 2 ? androidx.core.content.ContextCompat.getColor(this, R.color.event_accent) : onSurfaceVariant);
+        label.setTextColor(state == 0 ? onSurfaceVariant : onSurface);
+    }
+
+    private int stepNumber(TextView dot) {
+        return dot == binding.stepBasicDot ? 1 : dot == binding.stepThemeDot ? 2 : 3;
     }
 
     private boolean isInputValid() {

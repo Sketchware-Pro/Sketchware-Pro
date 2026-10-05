@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/create_release_keystore"
+        android:icon="@drawable/ic_mtrl_key"
+        android:title="@string/common_word_create_keystore" />
+    <item
+        android:id="@+id/app_settings"
+        android:icon="@drawable/ic_mtrl_settings"
+        android:title="@string/common_word_settings" />
+</menu>

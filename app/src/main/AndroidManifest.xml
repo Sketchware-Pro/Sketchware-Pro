@@ -50,7 +50,6 @@
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name="com.besome.sketch.help.LicenseActivity" />
-        <activity android:name="com.besome.sketch.help.ProgramInfoActivity" />
         <activity
             android:name="com.besome.sketch.help.SystemSettingActivity"
             android:configChanges="orientation|screenSize" />
@@ -262,9 +261,6 @@
         <activity
             android:name="mod.hilal.saif.activities.tools.AppSettings"
             android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="pro.sketchware.activities.about.AboutActivity"
-            android:configChanges="orientation|screenSize" />
         <activity android:name="mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity" />
         <activity
             android:name="com.besome.sketch.editor.manage.view.PresetSettingActivity"
@@ -275,10 +271,6 @@
             android:name="mod.khaled.logcat.LogReaderActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
 
-        <activity
-            android:name="pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.SketchwarePro.ProjectPreview" />
 
         <activity android:name="pro.sketchware.activities.settings.SettingsActivity" />
 

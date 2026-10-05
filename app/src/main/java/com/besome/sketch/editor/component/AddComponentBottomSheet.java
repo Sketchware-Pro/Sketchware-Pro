@@ -59,6 +59,34 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
 
     private java.util.ArrayList<ComponentBean> filteredList;
     private ComponentsAdapter componentsAdapter;
+    private String selectedCategory = CATEGORY_ALL;
+    private String searchQuery = "";
+
+    private static final String CATEGORY_ALL = "All";
+
+    /** Buckets a component type into one of the picker categories. */
+    private static String categoryOf(int type) {
+        return switch (type) {
+            case ComponentBean.COMPONENT_TYPE_SHAREDPREF,
+                 ComponentBean.COMPONENT_TYPE_FILE_PICKER,
+                 ComponentBean.COMPONENT_TYPE_FIREBASE,
+                 ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE -> "Storage";
+            case ComponentBean.COMPONENT_TYPE_MEDIAPLAYER,
+                 ComponentBean.COMPONENT_TYPE_SOUNDPOOL,
+                 ComponentBean.COMPONENT_TYPE_CAMERA,
+                 ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH,
+                 ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT -> "Media";
+            case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK,
+                 ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT,
+                 ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH,
+                 ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE,
+                 ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE,
+                 ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> "Network";
+            case ComponentBean.COMPONENT_TYPE_GYROSCOPE,
+                 ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER -> "Sensors";
+            default -> "System";
+        };
+    }
 
     private void initializeComponentBeans() {
         componentList = new ArrayList<>();
@@ -122,7 +150,11 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
         binding.componentList.setAdapter(componentsAdapter);
         binding.componentList.setLayoutManager(flexboxLayoutManager);
         binding.searchComponents.addTextChangedListener(
-                new com.besome.sketch.editor.logic.PaletteSelector.SimpleTextWatcher(text -> filterComponents(text.toString())));
+                new com.besome.sketch.editor.logic.PaletteSelector.SimpleTextWatcher(text -> {
+                    searchQuery = text.toString();
+                    applyFilter();
+                }));
+        setupCategoryChips();
 
         binding.componentList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -138,12 +170,37 @@ public class AddComponentBottomSheet extends BottomSheetDialogFragment {
         });
     }
 
-    /** Filters the picker by component display name (case-insensitive). */
-    private void filterComponents(String query) {
-        String q = query == null ? "" : query.trim().toLowerCase(java.util.Locale.ROOT);
+    private void setupCategoryChips() {
+        String[][] cats = {
+                {CATEGORY_ALL, getString(R.string.component_category_all)},
+                {"Storage", getString(R.string.component_category_storage)},
+                {"Media", getString(R.string.component_category_media)},
+                {"Network", getString(R.string.component_category_network)},
+                {"Sensors", getString(R.string.component_category_sensors)},
+                {"System", getString(R.string.component_category_system)},
+        };
+        for (String[] cat : cats) {
+            com.google.android.material.chip.Chip chip = new com.google.android.material.chip.Chip(requireContext());
+            chip.setText(cat[1]);
+            chip.setCheckable(true);
+            chip.setTag(cat[0]);
+            chip.setChecked(CATEGORY_ALL.equals(cat[0]));
+            binding.categoryChips.addView(chip);
+            chip.setOnClickListener(v -> {
+                selectedCategory = (String) v.getTag();
+                applyFilter();
+            });
+        }
+    }
+
+    /** Applies the active category chip and the search query together. */
+    private void applyFilter() {
+        String q = searchQuery == null ? "" : searchQuery.trim().toLowerCase(java.util.Locale.ROOT);
         filteredList.clear();
         for (ComponentBean bean : componentList) {
-            if (q.isEmpty() || ComponentBean.getComponentName(requireContext(), bean.type).toLowerCase(java.util.Locale.ROOT).contains(q)) {
+            boolean categoryMatch = CATEGORY_ALL.equals(selectedCategory) || categoryOf(bean.type).equals(selectedCategory);
+            boolean nameMatch = q.isEmpty() || ComponentBean.getComponentName(requireContext(), bean.type).toLowerCase(java.util.Locale.ROOT).contains(q);
+            if (categoryMatch && nameMatch) {
                 filteredList.add(bean);
             }
         }

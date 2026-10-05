@@ -149,14 +149,34 @@
                     app:cardBackgroundColor="?attr/colorSurfaceContainer"
                     app:cardCornerRadius="14dp">
 
-                    <TextView
-                        android:id="@+id/tv_app_id"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="16dp"
-                        android:textColor="?colorControlNormal"
-                        android:textSize="12sp" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="4dp">
+
+                        <TextView
+                            android:id="@+id/tv_app_id"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="middle"
+                            android:maxLines="1"
+                            android:paddingVertical="16dp"
+                            android:textColor="?colorControlNormal"
+                            android:textSize="12sp" />
+
+                        <ImageButton
+                            android:id="@+id/btn_toggle_app_id"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/firebase_reveal_value"
+                            android:padding="9dp"
+                            android:src="@drawable/ic_eye" />
+                    </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
@@ -192,14 +212,34 @@
                     app:cardBackgroundColor="?attr/colorSurfaceContainer"
                     app:cardCornerRadius="14dp">
 
-                    <TextView
-                        android:id="@+id/tv_api_key"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="16dp"
-                        android:textColor="?colorControlNormal"
-                        android:textSize="12sp" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="4dp">
+
+                        <TextView
+                            android:id="@+id/tv_api_key"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="middle"
+                            android:maxLines="1"
+                            android:paddingVertical="16dp"
+                            android:textColor="?colorControlNormal"
+                            android:textSize="12sp" />
+
+                        <ImageButton
+                            android:id="@+id/btn_toggle_api_key"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/firebase_reveal_value"
+                            android:padding="9dp"
+                            android:src="@drawable/ic_eye" />
+                    </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout

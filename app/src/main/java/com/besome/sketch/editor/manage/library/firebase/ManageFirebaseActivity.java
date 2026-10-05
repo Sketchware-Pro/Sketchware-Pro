@@ -49,6 +49,10 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     private TextView tvProjectId;
     private TextView tvAppId;
     private TextView tvApiKey;
+    private String rawAppId = "";
+    private String rawApiKey = "";
+    private boolean appIdRevealed;
+    private boolean apiKeyRevealed;
     private TextView tvStorageUrl;
     private DB s = null;
     private ProjectLibraryBean firebaseLibraryBean;
@@ -194,6 +198,16 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         tvAppId = binding.tvAppId;
         tvApiKey = binding.tvApiKey;
         tvStorageUrl = binding.tvStorageUrl;
+        binding.btnToggleAppId.setOnClickListener(v -> {
+            appIdRevealed = !appIdRevealed;
+            binding.btnToggleAppId.setImageResource(appIdRevealed ? R.drawable.ic_eye_off : R.drawable.ic_eye);
+            tvAppId.setText(appIdRevealed ? rawAppId : maskSecret(rawAppId));
+        });
+        binding.btnToggleApiKey.setOnClickListener(v -> {
+            apiKeyRevealed = !apiKeyRevealed;
+            binding.btnToggleApiKey.setImageResource(apiKeyRevealed ? R.drawable.ic_eye_off : R.drawable.ic_eye);
+            tvApiKey.setText(apiKeyRevealed ? rawApiKey : maskSecret(rawApiKey));
+        });
         Button btnImport = binding.btnImport;
         btnImport.setOnClickListener(this);
         Button btnConsole = binding.btnConsole;
@@ -243,16 +257,29 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         }
 
         if (firebaseLibraryBean.reserved1 != null) {
-            tvAppId.setText(firebaseLibraryBean.reserved1); //APP ID
+            rawAppId = firebaseLibraryBean.reserved1; //APP ID
+            tvAppId.setText(appIdRevealed ? rawAppId : maskSecret(rawAppId));
         }
 
         if (firebaseLibraryBean.reserved2 != null) {
-            tvApiKey.setText(firebaseLibraryBean.reserved2); //API Key
+            rawApiKey = firebaseLibraryBean.reserved2; //API Key
+            tvApiKey.setText(apiKeyRevealed ? rawApiKey : maskSecret(rawApiKey));
         }
 
         if (firebaseLibraryBean.reserved3 != null) {
             tvStorageUrl.setText(firebaseLibraryBean.reserved3); //Storage Bucket
         }
+    }
+
+    /** Masks a credential, keeping only the last 4 characters visible. */
+    private static String maskSecret(String value) {
+        if (value == null || value.isEmpty()) return "";
+        int keep = Math.min(4, value.length());
+        int dots = Math.max(0, value.length() - keep);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < Math.min(dots, 16); i++) sb.append('\u2022');
+        sb.append(value.substring(value.length() - keep));
+        return sb.toString();
     }
 
     public void configureImportFirebaseConfigFromJson(String type, String value) {

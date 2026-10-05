@@ -35,6 +35,23 @@
         android:singleLine="true"
         android:textSize="14sp" />
 
+    <HorizontalScrollView
+        android:id="@+id/category_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:paddingHorizontal="?attr/dialogPreferredPadding"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/category_chips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true" />
+    </HorizontalScrollView>
+
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider_top"
         android:layout_width="match_parent"
