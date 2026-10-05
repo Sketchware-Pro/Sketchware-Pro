@@ -96,6 +96,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private View palettePanel;
     private com.google.android.material.button.MaterialButton togglePaletteButton;
     private boolean paletteExpanded = true;
+    private boolean focusPreview;
+    private boolean paletteBeforeFocus = true;
+    private java.util.function.Consumer<Boolean> focusPreviewListener;
     private TextView dropHint;
     private TextView zoomLabel;
     private float previewZoom = 1f;
@@ -532,7 +535,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         findViewById(R.id.btn_vzoom_in).setOnClickListener(v -> setPreviewZoom(previewZoom + 0.25f));
         findViewById(R.id.btn_vzoom_out).setOnClickListener(v -> setPreviewZoom(previewZoom - 0.25f));
         findViewById(R.id.btn_vfit).setOnClickListener(v -> setPreviewZoom(1f));
-        findViewById(R.id.btn_vcenter).setOnClickListener(v -> setPreviewZoom(1f));
+        findViewById(R.id.btn_focus_preview).setOnClickListener(v -> setFocusPreview(!focusPreview));
     }
 
     /**
@@ -571,6 +574,34 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
         dropHint.setX(viewPane.getX() + viewPane.getWidth() / 2f - w / 2f);
         dropHint.setY(viewPane.getY() + viewPane.getHeight() / 2f - h / 2f);
+    }
+
+    /** Hides the palette and lets the host hide its chrome (tabs, footer) so the preview fills the screen. */
+    private void setFocusPreview(boolean focus) {
+        focusPreview = focus;
+        if (focus) {
+            paletteBeforeFocus = paletteExpanded;
+            paletteExpanded = false;
+        } else {
+            paletteExpanded = paletteBeforeFocus;
+        }
+        applyPaletteExpanded();
+        togglePaletteButton.setVisibility(focus ? View.GONE : View.VISIBLE);
+        if (focusPreviewListener != null) focusPreviewListener.accept(focus);
+        isLayoutChanged = true;
+        requestLayout();
+    }
+
+    public boolean isFocusPreview() {
+        return focusPreview;
+    }
+
+    public void exitFocusPreview() {
+        if (focusPreview) setFocusPreview(false);
+    }
+
+    public void setOnFocusPreviewChangedListener(java.util.function.Consumer<Boolean> listener) {
+        focusPreviewListener = listener;
     }
 
     private void applyPaletteExpanded() {
@@ -975,7 +1006,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         int var5 = (int) (dip * (!isLandscapeMode ? 20.0F : 10.0F));
         int statusBarHeight = GB.f(getContext());
         int toolBarHeight = GB.a(getContext());
-        int var9 = displayWidth - (paletteExpanded ? (int) (104.0F * dip) : 0);
+        int var9 = displayWidth - (paletteExpanded ? (int) (88.0F * dip) : 0);
         int var8 = displayHeight - statusBarHeight - toolBarHeight - (int) (dip * 48.0F) - (int) (dip * 48.0F);
         if (screenType == 0 && da) {
             Log.d("ViewEditor", "hmmm");

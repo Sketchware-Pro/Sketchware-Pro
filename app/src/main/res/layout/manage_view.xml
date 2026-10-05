@@ -24,7 +24,9 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="40dp"
+            app:tabIndicatorColor="@color/event_accent"
+            app:tabSelectedTextColor="@color/event_accent" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -51,7 +53,12 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:src="@drawable/ic_mtrl_add"
+        app:backgroundTint="@color/event_accent"
+        app:fabCustomSize="48dp"
         app:icon="@drawable/ic_mtrl_add"
+        app:maxImageSize="22dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
+        app:tint="@color/event_on_accent"
         tools:ignore="ContentDescription" />
 
 

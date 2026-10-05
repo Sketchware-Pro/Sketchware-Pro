@@ -80,7 +80,7 @@ public class ItemListView extends ListView implements ItemView {
     public void onDraw(@NonNull Canvas canvas) {
         if (selected) {
             paint.setColor(0x9599d5d0);
-            canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
+            com.besome.sketch.editor.view.SelectionOverlay.draw(canvas, 0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
         } else {
             paint.setColor(0x60000000);
             int measuredWidth = getMeasuredWidth();

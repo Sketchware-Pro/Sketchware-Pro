@@ -114,7 +114,7 @@ public class ManageLocalLibrary {
         for (String packageName : getPackageNames()) {
             if (!packageName.isEmpty()) {
                 File projectGenFolder = new File(Environment.getExternalStorageDirectory(),
-                        ".sketchware/mysc/".concat(projectId).concat("/gen"));
+                        ".sketch_nws/mysc/".concat(projectId).concat("/gen"));
                 String rJavaPath = packageName.replace(".", File.separator)
                         .concat(File.separator).concat("R.java");
                 genPaths.add(new File(projectGenFolder, rJavaPath).getAbsolutePath());

@@ -7,10 +7,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +25,10 @@ import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.ManageViewActivity;
 import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 
+import com.google.android.material.color.MaterialColors;
+
 import java.util.ArrayList;
+import java.util.Locale;
 
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageViewListItemBinding;
@@ -37,6 +45,9 @@ public class Fw extends qA {
     private String sc_id;
     private String isAppCompatUsed = "N";
     private ArrayList<ProjectFileBean> activitiesFiles;
+    private final ArrayList<ProjectFileBean> visibleFiles = new ArrayList<>();
+    private String searchQuery = "";
+    private TextView tvViewCount;
 
     public final String a(int beanType, String xmlName) {
         String baseName = wq.b(beanType);
@@ -78,13 +89,13 @@ public class Fw extends qA {
 
     public void a(ProjectFileBean var1) {
         activitiesFiles.add(var1);
-        projectFilesAdapter.notifyDataSetChanged();
+        refreshVisible();
     }
 
     public void a(boolean var1) {
         k = var1;
         e();
-        projectFilesAdapter.notifyDataSetChanged();
+        refreshVisible();
     }
 
     public final void b(ProjectFileBean projectFileBean) {
@@ -103,6 +114,22 @@ public class Fw extends qA {
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) || projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
             jC.c(sc_id).c().useYn = "Y";
         }
+    }
+
+    /** Rebuilds the list shown from {@code activitiesFiles} and the search query, and updates the counter. */
+    private void refreshVisible() {
+        visibleFiles.clear();
+        for (ProjectFileBean bean : activitiesFiles) {
+            if (searchQuery.isEmpty()
+                    || bean.getXmlName().toLowerCase(Locale.ROOT).contains(searchQuery)
+                    || bean.getJavaName().toLowerCase(Locale.ROOT).contains(searchQuery)) {
+                visibleFiles.add(bean);
+            }
+        }
+        if (tvViewCount != null && isAdded()) {
+            tvViewCount.setText(getString(R.string.view_manager_views_count, activitiesFiles.size()));
+        }
+        if (projectFilesAdapter != null) projectFilesAdapter.notifyDataSetChanged();
     }
 
     public ArrayList<ProjectFileBean> c() {
@@ -166,7 +193,7 @@ public class Fw extends qA {
                     }
                 }
             } else {
-                projectFilesAdapter.notifyDataSetChanged();
+                refreshVisible();
                 return;
             }
         }
@@ -195,7 +222,7 @@ public class Fw extends qA {
             activitiesFiles = savedInstanceState.getParcelableArrayList("activities");
         }
 
-        projectFilesAdapter.notifyDataSetChanged();
+        refreshVisible();
         g();
     }
 
@@ -205,13 +232,13 @@ public class Fw extends qA {
         if (requestCode == REQUEST_CODE_ADD_VIEW_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 b(data.getParcelableExtra("project_file"));
-                projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
+                refreshVisible();
             }
         } else if (requestCode == REQUEST_CODE_PRESET_ACTIVITY && resultCode == Activity.RESULT_OK) {
             ProjectFileBean projectFileBean = data.getParcelableExtra("preset_data");
             b(projectFileBean);
             c(projectFileBean);
-            projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
+            refreshVisible();
         }
     }
 
@@ -226,6 +253,24 @@ public class Fw extends qA {
         activitiesList.setAdapter(projectFilesAdapter);
         tvGuide = root.findViewById(R.id.tv_guide);
         tvGuide.setText(R.string.design_manager_view_description_guide_create_activity);
+
+        root.findViewById(R.id.search_row).setVisibility(View.VISIBLE);
+        tvViewCount = root.findViewById(R.id.tv_view_count);
+        ((EditText) root.findViewById(R.id.search_views)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchQuery = s.toString().trim().toLowerCase(Locale.ROOT);
+                refreshVisible();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
         return root;
     }
 
@@ -260,21 +305,33 @@ public class Fw extends qA {
 
         @Override
         public int getItemCount() {
-            return activitiesFiles != null ? activitiesFiles.size() : 0;
+            return visibleFiles.size();
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-            ProjectFileBean projectFileBean = activitiesFiles.get(position);
+            ProjectFileBean projectFileBean = visibleFiles.get(position);
+            boolean isMain = activitiesFiles.indexOf(projectFileBean) == 0;
 
             // Displaying selection state
             viewHolder.binding.chkSelect.setChecked(projectFileBean.isSelected);
-            viewHolder.binding.chkSelect.setVisibility(position == 0 ? View.GONE : k ? View.VISIBLE : View.GONE);
-            viewHolder.binding.imgActivity.setVisibility(k && position != 0 ? View.GONE : View.VISIBLE);
+            viewHolder.binding.chkSelect.setVisibility(isMain ? View.GONE : k ? View.VISIBLE : View.GONE);
+            viewHolder.binding.imgActivity.setVisibility(k && !isMain ? View.GONE : View.VISIBLE);
+            viewHolder.binding.btnMore.setVisibility(k ? View.GONE : View.VISIBLE);
+            viewHolder.binding.tvMainBadge.setVisibility(isMain ? View.VISIBLE : View.GONE);
+            viewHolder.binding.layoutItem.setStrokeColor(projectFileBean.isSelected
+                    ? ContextCompat.getColor(requireContext(), R.color.event_accent)
+                    : MaterialColors.getColor(viewHolder.binding.layoutItem, R.attr.colorOutlineVariant));
 
             viewHolder.binding.imgActivity.setImageResource(getImageResByOptions(projectFileBean.options));
             viewHolder.binding.tvScreenName.setText(projectFileBean.getXmlName());
-            viewHolder.binding.tvActivityName.setText(projectFileBean.getJavaName());
+            int widgets = 0;
+            if (sc_id != null) {
+                ArrayList<ViewBean> viewBeans = jC.a(sc_id).d(projectFileBean.getXmlName());
+                if (viewBeans != null) widgets = viewBeans.size();
+            }
+            viewHolder.binding.tvActivityName.setText(projectFileBean.getJavaName() + " \u2022 "
+                    + getString(R.string.view_manager_widgets_count, widgets));
         }
 
         @Override
@@ -298,48 +355,77 @@ public class Fw extends qA {
                 this.binding = binding;
 
                 binding.viewItem.setOnClickListener(view -> {
-                    if (!mB.a()) {
-                        layoutPosition = getLayoutPosition();
-                        ProjectFileBean projectFileBean = activitiesFiles.get(layoutPosition);
-
-                        if (k) {
-                            if (layoutPosition != 0) {
-                                projectFileBean.isSelected = !projectFileBean.isSelected;
-                                binding.chkSelect.setChecked(projectFileBean.isSelected);
-                                notifyItemChanged(layoutPosition);
-                            }
-                        } else {
-                            Intent intent = new Intent(getContext(), AddViewActivity.class);
-                            intent.putExtra("project_file", projectFileBean);
-                            intent.putExtra("request_code", REQUEST_CODE_ADD_VIEW_ACTIVITY);
-                            startActivityForResult(intent, REQUEST_CODE_ADD_VIEW_ACTIVITY);
-                        }
-                    }
+                    if (!mB.a()) openOrToggle();
                 });
 
                 binding.viewItem.setOnLongClickListener(view -> {
-                    if (getLayoutPosition() == 0) {
+                    if (isMainAt(getLayoutPosition())) {
                         Toast.makeText(getContext(), "Main activity cannot be deleted", Toast.LENGTH_SHORT).show();
                         return true;
                     }
-                    ((ManageViewActivity) getActivity()).a(true);
-                    layoutPosition = getLayoutPosition();
-                    ProjectFileBean projectFileBean = activitiesFiles.get(layoutPosition);
-                    projectFileBean.isSelected = !projectFileBean.isSelected;
-                    binding.chkSelect.setChecked(projectFileBean.isSelected);
-                    notifyItemChanged(layoutPosition);
+                    startSelection();
                     return true;
+                });
+
+                binding.btnMore.setOnClickListener(view -> {
+                    PopupMenu menu = new PopupMenu(view.getContext(), view);
+                    menu.getMenu().add(0, 0, 0, R.string.view_manager_open);
+                    if (!isMainAt(getLayoutPosition())) {
+                        menu.getMenu().add(0, 1, 1, R.string.view_manager_select);
+                    }
+                    menu.setOnMenuItemClickListener(item -> {
+                        if (item.getItemId() == 0) {
+                            openOrToggle();
+                        } else {
+                            startSelection();
+                        }
+                        return true;
+                    });
+                    menu.show();
                 });
 
                 binding.imgPresetSetting.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        layoutPosition = getLayoutPosition();
+                        layoutPosition = activitiesFiles.indexOf(visibleFiles.get(getLayoutPosition()));
                         Intent intent = new Intent(getContext(), PresetSettingActivity.class);
                         intent.putExtra("request_code", REQUEST_CODE_PRESET_ACTIVITY);
                         intent.putExtra("edit_mode", true);
                         startActivityForResult(intent, REQUEST_CODE_PRESET_ACTIVITY);
                     }
                 });
+            }
+
+            private boolean isMainAt(int position) {
+                return position >= 0 && activitiesFiles.indexOf(visibleFiles.get(position)) == 0;
+            }
+
+            private void openOrToggle() {
+                int position = getLayoutPosition();
+                if (position < 0) return;
+                ProjectFileBean projectFileBean = visibleFiles.get(position);
+                layoutPosition = activitiesFiles.indexOf(projectFileBean);
+
+                if (k) {
+                    if (layoutPosition != 0) {
+                        projectFileBean.isSelected = !projectFileBean.isSelected;
+                        notifyItemChanged(position);
+                    }
+                } else {
+                    Intent intent = new Intent(getContext(), AddViewActivity.class);
+                    intent.putExtra("project_file", projectFileBean);
+                    intent.putExtra("request_code", REQUEST_CODE_ADD_VIEW_ACTIVITY);
+                    startActivityForResult(intent, REQUEST_CODE_ADD_VIEW_ACTIVITY);
+                }
+            }
+
+            private void startSelection() {
+                int position = getLayoutPosition();
+                if (position < 0) return;
+                ((ManageViewActivity) getActivity()).a(true);
+                ProjectFileBean projectFileBean = visibleFiles.get(position);
+                layoutPosition = activitiesFiles.indexOf(projectFileBean);
+                projectFileBean.isSelected = !projectFileBean.isSelected;
+                notifyItemChanged(position);
             }
         }
     }

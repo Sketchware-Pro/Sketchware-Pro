@@ -4,6 +4,42 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/search_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/search_views"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/palette_search_bg"
+            android:drawableStart="@drawable/ic_search_palette"
+            android:drawablePadding="6dp"
+            android:hint="@string/view_manager_search_hint"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingHorizontal="10dp"
+            android:singleLine="true"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_view_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tv_guide"
         android:layout_width="match_parent"
@@ -19,8 +55,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="false"
-        android:paddingTop="10dp"
-        android:paddingBottom="60dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="72dp"
         android:scrollbars="none"
         tools:listitem="@layout/manage_view_list_item" />
 </LinearLayout>

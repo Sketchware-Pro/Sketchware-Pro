@@ -15,9 +15,9 @@ import pro.sketchware.utility.FileUtil;
 public class ExtraBlockFile {
 
     public static final File EXTRA_BLOCKS_DATA_FILE = new File(Environment.getExternalStorageDirectory(),
-            ".sketchware/resources/block/My Block/block.json");
+            ".sketch_nws/resources/block/My Block/block.json");
     public static final File EXTRA_BLOCKS_PALETTE_FILE = new File(Environment.getExternalStorageDirectory(),
-            ".sketchware/resources/block/My Block/palette.json");
+            ".sketch_nws/resources/block/My Block/palette.json");
 
     public static ArrayList<HashMap<String, Object>> buildInBlocks = new ArrayList<>();
 

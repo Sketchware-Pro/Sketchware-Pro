@@ -106,7 +106,7 @@ public class CustomBlocksManager {
         }
 
         File customBlocksConfig = new File(Environment.getExternalStorageDirectory(),
-                ".sketchware/data/" + sc_id + "/custom_blocks");
+                ".sketch_nws/data/" + sc_id + "/custom_blocks");
         if (customBlocksConfig.exists()) {
             try {
                 custom_blocks = new Gson().fromJson(
@@ -148,7 +148,7 @@ public class CustomBlocksManager {
     /*public String getCustomBlocksJsonPath() {
         return new File(
             Environment.getExternalStorageDirectory(),
-            ".sketchware/data/" + sc_id + "/custom_blocks")
+            ".sketch_nws/data/" + sc_id + "/custom_blocks")
             .getAbsolutePath();
     }
 
@@ -237,7 +237,7 @@ public class CustomBlocksManager {
     
     
     public String getCustomBlocksJsonPath() {
-        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/"+sc_id+"/custom_blocks").getAbsolutePath();
+        return new File(Environment.getExternalStorageDirectory(), ".sketch_nws/data/"+sc_id+"/custom_blocks").getAbsolutePath();
     }
     
     

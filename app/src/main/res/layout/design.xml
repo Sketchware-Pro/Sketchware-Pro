@@ -101,7 +101,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingTop="2dp"
-                android:paddingBottom="10dp">
+                android:paddingBottom="6dp">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/file_name_container"
@@ -113,7 +113,7 @@
                     android:clickable="true"
                     app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
                     app:cardCornerRadius="16dp"
-                    app:contentPadding="10dp"
+                    app:contentPadding="6dp"
                     app:strokeColor="?attr/colorOutlineVariant"
                     app:strokeWidth="1dp">
 
@@ -164,7 +164,7 @@
                         style="?attr/materialSplitButtonLeadingFilledStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
+                        android:minHeight="40dp"
                         android:text="@string/common_word_run"
                         android:textColor="@color/event_on_accent"
                         app:backgroundTint="@color/event_accent"
@@ -176,7 +176,7 @@
                         style="?attr/materialSplitButtonIconFilledStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
+                        android:minHeight="40dp"
                         app:backgroundTint="@color/event_accent"
                         app:icon="@drawable/m3_split_button_chevron_avd"
                         app:iconTint="@color/event_on_accent"

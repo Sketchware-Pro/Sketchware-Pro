@@ -222,6 +222,12 @@ public class PaletteWidget extends LinearLayout {
         }
     }
 
+    /** Re-applies the collapsed state of every sub-section; call once the palette is populated. */
+    public void refreshSections() {
+        applySectionState(layoutContainer);
+        applySectionState(widgetsContainer);
+    }
+
     public void removeWidgets() {
         widgetsContainer.removeAllViews();
     }
@@ -234,6 +240,7 @@ public class PaletteWidget extends LinearLayout {
         layoutParams.setMargins(dpToPx(4), dpToPx(2), dpToPx(4), dpToPx(2));
         titleView.setLayoutParams(layoutParams);
         var header = new SectionHeader(title);
+        header.collapsed = true;
         titleView.setTag(header);
         titleView.setText(header.label());
         titleView.setTextSize(12);

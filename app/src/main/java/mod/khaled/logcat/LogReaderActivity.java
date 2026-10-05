@@ -47,7 +47,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
     private final Pattern logPattern = Pattern.compile("^(.*\\d) ([VADEIW]) (.*): (.*)");
     private final ArrayList<HashMap<String, Object>> mainList = new ArrayList<>();
     private String pkgFilter = "";
-    private String packageName = "pro.sketchware";
+    private String packageName = "com.sketch_nws";
     private boolean autoScroll = true;
     private ArrayList<String> pkgFilterList = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         binding.logsRecyclerView.setAdapter(new Adapter(new ArrayList<>()));
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("pro.sketchware.ACTION_NEW_DEBUG_LOG");
+        intentFilter.addAction("com.sketch_nws.ACTION_NEW_DEBUG_LOG");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(logger, intentFilter, Context.RECEIVER_EXPORTED);
         } else {
@@ -159,7 +159,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         }
         try {
             String fileName = Calendar.getInstance(Locale.ENGLISH).getTimeInMillis() + ".txt";
-            String filePath = Environment.getExternalStorageDirectory() + "/.sketchware/logcat/" + packageName + "/" + fileName;
+            String filePath = Environment.getExternalStorageDirectory() + "/.sketch_nws/logcat/" + packageName + "/" + fileName;
             String stars = "*".repeat(95);
             String blank = " ".repeat(87);
             createNewFileIfNotPresent(filePath);

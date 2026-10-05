@@ -18,11 +18,11 @@ public class ImageFactory {
      * Saves a bitmap of a view to storage.
      *
      * @param view      The view to save as bitmap.
-     * @param imageName The image's name inside /Internal storage/sketchware/saved_block/.
+     * @param imageName The image's name inside /Internal storage/sketch_nws/saved_block/.
      * @return A File object of the saved bitmap.
      */
     public static File saveBitmap(View view, String imageName) {
-        File saveToDirectory = new File(FileUtil.getExternalStorageDir(), "sketchware/saved_block");
+        File saveToDirectory = new File(FileUtil.getExternalStorageDir(), "sketch_nws/saved_block");
         if (!saveToDirectory.exists()) {
             FileUtil.makeDir(saveToDirectory.getAbsolutePath());
         }

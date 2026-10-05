@@ -164,7 +164,7 @@ public class Lx {
         }
 
         String sc_id = metadata.sc_id;
-        String local_lib_file = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/local_library";
+        String local_lib_file = FileUtil.getExternalStorageDir() + "/.sketch_nws/data/" + sc_id + "/local_library";
         String fileContent = FileUtil.readFile(local_lib_file);
 
         if (!fileContent.isEmpty()) {

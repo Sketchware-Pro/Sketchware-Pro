@@ -602,7 +602,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     }
 
     private void loadStringsListMap() {
-        String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
+        String filePath = FileUtil.getExternalStorageDir().concat("/.sketch_nws/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
         StringsEditorManager stringsEditorManager = new StringsEditorManager();
         stringsEditorManager.convertXmlStringsToListMap(FileUtil.readFileIfExist(filePath), stringsListMap);
 

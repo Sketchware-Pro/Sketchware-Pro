@@ -11,7 +11,7 @@ import pro.sketchware.utility.FileUtil;
 
 public class SystemLogPrinter {
 
-    private static final String PATH = FileUtil.getExternalStorageDir().concat("/.sketchware/debug.txt");
+    private static final String PATH = FileUtil.getExternalStorageDir().concat("/.sketch_nws/debug.txt");
     private static PrintStream ps;
 
     public static void start() {

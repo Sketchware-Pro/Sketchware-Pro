@@ -15,9 +15,9 @@ public class KotlinCompilerUtil {
     /**
      * Returns whether there are any .kt files in
      * <p>
-     * > .sketchware/mysc/xxx/app/src/main/java,
-     * > .sketchware/mysc/xxx/gen,
-     * > .sketchware/data/xxx/files/java
+     * > .sketch_nws/mysc/xxx/app/src/main/java,
+     * > .sketch_nws/mysc/xxx/gen,
+     * > .sketch_nws/data/xxx/files/java
      * <p>
      * or not.
      */
@@ -41,17 +41,17 @@ public class KotlinCompilerUtil {
         String scId = workspace.sc_id;
         List<File> mFilesToCompile = new ArrayList<>();
 
-        // .sketchware/mysc/xxx/app/src/main/java
+        // .sketch_nws/mysc/xxx/app/src/main/java
         mFilesToCompile.addAll(getSourceFiles(
                 new File(workspace.javaFilesPath)
         ));
 
-        // .sketchware/mysc/xxx/gen
+        // .sketch_nws/mysc/xxx/gen
         mFilesToCompile.addAll(getSourceFiles(
                 new File(workspace.rJavaDirectoryPath)
         ));
 
-        // .sketchware/data/xxx/files/java
+        // .sketch_nws/data/xxx/files/java
         mFilesToCompile.addAll(getSourceFiles(
                 new File(new FilePathUtil().getPathJava(scId))
         ));
@@ -61,7 +61,7 @@ public class KotlinCompilerUtil {
 
     /**
      * Returns a list of available kotlin compiler plugins (.jar)
-     * found in `/.sketchware/data/xxx/files/kt_plugins` dir.
+     * found in `/.sketch_nws/data/xxx/files/kt_plugins` dir.
      */
     static List<File> getCompilerPlugins(yq workspace) {
         String scId = workspace.sc_id;

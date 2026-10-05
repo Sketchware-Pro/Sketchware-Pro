@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:id="@+id/layout_palette"
-        android:layout_width="104dp"
+        android:layout_width="88dp"
         android:layout_height="match_parent"
         android:background="?attr/colorSurface"
         android:orientation="vertical">
@@ -20,8 +20,8 @@
         <EditText
             android:id="@+id/search_widgets"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_marginHorizontal="6dp"
+            android:layout_height="32dp"
+            android:layout_marginHorizontal="4dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/palette_search_bg"
@@ -67,12 +67,12 @@
         android:id="@+id/btn_toggle_palette"
         style="@style/Widget.Material3.Button.TonalButton"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="32dp"
         android:layout_alignParentTop="true"
         android:layout_marginStart="6dp"
         android:layout_marginTop="6dp"
         android:layout_toEndOf="@+id/layout_palette"
-        android:alpha="0.92"
+        android:alpha="0.9"
         android:contentDescription="@string/view_toggle_widgets"
         android:insetTop="0dp"
         android:insetBottom="0dp"
@@ -81,30 +81,31 @@
         app:icon="@drawable/ic_mtrl_component"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
-        app:iconSize="18dp" />
+        app:iconSize="16dp"
+        app:iconTint="@color/event_accent" />
 
     <LinearLayout
         android:id="@+id/view_canvas_controls"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="30dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="8dp"
-        android:alpha="0.94"
+        android:alpha="0.88"
         android:background="@drawable/canvas_control_bg"
-        android:elevation="3dp"
+        android:elevation="2dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="2dp">
 
         <ImageButton
             android:id="@+id/btn_vzoom_out"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/logic_zoom_out"
-            android:padding="8dp"
+            android:padding="7dp"
             android:src="@drawable/ic_zoom_out_canvas"
             app:tint="?attr/colorOnSurface" />
 
@@ -113,19 +114,19 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:minWidth="42dp"
+            android:minWidth="36dp"
             android:text="100%"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/btn_vzoom_in"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/logic_zoom_in"
-            android:padding="8dp"
+            android:padding="7dp"
             android:src="@drawable/ic_zoom_in_canvas"
             app:tint="?attr/colorOnSurface" />
 
@@ -133,21 +134,24 @@
             android:id="@+id/btn_vfit"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="30dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:minWidth="0dp"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="8dp"
             android:text="@string/logic_canvas_fit"
-            android:textSize="12sp" />
+            android:textColor="@color/event_accent"
+            android:textSize="11sp" />
 
-        <Button
-            android:id="@+id/btn_vcenter"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:minWidth="0dp"
-            android:paddingHorizontal="10dp"
-            android:text="@string/logic_canvas_center"
-            android:textSize="12sp" />
+        <ImageButton
+            android:id="@+id/btn_focus_preview"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/view_focus_preview"
+            android:padding="7dp"
+            android:src="@drawable/ic_focus_preview"
+            app:tint="@color/event_accent" />
     </LinearLayout>
 
     <com.besome.sketch.editor.view.ViewDummy

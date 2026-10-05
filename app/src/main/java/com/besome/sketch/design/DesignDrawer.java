@@ -370,7 +370,7 @@ public class DesignDrawer extends LinearLayout {
         }
         try {
             // Only read the config when it already exists: the handlers create default files in their constructors.
-            String dataDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + scId;
+            String dataDir = FileUtil.getExternalStorageDir() + "/.sketch_nws/data/" + scId;
             if (FileUtil.isExistFile(dataDir + "/proguard") && new ProguardHandler(scId).isShrinkingEnabled()) {
                 setBadge(R.id.item_code_shrinking_manager, "Enabled", true);
             }

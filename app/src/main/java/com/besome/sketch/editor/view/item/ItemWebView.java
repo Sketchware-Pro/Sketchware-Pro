@@ -73,7 +73,7 @@ public class ItemWebView extends AppCompatTextView implements ItemView {
     @Override
     public void onDraw(Canvas canvas) {
         if (selected) {
-            canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
+            com.besome.sketch.editor.view.SelectionOverlay.draw(canvas, 0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
         }
         super.onDraw(canvas);
     }

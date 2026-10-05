@@ -72,7 +72,7 @@ public class ItemCalendarView extends CalendarView implements ItemView {
     @Override
     public void onDraw(@NonNull Canvas canvas) {
         if (selected) {
-            canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
+            com.besome.sketch.editor.view.SelectionOverlay.draw(canvas, 0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
         }
         super.onDraw(canvas);
     }

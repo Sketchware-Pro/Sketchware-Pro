@@ -20,7 +20,7 @@ public class BlockMenu {
     public static Pair<String, String[]> getMenu(String name) {
         Pair<String, String[]> result = null;
         Pair<String, String[]> fallback = new Pair<>("Select a " + name + " Variable", new String[0]);
-        File file = new File(Environment.getExternalStorageDirectory(), ".sketchware/resources/block/My Block/menu.json");
+        File file = new File(Environment.getExternalStorageDirectory(), ".sketch_nws/resources/block/My Block/menu.json");
         if (!file.exists()) {
             result = fallback;
         } else {

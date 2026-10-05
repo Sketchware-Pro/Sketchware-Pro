@@ -905,7 +905,15 @@ ACTION_VIEW
         <item quantity="other">%d blocks</item>
     </plurals>
     <string name="view_search_widgets">Search widgets…</string>
+    <string name="view_manager_search_hint">Search views…</string>
+    <string name="view_manager_badge_main">MAIN</string>
+    <string name="view_manager_more">More</string>
+    <string name="view_manager_open">Open</string>
+    <string name="view_manager_select">Select</string>
+    <string name="view_manager_views_count">%1$d views</string>
+    <string name="view_manager_widgets_count">%1$d widgets</string>
     <string name="view_toggle_widgets">Widgets</string>
+    <string name="view_focus_preview">Focus preview</string>
     <string name="view_widget_new_compact">Widget</string>
     <string name="view_drop_components_here">Drop components here</string>
     <string name="component_search_hint">Search components…</string>

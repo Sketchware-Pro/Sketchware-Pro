@@ -268,7 +268,7 @@ public class ProjectBuilder {
         StringBuilder classpath = new StringBuilder();
 
         /*
-         * Add yq#u (.sketchware/mysc/xxx/bin/classes) if it exists
+         * Add yq#u (.sketch_nws/mysc/xxx/bin/classes) if it exists
          * since there might be compiled Kotlin files for ecj to use classpath as.
          */
         KotlinCompilerBridge.maybeAddKotlinFilesToClasspath(classpath, yq);
@@ -311,7 +311,7 @@ public class ProjectBuilder {
         }
 
         /* Add JARs from project's classpath */
-        String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + yq.sc_id + "/files/classpath/";
+        String path = FileUtil.getExternalStorageDir() + "/.sketch_nws/data/" + yq.sc_id + "/files/classpath/";
         ArrayList<String> jars = FileUtil.listFiles(path, "jar");
         classpath.append(":").append(TextUtils.join(":", jars));
 

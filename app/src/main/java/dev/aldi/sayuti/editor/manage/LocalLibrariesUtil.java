@@ -19,7 +19,7 @@ import java.util.Map;
 import mod.hey.studios.util.Helper;
 
 public class LocalLibrariesUtil {
-    private static final String localLibsPath = getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
+    private static final String localLibsPath = getExternalStorageDir().concat("/.sketch_nws/libs/local_libs/");
 
     public static List<LocalLibrary> getAllLocalLibraries() {
         ArrayList<File> localLibraryFiles = new ArrayList<>();
@@ -72,7 +72,7 @@ public class LocalLibrariesUtil {
     }
 
     public static File getLocalLibFile(String scId) {
-        return new File(getExternalStorageDir().concat("/.sketchware/data/").concat(scId.concat("/local_library")));
+        return new File(getExternalStorageDir().concat("/.sketch_nws/data/").concat(scId.concat("/local_library")));
     }
 
     public static void rewriteLocalLibFile(String scId, String newContent) {
