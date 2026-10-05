@@ -163,7 +163,7 @@ public class EventsManagerCreatorFragment extends qA {
             return;
         }
         ArrayList<HashMap<String, Object>> arrayList;
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/events.json");
+        String concat = FileUtil.getExternalStorageDir().concat("/.sketch_nws/data/system/events.json");
         if (FileUtil.isExistFile(concat)) {
             arrayList = getGson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
         } else {
@@ -194,7 +194,7 @@ public class EventsManagerCreatorFragment extends qA {
     }
 
     private int figureP(String str) {
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/events.json");
+        String concat = FileUtil.getExternalStorageDir().concat("/.sketch_nws/data/system/events.json");
         if (FileUtil.isExistFile(concat)) {
             ArrayList<HashMap<String, Object>> arrayList = getGson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < arrayList.size(); i++) {

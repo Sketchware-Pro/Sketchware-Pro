@@ -42,7 +42,7 @@ import pro.sketchware.utility.SketchwareUtil;
 
 public class ConfigActivity extends BaseAppCompatActivity {
 
-    public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
+    public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketch_nws/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
     public static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
     public static final String SETTING_ROOT_AUTO_INSTALL_PROJECTS = "root-auto-install-projects";
@@ -57,7 +57,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
 
     public static String getBackupPath() {
-        return DataStore.getInstance().getString(SETTING_BACKUP_DIRECTORY, "/.sketchware/backups/");
+        return DataStore.getInstance().getString(SETTING_BACKUP_DIRECTORY, "/.sketch_nws/backups/");
     }
 
     public static String getStringSettingValueOrSetAndGet(String settingKey, String toReturnAndSetIfNotFound) {
@@ -151,12 +151,12 @@ public class ConfigActivity extends BaseAppCompatActivity {
                  SETTING_ROOT_AUTO_INSTALL_PROJECTS, SETTING_SHOW_BUILT_IN_BLOCKS,
                  SETTING_SHOW_EVERY_SINGLE_BLOCK, SETTING_USE_NEW_VERSION_CONTROL,
                  SETTING_USE_ASD_HIGHLIGHTER -> false;
-            case SETTING_BACKUP_DIRECTORY -> "/.sketchware/backups/";
+            case SETTING_BACKUP_DIRECTORY -> "/.sketch_nws/backups/";
             case SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING -> true;
             case SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH ->
-                    "/.sketchware/resources/block/My Block/palette.json";
+                    "/.sketch_nws/resources/block/My Block/palette.json";
             case SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH ->
-                    "/.sketchware/resources/block/My Block/block.json";
+                    "/.sketch_nws/resources/block/My Block/block.json";
             default -> throw new IllegalArgumentException("Unknown key '" + key + "'!");
         };
     }
@@ -223,7 +223,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                         .setView(binding.getRoot())
                         .setTitle("Backup directory")
-                        .setMessage("Directory inside /Internal storage/, e.g. .sketchware/backups")
+                        .setMessage("Directory inside /Internal storage/, e.g. .sketch_nws/backups")
                         .setNegativeButton(R.string.common_word_cancel, null)
                         .setPositiveButton(R.string.common_word_save, null)
                         .create();

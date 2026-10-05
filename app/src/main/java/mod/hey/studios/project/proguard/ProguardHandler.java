@@ -19,8 +19,8 @@ public class ProguardHandler {
 
     public ProguardHandler(String sc_id) {
         DEFAULT_PROGUARD_RULES_PATH = createDefaultRules(sc_id);
-        config_path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/proguard";
-        fm_config_path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/proguard_fm";
+        config_path = FileUtil.getExternalStorageDir() + "/.sketch_nws/data/" + sc_id + "/proguard";
+        fm_config_path = FileUtil.getExternalStorageDir() + "/.sketch_nws/data/" + sc_id + "/proguard_fm";
 
         if (!FileUtil.isExistFile(config_path)) {
             FileUtil.writeFile(config_path, getDefaultConfig());
@@ -28,7 +28,7 @@ public class ProguardHandler {
     }
 
     private static String createAndroidRules() {
-        String rulePath = FileUtil.getExternalStorageDir() + "/.sketchware/libs/android-proguard-rules.pro";
+        String rulePath = FileUtil.getExternalStorageDir() + "/.sketch_nws/libs/android-proguard-rules.pro";
 
         if (!FileUtil.isExistFile(rulePath)) {
             FileUtil.writeFile(rulePath, """
@@ -107,7 +107,7 @@ public class ProguardHandler {
     }
 
     private static String createDefaultRules(String sc_id) {
-        String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/proguard-rules.pro";
+        String path = FileUtil.getExternalStorageDir() + "/.sketch_nws/data/" + sc_id + "/proguard-rules.pro";
 
         if (!FileUtil.isExistFile(path)) {
             FileUtil.writeFile(path, """

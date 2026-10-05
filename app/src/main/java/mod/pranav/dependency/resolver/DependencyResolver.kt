@@ -48,11 +48,11 @@ class DependencyResolver(
     }
 
     private val downloadPath: String =
-        FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs"
+        FileUtil.getExternalStorageDir() + "/.sketch_nws/libs/local_libs"
 
     private val repositoriesJson = Paths.get(
         Environment.getExternalStorageDirectory().absolutePath,
-        ".sketchware",
+        ".sketch_nws",
         "libs",
         "repositories.json"
     )

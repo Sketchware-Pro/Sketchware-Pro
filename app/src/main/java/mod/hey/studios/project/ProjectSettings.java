@@ -104,7 +104,7 @@ public class ProjectSettings {
     }
 
     public String getPath() {
-        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/" + sc_id + "/project_config").getAbsolutePath();
+        return new File(Environment.getExternalStorageDirectory(), ".sketch_nws/data/" + sc_id + "/project_config").getAbsolutePath();
     }
 
     public String getValue(String key, String defaultValue) {

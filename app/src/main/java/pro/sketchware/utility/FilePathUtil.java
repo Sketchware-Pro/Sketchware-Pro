@@ -6,8 +6,8 @@ import java.io.File;
 
 public class FilePathUtil {
 
-    private static final File SKETCHWARE_DATA = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/");
-    private static final File SKETCHWARE_LOCAL_LIBS = new File(Environment.getExternalStorageDirectory(), ".sketchware/libs/local_libs");
+    private static final File SKETCHWARE_DATA = new File(Environment.getExternalStorageDirectory(), ".sketch_nws/data/");
+    private static final File SKETCHWARE_LOCAL_LIBS = new File(Environment.getExternalStorageDirectory(), ".sketch_nws/libs/local_libs");
 
     public static String getLastCompileLogPath(String sc_id) {
         return new File(SKETCHWARE_DATA, sc_id + "/compile_log").getAbsolutePath();

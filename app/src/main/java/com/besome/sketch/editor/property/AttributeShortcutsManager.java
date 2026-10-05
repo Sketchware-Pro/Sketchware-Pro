@@ -15,7 +15,7 @@ public class AttributeShortcutsManager {
     private List<ShortcutItem> shortcuts;
 
     public AttributeShortcutsManager() {
-        filePath = FileUtil.getExternalStorageDir() + "/.sketchware/resources/" + FILE_NAME;
+        filePath = FileUtil.getExternalStorageDir() + "/.sketch_nws/resources/" + FILE_NAME;
         gson = new Gson();
         load();
     }

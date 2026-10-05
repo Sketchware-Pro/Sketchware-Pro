@@ -45,7 +45,7 @@ import pro.sketchware.utility.SketchwareUtil;
 
 public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
 
-    private static final String BLOCK_EXPORT_PATH = new File(FileUtil.getExternalStorageDir(), ".sketchware/resources/block/export/").getAbsolutePath();
+    private static final String BLOCK_EXPORT_PATH = new File(FileUtil.getExternalStorageDir(), ".sketch_nws/resources/block/export/").getAbsolutePath();
 
     private final ArrayList<HashMap<String, Object>> filtered_list = new ArrayList<>();
     private final ArrayList<Integer> reference_list = new ArrayList<>();

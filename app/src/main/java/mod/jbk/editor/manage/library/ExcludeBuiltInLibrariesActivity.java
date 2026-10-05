@@ -69,7 +69,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
 
     private static File getConfigPath(String sc_id) {
         return new File(Environment.getExternalStorageDirectory(),
-                ".sketchware" + File.separator + "data" + File.separator + sc_id + File.separator + "excluded_library");
+                ".sketch_nws" + File.separator + "data" + File.separator + sc_id + File.separator + "excluded_library");
     }
 
     private static void saveConfig(String sc_id, boolean isExcludingEnabled, List<BuiltInLibraries.BuiltInLibrary> excludedLibraries) {

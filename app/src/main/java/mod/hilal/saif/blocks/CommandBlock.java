@@ -27,7 +27,7 @@ public class CommandBlock {
 
     public static String applyCommands(String fileName, String c) {
         String str = c;
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketch_nws/temp/commands");
         ArrayList<HashMap<String, Object>> data;
         try {
             //writeLog("try");
@@ -250,7 +250,7 @@ public class CommandBlock {
 
     // Write Temporary File
     private static void WTF(ArrayList<HashMap<String, Object>> list) {
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketch_nws/temp/commands");
         ArrayList<HashMap<String, Object>> data = new ArrayList<>();
         try {
             if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).isEmpty() && !FileUtil.readFile(path).equals("[]")) {
@@ -263,7 +263,7 @@ public class CommandBlock {
     }
 
     public static void x() {
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketch_nws/temp/commands");
         if (FileUtil.isExistFile(path)) {
             FileUtil.deleteFile(path);
         }
@@ -293,7 +293,7 @@ public class CommandBlock {
     }
 
     private static void writeLog(String s) {
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/log.txt");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketch_nws/temp/log.txt");
         String text = "";
         if (FileUtil.isExistFile(path)) {
             text = FileUtil.readFile(path);
