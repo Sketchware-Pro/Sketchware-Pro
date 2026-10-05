@@ -927,4 +927,6 @@ ACTION_VIEW
     <string name="np_step_create">Create</string>
     <string name="np_project_icon">Project icon</string>
     <string name="np_change_icon">Change icon</string>
+    <string name="design_drawer_project_settings">Project settings</string>
+    <string name="design_drawer_search_hint">Search settings…</string>
 </resources>
