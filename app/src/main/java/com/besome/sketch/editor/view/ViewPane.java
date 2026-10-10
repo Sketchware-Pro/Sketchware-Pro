@@ -1169,6 +1169,8 @@ public class ViewPane extends RelativeLayout {
             view.setBackgroundColor(PropertiesUtil.parseColor(colorsEditorManager.getColorValue(context, viewBean.layout.backgroundResColor, 3, material3LibraryManager.canUseNightVariantColors())));
         }
 
+        viewBean.parentType = getActualParentType(view, viewBean.parentType);
+
         int effectiveParentType = viewBean.parentType;
         switch (effectiveParentType) {
             case ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
