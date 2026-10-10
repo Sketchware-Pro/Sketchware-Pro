@@ -1,5 +1,5 @@
 name: Android CI
-#
+
 on:
   push:
     paths:
@@ -15,36 +15,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  notifyTelegram:
-    if: ${{ !startsWith(github.ref, 'refs/heads/wip/') }}
-    name: Notify Telegram
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Set up Python 3
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.x'
-
-      - name: Install Dependencies
-        run: |
-          pip install requests
-
-      - name: Send a message to Telegram
-        env:
-          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
-        run: |
-          python ./.github/workflows/notify_telegram.py
-        continue-on-error: true
-
   build:
     name: Build APKs
     runs-on: ubuntu-latest
-    outputs:
-      short_sha: ${{ steps.set_sha.outputs.short_sha }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -56,66 +29,49 @@ jobs:
           java-version: 17
           distribution: temurin
 
-      - name: Set environmental variables
-        shell: bash
-        env:
-          JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        if: ${{ env.JSON_CONTENT != '' }}
+      - name: Create dummy google-services.json
         run: |
-          printf 'GOOGLE_SERVICES_JSON<<EOF\n%s\nEOF\n' "$JSON_CONTENT" >> $GITHUB_ENV
+          cat > app/google-services.json << 'EOF'
+          {
+            "project_info": {
+              "project_number": "123456789012",
+              "project_id": "dummy-project",
+              "storage_bucket": "dummy-project.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:123456789012:android:abcdef123456",
+                  "android_client_info": {
+                    "package_name": "pro.sketchware"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [
+                  {
+                    "current_key": "AIzaSyDummyKeyForBuildOnly"
+                  }
+                ],
+                "services": {
+                  "appinvite_service": {
+                    "other_platform_oauth_client": []
+                  }
+                }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
 
       - name: Build Release APK
-        env:
-          SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
-        run: gradle assembleRelease
-
-      - name: Set short SHA
-        id: set_sha
-        run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
-
-      - name: Rename APK with commit hash
-        run: |
-          mv app/build/outputs/apk/release/app-release.apk \
-             app/build/outputs/apk/release/app-release-${{ steps.set_sha.outputs.short_sha }}.apk
+        run: gradle assembleRelease --no-daemon
 
       - name: Upload Release APK
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
-          name: apk-release-${{ steps.set_sha.outputs.short_sha }}
-          path: app/build/outputs/apk/release/app-release-${{ steps.set_sha.outputs.short_sha }}.apk
-
-  updateAppData:
-    if: ${{ !startsWith(github.ref, 'refs/heads/wip/') }}
-    name: Update App Data
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - name: Set up Python 3
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.x'
-
-      - name: Install Dependencies
-        run: |
-          pip install requests
-
-      - name: Run Update App Script
-        run: python .github/workflows/update_app_data.py
-
-      - name: Commit and Push Changes
-        env:
-          GH_ABOUT_APP_WORKFLOW_TOKEN: ${{ secrets.GH_ABOUT_APP_WORKFLOW_TOKEN }}
-        run: |
-          git checkout host
-          git config --global user.name "Sketchware Pro Actions"
-          git config --global user.email "hello@sketchware.pro"
-          git add about.json
-          git commit -m "feat: Update app about screen data"
-          git push
-        continue-on-error: true
+          name: app-release
+          path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
