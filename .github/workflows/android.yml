@@ -87,53 +87,6 @@ jobs:
           name: apk-release-${{ steps.set_sha.outputs.short_sha }}
           path: app/build/outputs/apk/release/app-release-${{ steps.set_sha.outputs.short_sha }}.apk
 
-  aggregateAndSend:
-    if: ${{ !startsWith(github.ref, 'refs/heads/wip/') }}
-    name: Send APKs to Telegram
-    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
-    needs: build
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v8
-        with:
-          name: apk-release-${{ needs.build.outputs.short_sha }}
-          path: ./downloaded-artifact
-
-      - name: Set up Python 3
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.x'
-
-      - name: Install Dependencies
-        run: |
-          pip install telethon
-
-      - name: Get Git Commit Info
-        run: |
-          echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
-          echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
-
-      - name: Restore Telegram session cache
-        uses: actions/cache@v5
-        id: telegram_session_cache
-        with:
-          path: bot_session.session
-          key: telegram-session-${{ runner.os }}-bot_session
-
-      - name: Send APKs to Telegram
-        env:
-          API_ID: ${{ secrets.TELEGRAM_API_ID }}
-          API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
-          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
-          APK_PATH: ./downloaded-artifact/app-release-${{ needs.build.outputs.short_sha }}.apk
-        run: |
-          python ./.github/workflows/deploy_artifacts.py
-        continue-on-error: true
-
   updateAppData:
     if: ${{ !startsWith(github.ref, 'refs/heads/wip/') }}
     name: Update App Data
@@ -166,4 +119,3 @@ jobs:
           git commit -m "feat: Update app about screen data"
           git push
         continue-on-error: true
-      
