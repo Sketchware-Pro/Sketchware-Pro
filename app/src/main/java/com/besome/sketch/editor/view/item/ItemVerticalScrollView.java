@@ -121,33 +121,34 @@ public class ItemVerticalScrollView extends FrameLayout implements ItemView, Scr
     @Override
     public void addView(View view, int index) {
         int childCount = getChildCount();
+
         if (index > childCount) {
             super.addView(view);
-        } else {
-            byte var4 = -1;
-            int var5 = 0;
+            return;
+        }
 
-            int var6;
-            while (true) {
-                var6 = var4;
-                if (var5 >= childCount) {
-                    break;
-                }
-
-                if (getChildAt(var5).getVisibility() == View.GONE) {
-                    var6 = var5;
-                    break;
-                }
-
-                ++var5;
-            }
-
-            if (var6 >= 0 && index >= var6) {
-                super.addView(view, index + 1);
-            } else {
-                super.addView(view, index);
+        int goneIndex = -1;
+        for (int i = 0; i < childCount; i++) {
+            if (getChildAt(i).getVisibility() == View.GONE) {
+                goneIndex = i;
+                break;
             }
         }
+
+        int finalIndex = index;
+
+        if (goneIndex >= 0 && index >= goneIndex) {
+            finalIndex = index + 1;
+        }
+
+        if (finalIndex > childCount) {
+            finalIndex = childCount;
+        }
+        if (finalIndex < 0) {
+            finalIndex = 0;
+        }
+
+        super.addView(view, finalIndex);
     }
 
     @Override

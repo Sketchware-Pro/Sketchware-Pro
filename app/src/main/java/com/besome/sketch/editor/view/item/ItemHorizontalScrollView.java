@@ -44,27 +44,34 @@ public class ItemHorizontalScrollView extends FrameLayout implements ItemView, S
     @Override
     public void addView(View child, int index) {
         int childCount = getChildCount();
+
         if (index > childCount) {
-            addView(child);
+            super.addView(child);
             return;
         }
-        int i = -1;
-        int i2 = 0;
-        while (true) {
-            if (i2 >= childCount) {
+
+        int goneIndex = -1;
+        for (int i = 0; i < childCount; i++) {
+            if (getChildAt(i).getVisibility() == View.GONE) {
+                goneIndex = i;
                 break;
             }
-            if (getChildAt(i2).getVisibility() == View.GONE) {
-                i = i2;
-                break;
-            }
-            i2++;
         }
-        if (i >= 0 && index >= i) {
-            super.addView(child, index + 1);
-        } else {
-            super.addView(child, index);
+
+        int finalIndex = index;
+
+        if (goneIndex >= 0 && index >= goneIndex) {
+            finalIndex = index + 1;
         }
+
+        if (finalIndex > childCount) {
+            finalIndex = childCount;
+        }
+        if (finalIndex < 0) {
+            finalIndex = 0;
+        }
+
+        super.addView(child, finalIndex);
     }
 
     @Override
