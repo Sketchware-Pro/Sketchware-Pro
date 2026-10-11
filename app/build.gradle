@@ -7,7 +7,6 @@ if (googleServicesEnv != null && !googleServicesEnv.trim().isEmpty()) {
 }
 
 apply plugin: "com.android.application"
-apply plugin: "org.jetbrains.kotlin.android"
 
 if (googleServicesFile.exists()) {
     apply plugin: "com.google.gms.google-services"
