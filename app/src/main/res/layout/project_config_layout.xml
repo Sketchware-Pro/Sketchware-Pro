@@ -71,12 +71,20 @@
         android:text="@string/common_word_java_version"
         android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
 
-    <RadioGroup
-        android:id="@+id/rg_java_version"
+    <HorizontalScrollView
+        android:id="@+id/sv_java_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:orientation="horizontal" />
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <RadioGroup
+            android:id="@+id/rg_java_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
 
     <LinearLayout
         android:id="@+id/no_warnings"
