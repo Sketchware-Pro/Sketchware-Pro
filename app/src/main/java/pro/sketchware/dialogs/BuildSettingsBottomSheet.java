@@ -100,6 +100,13 @@ public class BuildSettingsBottomSheet extends BottomSheetDialogFragment {
         setRadioGroupOptions(binding.rgDexer, new String[]{"Dx", "D8"}, SETTING_DEXER, "D8");
         setRadioGroupOptions(binding.rgJavaVersion, getAvailableJavaVersions(), SETTING_JAVA_VERSION, "16");
 
+        binding.rgJavaVersion.post(() -> {
+            View checked = binding.rgJavaVersion.findViewById(binding.rgJavaVersion.getCheckedRadioButtonId());
+            if (checked != null) {
+                binding.svJavaVersion.scrollTo(Math.max(0, checked.getLeft() - 48), 0);
+            }
+        });
+
         setCheckboxValue(binding.cbNoWarnings, SETTING_NO_WARNINGS, true);
         setCheckboxValue(binding.cbNoHttpLegacy, SETTING_NO_HTTP_LEGACY, false);
         setCheckboxValue(binding.cbEnableLogcat, SETTING_ENABLE_LOGCAT, true);
@@ -142,7 +149,10 @@ public class BuildSettingsBottomSheet extends BottomSheetDialogFragment {
             RadioButton radioButton = new RadioButton(radioGroup.getContext());
             radioButton.setText(option);
             radioButton.setId(View.generateViewId());
-            radioButton.setLayoutParams(new RadioGroup.LayoutParams(0, -2, 1f));
+            // A few options share the row evenly, many options keep their natural width and scroll horizontally
+            radioButton.setLayoutParams(options.length <= 4
+                    ? new RadioGroup.LayoutParams(0, -2, 1f)
+                    : new RadioGroup.LayoutParams(-2, -2));
             if (value.equals(option)) {
                 radioButton.setChecked(true);
             }
