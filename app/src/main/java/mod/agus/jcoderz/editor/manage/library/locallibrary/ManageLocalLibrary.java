@@ -36,6 +36,7 @@ public class ManageLocalLibrary {
 
                     // fall-through to shared error handler
                 } else {
+                    removeDeletedLibraries();
                     return;
                 }
             } catch (JsonParseException e) {
@@ -45,6 +46,46 @@ public class ManageLocalLibrary {
             SketchwareUtil.toastError("Invalid Local library configuration found! Temporarily using none");
         }
         list = new ArrayList<>();
+    }
+
+    /**
+     * Ignores enabled Local libraries whose files were deleted from storage, which would otherwise make every build fail.
+     * The project's configuration isn't modified, so re-adding the library enables it again.
+     */
+    private void removeDeletedLibraries() {
+        ArrayList<String> skippedNames = new ArrayList<>();
+
+        for (var iterator = list.iterator(); iterator.hasNext(); ) {
+            HashMap<String, Object> localLibrary = iterator.next();
+            if (isLibraryDeleted(localLibrary)) {
+                skippedNames.add(String.valueOf(localLibrary.get("name")));
+                iterator.remove();
+            }
+        }
+
+        if (!skippedNames.isEmpty()) {
+            String names = String.join(", ", skippedNames);
+            LogUtil.w(getClass().getSimpleName(), "Ignoring enabled Local libraries which no longer exist: " + names);
+            SketchwareUtil.toastError("Ignoring deleted Local libraries: " + names, Toast.LENGTH_LONG);
+        }
+    }
+
+    /**
+     * A library counts as deleted if it has paths configured and none of them exists anymore.
+     */
+    private static boolean isLibraryDeleted(HashMap<String, Object> localLibrary) {
+        boolean hasPath = false;
+
+        for (String key : new String[]{"jarPath", "dexPath", "resPath", "assetsPath", "pgRulesPath"}) {
+            if (localLibrary.get(key) instanceof String path && !path.isEmpty()) {
+                hasPath = true;
+                if (new File(path).exists()) {
+                    return false;
+                }
+            }
+        }
+
+        return hasPath;
     }
 
     public ArrayList<String> getAssets() {
