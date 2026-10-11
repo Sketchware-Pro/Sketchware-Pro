@@ -6,20 +6,23 @@ if (googleServicesEnv != null && !googleServicesEnv.trim().isEmpty()) {
     googleServicesFile.write(googleServicesEnv.trim(), 'UTF-8')
 }
 
+apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
+
 if (googleServicesFile.exists()) {
     apply plugin: "com.google.gms.google-services"
     apply plugin: "com.google.firebase.crashlytics"
 }
 
 android {
-    compileSdk = 37
+    namespace = "pro.sketchware"
+    compileSdk = 35
 
     def gitCommitHash = "git rev-parse HEAD".execute().text.trim()
     def shortCommitHash = "git rev-parse --short HEAD".execute().text.trim()
 
     defaultConfig {
         applicationId = "pro.sketchware"
-        namespace = "pro.sketchware"
         //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
         targetSdk = 28
         minSdk = 26
@@ -27,7 +30,6 @@ android {
         versionName = "v7.1.0"
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
-
         buildConfigField("String", "SKETCHUB_API_KEY", "\"${System.getenv("SKETCHUB_API_KEY")}\"")
     }
 
@@ -69,7 +71,6 @@ android {
         buildConfig = true
     }
 
-
     configurations.implementation {
         exclude group: 'javax.inject', module: 'javax.inject'
         exclude group: "org.jetbrains.kotlin", module: "kotlin-scripting-compiler-embeddable"
@@ -90,7 +91,6 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
 
     implementation libs.bundles.ui
-
     implementation libs.bundles.image
 
     implementation platform(libs.sora.editor)
