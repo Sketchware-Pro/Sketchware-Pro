@@ -22,6 +22,11 @@ public class BuildSettings extends ProjectSettings implements Serializable {
     public static final String SETTING_JAVA_VERSION_1_9 = "1.9";
     public static final String SETTING_JAVA_VERSION_10 = "10";
     public static final String SETTING_JAVA_VERSION_11 = "11";
+    public static final String SETTING_JAVA_VERSION_12 = "12";
+    public static final String SETTING_JAVA_VERSION_13 = "13";
+    public static final String SETTING_JAVA_VERSION_14 = "14";
+    public static final String SETTING_JAVA_VERSION_15 = "15";
+    public static final String SETTING_JAVA_VERSION_16 = "16";
 
     public BuildSettings(String sc_id) {
         super(sc_id);
