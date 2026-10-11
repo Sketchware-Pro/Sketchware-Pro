@@ -120,12 +120,17 @@ class DependencyResolver(
 
     fun resolveDependency(callback: DependencyResolverCallback) = runBlocking {
         eventReciever = callback
-        val dependency = try {
+        val requestedArtifact = try {
             getArtifact(groupId, artifactId, version)
         } catch (error: Exception) {
             callback.onResolutionError(error)
             return@runBlocking
         } ?: return@runBlocking
+        val dependency = if (requestedArtifact.extension == "pom") {
+            findJvmVariant(requestedArtifact) ?: requestedArtifact
+        } else {
+            requestedArtifact
+        }
 
         if (dependency.extension != "jar" && dependency.extension != "aar") {
             callback.invalidPackaging(dependency)
@@ -151,11 +156,16 @@ class DependencyResolver(
         }
 
         val dependencyDir = File(downloadPath, "${dependency.artifactId}-v${dependency.version}")
-        try {
+        val downloaded = try {
             downloadVerified(dependency, File(dependencyDir, "classes.${dependency.extension}"))
         } catch (e: Exception) {
             dependencyDir.deleteRecursively()
             callback.onDownloadError(dependency, e)
+            return@runBlocking
+        }
+        if (!downloaded) {
+            // Artifact#downloadTo already reported the failure through onDownloadError.
+            dependencyDir.deleteRecursively()
             return@runBlocking
         }
 
@@ -207,7 +217,20 @@ class DependencyResolver(
         }
         dependency.resolveDependencyTree()
 
-        dependency.getAllDependencies().forEach { dep ->
+        val allDependencies = dependency.getAllDependencies().toMutableList()
+        // Kotlin Multiplatform root artifacts (packaging "pom", e.g. kotlinx-coroutines-core) contain no code,
+        // it lives in their "-jvm" sibling, which isn't always listed as a dependency in the POM.
+        allDependencies.filter { it.extension == "pom" }.forEach { pomArtifact ->
+            val jvm = findJvmVariant(pomArtifact) ?: return@forEach
+            jvm.resolveDependencyTree()
+            (listOf(jvm) + jvm.getAllDependencies()).forEach { candidate ->
+                if (allDependencies.none { it.groupId == candidate.groupId && it.artifactId == candidate.artifactId }) {
+                    allDependencies.add(candidate)
+                }
+            }
+        }
+
+        allDependencies.forEach { dep ->
             println("Resolving dependency: ${dep.artifactId} v${dep.version}")
             if (dep.extension != "jar" && dep.extension != "aar") {
                 callback.invalidPackaging(dep)
@@ -227,11 +250,15 @@ class DependencyResolver(
 
             Files.createDirectories(path.parent)
 
-            try {
+            val downloaded = try {
                 downloadVerified(dep, File(path.toString()))
             } catch (e: Exception) {
                 path.parent.toFile().deleteRecursively()
                 callback.onDownloadError(dep, e)
+                return@runBlocking
+            }
+            if (!downloaded) {
+                path.parent.toFile().deleteRecursively()
                 return@runBlocking
             }
 
@@ -255,7 +282,7 @@ class DependencyResolver(
             dependencyClasspath.add(jar)
         }
 
-        dependency.getAllDependencies().forEach { dep ->
+        allDependencies.forEach { dep ->
             val jar = Paths.get(downloadPath, "${dep.artifactId}-v${dep.version}", "classes.jar")
 
             // Resource-only AARs have no classes.jar, so there is nothing to dex.
@@ -275,29 +302,51 @@ class DependencyResolver(
         }
 
         callback.onTaskCompleted(
-            dependency.getAllDependencies().map { "${it.artifactId}-v${it.version}" })
+            allDependencies.map { "${it.artifactId}-v${it.version}" })
     }
 
     /**
      * Downloads [artifact] to a temporary file and only moves it to [target] once it was verified
      * to be a valid zip (JARs and AARs both are). This keeps HTML error pages from dead repositories
      * and truncated downloads from being stored as libraries.
+     *
+     * Artifact#downloadTo swallows its own errors and reports them via onDownloadError, leaving an
+     * empty file behind. In that case this returns false and nothing more needs to be reported.
+     *
+     * @return true if [target] now holds a valid file
+     * @throws IOException if the downloaded content is not a valid zip
      */
-    private suspend fun downloadVerified(artifact: Artifact, target: File) {
+    private fun downloadVerified(artifact: Artifact, target: File): Boolean {
         target.parentFile?.mkdirs()
         val temp = File(target.parentFile, target.name + ".part")
         temp.delete()
         try {
             artifact.downloadTo(temp)
             if (!temp.isFile || temp.length() == 0L) {
-                throw IOException("Downloaded file is empty")
+                return false
             }
-            ZipFile(temp).close()
+            try {
+                ZipFile(temp).close()
+            } catch (e: Exception) {
+                throw IOException("The file downloaded for $artifact is not a valid ${artifact.extension}: ${e.message}", e)
+            }
             Files.move(temp.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING)
-        } catch (e: Exception) {
+            return true
+        } finally {
             temp.delete()
-            throw IOException("Download of $artifact failed or the file is not a valid ${artifact.extension}: ${e.message}", e)
         }
+    }
+
+    /**
+     * Finds the "-jvm" sibling of a Kotlin Multiplatform root artifact. Looks it up silently, so artifacts
+     * without one (e.g. plain BOMs) don't trigger "not found" errors.
+     */
+    private fun findJvmVariant(artifact: Artifact): Artifact? {
+        val jvm = Artifact(artifact.groupId, "${artifact.artifactId}-jvm", artifact.version)
+        jvm.repository = repositories.firstOrNull { it.checkExists(jvm) } ?: return null
+        val pom = jvm.getPOM() ?: return null
+        jvm.extension = if (pom.packaging != null && pom.packaging != "bundle") pom.packaging else "jar"
+        return if (jvm.extension == "jar" || jvm.extension == "aar") jvm else null
     }
 
     private fun findPackageName(path: String, defaultValue: String): String {
