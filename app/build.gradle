@@ -1,8 +1,15 @@
-def secrets = System.getenv("GOOGLE_SERVICES_JSON")
+def googleServicesEnv = System.getenv("GOOGLE_SERVICES_JSON")
+def googleServicesFile = file("$rootDir/app/google-services.json")
 
-apply plugin: "com.android.application"
-apply plugin: "com.google.gms.google-services"
-apply plugin: "com.google.firebase.crashlytics"
+if (googleServicesEnv != null && !googleServicesEnv.trim().isEmpty()) {
+    googleServicesFile.parentFile.mkdirs()
+    googleServicesFile.write(googleServicesEnv.trim(), 'UTF-8')
+}
+
+if (googleServicesFile.exists()) {
+    apply plugin: "com.google.gms.google-services"
+    apply plugin: "com.google.firebase.crashlytics"
+}
 
 android {
     compileSdk = 37
@@ -137,4 +144,3 @@ dependencies {
 }
 
 apply from: "$rootDir/gradle/custom-tasks.gradle"
-
