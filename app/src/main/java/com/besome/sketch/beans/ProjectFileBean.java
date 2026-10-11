@@ -79,7 +79,6 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
             presetName = "Basic Drawer";
         }
         if (fileType == PROJECT_FILE_TYPE_ACTIVITY) {
-            options |= OPTION_ACTIVITY_TOOLBAR;
             orientation = THEME_DEFAULT;
         } else {
             orientation = THEME_FULLSCREEN;
