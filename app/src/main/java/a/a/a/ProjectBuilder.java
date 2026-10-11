@@ -17,19 +17,12 @@ import android.text.format.Formatter;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.dex.Dex;
-import com.android.dex.FieldId;
-import com.android.dex.MethodId;
-import com.android.dex.ProtoId;
-import com.android.dx.command.dexer.DxContext;
-import com.android.dx.command.dexer.Main;
-import com.android.dx.merge.CollisionPolicy;
-import com.android.dx.merge.DexMerger;
 import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
 import com.android.sdklib.build.DuplicateFileException;
 import com.android.sdklib.build.SealedApkException;
-import com.github.megatronking.stringfog.plugin.StringFogInjector;
+import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
+import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
 import com.iyxan23.zipalignjava.InvalidZipException;
 import com.iyxan23.zipalignjava.ZipAlign;
 
@@ -54,6 +47,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import mod.agus.jcoderz.dex.Dex;
+import mod.agus.jcoderz.dex.FieldId;
+import mod.agus.jcoderz.dex.MethodId;
+import mod.agus.jcoderz.dex.ProtoId;
+import mod.agus.jcoderz.dx.command.dexer.DxContext;
+import mod.agus.jcoderz.dx.command.dexer.Main;
+import mod.agus.jcoderz.dx.merge.CollisionPolicy;
+import mod.agus.jcoderz.dx.merge.DexMerger;
 import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.hey.studios.build.BuildSettings;
@@ -210,7 +211,7 @@ public class ProjectBuilder {
     public boolean isD8Enabled() {
         return build_settings.getValue(
                 BuildSettings.SETTING_DEXER,
-                BuildSettings.SETTING_DEXER_DX
+                BuildSettings.SETTING_DEXER_D8
         ).equals(BuildSettings.SETTING_DEXER_D8);
     }
 
@@ -292,7 +293,7 @@ public class ProjectBuilder {
          * Since all versions above java 7 supports lambdas, this should work
          */
         if (!build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
-                        BuildSettings.SETTING_JAVA_VERSION_1_7)
+                        BuildSettings.SETTING_JAVA_VERSION_16)
                 .equals(BuildSettings.SETTING_JAVA_VERSION_1_7)) {
             classpath.append(":").append(new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "core-lambda-stubs.jar").getAbsolutePath());
         }
@@ -542,7 +543,7 @@ public class ProjectBuilder {
 
             ArrayList<String> args = new ArrayList<>();
             args.add("-" + build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
-                    BuildSettings.SETTING_JAVA_VERSION_1_7));
+                    BuildSettings.SETTING_JAVA_VERSION_16));
             args.add("-nowarn");
             if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS,
                     BuildSettings.SETTING_GENERIC_VALUE_TRUE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
@@ -673,10 +674,7 @@ public class ProjectBuilder {
 
         /* Add used built-in libraries' DEX files */
         for (Jp builtInLibrary : builtInLibraryManager.getLibraries()) {
-            File dexFile = BuiltInLibraries.getLibraryDexFile(builtInLibrary.getName());
-            if (dexFile.exists()) {
-                dexes.add(dexFile);
-            }
+            dexes.add(BuiltInLibraries.getLibraryDexFile(builtInLibrary.getName()));
         }
 
         /* Add local libraries' main DEX files */
@@ -974,9 +972,16 @@ public class ProjectBuilder {
 
     public void runStringfog() {
         try {
-            File mappingFile = new File(yq.binDirectoryPath, "stringFogMapping.txt");
-            File compiledClassesDir = new File(yq.compiledClassesPath);
-            StringFogInjector.processDirectory(compiledClassesDir, mappingFile);
+            StringFogMappingPrinter stringFogMappingPrinter = new StringFogMappingPrinter(new File(yq.binDirectoryPath,
+                    "stringFogMapping.txt"));
+            StringFogClassInjector stringFogClassInjector = new StringFogClassInjector(new String[0],
+                    "UTF-8",
+                    "com.github.megatronking.stringfog.xor.StringFogImpl",
+                    "com.github.megatronking.stringfog.xor.StringFogImpl",
+                    stringFogMappingPrinter);
+            stringFogMappingPrinter.startMappingOutput();
+            stringFogMappingPrinter.ouputInfo("UTF-8", "com.github.megatronking.stringfog.xor.StringFogImpl");
+            stringFogClassInjector.doFog2ClassInDir(new File(yq.compiledClassesPath));
             KB.a(context, "stringfog/stringfog.zip", yq.compiledClassesPath);
         } catch (Exception e) {
             LogUtil.e("StringFog", "Failed to run StringFog", e);
