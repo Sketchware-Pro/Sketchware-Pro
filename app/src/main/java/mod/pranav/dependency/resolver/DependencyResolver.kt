@@ -18,9 +18,11 @@ import org.cosmic.ide.dependency.resolver.getArtifact
 import org.cosmic.ide.dependency.resolver.repositories
 import pro.sketchware.utility.FileUtil
 import java.io.File
+import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 import java.util.regex.Pattern
 import java.util.zip.ZipFile
 import kotlin.io.path.readText
@@ -148,12 +150,14 @@ class DependencyResolver(
             dependencyClasspath.add(Paths.get(it))
         }
 
-        dependency.downloadTo(
-            File(downloadPath + "/${dependency.artifactId}-v${dependency.version}/classes.${dependency.extension}")
-                .apply {
-                    parentFile?.mkdirs()
-                }
-        )
+        val dependencyDir = File(downloadPath, "${dependency.artifactId}-v${dependency.version}")
+        try {
+            downloadVerified(dependency, File(dependencyDir, "classes.${dependency.extension}"))
+        } catch (e: Exception) {
+            dependencyDir.deleteRecursively()
+            callback.onDownloadError(dependency, e)
+            return@runBlocking
+        }
 
         if (dependency.extension == "aar") {
             callback.unzipping(dependency)
@@ -191,7 +195,9 @@ class DependencyResolver(
             compileJar(jar, dependencyClasspath, libraryJars)
             callback.onResolutionComplete(dependency)
         } catch (e: Exception) {
+            dependencyDir.deleteRecursively()
             callback.dexingFailed(dependency, e)
+            return@runBlocking
         }
 
         if (skipDependencies) {
@@ -221,7 +227,13 @@ class DependencyResolver(
 
             Files.createDirectories(path.parent)
 
-            dep.downloadTo(File(path.toString()))
+            try {
+                downloadVerified(dep, File(path.toString()))
+            } catch (e: Exception) {
+                path.parent.toFile().deleteRecursively()
+                callback.onDownloadError(dep, e)
+                return@runBlocking
+            }
 
             if (dep.extension == "aar") {
                 callback.unzipping(dep)
@@ -246,6 +258,9 @@ class DependencyResolver(
         dependency.getAllDependencies().forEach { dep ->
             val jar = Paths.get(downloadPath, "${dep.artifactId}-v${dep.version}", "classes.jar")
 
+            // Resource-only AARs have no classes.jar, so there is nothing to dex.
+            if (Files.notExists(jar)) return@forEach
+
             callback.dexing(dep)
             try {
                 compileJar(
@@ -253,13 +268,36 @@ class DependencyResolver(
                 )
                 callback.onResolutionComplete(dep)
             } catch (e: Exception) {
+                jar.parent.toFile().deleteRecursively()
                 callback.dexingFailed(dep, e)
-                return@forEach
+                return@runBlocking
             }
         }
 
         callback.onTaskCompleted(
             dependency.getAllDependencies().map { "${it.artifactId}-v${it.version}" })
+    }
+
+    /**
+     * Downloads [artifact] to a temporary file and only moves it to [target] once it was verified
+     * to be a valid zip (JARs and AARs both are). This keeps HTML error pages from dead repositories
+     * and truncated downloads from being stored as libraries.
+     */
+    private suspend fun downloadVerified(artifact: Artifact, target: File) {
+        target.parentFile?.mkdirs()
+        val temp = File(target.parentFile, target.name + ".part")
+        temp.delete()
+        try {
+            artifact.downloadTo(temp)
+            if (!temp.isFile || temp.length() == 0L) {
+                throw IOException("Downloaded file is empty")
+            }
+            ZipFile(temp).close()
+            Files.move(temp.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        } catch (e: Exception) {
+            temp.delete()
+            throw IOException("Download of $artifact failed or the file is not a valid ${artifact.extension}: ${e.message}", e)
+        }
     }
 
     private fun findPackageName(path: String, defaultValue: String): String {
