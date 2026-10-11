@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -15,6 +17,7 @@ jobs:
         with:
           gradle-version: 9.6.0
           validate-wrappers: false
+      - run: ls -l app/libs | head -30
       - run: gradle assembleRelease --no-daemon
       - uses: actions/upload-artifact@v4
         with:
