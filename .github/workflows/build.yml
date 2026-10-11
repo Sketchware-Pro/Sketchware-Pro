@@ -9,8 +9,10 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - run: chmod +x gradlew
-      - run: ./gradlew assembleRelease --no-daemon
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.13
+      - run: gradle assembleRelease --no-daemon
       - uses: actions/upload-artifact@v4
         with:
           name: sketchware-apk
