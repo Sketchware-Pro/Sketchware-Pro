@@ -317,7 +317,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
     }
 
     private void handleCreateModeInitialization() {
-        featureToolbar = true;
+        featureToolbar = false;
         featureStatusBar = true;
         nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, screenNames);
     }
