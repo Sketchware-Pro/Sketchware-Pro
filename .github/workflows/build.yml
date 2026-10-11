@@ -12,6 +12,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.13
+          validate-wrappers: false
       - run: gradle assembleRelease --no-daemon
       - uses: actions/upload-artifact@v4
         with:
