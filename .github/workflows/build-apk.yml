@@ -1,0 +1,53 @@
+name: Build APK
+
+# Workflow بسيط لبناء ملف APK وتحميله من صفحة الـ Actions (Artifacts).
+# لا يحتاج أي secrets. يعمل تلقائياً عند الـ push على الفرع، ويمكن تشغيله يدوياً.
+
+on:
+  push:
+    branches:
+      - 'arena/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build release APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build APK
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Find APK
+        id: find_apk
+        run: |
+          APK=$(find app/build/outputs/apk -name '*.apk' | head -n 1)
+          echo "path=$APK" >> "$GITHUB_OUTPUT"
+          echo "Found: $APK"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: sketchware-pro-${{ github.sha }}
+          path: ${{ steps.find_apk.outputs.path }}
+          if-no-files-found: error
+          retention-days: 30
