@@ -34,6 +34,47 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
+      - name: Prepare google-services.json
+        # الـ release variant محتاج الملف ده، والـ mock اللي في gradle بيتعمل للـ debug بس.
+        # لو عندك secret اسمه GOOGLE_SERVICES_JSON بيتم استخدامه، غير كده بيتعمل ملف وهمي.
+        env:
+          GSJ: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          if [ -n "$GSJ" ]; then
+            printf '%s' "$GSJ" > app/google-services.json
+            echo "Using GOOGLE_SERVICES_JSON secret"
+          else
+            cat > app/google-services.json <<'EOF'
+          {
+            "project_info": {
+              "project_number": "123456789000",
+              "firebase_url": "https://mock-project-default-rtdb.firebaseio.com",
+              "project_id": "mock-project",
+              "storage_bucket": "mock-project.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:123456789000:android:mockappid123456",
+                  "android_client_info": {
+                    "package_name": "pro.sketchware"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [
+                  { "current_key": "mock_AIzaSyBQJCUXVKUjD38-u5pWkqMtesIfFvxAcvs" }
+                ],
+                "services": {
+                  "appinvite_service": { "other_platform_oauth_client": [] }
+                }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
+            echo "Using placeholder google-services.json"
+          fi
+
       - name: Build APK
         shell: bash
         run: |
