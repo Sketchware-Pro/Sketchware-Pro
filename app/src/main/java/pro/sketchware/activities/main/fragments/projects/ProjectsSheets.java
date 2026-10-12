@@ -153,10 +153,7 @@ public final class ProjectsSheets {
         ProjectFolderStore store = fragment.getFolderStore();
         BottomSheetDialog dialog = new BottomSheetDialog(context);
 
-        ScrollView scroll = new ScrollView(context);
         LinearLayout root = newSheetContent(dialog, title, null);
-        scroll.addView(root);
-        dialog.setContentView(scroll);
 
         LinearLayout list = new LinearLayout(context);
         list.setOrientation(LinearLayout.VERTICAL);
@@ -223,6 +220,11 @@ public final class ProjectsSheets {
         LinearLayout content = new LinearLayout(context);
         content.setOrientation(LinearLayout.VERTICAL);
         content.setPadding(dp(context, 16), 0, dp(context, 16), dp(context, 24));
+
+        // The dialog must get a content view, otherwise the sheet opens empty.
+        ScrollView scroll = new ScrollView(context);
+        scroll.addView(content);
+        dialog.setContentView(scroll);
 
         content.addView(new BottomSheetDragHandleView(context));
 
