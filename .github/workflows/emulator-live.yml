@@ -6,6 +6,10 @@ name: Emulator live link
 
 on:
   workflow_dispatch:
+  # Lets you start it from this branch: push a commit whose message contains [live].
+  push:
+    branches:
+      - 'arena/**'
 
 permissions:
   contents: read
@@ -17,6 +21,7 @@ concurrency:
 jobs:
   live:
     name: Live emulator
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[live]') }}
     runs-on: ubuntu-latest
     timeout-minutes: 330
     steps:
