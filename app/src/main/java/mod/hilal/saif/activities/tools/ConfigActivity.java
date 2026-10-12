@@ -271,7 +271,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 if (enabled && !Settings.canDrawOverlays(requireContext())) {
                     new MaterialAlertDialogBuilder(requireContext())
                             .setTitle("Display Over Other Apps Permission")
-                            .setMessage("Background building requires permission to display over other apps to show floating progress while Sketchware Pro is running in the background. Please enable this permission in settings.")
+                            .setMessage("Background building requires permission to display over other apps to show floating progress while SketchwareX is running in the background. Please enable this permission in settings.")
                             .setPositiveButton("Settings", (dialog, which) -> {
                                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                                         Uri.parse("package:" + requireContext().getPackageName()));

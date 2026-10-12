@@ -115,7 +115,7 @@ public class ProjectBuilder {
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 
-            LogUtil.d(TAG, "Running Sketchware Pro " + info.versionName + " (" + info.versionCode + ")");
+            LogUtil.d(TAG, "Running SketchwareX " + info.versionName + " (" + info.versionCode + ")");
 
             ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
 

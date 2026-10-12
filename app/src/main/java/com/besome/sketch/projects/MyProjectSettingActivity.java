@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -88,11 +89,40 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         }
     }
 
+    /**
+     * Sections of the form slide & fade in one after another when the screen opens.
+     */
+    private void animateSectionsIn() {
+        if (binding == null || binding.tilAppName.getParent() == null) return;
+        ViewGroup sections = (ViewGroup) binding.tilAppName.getParent();
+        float offset = 24 * getResources().getDisplayMetrics().density;
+        for (int i = 0; i < sections.getChildCount(); i++) {
+            View section = sections.getChildAt(i);
+            section.setAlpha(0f);
+            section.setTranslationY(offset);
+            section.animate()
+                    .alpha(1f)
+                    .translationY(0f)
+                    .setStartDelay(60L * i + 120L)
+                    .setDuration(340)
+                    .setInterpolator(new DecelerateInterpolator())
+                    .start();
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.hold_still, R.anim.project_settings_exit);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = MyprojectSettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        overridePendingTransition(R.anim.project_settings_enter, R.anim.hold_still);
+        animateSectionsIn();
 
         binding.toolbar.setNavigationOnClickListener(arg0 -> onBackPressed());
 

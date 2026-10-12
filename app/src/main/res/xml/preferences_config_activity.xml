@@ -58,6 +58,6 @@
         app:defaultValue="false"
         app:iconSpaceReserved="false"
         app:key="background-building"
-        app:summary="Show floating build progress when Sketchware Pro is paused. Requires overlay permission."
+        app:summary="Show floating build progress when SketchwareX is paused. Requires overlay permission."
         app:title="Background building" />
 </PreferenceScreen>

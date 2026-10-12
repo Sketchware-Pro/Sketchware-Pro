@@ -100,6 +100,34 @@
 
 
             <LinearLayout
+                android:id="@+id/project_duplicate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/project_item_shape_middle"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:layout_marginTop="2dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/ic_mtrl_file" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:gravity="center_vertical"
+                    android:text="Duplicate project"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    app:drawableEndCompat="@drawable/ic_mtrl_arrow_right" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/export_sign"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
+        android:id="@+id/projectsSearchScope"
+        android:icon="@drawable/ic_mtrl_folder"
+        android:title="Search scope"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/searchProjects"
         android:icon="@drawable/ic_mtrl_search"
         android:title="@string/search_menu_title"
