@@ -163,16 +163,7 @@ jobs:
           disable-animations: true
           disable-spellchecker: true
           emulator-options: -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: |
-            adb wait-for-device
-            adb install -r "${{ steps.find_apk.outputs.path }}"
-            adb shell pm grant pro.sketchware android.permission.READ_EXTERNAL_STORAGE || true
-            adb shell pm grant pro.sketchware android.permission.WRITE_EXTERNAL_STORAGE || true
-            adb shell monkey -p pro.sketchware -c android.intent.category.LAUNCHER 1 || true
-            END=$((SECONDS + 17400))
-            while [ $SECONDS -lt $END ]; do
-              sleep 60
-            done
+          script: bash .github/scripts/live-keepalive.sh "${{ steps.find_apk.outputs.path }}"
 
       - name: Emulator diagnostics
         if: ${{ always() }}
