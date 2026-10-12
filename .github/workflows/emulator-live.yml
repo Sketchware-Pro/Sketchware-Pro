@@ -1,0 +1,163 @@
+name: Emulator live link
+
+# Manual only. Builds the APK, starts an Android emulator with a real window on a virtual
+# display, and exposes it through a temporary public link (cloudflared -> noVNC).
+# The link and the VNC password are written to the run's Summary page.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: emulator-live
+  cancel-in-progress: true
+
+jobs:
+  live:
+    name: Live emulator
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Prepare google-services.json
+        env:
+          GSJ: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          if [ -n "$GSJ" ]; then
+            printf '%s' "$GSJ" > app/google-services.json
+          else
+            cat > app/google-services.json <<'EOF'
+          {
+            "project_info": {
+              "project_number": "123456789000",
+              "firebase_url": "https://mock-project-default-rtdb.firebaseio.com",
+              "project_id": "mock-project",
+              "storage_bucket": "mock-project.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:123456789000:android:mockappid123456",
+                  "android_client_info": {
+                    "package_name": "pro.sketchware"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [
+                  { "current_key": "mock_AIzaSyBQJCUXVKUjD38-u5pWkqMtesIfFvxAcvs" }
+                ],
+                "services": {
+                  "appinvite_service": { "other_platform_oauth_client": [] }
+                }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
+          fi
+
+      - name: Build release APK
+        shell: bash
+        env:
+          SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
+        run: |
+          set -o pipefail
+          ./gradlew assembleRelease --no-daemon --stacktrace 2>&1 | tee build-log.txt
+
+      - name: Find APK
+        id: find_apk
+        run: |
+          APK=$(find app/build/outputs/apk -name '*.apk' | head -n 1)
+          echo "path=$APK" >> "$GITHUB_OUTPUT"
+          echo "Found: $APK"
+
+      - name: Install display, VNC and tunnel tools
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y xvfb x11vnc novnc websockify
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Start virtual display and VNC server
+        run: |
+          VNC_PW=$(openssl rand -base64 9 | tr -dc 'A-Za-z0-9' | head -c 10)
+          echo "VNC_PW=$VNC_PW" >> "$GITHUB_ENV"
+          echo "DISPLAY=:99" >> "$GITHUB_ENV"
+          setsid nohup Xvfb :99 -screen 0 1280x800x24 -nolisten tcp > /tmp/xvfb.log 2>&1 &
+          sleep 3
+          x11vnc -storepasswd "$VNC_PW" /tmp/vncpass >/dev/null 2>&1
+          setsid nohup x11vnc -display :99 -forever -shared -rfbport 5900 -rfbauth /tmp/vncpass -noxdamage > /tmp/x11vnc.log 2>&1 &
+          sleep 2
+          setsid nohup websockify --web /usr/share/novnc 6080 localhost:5900 > /tmp/websockify.log 2>&1 &
+          sleep 2
+
+      - name: Start public tunnel
+        run: |
+          curl -fsSL -o cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+          chmod +x cloudflared
+          setsid nohup ./cloudflared tunnel --no-autoupdate --url http://localhost:6080 > /tmp/cloudflared.log 2>&1 &
+          URL=""
+          for i in $(seq 1 60); do
+            URL=$(grep -oE 'https://[a-zA-Z0-9-]+\.trycloudflare\.com' /tmp/cloudflared.log | head -n 1)
+            [ -n "$URL" ] && break
+            sleep 2
+          done
+          if [ -z "$URL" ]; then
+            echo "Tunnel URL not found"; cat /tmp/cloudflared.log; exit 1
+          fi
+          LINK="$URL/vnc.html?autoconnect=true&resize=scale&password=$VNC_PW"
+          echo "Live link: $LINK"
+          {
+            echo "## Live emulator"
+            echo ""
+            echo "Open this link (keep it private, it gives control of the emulator):"
+            echo ""
+            echo "$LINK"
+            echo ""
+            echo "If it asks for a password, use: \`$VNC_PW\`"
+            echo ""
+            echo "The link works until this job stops (up to about 5 hours)."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run emulator and keep it alive
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 28
+          target: google_apis
+          arch: x86_64
+          profile: pixel
+          disable-animations: true
+          disable-spellchecker: true
+          emulator-options: -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            adb wait-for-device
+            adb install -r "${{ steps.find_apk.outputs.path }}"
+            adb shell pm grant pro.sketchware android.permission.READ_EXTERNAL_STORAGE || true
+            adb shell pm grant pro.sketchware android.permission.WRITE_EXTERNAL_STORAGE || true
+            adb shell monkey -p pro.sketchware -c android.intent.category.LAUNCHER 1 || true
+            END=$((SECONDS + 17400))
+            while [ $SECONDS -lt $END ]; do
+              sleep 60
+            done
