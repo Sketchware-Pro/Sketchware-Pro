@@ -97,7 +97,13 @@ jobs:
       - name: Install display, VNC and tunnel tools
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y xvfb x11vnc novnc websockify
+          sudo apt-get install -y xvfb x11vnc novnc websockify \
+            libgl1 libgl1-mesa-dri libglu1-mesa libpulse0 libnss3 \
+            libxkbcommon-x11-0 libxcb-xinerama0 libxcb-icccm4 libxcb-image0 \
+            libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 \
+            libxcb-xkb1 libxcb-cursor0 libxcomposite1 libxcursor1 libxi6 \
+            libxtst6 libxrandr2 libxdamage1
+          sudo apt-get install -y libasound2t64 || sudo apt-get install -y libasound2 || true
 
       - name: Enable KVM
         run: |
@@ -110,6 +116,7 @@ jobs:
           VNC_PW=$(openssl rand -base64 9 | tr -dc 'A-Za-z0-9' | head -c 10)
           echo "VNC_PW=$VNC_PW" >> "$GITHUB_ENV"
           echo "DISPLAY=:99" >> "$GITHUB_ENV"
+          echo "QT_QPA_PLATFORM=xcb" >> "$GITHUB_ENV"
           setsid nohup Xvfb :99 -screen 0 1280x800x24 -nolisten tcp > /tmp/xvfb.log 2>&1 &
           sleep 3
           x11vnc -storepasswd "$VNC_PW" /tmp/vncpass >/dev/null 2>&1
@@ -166,3 +173,19 @@ jobs:
             while [ $SECONDS -lt $END ]; do
               sleep 60
             done
+
+      - name: Emulator diagnostics
+        if: ${{ always() }}
+        run: |
+          {
+            echo "## Emulator diagnostics"
+            echo '```'
+            ps aux | grep -i '[e]mulator' | head -5 || true
+            echo '```'
+            for f in $(find "$HOME/.android" /tmp -maxdepth 4 \( -name '*.log' -o -name 'emulator*.txt' \) 2>/dev/null | head -5); do
+              echo "### $f"
+              echo '```'
+              tail -n 40 "$f" || true
+              echo '```'
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
