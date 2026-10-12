@@ -35,7 +35,29 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build APK
-        run: ./gradlew assembleRelease --no-daemon
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew assembleRelease --no-daemon --stacktrace 2>&1 | tee build-log.txt
+
+      - name: Show error summary on failure
+        if: ${{ failure() }}
+        run: |
+          {
+            echo "## Build failed - error summary"
+            echo '```'
+            grep -E -A3 "What went wrong|FAILURE|error:|Could not|Exception" build-log.txt | head -c 15000
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload build log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log-${{ github.sha }}
+          path: build-log.txt
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Find APK
         id: find_apk
