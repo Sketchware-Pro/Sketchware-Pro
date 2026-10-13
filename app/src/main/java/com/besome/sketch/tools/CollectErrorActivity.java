@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.Formatter;
@@ -19,6 +20,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
+import java.util.Locale;
 
 import a.a.a.GB;
 import pro.sketchware.R;
@@ -64,8 +66,12 @@ public class CollectErrorActivity extends BaseAppCompatActivity {
 
                 long fileSizeInBytes = new File(info.applicationInfo.sourceDir).length();
 
+                Configuration config = new Configuration();
+                config.setLocale(Locale.ROOT);
+                Context rootContext = createConfigurationContext(config);
+
                 String deviceInfo = "Sketchware Pro " + info.versionName + " (" + info.versionCode + ")\n"
-                        + "base.apk size: " + Formatter.formatFileSize(this, fileSizeInBytes) + " (" + fileSizeInBytes + " B)\n"
+                        + "base.apk size: " + Formatter.formatFileSize(rootContext, fileSizeInBytes) + " (" + fileSizeInBytes + " B)\n"
                         + "Locale: " + GB.g(getApplicationContext()) + "\n"
                         + "SDK version: " + Build.VERSION.SDK_INT + "\n"
                         + "Brand: " + Build.BRAND + "\n"
