@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.util.TypedValue;
@@ -60,10 +62,23 @@ public class SketchwareUtil {
      * @param length  The toast's length, either {@link Toast#LENGTH_SHORT} or {@link Toast#LENGTH_LONG}
      */
     public static void toast(String message, int length) {
-        try {
-            bB.a(getContext(), message, length).show();
-        } catch (RuntimeException e) {
-            LogUtil.e("SketchwareUtil", "Failed to toast regular message, " + "Toast's message was: \"" + message + "\"", e);
+        runOnMainThread(() -> {
+            try {
+                bB.a(getContext(), message, length).show();
+            } catch (RuntimeException e) {
+                LogUtil.e("SketchwareUtil", "Failed to toast regular message, " + "Toast's message was: \"" + message + "\"", e);
+            }
+        });
+    }
+
+    /**
+     * Toasts can only be shown on a thread with a Looper, so e.g. build threads need to hop to the main thread.
+     */
+    private static void runOnMainThread(Runnable runnable) {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            runnable.run();
+        } else {
+            new Handler(Looper.getMainLooper()).post(runnable);
         }
     }
 
@@ -83,11 +98,13 @@ public class SketchwareUtil {
      * @param length  The toast's length, either {@link Toast#LENGTH_SHORT} or {@link Toast#LENGTH_LONG}
      */
     public static void toastError(String message, int length) {
-        try {
-            bB.b(getContext(), message, length).show();
-        } catch (RuntimeException e) {
-            LogUtil.e("SketchwareUtil", "Failed to toast regular message, " + "Toast's message was: \"" + message + "\"", e);
-        }
+        runOnMainThread(() -> {
+            try {
+                bB.b(getContext(), message, length).show();
+            } catch (RuntimeException e) {
+                LogUtil.e("SketchwareUtil", "Failed to toast regular message, " + "Toast's message was: \"" + message + "\"", e);
+            }
+        });
     }
 
     /**
