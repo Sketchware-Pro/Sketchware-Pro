@@ -26,7 +26,14 @@ public class ManageLocalLibrary {
         String localLibraryConfigPath = new FilePathUtil().getPathLocalLibrary(projectId);
         if (FileUtil.isExistFile(localLibraryConfigPath)) {
             try {
-                list = new Gson().fromJson(FileUtil.readFile(localLibraryConfigPath), Helper.TYPE_MAP_LIST);
+                String content = FileUtil.readFile(localLibraryConfigPath);
+                if (content.trim().isEmpty() || content.trim().equals("null")) {
+                    /* Old projects often have an empty file here, that simply means "no Local libraries" */
+                    list = new ArrayList<>();
+                    return;
+                }
+
+                list = new Gson().fromJson(content, Helper.TYPE_MAP_LIST);
 
                 if (list == null) {
                     LogUtil.w(getClass().getSimpleName(), "Read null from file " + localLibraryConfigPath + ", deleting invalid configuration.");
