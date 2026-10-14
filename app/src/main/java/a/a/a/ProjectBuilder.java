@@ -17,16 +17,13 @@ import android.text.format.Formatter;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.dex.Dex;
-import com.android.dex.FieldId;
-import com.android.dex.MethodId;
-import com.android.dex.ProtoId;
-import com.android.dx.command.dexer.DxContext;
 import com.android.dx.command.dexer.Main;
-import com.android.dx.merge.CollisionPolicy;
-import com.android.dx.merge.DexMerger;
 import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
+import com.android.tools.r8.CompilationMode;
+import com.android.tools.r8.D8;
+import com.android.tools.r8.D8Command;
+import com.android.tools.r8.OutputMode;
 import com.android.sdklib.build.DuplicateFileException;
 import com.android.sdklib.build.SealedApkException;
 import com.github.megatronking.stringfog.plugin.StringFogInjector;
@@ -44,6 +41,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
+import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -359,133 +357,43 @@ public class ProjectBuilder {
     }
 
     /**
-     * Dexes libraries.
+     * Merges DEX files using D8 into classes.dex, classes2.dex, etc.
      *
-     * @return List of result DEX files which were merged or couldn't be merged with others.
-     * @throws Exception Thrown if merging had problems
+     * @param outputDirectory Directory where merged DEX files will be written.
+     * @param dexes List of DEX files to merge.
+     * @throws Exception Thrown if D8 fails to merge DEX files.
      */
-    private Collection<File> dexLibraries(File outputDirectory, List<File> dexes) throws Exception {
-        int lastDexNumber = 1;
-        String nextMergedDexFilename;
-        Collection<File> resultDexFiles = new LinkedList<>();
-        LinkedList<Dex> dexObjects = new LinkedList<>();
-        Iterator<File> toMergeIterator = dexes.iterator();
-
-        List<FieldId> mergedDexFields;
-        List<MethodId> mergedDexMethods;
-        List<ProtoId> mergedDexProtos;
-        List<Integer> mergedDexTypes;
-
-        {
-            // Closable gets closed automatically
-            Dex firstDex = new Dex(new FileInputStream(toMergeIterator.next()));
-            dexObjects.add(firstDex);
-            mergedDexFields = new LinkedList<>(firstDex.fieldIds());
-            mergedDexMethods = new LinkedList<>(firstDex.methodIds());
-            mergedDexProtos = new LinkedList<>(firstDex.protoIds());
-            mergedDexTypes = new LinkedList<>(firstDex.typeIds());
+    private void dexLibraries(File outputDirectory, List<File> dexes) throws Exception {
+        if (dexes == null || dexes.isEmpty()) {
+            return;
         }
 
-        while (toMergeIterator.hasNext()) {
-            File dexFile = toMergeIterator.next();
-            nextMergedDexFilename = lastDexNumber == 1 ? "classes.dex" : "classes" + lastDexNumber + ".dex";
+        int minApiLevel;
+        try {
+            minApiLevel = Integer.parseInt(settings.getValue(
+                    ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
+        } catch (NumberFormatException e) {
+            minApiLevel = 21;
+        }
 
-            // Closable gets closed automatically
-            Dex dex = new Dex(new FileInputStream(dexFile));
-
-            boolean canMerge = true;
-            List<FieldId> newDexFieldIds = new LinkedList<>();
-            List<MethodId> newDexMethodIds = new LinkedList<>();
-            List<ProtoId> newDexProtoIds = new LinkedList<>();
-            List<Integer> newDexTypeIds = new LinkedList<>();
-
-            bruh:
-            {
-                for (FieldId fieldId : dex.fieldIds()) {
-                    if (!mergedDexFields.contains(fieldId)) {
-                        if (mergedDexFields.size() + newDexFieldIds.size() + 1 > 0xffff) {
-                            LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
-                                    " because it has too many new field IDs. "
-                                    + nextMergedDexFilename + " will have " + mergedDexFields.size() + " field IDs");
-                            canMerge = false;
-                            break bruh;
-                        } else {
-                            newDexFieldIds.add(fieldId);
-                        }
-                    }
-                }
-
-                for (MethodId methodId : dex.methodIds()) {
-                    if (!newDexMethodIds.contains(methodId)) {
-                        if (mergedDexMethods.size() + newDexMethodIds.size() + 1 > 0xffff) {
-                            LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
-                                    " because it has too many new method IDs. "
-                                    + nextMergedDexFilename + " will have " + mergedDexMethods.size() + " method IDs");
-                            canMerge = false;
-                            break bruh;
-                        } else {
-                            newDexMethodIds.add(methodId);
-                        }
-                    }
-                }
-
-                for (ProtoId protoId : dex.protoIds()) {
-                    if (!newDexProtoIds.contains(protoId)) {
-                        if (mergedDexProtos.size() + newDexProtoIds.size() + 1 > 0xffff) {
-                            LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
-                                    " because it has too many new proto IDs. "
-                                    + nextMergedDexFilename + " will have " + mergedDexProtos.size() + " proto IDs");
-                            canMerge = false;
-                            break bruh;
-                        } else {
-                            newDexProtoIds.add(protoId);
-                        }
-                    }
-                }
-
-                for (Integer typeId : dex.typeIds()) {
-                    if (!newDexTypeIds.contains(typeId)) {
-                        if (mergedDexTypes.size() + newDexProtoIds.size() + 1 > 0xffff) {
-                            LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
-                                    " because it has too many new type IDs. "
-                                    + nextMergedDexFilename + " will have " + mergedDexTypes.size() + " type IDs");
-                            canMerge = false;
-                            break bruh;
-                        } else {
-                            newDexTypeIds.add(typeId);
-                        }
-                    }
-                }
-            }
-
-            if (canMerge) {
-                LogUtil.d(TAG, "Merging DEX #" + dexes.indexOf(dexFile) + " as well to " + nextMergedDexFilename);
-                dexObjects.add(dex);
-                mergedDexFields.addAll(newDexFieldIds);
-                mergedDexMethods.addAll(newDexMethodIds);
-                mergedDexProtos.addAll(newDexProtoIds);
-                mergedDexTypes.addAll(newDexTypeIds);
-            } else {
-                File target = new File(outputDirectory, nextMergedDexFilename);
-                mergeDexes(target, dexObjects);
-                resultDexFiles.add(target);
-                dexObjects.clear();
-                dexObjects.add(dex);
-
-                mergedDexFields = new ArrayList<>(dex.fieldIds());
-                mergedDexMethods = new ArrayList<>(dex.methodIds());
-                mergedDexProtos = new ArrayList<>(dex.protoIds());
-                mergedDexTypes = new ArrayList<>(dex.typeIds());
-                lastDexNumber++;
+        File[] existingDexFiles = outputDirectory.listFiles((dir, name) -> name.startsWith("classes") && name.endsWith(".dex"));
+        if (existingDexFiles != null) {
+            for (File existingDex : existingDexFiles) {
+                existingDex.delete();
             }
         }
-        if (!dexObjects.isEmpty()) {
-            File file = new File(outputDirectory, lastDexNumber == 1 ? "classes.dex" : "classes" + lastDexNumber + ".dex");
-            mergeDexes(file, dexObjects);
-            resultDexFiles.add(file);
+
+        Collection<Path> dexPaths = new LinkedList<>();
+        for (File dexFile : dexes) {
+            dexPaths.add(dexFile.toPath());
         }
 
-        return resultDexFiles;
+        D8.run(D8Command.builder()
+                .setMode(CompilationMode.RELEASE)
+                .setMinApiLevel(minApiLevel)
+                .addProgramFiles(dexPaths)
+                .setOutput(outputDirectory.toPath(), OutputMode.DexIndexed)
+                .build());
     }
 
     /**
@@ -811,10 +719,6 @@ public class ProjectBuilder {
         TestkeySignBridge.signWithTestkey(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath);
     }
 
-    private void mergeDexes(File target, List<Dex> dexes) throws IOException {
-        DexMerger merger = new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST, new DxContext());
-        merger.merge().writeTo(target);
-    }
 
     /**
      * Adds all built-in libraries' ProGuard rules to {@code args}, if any.
