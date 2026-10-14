@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -77,7 +78,8 @@ public class AppBundleCompiler {
                                 .addAllUncompressedGlob(uncompressedModuleMainPaths).build()
                         ).build()
                 );
-        if (builder.proguard.isShrinkingEnabled() && builder.proguard.isDebugFilesEnabled()) {
+        if (builder.proguard.isShrinkingEnabled() && Files.exists(Paths.get(builder.yq.proguardMappingPath))) {
+            /* Google Play needs the mapping to deobfuscate crashes and to evaluate obfuscation, always include it */
             Path mapping = Paths.get(builder.yq.proguardMappingPath);
             LogUtil.d(TAG, "Adding metadata file " + mapping + " as com.android.tools.build.obfuscation/proguard.map");
             bundleBuilder.addMetadataFile("com.android.tools.build.obfuscation", "proguard.map", mapping);
