@@ -15,6 +15,7 @@ import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
+import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.build.BuiltInLibraries;
@@ -50,6 +51,7 @@ public class Lx {
                     \r
                     """);
         }
+        boolean shrinkEnabled = new ProguardHandler(metadata.sc_id).isShrinkingEnabled();
         content.append("defaultConfig {\r\n" + "applicationId \"")
                 .append(metadata.packageName)
                 .append("\"\r\n")
@@ -72,7 +74,7 @@ public class Lx {
                 .append("\r\n")
                 .append("buildTypes {\r\n")
                 .append("release {\r\n")
-                .append("minifyEnabled false\r\n")
+                .append("minifyEnabled ").append(shrinkEnabled).append("\r\n")
                 .append("proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n")
                 .append("}\r\n")
                 .append("}\r\n");
