@@ -13,15 +13,6 @@ public class wq {
     public static final String B = "sketchware" + File.separator + "signed_apk";
     public static final String C = "sketchware" + File.separator + "keystore";
     public static final String D = "sketchware" + File.separator + "keystore" + File.separator + "release_key.jks";
-    public static final String E = "sketchware" + File.separator + "service_account";
-    public static final String F = ".sketchware" + File.separator + "upload";
-    public static final String[] G = {"subs_year_01", "subs_50_year_01", "subs_30_year_01", "subs_20_year_01", "subs_month_06", "subs_month_03", "subs_month_01", "subs_50_month_01", "subs_30_month_01", "subs_20_month_01"};
-    public static final long[] H = {32140800000L, 32140800000L, 32140800000L, 32140800000L, 16070400000L, 8035200000L, 2678400000L, 2678400000L, 2678400000L, 2678400000L};
-    public static final String[] I = {"subs_month_01", "subs_year_01"};
-    public static final String[] L = {"subs_20_month_01", "subs_20_year_01"};
-    public static final String[] M = {"F83085529A75E7A8CEDD64013B1A374B", "90C443DFAB7F23424DE7E079787466CD", "F83085529A75E7A8CEDD64013B1A374B", "C99E5B3F179203AE2749F8F9B5A7493A", "100EFD7391FF1BEE4A1E2F960A1B8AF2"};
-    public static final String[] N = {"1486507718310013_1788685811425534", "1486507718310013_1804931006467681", "1486507718310013_1805009746459807", "1486507718310013_1805001526460629", "1486507718310013_1805273579766757", "1486507718310013_1805397669754348", "1486507718310013_1805436593083789", "1486507718310013_1805666736394108", "1486507718310013_1805724186388363", "1486507718310013_1809233042704144"};
-    public static final String[] O = {"255022168522663_266931247331755", "255022168522663_268282677196612", "255022168522663_268283823863164", "255022168522663_266575314034015", "255022168522663_279474749410738"};
     public static final String a = ".sketchware" + File.separator + "libs";
     public static final String b = ".sketchware" + File.separator + "mysc";
     public static final String c = ".sketchware" + File.separator + "mysc" + File.separator + "list";
@@ -37,12 +28,6 @@ public class wq {
     public static final String n = ".sketchware" + File.separator + "resources" + File.separator + "images";
     public static final String o = ".sketchware" + File.separator + "resources" + File.separator + "sounds";
     public static final String p = ".sketchware" + File.separator + "resources" + File.separator + "fonts";
-    public static final String r = ".sketchware" + File.separator + "download" + File.separator + "apk";
-    public static final String s = ".sketchware" + File.separator + "download" + File.separator + "data";
-    public static final String t = ".sketchware" + File.separator + "tutorial" + File.separator + "images";
-    public static final String u = ".sketchware" + File.separator + "tutorial" + File.separator + "sounds";
-    public static final String v = ".sketchware" + File.separator + "tutorial" + File.separator + "fonts";
-    public static final String w = ".sketchware" + File.separator + "tutorial" + File.separator + "proj";
     public static final String x = ".sketchware" + File.separator + "collection";
     public static final String y = "sketchware" + File.separator + "localization";
     public static final String z = "sketchware" + File.separator + "localization" + File.separator + "strings.xml";
@@ -57,16 +42,6 @@ public class wq {
 
     public static String a() {
         return getAbsolutePathOf(x);
-    }
-
-    public static String a(int type) {
-        return switch (type) {
-            case 1 -> "SL-01";
-            case 2 -> "SL-02";
-            case 3 -> "SL-03";
-            case 4 -> "SL-04";
-            default -> "";
-        };
     }
 
     public static String a(String sc_id) {
@@ -90,10 +65,6 @@ public class wq {
         dataD04.a();
         dataD01.a();
         dataD02.a();
-    }
-
-    public static String b() {
-        return getAbsolutePathOf(s);
     }
 
     public static String b(int type) {
@@ -187,10 +158,6 @@ public class wq {
         return getAbsolutePathOf(n);
     }
 
-    public static String h() {
-        return "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxqe7Fu3i3VfnKRSRRljTsMuk7Br0dXaFdGnMNCzMGLQ72PSTEAUo4sXs5+Utmdf9R2s2tZyArdnehk9+Q72F0XzEZGeVfgzfLky7ffuk04yxUye/FlXBun/s0F7g2496+PyfXCP9jIBdncvQ9kaT8Xn6F/j0s2TqS/6xlCD38eYgCVFyp1mld1vYhGCZBlQvXFVJAoKCzqN2QZVO5KarkyTQSGeudvV/UQsJgyHh5zTZKnla1VIVj1Wl3nBb//s2dsmFnAx3500Y/h//XHveLUS7BkP34AGGWPLuoyJruLNvrZ3uUNDnCgnW4+z8Ilaj2SwCTeqQvvw/suZdExs88QIDAQAB";
-    }
-
     @Deprecated
     public static String i() {
         return getAbsolutePathOf(C);
@@ -218,10 +185,6 @@ public class wq {
 
     public static String o() {
         return getAbsolutePathOf(B);
-    }
-
-    public static String p() {
-        return getAbsolutePathOf(E);
     }
 
     public static String q() {
@@ -252,10 +215,6 @@ public class wq {
         return getAbsolutePathOf(g);
     }
 
-    public static String x() {
-        return getAbsolutePathOf(F);
-    }
-
     public static String getCustomComponent() {
         return getAbsolutePathOf(CUSTOM_COMPONENT_FILE);
     }
@@ -264,11 +223,5 @@ public class wq {
         return getAbsolutePathOf(EXTRA_DATA_EXPORT);
     }
 
-    public static String y() {
-        return "16011998";
-    }
 
-    public static String[] z() {
-        return new String[]{"Blowfish", "Blowfish/CBC/PKCS5Padding"};
-    }
 }
