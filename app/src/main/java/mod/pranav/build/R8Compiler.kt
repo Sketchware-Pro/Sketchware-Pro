@@ -8,6 +8,7 @@ import com.android.tools.r8.R8
 import com.android.tools.r8.R8Command
 import com.android.tools.r8.origin.Origin
 import mod.hey.studios.project.proguard.ProguardHandler
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.Executors
@@ -22,8 +23,10 @@ class R8Compiler(
 ) {
 
     fun compile() {
-        val output = Paths.get(yq.binDirectoryPath, "dex")
-        Files.createDirectories(output)
+        val outputDir = File(yq.binDirectoryPath, "dex")
+        outputDir.deleteRecursively()
+        outputDir.mkdirs()
+        val output = outputDir.toPath()
         val command = R8Command.builder()
             .addProgramFiles(inputs.map { Paths.get(it) })
             .addProguardConfiguration(rules, Origin.unknown())
