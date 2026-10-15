@@ -155,6 +155,30 @@ public class ProguardHandler {
         return debugFiles;
     }
 
+    //TODO: IDK why "Android Ye" added this, anyway just keeping it for now
+    /**
+     * Number of threads R8 may use. Fewer threads mean less heat and less peak memory use, but a slower build.
+     * Defaults to a quarter to half of the CPU cores (at most 2), can be raised with "r8_threads" in the project's config.
+     */
+    public int getR8Threads() {
+        int cores = Math.max(1, Runtime.getRuntime().availableProcessors());
+        String configured = readConfigOrEmpty().get("r8_threads");
+        if (configured != null) {
+            try {
+                int threads = Integer.parseInt(configured.trim());
+                if (threads >= 1 && threads <= cores) {
+                    return threads;
+                }
+            } catch (NumberFormatException ignored) {
+            }
+        }
+
+        /* Half the cores by default is a good speed/heat balance; always leave at least 2 cores free for the UI */
+        int half = cores / 2;
+        int leaveFree = Math.max(1, cores - 2);
+        return Math.max(2, Math.min(half, leaveFree));
+    }
+
     public boolean isShrinkingEnabled() {
         boolean proguardEnabled = true;
         if (FileUtil.isExistFile(config_path)) {

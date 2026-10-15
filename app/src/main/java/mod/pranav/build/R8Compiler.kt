@@ -1,13 +1,16 @@
 package mod.pranav.build
 
 import a.a.a.yq
+import android.os.Process
 import com.android.tools.r8.CompilationMode
 import com.android.tools.r8.OutputMode
 import com.android.tools.r8.R8
 import com.android.tools.r8.R8Command
 import com.android.tools.r8.origin.Origin
+import mod.hey.studios.project.proguard.ProguardHandler
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.concurrent.Executors
 
 class R8Compiler(
     private val rules: MutableList<String>,
@@ -32,6 +35,22 @@ class R8Compiler(
             .setMode(CompilationMode.RELEASE)
             .build()
 
-        R8.run(command)
+        /*
+         * By default, R8 uses every CPU core, which heats up phones and multiplies peak memory use.
+         * Use a few low priority threads instead, it's slower but much cooler and more stable.
+         */
+        val threads = ProguardHandler(yq.sc_id).getR8Threads()
+        val executor = Executors.newFixedThreadPool(threads) { runnable ->
+            Thread {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_DEFAULT)
+                runnable.run()
+            }
+        }
+
+        try {
+            R8.run(command, executor)
+        } finally {
+            executor.shutdown()
+        }
     }
 }
