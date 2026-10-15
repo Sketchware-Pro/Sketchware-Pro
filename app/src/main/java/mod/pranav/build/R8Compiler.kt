@@ -7,6 +7,7 @@ import com.android.tools.r8.OutputMode
 import com.android.tools.r8.R8
 import com.android.tools.r8.R8Command
 import com.android.tools.r8.origin.Origin
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import mod.hey.studios.project.proguard.ProguardHandler
 import java.io.File
 import java.nio.file.Files
@@ -52,6 +53,19 @@ class R8Compiler(
 
         try {
             R8.run(command, executor)
+        } catch (t: Throwable) {
+            try {
+                val crashlytics = FirebaseCrashlytics.getInstance()
+                crashlytics.setCustomKey("compiler_phase", "R8.run")
+                crashlytics.setCustomKey("r8_threads", threads)
+                crashlytics.setCustomKey("r8_min_api", minApi)
+                crashlytics.setCustomKey("r8_inputs_count", inputs.size)
+                crashlytics.setCustomKey("r8_libs_count", libs.size)
+                crashlytics.log("R8.run failed with ${t.javaClass.simpleName}: ${t.message}")
+                crashlytics.recordException(t)
+            } catch (_: Throwable) {
+            }
+            throw t
         } finally {
             executor.shutdown()
         }

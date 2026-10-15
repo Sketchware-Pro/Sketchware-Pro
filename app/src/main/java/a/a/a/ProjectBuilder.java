@@ -26,6 +26,7 @@ import com.android.tools.r8.D8;
 import com.android.tools.r8.D8Command;
 import com.android.tools.r8.OutputMode;
 import com.github.megatronking.stringfog.plugin.StringFogInjector;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.iyxan23.zipalignjava.InvalidZipException;
 import com.iyxan23.zipalignjava.ZipAlign;
 
@@ -979,6 +980,16 @@ public class ProjectBuilder {
             JarBuilder.INSTANCE.generateJar(new File(yq.compiledClassesPath));
             new R8Compiler(new ArrayList<>(rules), config.toArray(new String[0]), getProguardClasspath().split(":"), jars.toArray(new String[0]), settings.getMinSdkVersion(), yq).compile();
         } catch (Exception | OutOfMemoryError | StackOverflowError e) {
+            try {
+                FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+                crashlytics.setCustomKey("compiler_stage", "runR8");
+                crashlytics.setCustomKey("r8_min_sdk", settings.getMinSdkVersion());
+                crashlytics.setCustomKey("r8_threads", proguard.getR8Threads());
+                crashlytics.setCustomKey("r8_optimize", proguard.isOptimizeEnabled());
+                crashlytics.log("R8 build failure: " + e.getMessage());
+                crashlytics.recordException(e);
+            } catch (Throwable ignored) {
+            }
             throw new IOException(e);
         }
         LogUtil.d(TAG, "R8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
