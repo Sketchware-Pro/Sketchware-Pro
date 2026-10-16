@@ -17,7 +17,6 @@ import android.text.format.Formatter;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.dx.command.dexer.Main;
 import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
 import com.android.tools.r8.CompilationMode;
@@ -206,14 +205,11 @@ public class ProjectBuilder {
     }
 
     public boolean isD8Enabled() {
-        return build_settings.getValue(
-                BuildSettings.SETTING_DEXER,
-                BuildSettings.SETTING_DEXER_DX
-        ).equals(BuildSettings.SETTING_DEXER_D8);
+        return true;
     }
 
     public String getDxRunningText() {
-        return (isD8Enabled() ? "D8" : "Dx") + " is running...";
+        return "D8 is running...";
     }
 
     /**
@@ -225,40 +221,13 @@ public class ProjectBuilder {
         FileUtil.makeDir(yq.binDirectoryPath + File.separator + "dex");
         if (proguard.isShrinkingEnabled() && proguard.isR8Enabled()) return;
 
-        if (isD8Enabled()) {
-            long savedTimeMillis = System.currentTimeMillis();
-            try {
-                DexCompiler.compileDexFiles(this);
-                LogUtil.d(TAG, "D8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
-            } catch (Exception e) {
-                LogUtil.e(TAG, "D8 failed to process .class files", e);
-                throw e;
-            }
-        } else {
-            long savedTimeMillis = System.currentTimeMillis();
-            List<String> args = Arrays.asList(
-                    "--debug",
-                    "--verbose",
-                    "--multi-dex",
-                    "--output=" + yq.binDirectoryPath + File.separator + "dex",
-                    proguard.isShrinkingEnabled() ? yq.proguardClassesPath : yq.compiledClassesPath
-            );
-
-            try {
-                LogUtil.d(TAG, "Running Dx with these arguments: " + args);
-
-                Main.clearInternTables();
-                Main.Arguments arguments = new Main.Arguments();
-                Method parseMethod = Main.Arguments.class.getDeclaredMethod("parse", String[].class);
-                parseMethod.setAccessible(true);
-                parseMethod.invoke(arguments, (Object) args.toArray(new String[0]));
-
-                Main.run(arguments);
-                LogUtil.d(TAG, "Dx took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
-            } catch (Exception e) {
-                LogUtil.e(TAG, "Dx failed to process .class files", e);
-                throw e;
-            }
+        long savedTimeMillis = System.currentTimeMillis();
+        try {
+            DexCompiler.compileDexFiles(this);
+            LogUtil.d(TAG, "D8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        } catch (Exception e) {
+            LogUtil.e(TAG, "D8 failed to process .class files", e);
+            throw e;
         }
     }
 
