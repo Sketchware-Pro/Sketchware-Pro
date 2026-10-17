@@ -19,37 +19,49 @@ import android.widget.Toast;
 
 import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
+import com.android.sdklib.build.DuplicateFileException;
+import com.android.sdklib.build.SealedApkException;
 import com.android.tools.r8.CompilationMode;
 import com.android.tools.r8.D8;
 import com.android.tools.r8.D8Command;
 import com.android.tools.r8.OutputMode;
-import com.android.sdklib.build.DuplicateFileException;
-import com.android.sdklib.build.SealedApkException;
 import com.github.megatronking.stringfog.plugin.StringFogInjector;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.iyxan23.zipalignjava.InvalidZipException;
 import com.iyxan23.zipalignjava.ZipAlign;
 
-import org.xml.sax.SAXException;
-
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
@@ -57,6 +69,7 @@ import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
+import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.SystemLogPrinter;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
@@ -187,7 +200,7 @@ public class ProjectBuilder {
         LogUtil.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - timestampResourceCompilationStarted) + " ms");
     }
 
-    public void generateViewBinding() throws IOException, SAXException {
+    public void generateViewBinding() {
         if (settings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, ProjectSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(ProjectSettings.SETTING_GENERIC_VALUE_FALSE)) {
             return;
@@ -208,6 +221,17 @@ public class ProjectBuilder {
         return true;
     }
 
+    private static int getDexNumber(String filename) {
+        if (filename.equals("classes.dex")) {
+            return 1;
+        }
+
+        try {
+            return Integer.parseInt(filename.substring("classes".length(), filename.length() - ".dex".length()));
+        } catch (Exception e) {
+            return Integer.MAX_VALUE;
+        }
+    }
     public String getDxRunningText() {
         return "D8 is running...";
     }
@@ -323,6 +347,55 @@ public class ProjectBuilder {
         classpath.deleteCharAt(classpath.length() - 1);
 
         return classpath.toString();
+    }
+
+
+    /**
+     * Places DEX files in the bin directory as classes.dex, classes2.dex, ... without merging them.
+     * R8 already produced correctly sized, indexed DEX files, and merging them again with dx's DexMerger
+     * can overflow its buffers. Only valid for minSdkVersion >= 21, where multiple DEX files are supported natively.
+     *
+     * @param dexes All DEX files that belong into the app, including R8's output in the "dex" directory
+     * @throws IOException Thrown if a DEX file couldn't be copied
+     */
+    private void placeDexesWithoutMerging(List<File> dexes) throws IOException {
+        File binDirectory = new File(yq.binDirectoryPath);
+
+        /* Remove stale DEX files from previous builds */
+        File[] existing = binDirectory.listFiles();
+        if (existing != null) {
+            for (File file : existing) {
+                if (file.isFile() && file.getName().matches("classes\\d*\\.dex")) {
+                    file.delete();
+                }
+            }
+        }
+
+        /* R8's output goes first, in numeric order */
+        List<File> r8Dexes = new ArrayList<>();
+        File[] r8Output = new File(binDirectory, "dex").listFiles((dir, name) -> name.endsWith(".dex"));
+        if (r8Output != null) {
+            r8Dexes.addAll(Arrays.asList(r8Output));
+        }
+        r8Dexes.sort(Comparator.comparingInt(a -> getDexNumber(a.getName())));
+
+        List<File> ordered = new ArrayList<>(r8Dexes);
+        Collection<String> r8Paths = new LinkedList<>();
+        for (File dex : r8Dexes) {
+            r8Paths.add(dex.getAbsolutePath());
+        }
+        for (File dex : dexes) {
+            if (!r8Paths.contains(dex.getAbsolutePath())) {
+                ordered.add(dex);
+            }
+        }
+
+        int number = 1;
+        for (File dex : ordered) {
+            String name = number == 1 ? "classes.dex" : "classes" + number + ".dex";
+            Files.copy(dex.toPath(), new File(binDirectory, name).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            number++;
+        }
     }
 
     /**
@@ -601,7 +674,18 @@ public class ProjectBuilder {
         LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes.dex: " + dexes);
 
         if (settings.getMinSdkVersion() < 21 || !yq.N.isDebugBuild) {
-            dexLibraries(new File(yq.binDirectoryPath), dexes);
+            try {
+                dexLibraries(new File(yq.binDirectoryPath), dexes);
+            } catch (Exception | OutOfMemoryError | StackOverflowError e) {
+                if (settings.getMinSdkVersion() < 21) {
+                    throw e;
+                }
+
+                /* dx's DexMerger can overflow on big inputs (BufferOverflowException), ART supports multiple DEX files natively */
+                LogUtil.e(TAG, "Merging DEX files failed, placing them without merging", new RuntimeException(e));
+                placeDexesWithoutMerging(dexes);
+                dexesToAddButNotMerge = new ArrayList<>();
+            }
             LogUtil.d(TAG, "Merging DEX files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
         } else {
             dexesToAddButNotMerge = dexes;
@@ -734,9 +818,137 @@ public class ProjectBuilder {
                 sb.append(".** { *; }");
             }
         }
-        sb.append("\n");
-        sb.append("-keep class ").append(yq.packageName).append(".R { *; }").append('\n');
+
         return sb.toString();
+    }
+
+    /**
+     * Writes safety rules that are added to every R8 run, so that projects whose own ProGuard rules
+     * were created before these rules existed (imported projects) are protected as well.
+     *
+     * @return The absolute path of the rules file
+     * @throws IOException Thrown if the file couldn't be written
+     */
+    /**
+     * Keeps the names of service interfaces and their implementations declared in META-INF/services of the JARs R8 processes.
+     * ServiceLoader finds implementations by name through those files, and R8 doesn't rewrite them, so renaming or removing
+     * the classes would break the lookup.
+     */
+    private void appendServiceKeepRules(StringBuilder rules) {
+        List<File> jars = new ArrayList<>();
+        for (HashMap<String, Object> library : mll.list) {
+            Object name = library.get("name");
+            Object jarPath = library.get("jarPath");
+            if (name != null && jarPath != null && proguard.libIsProguardFMEnabled(name.toString())) {
+                jars.add(new File(jarPath.toString()));
+            }
+        }
+
+        Pattern classNamePattern = Pattern.compile("[A-Za-z_$][A-Za-z0-9_$.]*");
+        LinkedHashSet<String> keepRules = new LinkedHashSet<>();
+        String servicesPrefix = "META-INF/services/";
+
+        for (File jar : jars) {
+            if (!jar.isFile()) {
+                continue;
+            }
+
+            try (ZipFile zip = new ZipFile(jar)) {
+                Enumeration<? extends ZipEntry> entries = zip.entries();
+                while (entries.hasMoreElements()) {
+                    ZipEntry entry = entries.nextElement();
+                    String entryName = entry.getName();
+                    if (entry.isDirectory() || !entryName.startsWith(servicesPrefix)) {
+                        continue;
+                    }
+
+                    String service = entryName.substring(servicesPrefix.length());
+                    if (!classNamePattern.matcher(service).matches()) {
+                        continue;
+                    }
+
+                    keepRules.add("-keepnames class " + service);
+
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(zip.getInputStream(entry), StandardCharsets.UTF_8))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            int commentStart = line.indexOf('#');
+                            if (commentStart >= 0) {
+                                line = line.substring(0, commentStart);
+                            }
+
+                            line = line.trim();
+                            if (classNamePattern.matcher(line).matches()) {
+                                keepRules.add("-keep class " + line + " {\n    <init>();\n}");
+                            }
+                        }
+                    }
+                }
+            } catch (IOException | RuntimeException e) {
+                LogUtil.e(TAG, "Couldn't read service files of " + jar, new RuntimeException(e));
+            }
+        }
+
+        for (String rule : keepRules) {
+            rules.append(rule).append('\n');
+        }
+    }
+
+    private boolean usesGoogleAds() {
+        try {
+            File manifest = new File(yq.androidManifestPath);
+            if (manifest.exists()) {
+                String text = new String(Files.readAllBytes(manifest.toPath()), StandardCharsets.UTF_8);
+                if (text.contains("com.google.android.gms.ads")) {
+                    return true;
+                }
+            }
+        } catch (IOException | RuntimeException ignored) {
+        }
+
+        for (HashMap<String, Object> library : mll.list) {
+            Object name = library.get("name");
+            if (name != null && name.toString().toLowerCase(Locale.ROOT).contains("play-services-ads")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private String writeExtraProguardRules() throws IOException {
+        StringBuilder rules = new StringBuilder();
+        rules.append("# Added automatically by Sketchware Pro on every R8 run\n");
+        rules.append("-keepattributes Signature,InnerClasses,EnclosingMethod,Exceptions,*Annotation*\n");
+        rules.append("-keepattributes SourceFile,LineNumberTable\n");
+        rules.append("-renamesourcefileattribute SourceFile\n");
+        rules.append("-keepclassmembers class * {\n    @com.google.gson.annotations.SerializedName <fields>;\n}\n");
+
+        if (new StringfogHandler(yq.sc_id).isStringfogEnabled()) {
+            /* StringFog's runtime is called from rewritten bytecode of the app, R8 must not rename or merge it */
+            rules.append("-keep class com.github.megatronking.stringfog.** { *; }\n");
+        }
+
+        if (!proguard.isOptimizeEnabled()) {
+            /* Optimization is opt-in per project, see ProguardHandler#isOptimizeEnabled() */
+            rules.append("-dontoptimize\n");
+        }
+
+        if (usesGoogleAds()) {
+            /* Rules from Google's official AdMob sample apps */
+            rules.append("-keep public class com.google.android.gms.ads.** {\n    public *;\n}\n");
+            rules.append("-keep public class com.google.ads.** {\n    public *;\n}\n");
+            rules.append("-keep class * extends java.util.ListResourceBundle {\n    protected java.lang.Object[][] getContents();\n}\n");
+            rules.append("-keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {\n    public static final *** NULL;\n}\n");
+            rules.append("-keepnames @com.google.android.gms.common.annotation.KeepName class *\n");
+            rules.append("-keepclassmembernames class * {\n    @com.google.android.gms.common.annotation.KeepName *;\n}\n");
+        }
+
+        appendServiceKeepRules(rules);
+
+        File rulesFile = new File(yq.binDirectoryPath, "sketchware_extra_rules.pro");
+        Files.writeString(rulesFile.toPath(), rules.toString());
+        return rulesFile.getAbsolutePath();
     }
 
     public void runR8() throws IOException {
@@ -746,6 +958,7 @@ public class ProjectBuilder {
         config.add(ProguardHandler.ANDROID_PROGUARD_RULES_PATH);
         config.add(yq.proguardAaptRules);
         config.add(proguard.getCustomProguardRules());
+        config.add(writeExtraProguardRules());
         var rules = new ArrayList<>(Arrays.asList(getRJavaRules().split("\n")));
         for (Jp library : builtInLibraryManager.getLibraries()) {
             File f = BuiltInLibraries.getLibraryProguardConfiguration(library.getName());
@@ -765,8 +978,18 @@ public class ProjectBuilder {
         }
         try {
             JarBuilder.INSTANCE.generateJar(new File(yq.compiledClassesPath));
-            new R8Compiler(rules, config.toArray(new String[0]), getProguardClasspath().split(":"), jars.toArray(new String[0]), settings.getMinSdkVersion(), yq).compile();
-        } catch (Exception e) {
+            new R8Compiler(new ArrayList<>(rules), config.toArray(new String[0]), getProguardClasspath().split(":"), jars.toArray(new String[0]), settings.getMinSdkVersion(), yq).compile();
+        } catch (Exception | OutOfMemoryError | StackOverflowError e) {
+            try {
+                FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+                crashlytics.setCustomKey("compiler_stage", "runR8");
+                crashlytics.setCustomKey("r8_min_sdk", settings.getMinSdkVersion());
+                crashlytics.setCustomKey("r8_threads", proguard.getR8Threads());
+                crashlytics.setCustomKey("r8_optimize", proguard.isOptimizeEnabled());
+                crashlytics.log("R8 build failure: " + e.getMessage());
+                crashlytics.recordException(e);
+            } catch (Throwable ignored) {
+            }
             throw new IOException(e);
         }
         LogUtil.d(TAG, "R8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
