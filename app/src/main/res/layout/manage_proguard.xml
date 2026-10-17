@@ -91,8 +91,6 @@
                     android:layout_marginBottom="2dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
                     android:text="@string/code_shrinker_rules"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="16sp" />
@@ -142,8 +140,6 @@
                     android:layout_marginBottom="2dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
                     android:text="@string/common_word_full_mode"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="16sp" />
