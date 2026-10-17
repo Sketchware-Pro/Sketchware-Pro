@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.besome.sketch.tools.CollectErrorActivity;
 
+import pro.sketchware.utility.AnalyticsHelper;
 import pro.sketchware.utility.theme.ThemeManager;
 
 public class SketchApplication extends Application {
@@ -35,5 +36,6 @@ public class SketchApplication extends Application {
         });
         super.onCreate();
         ThemeManager.applyTheme(this, ThemeManager.getCurrentTheme(this));
+        AnalyticsHelper.logDeviceAbi(this);
     }
 }

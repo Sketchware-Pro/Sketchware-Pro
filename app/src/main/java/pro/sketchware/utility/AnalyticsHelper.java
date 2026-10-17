@@ -1,6 +1,7 @@
 package pro.sketchware.utility;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,6 +13,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 public class AnalyticsHelper {
 
     private static final String TAG = "AnalyticsHelper";
+
+    public static final String USER_PROPERTY_DEVICE_ABI = "device_abi";
 
     public static final String EVENT_EXPORT_PROJECT = "export_project";
     public static final String EVENT_ADD_LIBRARY = "add_library";
@@ -79,6 +82,16 @@ public class AnalyticsHelper {
             FirebaseAnalytics.getInstance(context).logEvent(EVENT_UI_COMPONENT_ADDED, bundle);
         } catch (Exception e) {
             Log.w(TAG, "Failed to log ui_component_added", e);
+        }
+    }
+
+    public static void logDeviceAbi(@Nullable Context context) {
+        if (context == null) return;
+        try {
+            String abi = Build.SUPPORTED_ABIS.length > 0 ? Build.SUPPORTED_ABIS[0] : "unknown";
+            FirebaseAnalytics.getInstance(context).setUserProperty(USER_PROPERTY_DEVICE_ABI, abi);
+        } catch (Exception e) {
+            Log.w(TAG, "Failed to log device_abi user property", e);
         }
     }
 }
