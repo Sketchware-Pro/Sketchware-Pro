@@ -35,7 +35,8 @@ class DependencyResolver(
 ) {
     companion object {
         private const val GOOGLE_MAVEN_URL = "https://dl.google.com/dl/android/maven2"
-
+        private const val DEFAULT_LIBRARY_MIN_API = 16
+        
         private val DEFAULT_REPOS = """
           |[
           |    {"url": "$GOOGLE_MAVEN_URL", "name": "Google Maven"},
@@ -263,8 +264,7 @@ class DependencyResolver(
     }
 
     private fun findPackageName(path: String, defaultValue: String): String {
-        val manifest =
-            File(path).walk().filter { it.isFile && it.name == "AndroidManifest.xml" }.firstOrNull()
+        val manifest = File(path).walk().filter { it.isFile && it.name == "AndroidManifest.xml" }.firstOrNull()
         val content = manifest?.readText() ?: return defaultValue
         val p = Pattern.compile("<manifest.*package=\"(.*?)\"", Pattern.DOTALL)
         val m = p.matcher(content)
@@ -273,6 +273,12 @@ class DependencyResolver(
         }
 
         return defaultValue
+    }
+    
+    private fun findMinSdk(manifest: File, defaultValue: Int): Int {
+        if (!manifest.isFile) return defaultValue
+        val m = Pattern.compile("android:minSdkVersion\\s*=\\s*\"(\\d+)\"").matcher(manifest.readText())
+        return if (m.find()) m.group(1)!!.toInt() else defaultValue
     }
 
     private fun unzip(path: Path) {
@@ -296,8 +302,11 @@ class DependencyResolver(
 
     private fun compileJar(jarFile: Path, jars: List<Path>, libraryJars: List<Path>) {
         Files.createDirectories(jarFile.parent)
+        val minApi = findMinSdk(jarFile.parent.resolve("AndroidManifest.xml").toFile(), DEFAULT_LIBRARY_MIN_API)
+        
         D8.run(
             D8Command.builder().setIntermediate(true).setMode(CompilationMode.RELEASE)
+                .setMinApiLevel(minApi)
                 .addProgramFiles(jarFile).addLibraryFiles(libraryJars).addClasspathFiles(jars)
                 .setOutput(jarFile.parent, OutputMode.DexIndexed).build()
         )
