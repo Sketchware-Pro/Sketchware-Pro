@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_remote_capture"
+        android:title="@string/remote_debug_read_logs"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_auto_scroll"
         android:checkable="true"
         android:title="@string/common_word_auto_scroll"
