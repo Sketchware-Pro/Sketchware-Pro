@@ -12,6 +12,7 @@ coilSvg = "2.7.0"
 markwon = "4.6.2"
 coreSplashscreen = "1.2.0"
 libsu = "5.0.4"
+libadb = "3.1.1"
 dependencyresolver = "05ec26af0b"
 #noinspection NewerVersionAvailable
 ecj = "3.26.0"
@@ -86,6 +87,7 @@ insetter = { module = "dev.chrisbanes.insetter:insetter", version.ref = "insette
 
 javaparser-symbol-solver = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaparserSymbolSolver" }
 libsu = { module = "com.github.topjohnwu.libsu:core", version.ref = "libsu" }
+libadb = { module = "com.github.MuntashirAkon:libadb-android", version.ref = "libadb" }
 dependencyresolver = { module = "com.github.Cosmic-Ide:DependencyResolver", version.ref = "dependencyresolver" }
 filepicker = { module = "com.github.PranavPurwar:filepicker", version.ref = "filepicker" }
 

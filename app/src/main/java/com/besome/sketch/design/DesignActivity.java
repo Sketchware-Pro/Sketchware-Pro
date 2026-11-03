@@ -118,6 +118,10 @@ import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
 import pro.sketchware.R;
+import pro.sketchware.activities.debug.RemoteDebugActivity;
+import pro.sketchware.core.debug.RemoteDebugManager;
+import pro.sketchware.core.debug.RemoteDebugSettings;
+import pro.sketchware.core.debug.RemoteDeviceTarget;
 import pro.sketchware.activities.appcompat.ManageAppCompatActivity;
 import pro.sketchware.activities.editor.command.ManageXMLCommandActivity;
 import pro.sketchware.activities.editor.view.CodeViewerActivity;
@@ -357,6 +361,25 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      * Opens the debug APK to install.
      */
     private void installBuiltApk() {
+        RemoteDebugSettings settings = new RemoteDebugSettings(this);
+        if (settings.isRemote(sc_id)) {
+            try {
+                installBuiltApk(settings.getTarget());
+            } catch (IllegalArgumentException missingDevice) {
+                SketchwareUtil.toast(getString(R.string.remote_debug_configure));
+                toRemoteDebug();
+            }
+        } else installBuiltApk(null);
+    }
+
+    private void installBuiltApk(RemoteDeviceTarget runTarget) {
+        if (runTarget != null) {
+            if (!RemoteDebugManager.get(this).deploy(runTarget, new File(q.finalToInstallApkPath), q.packageName)) {
+                SketchwareUtil.toast(getString(R.string.remote_debug_busy));
+            }
+            toRemoteDebug();
+            return;
+        }
         if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOT_AUTO_INSTALL_PROJECTS)) {
             requestPackageInstallerInstall();
         } else {
@@ -490,7 +513,22 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 return;
             }
 
-            BuildTask buildTask = new BuildTask(this);
+            RemoteDeviceTarget runTarget = null;
+            RemoteDebugSettings settings = new RemoteDebugSettings(this);
+            if (settings.isRemote(sc_id)) {
+                if (RemoteDebugManager.get(this).isBusy()) {
+                    SketchwareUtil.toast(getString(R.string.remote_debug_busy));
+                    return;
+                }
+                try {
+                    runTarget = settings.getTarget();
+                } catch (IllegalArgumentException missingDevice) {
+                    SketchwareUtil.toast(getString(R.string.remote_debug_configure));
+                    toRemoteDebug();
+                    return;
+                }
+            }
+            BuildTask buildTask = new BuildTask(this, runTarget);
             currentBuildTask = buildTask;
             buildTask.execute();
         });
@@ -500,6 +538,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
         bottomPopupMenu = new PopupMenu(this, btnOptions);
         bottomMenu = bottomPopupMenu.getMenu();
+        bottomMenu.add(Menu.NONE, 9, Menu.NONE, getString(R.string.remote_debug_title)).setOnMenuItemClickListener(item -> {
+            toRemoteDebug();
+            return true;
+        });
         bottomMenu.add(Menu.NONE, 1, Menu.NONE, "Build Settings").setOnMenuItemClickListener(item -> {
             BuildSettingsBottomSheet sheet = BuildSettingsBottomSheet.newInstance(sc_id);
             sheet.show(getSupportFragmentManager(), BuildSettingsBottomSheet.TAG);
@@ -912,8 +954,17 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      */
     void toLogReader() {
         Intent intent = new Intent(getApplicationContext(), LogReaderActivity.class);
+        intent.putExtra(LogReaderActivity.EXTRA_REMOTE, new RemoteDebugSettings(this).isRemote(sc_id));
+        intent.putExtra("package_name", q.packageName);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
+        startActivity(intent);
+    }
+
+    private void toRemoteDebug() {
+        Intent intent = new Intent(this, RemoteDebugActivity.class);
+        intent.putExtra("sc_id", sc_id);
+        intent.putExtra("package_name", q.packageName);
         startActivity(intent);
     }
 
@@ -1078,6 +1129,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     private static class BuildTask extends BaseTask implements BuildProgressReceiver {
+        private final RemoteDeviceTarget runTarget;
         public static final String ACTION_CANCEL_BUILD = "com.besome.sketch.design.ACTION_CANCEL_BUILD";
         private static final String CHANNEL_ID = "build_notification_channel";
         private final ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -1093,8 +1145,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private boolean isShowingNotification = false;
         private FloatingProgressWindow fProgress;
 
-        public BuildTask(DesignActivity activity) {
+        public BuildTask(DesignActivity activity, RemoteDeviceTarget runTarget) {
             super(activity);
+            this.runTarget = runTarget;
             notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
             btnRun = activity.btnRun;
             btnOptions = activity.btnOptions;
@@ -1240,7 +1293,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 }
 
                 activity.runOnUiThread(() -> AnalyticsHelper.logExportProject(activity, "debug_apk", activity.sc_id, true));
-                activity.installBuiltApk();
+                activity.runOnUiThread(() -> {
+                    if (!activity.isFinishing() && !activity.isDestroyed()) activity.installBuiltApk(runTarget);
+                });
                 isBuildFinished = true;
             } catch (MissingFileException e) {
                 activity.runOnUiThread(() -> AnalyticsHelper.logExportProject(activity, "debug_apk", activity.sc_id, false));

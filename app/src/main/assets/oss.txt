@@ -68,6 +68,14 @@ We are deeply grateful to these developers for their work and contributions.
 
 Libraries added with Sketchware Pro
 
+* LibADB Android 3.1.1
+
+    https://github.com/MuntashirAkon/libadb-android
+    Copyright 2021 Muntashir Al-Islam
+    GPL-3.0-or-later OR Apache-2.0; used under Apache-2.0
+    No changes made. Includes Spake2-Java 2.2.1 (LGPL-3.0) and Bouncy Castle.
+    Spake2-Java source: https://github.com/MuntashirAkon/spake2-java/tree/2.2.1
+
 * R8
 
 	https://r8.googlesource.com
