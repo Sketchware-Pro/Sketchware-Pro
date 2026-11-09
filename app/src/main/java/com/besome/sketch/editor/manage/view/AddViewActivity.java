@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +56,18 @@ public class AddViewActivity extends BaseAppCompatActivity {
     private FeaturesAdapter featuresAdapter;
     private ArrayList<String> screenNames;
     private ManageScreenActivityAddTempBinding binding;
+
+    public final ActivityResultLauncher<Intent> presetSelectionLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    ProjectFileBean presetData = result.getData().getParcelableExtra("preset_data");
+                    if (presetData != null) {
+                        presetName = presetData.presetName;
+                        initItem(presetData.options);
+                        initializeItems();
+                    }
+                }
+            });
 
     private void handleFeatureAnimation(FeatureItem featureItem) {
         int type = featureItem.type;
@@ -177,16 +191,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
         featuresAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 276 && resultCode == RESULT_OK) {
-            ProjectFileBean presetData = data.getParcelableExtra("preset_data");
-            presetName = presetData.presetName;
-            initItem(presetData.options);
-            initializeItems();
-        }
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
@@ -29,6 +32,16 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
     private YB viewNameValidator;
     private String presetName;
 
+    private final ActivityResultLauncher<Intent> presetSettingLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    ProjectFileBean presetData = result.getData().getParcelableExtra("preset_data");
+                    if (presetData != null) {
+                        presetName = presetData.presetName;
+                    }
+                }
+            });
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +61,7 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
         super.s.setOnClickListener(this);
     }
 
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQ_CD_PRESET_ACTIVITY && resultCode == RESULT_OK) {
-            presetName = ((ProjectFileBean) Objects.requireNonNull(data.getParcelableExtra("preset_data"))).presetName;
-        }
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -76,7 +83,7 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
         } else if (id == R.id.common_dialog_default_button) {
             Intent intent = new Intent(getApplicationContext(), PresetSettingActivity.class);
             intent.putExtra("request_code", REQ_CD_PRESET_ACTIVITY);
-            startActivityForResult(intent, REQ_CD_PRESET_ACTIVITY);
+            presetSettingLauncher.launch(intent);
         } else if (id == R.id.common_dialog_cancel_button) {
             finish();
         }

@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +39,28 @@ public class Fw extends qA {
     private String sc_id;
     private String isAppCompatUsed = "N";
     private ArrayList<ProjectFileBean> activitiesFiles;
+
+    private final ActivityResultLauncher<Intent> addViewActivityLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    b(result.getData().getParcelableExtra("project_file"));
+                    if (projectFilesAdapter != null) {
+                        projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
+                    }
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> presetActivityLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    ProjectFileBean projectFileBean = result.getData().getParcelableExtra("preset_data");
+                    b(projectFileBean);
+                    c(projectFileBean);
+                    if (projectFilesAdapter != null) {
+                        projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
+                    }
+                }
+            });
 
     public final String a(int beanType, String xmlName) {
         String baseName = wq.b(beanType);
@@ -199,21 +223,7 @@ public class Fw extends qA {
         g();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_ADD_VIEW_ACTIVITY) {
-            if (resultCode == Activity.RESULT_OK) {
-                b(data.getParcelableExtra("project_file"));
-                projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
-            }
-        } else if (requestCode == REQUEST_CODE_PRESET_ACTIVITY && resultCode == Activity.RESULT_OK) {
-            ProjectFileBean projectFileBean = data.getParcelableExtra("preset_data");
-            b(projectFileBean);
-            c(projectFileBean);
-            projectFilesAdapter.notifyItemChanged(projectFilesAdapter.layoutPosition);
-        }
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -312,7 +322,7 @@ public class Fw extends qA {
                             Intent intent = new Intent(getContext(), AddViewActivity.class);
                             intent.putExtra("project_file", projectFileBean);
                             intent.putExtra("request_code", REQUEST_CODE_ADD_VIEW_ACTIVITY);
-                            startActivityForResult(intent, REQUEST_CODE_ADD_VIEW_ACTIVITY);
+                            addViewActivityLauncher.launch(intent);
                         }
                     }
                 });
@@ -337,7 +347,7 @@ public class Fw extends qA {
                         Intent intent = new Intent(getContext(), PresetSettingActivity.class);
                         intent.putExtra("request_code", REQUEST_CODE_PRESET_ACTIVITY);
                         intent.putExtra("edit_mode", true);
-                        startActivityForResult(intent, REQUEST_CODE_PRESET_ACTIVITY);
+                        presetActivityLauncher.launch(intent);
                     }
                 });
             }

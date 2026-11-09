@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +33,37 @@ public class xw extends qA {
     private boolean hasSelection = false;
 
     private FrManageViewListBinding binding;
+
+    private final ActivityResultLauncher<Intent> presetSettingLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == -1 && result.getData() != null && adapter != null) {
+                    Intent var3 = result.getData();
+                    ProjectFileBean var4 = h.get(adapter.layoutPosition);
+                    ArrayList<ViewBean> var5 = jC.a(g).d(var4.getXmlName());
+
+                    for (int var7 = var5.size() - 1; var7 >= 0; --var7) {
+                        ViewBean var6 = var5.get(var7);
+                        jC.a(g).a(var4, var6);
+                    }
+
+                    int reqCode = (var4.fileType == 1) ? 277 : 278;
+                    ProjectFileBean presetBean = var3.getParcelableExtra("preset_data");
+                    if (presetBean != null) {
+                        ArrayList<ViewBean> var8 = a(presetBean.presetName, reqCode);
+                        jC.a(g);
+
+                        for (ViewBean viewBean : eC.a(var8)) {
+                            viewBean.id = a(viewBean.type, var4.getXmlName());
+                            jC.a(g).a(var4.getXmlName(), viewBean);
+                            if (viewBean.type == 3 && var4.fileType == 0) {
+                                jC.a(g).a(var4.getJavaName(), 1, viewBean.type, viewBean.id, "onClick");
+                            }
+                        }
+
+                        adapter.notifyItemChanged(adapter.layoutPosition);
+                    }
+                }
+            });
 
     private String a(int beanType, String xmlName) {
         String baseName = wq.b(beanType);
@@ -188,32 +221,7 @@ public class xw extends qA {
         g();
     }
 
-    @Override
-    public void onActivityResult(int var1, int var2, Intent var3) {
-        if ((var1 == 277 || var1 == 278) && var2 == -1) {
-            ProjectFileBean var4 = h.get(adapter.layoutPosition);
-            ArrayList<ViewBean> var5 = jC.a(g).d(var4.getXmlName());
 
-            for (int var7 = var5.size() - 1; var7 >= 0; --var7) {
-                ViewBean var6 = var5.get(var7);
-                jC.a(g).a(var4, var6);
-            }
-
-            ArrayList<ViewBean> var8 = a(((ProjectFileBean) var3.getParcelableExtra("preset_data")).presetName, var1);
-            jC.a(g);
-
-            for (ViewBean viewBean : eC.a(var8)) {
-                viewBean.id = a(viewBean.type, var4.getXmlName());
-                jC.a(g).a(var4.getXmlName(), viewBean);
-                if (viewBean.type == 3 && var4.fileType == 0) {
-                    jC.a(g).a(var4.getJavaName(), 1, viewBean.type, viewBean.id, "onClick");
-                }
-            }
-
-            adapter.notifyItemChanged(adapter.layoutPosition);
-        }
-
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -341,7 +349,7 @@ public class xw extends qA {
 
                         intent.putExtra("request_code", requestCode);
                         intent.putExtra("edit_mode", true);
-                        startActivityForResult(intent, requestCode);
+                        presetSettingLauncher.launch(intent);
                     }
                 });
             }

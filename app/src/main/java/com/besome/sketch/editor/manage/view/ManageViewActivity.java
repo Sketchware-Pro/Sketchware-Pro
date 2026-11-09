@@ -12,6 +12,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -56,6 +58,39 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     private xw customViewsFragment;
     private ViewPager viewPager;
     private String sc_id;
+
+    private final ActivityResultLauncher<Intent> addActivityLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    ProjectFileBean projectFileBean = data.getParcelableExtra("project_file");
+                    activitiesFragment.a(projectFileBean);
+                    if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
+                        b(projectFileBean.getDrawerName());
+                    }
+
+                    if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) || projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
+                        jC.c(sc_id).c().useYn = "Y";
+                    }
+
+                    if (data.hasExtra("preset_views")) {
+                        a(projectFileBean, data.getParcelableArrayListExtra("preset_views"));
+                    }
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> addCustomViewLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    ProjectFileBean projectFileBean = data.getParcelableExtra("project_file");
+                    customViewsFragment.a(projectFileBean);
+                    customViewsFragment.g();
+                    if (data.hasExtra("preset_views")) {
+                        a(projectFileBean, data.getParcelableArrayListExtra("preset_views"));
+                    }
+                }
+            });
 
     public final String a(int var1, String var2) {
         String var3 = wq.b(var1);
@@ -182,35 +217,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         jC.a(sc_id).a(jC.b(sc_id));
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        ProjectFileBean projectFileBean;
-        if (requestCode == REQUEST_CODE_ADD_ACTIVITY) {
-            if (resultCode == RESULT_OK) {
-                projectFileBean = data.getParcelableExtra("project_file");
-                activitiesFragment.a(projectFileBean);
-                if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-                    b(projectFileBean.getDrawerName());
-                }
 
-                if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) || projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
-                    jC.c(sc_id).c().useYn = "Y";
-                }
-
-                if (data.hasExtra("preset_views")) {
-                    a(projectFileBean, data.getParcelableArrayListExtra("preset_views"));
-                }
-            }
-        } else if (requestCode == REQUEST_CODE_ADD_CUSTOM_VIEW && resultCode == RESULT_OK) {
-            projectFileBean = data.getParcelableExtra("project_file");
-            customViewsFragment.a(projectFileBean);
-            customViewsFragment.g();
-            if (data.hasExtra("preset_views")) {
-                a(projectFileBean, data.getParcelableArrayListExtra("preset_views"));
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -254,8 +261,10 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
                 intent.putStringArrayListExtra("screen_names", l());
                 if (isActivitiesTab) {
                     intent.putExtra("request_code", REQUEST_CODE_ADD_ACTIVITY);
+                    addActivityLauncher.launch(intent);
+                } else {
+                    addCustomViewLauncher.launch(intent);
                 }
-                startActivityForResult(intent, isActivitiesTab ? REQUEST_CODE_ADD_ACTIVITY : REQUEST_CODE_ADD_CUSTOM_VIEW);
             }
         }
     }
