@@ -66,3 +66,7 @@ fastlane/readme.md
 .androidide/
 /actions-runner
 release/
+
+# Agent & skill configs
+.agents/
+skills-lock.json
