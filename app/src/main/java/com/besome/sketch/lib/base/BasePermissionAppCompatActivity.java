@@ -2,8 +2,9 @@ package com.besome.sketch.lib.base;
 
 import android.Manifest;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -14,6 +15,32 @@ import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
 public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActivity {
+
+    private int pendingRequestCode;
+
+    private final ActivityResultLauncher<String[]> storagePermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), permissions -> {
+                boolean allGranted = !permissions.isEmpty();
+                for (Boolean granted : permissions.values()) {
+                    if (granted == null || !granted) {
+                        allGranted = false;
+                        break;
+                    }
+                }
+                if (allGranted) {
+                    g(pendingRequestCode);
+                } else {
+                    j(pendingRequestCode);
+                }
+            });
+
+    public void requestStoragePermission(int requestCode) {
+        pendingRequestCode = requestCode;
+        storagePermissionLauncher.launch(new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        });
+    }
 
     public boolean f(int i) {
         boolean j = isStoragePermissionGranted();
@@ -35,12 +62,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
             dialog.setMessage(Helper.getResString(R.string.common_message_permission_storage));
             dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
                 if (!mB.a()) {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE
-                            },
-                            i);
+                    requestStoragePermission(i);
                     v.dismiss();
                 }
             });
@@ -66,21 +88,6 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
     public abstract void l();
 
     public abstract void m();
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        for (String str : permissions) {
-            if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(str)) {
-                if (grantResults.length > 0 && grantResults[0] == 0 && grantResults[1] == 0) {
-                    g(requestCode);
-                } else {
-                    j(requestCode);
-                    return;
-                }
-            }
-        }
-    }
 
     public void j(int i) {
         if (!Sp.a) {
