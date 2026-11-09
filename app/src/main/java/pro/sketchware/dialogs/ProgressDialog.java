@@ -17,6 +17,7 @@ public class ProgressDialog {
     private final Context context;
     private final ProgressMsgBoxBinding binding;
     private boolean isCancelable = true;
+    private DialogInterface.OnCancelListener onCancelListener;
 
     private AlertDialog dialog;
 
@@ -30,6 +31,7 @@ public class ProgressDialog {
     }
 
     public void setOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
+        this.onCancelListener = onCancelListener;
         if (dialog != null) dialog.setOnCancelListener(onCancelListener);
     }
 
@@ -39,8 +41,11 @@ public class ProgressDialog {
             dialogBuilder.setTitle(getStr(R.string.common_message_loading));
             dialogBuilder.setView(binding.getRoot());
             dialog = dialogBuilder.create();
-            dialog.setCancelable(false);
+            dialog.setCancelable(isCancelable);
             dialog.setCanceledOnTouchOutside(false);
+            if (onCancelListener != null) {
+                dialog.setOnCancelListener(onCancelListener);
+            }
         }
         dialog.show();
     }
@@ -59,6 +64,9 @@ public class ProgressDialog {
 
     public void setCancelable(boolean isCancelable) {
         this.isCancelable = isCancelable;
+        if (dialog != null) {
+            dialog.setCancelable(isCancelable);
+        }
     }
 
     private String getStr(@StringRes int resId) {
