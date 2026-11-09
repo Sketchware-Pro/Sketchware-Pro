@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +45,13 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     private ProjectLibraryBean admobLibraryBean;
     private String sc_id;
     private ManageLibraryManageAdmobBinding binding;
+
+    private final ActivityResultLauncher<Intent> admobActivityLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    initializeLibrary(result.getData().getParcelableExtra("admob"));
+                }
+            });
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         admobLibraryBean = libraryBean;
@@ -128,26 +137,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case 236:
-                    initializeLibrary(data.getParcelableExtra("admob"));
-                    break;
 
-                case REQUEST_CODE_ENABLE_ADMOB:
-                    binding.libSwitch.setChecked(true);
-                    admobLibraryBean.useYn = "Y";
-                    break;
-
-                case REQUEST_CODE_ADMOB_SETTINGS:
-                    toAdmobActivity();
-                    break;
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -285,7 +275,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("admob", admobLibraryBean);
-        startActivityForResult(intent, 236);
+        admobActivityLauncher.launch(intent);
     }
 
     private void configure() {

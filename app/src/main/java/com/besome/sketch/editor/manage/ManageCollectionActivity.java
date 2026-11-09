@@ -17,6 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -99,11 +101,29 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private FloatingActionButton fab;
     private String sc_id;
 
+    private final ActivityResultLauncher<Intent> imageCollectionLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> loadImages());
+
+    private final ActivityResultLauncher<Intent> soundCollectionLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> loadSounds());
+
+    private final ActivityResultLauncher<Intent> fontCollectionLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> loadFonts());
+
+    private final ActivityResultLauncher<Intent> widgetDetailsLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> loadWidgets());
+
+    private final ActivityResultLauncher<Intent> blockDetailsLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> loadBlocks());
+
+    private final ActivityResultLauncher<Intent> moreBlockDetailsLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> loadMoreBlocks());
+
     private void showAddImageDialog() {
         Intent intent = new Intent(getApplicationContext(), AddImageCollectionActivity.class);
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
-        startActivityForResult(intent, REQUEST_CODE_ADD_IMAGE_DIALOG);
+        imageCollectionLauncher.launch(intent);
     }
 
     private void showAddSoundDialog() {
@@ -111,7 +131,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         Intent intent = new Intent(getApplicationContext(), AddSoundCollectionActivity.class);
         intent.putParcelableArrayListExtra("sounds", sounds);
         intent.putExtra("sc_id", sc_id);
-        startActivityForResult(intent, REQUEST_CODE_ADD_SOUND_DIALOG);
+        soundCollectionLauncher.launch(intent);
     }
 
     private void showAddFontDialog() {
@@ -119,7 +139,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         intent.putParcelableArrayListExtra("font_names", fonts);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("add_to_collection", true);
-        startActivityForResult(intent, REQUEST_CODE_ADD_FONT_DIALOG);
+        fontCollectionLauncher.launch(intent);
     }
 
     private int getBlockIcon(BlockBean block) {
@@ -167,7 +187,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("edit_target", editTarget);
-        startActivityForResult(intent, REQUEST_CODE_SHOW_IMAGE_DETAILS);
+        imageCollectionLauncher.launch(intent);
     }
 
     private void openSoundDetails(int position) {
@@ -177,7 +197,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         intent.putParcelableArrayListExtra("sounds", sounds);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("edit_target", editTarget);
-        startActivityForResult(intent, REQUEST_CODE_SHOW_SOUND_DETAILS);
+        soundCollectionLauncher.launch(intent);
     }
 
     private void openFontDetails(int position) {
@@ -186,7 +206,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         intent.putParcelableArrayListExtra("fonts", fonts);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("edit_target", editTarget);
-        startActivityForResult(intent, REQUEST_CODE_SHOW_FONT_DETAILS);
+        fontCollectionLauncher.launch(intent);
     }
 
     private void openWidgetDetails(int position) {
@@ -194,21 +214,21 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         Intent intent = new Intent(getApplicationContext(), ShowWidgetCollectionActivity.class);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("widget_name", widgetName);
-        startActivityForResult(intent, REQUEST_CODE_SHOW_WIDGET_DETAILS);
+        widgetDetailsLauncher.launch(intent);
     }
 
     private void openBlockDetails(int position) {
         String blockName = Mp.h().g().get(position);
         Intent intent = new Intent(getApplicationContext(), ShowBlockCollectionActivity.class);
         intent.putExtra("block_name", blockName);
-        startActivityForResult(intent, REQUEST_CODE_SHOW_BLOCK_DETAILS);
+        blockDetailsLauncher.launch(intent);
     }
 
     private void openMoreBlockDetails(int position) {
         String blockName = Pp.h().g().get(position);
         Intent intent = new Intent(getApplicationContext(), ShowMoreBlockCollectionActivity.class);
         intent.putExtra("block_name", blockName);
-        startActivityForResult(intent, REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS);
+        moreBlockDetailsLauncher.launch(intent);
     }
 
     private int getSelectedIndex(int id) {
@@ -390,19 +410,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_CODE_ADD_IMAGE_DIALOG, REQUEST_CODE_SHOW_IMAGE_DETAILS -> loadImages();
-            case REQUEST_CODE_ADD_SOUND_DIALOG, REQUEST_CODE_SHOW_SOUND_DETAILS -> loadSounds();
-            case REQUEST_CODE_ADD_FONT_DIALOG, REQUEST_CODE_SHOW_FONT_DETAILS -> loadFonts();
-            case REQUEST_CODE_SHOW_WIDGET_DETAILS -> loadWidgets();
-            case REQUEST_CODE_SHOW_BLOCK_DETAILS -> loadBlocks();
-            case REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS -> loadMoreBlocks();
-        }
 
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     @Override
     public void onBackPressed() {
