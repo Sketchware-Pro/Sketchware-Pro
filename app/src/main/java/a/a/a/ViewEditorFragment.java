@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
 import com.besome.sketch.beans.HistoryViewBean;
@@ -46,6 +48,24 @@ public class ViewEditorFragment extends qA {
     private String sc_id;
 
     private WidgetsCreatorManager widgetsCreatorManager;
+
+    private final ActivityResultLauncher<Intent> propertyActivityLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                Intent data = result.getData();
+                if (result.getResultCode() == -1 && data != null) {
+                    c(data.getParcelableExtra("bean"));
+                }
+
+                if (data != null && data.getBooleanExtra("is_edit_image", false)) {
+                    for (ViewBean viewBean : jC.a(sc_id).d(projectFileBean.getXmlName())) {
+                        c(viewBean);
+                    }
+                    if (isFabEnabled) {
+                        c(jC.a(sc_id).h(projectFileBean.getXmlName()));
+                    }
+                }
+                invalidateOptionsMenu();
+            });
 
     public ViewEditorFragment() {
     }
@@ -241,7 +261,7 @@ public class ViewEditorFragment extends qA {
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("bean", viewBean);
         intent.putExtra("project_file", projectFileBean);
-        startActivityForResult(intent, 213);
+        propertyActivityLauncher.launch(intent);
     }
 
     private void b(ArrayList<ViewBean> viewBeans) {
@@ -487,25 +507,7 @@ public class ViewEditorFragment extends qA {
         invalidateOptionsMenu();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 213) {
-            if (resultCode == -1) {
-                c(data.getParcelableExtra("bean"));
-            }
 
-            if (data != null && data.getBooleanExtra("is_edit_image", false)) {
-                for (ViewBean viewBean : jC.a(sc_id).d(projectFileBean.getXmlName())) {
-                    c(viewBean);
-                }
-                if (isFabEnabled) {
-                    c(jC.a(sc_id).h(projectFileBean.getXmlName()));
-                }
-            }
-            invalidateOptionsMenu();
-        }
-    }
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfiguration) {

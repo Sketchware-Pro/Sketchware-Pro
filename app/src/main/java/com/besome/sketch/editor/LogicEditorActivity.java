@@ -148,6 +148,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public LogicEditorBinding binding;
     private final Handler handler = new Handler();
+
+    private final ActivityResultLauncher<Intent> makeBlockLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    c(data.getStringExtra("block_name"), data.getStringExtra("block_spec"));
+                }
+            });
     private final int[] v = new int[2];
     private final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
     public ProjectFileBean M;
@@ -1842,18 +1850,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return true;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == 222) {
-                c(data.getStringExtra("block_name"), data.getStringExtra("block_spec"));
-            } else if (requestCode == 224) {
-                a(7, 0xff2ca5e2);
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -1892,7 +1889,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     intent.putExtra("sc_id", scId);
                     intent.putExtra("project_file", M);
                     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivityForResult(intent, 222);
+                    makeBlockLauncher.launch(intent);
                 } else if (tag.equals("componentAdd")) {
                     AddComponentBottomSheet addComponentBottomSheet = AddComponentBottomSheet.newInstance(scId, M, () -> a(7, 0xff2ca5e2));
                     addComponentBottomSheet.show(getSupportFragmentManager(), null);

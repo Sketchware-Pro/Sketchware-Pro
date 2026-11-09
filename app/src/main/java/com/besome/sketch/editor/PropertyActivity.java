@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
@@ -58,6 +60,19 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     private int layoutPosition;
 
     private LinearLayout content;
+
+    private final ActivityResultLauncher<Intent> manageImageLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                Intent data = result.getData();
+                if (result.getResultCode() == RESULT_OK && jC.d(sc_id) != null && data != null) {
+                    String var4 = data.getStringExtra("sc_id");
+                    ArrayList<ProjectResourceBean> resList = data.getParcelableArrayListExtra("result");
+                    if (jC.d(var4) != null) {
+                        jC.d(var4).b(resList);
+                        m();
+                    }
+                }
+            });
 
     @Override
     public void a(String var1, Object var2) {
@@ -135,19 +150,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         finish();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 209 && resultCode == -1 && jC.d(sc_id) != null && data != null) {
-            String var4 = data.getStringExtra("sc_id");
-            ArrayList<ProjectResourceBean> result = data.getParcelableArrayListExtra("result");
-            if (jC.d(var4) != null) {
-                jC.d(var4).b(result);
-                m();
-            }
-        }
 
-    }
 
     @Override
     public void onBackPressed() {
@@ -250,7 +253,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         Intent var1 = new Intent(getApplicationContext(), ManageImageActivity.class);
         var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         var1.putExtra("sc_id", sc_id);
-        startActivityForResult(var1, 209);
+        manageImageLauncher.launch(var1);
     }
 
     public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {

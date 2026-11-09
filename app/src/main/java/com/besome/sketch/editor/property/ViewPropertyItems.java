@@ -16,6 +16,7 @@ import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.PropertyActivity;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 
 import java.util.ArrayList;
@@ -1088,10 +1089,14 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
     @Override
     public void onClick(View v) {
         if (!mB.a() && !b) {
-            Intent intent = new Intent(getContext(), ManageImageActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.putExtra("sc_id", sc_id);
-            ((Activity) getContext()).startActivityForResult(intent, 209);
+            if (getContext() instanceof PropertyActivity) {
+                ((PropertyActivity) getContext()).p();
+            } else if (getContext() instanceof Activity) {
+                Intent intent = new Intent(getContext(), ManageImageActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("sc_id", sc_id);
+                getContext().startActivity(intent);
+            }
         }
     }
 }
