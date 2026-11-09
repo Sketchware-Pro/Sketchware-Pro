@@ -19,6 +19,8 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
@@ -70,6 +72,60 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
     private String iconFilePath;
     private String texturesFilePath;
     private Bitmap appIconBitmap;
+
+    private final ActivityResultLauncher<Intent> pickIconLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                Intent data = result.getData();
+                if (data == null) {
+                    SketchwareUtil.toastError("Received invalid data");
+                    return;
+                }
+                Uri uri = data.getData();
+                if (result.getResultCode() == RESULT_OK && uri != null) {
+                    iconFilePath = HB.a(getApplicationContext(), uri);
+                    appIconBitmap = null;
+                    Bitmap bitmap = iB.a(iconFilePath, 96, 96);
+                    try {
+                        int attributeInt = new ExifInterface(iconFilePath).getAttributeInt("Orientation", -1);
+                        Bitmap newBitmap = iB.a(bitmap, attributeInt != 3 ? attributeInt != 6 ? attributeInt != 8 ? 0 : 270 : 90 : 180);
+                        BitmapDrawable bd = new BitmapDrawable(getResources(), newBitmap);
+                        binding.appIcoImg.setBackground(bd);
+                    } catch (Exception ignored) {
+                    }
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> pickCroppedIconLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                Intent data = result.getData();
+                if (data == null) {
+                    SketchwareUtil.toastError("Received invalid data");
+                    return;
+                }
+                Bundle extras = data.getExtras();
+                if (result.getResultCode() == RESULT_OK && extras != null) {
+                    try {
+                        appIconBitmap = extras.getParcelable("data");
+                        iconFilePath = null;
+                        BitmapDrawable bd = new BitmapDrawable(getResources(), appIconBitmap);
+                        binding.appIcoImg.setBackground(bd);
+                    } catch (Exception ignored) {
+                    }
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> pickTextureLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                Intent data = result.getData();
+                if (data == null) {
+                    SketchwareUtil.toastError("Received invalid data");
+                    return;
+                }
+                Uri uri = data.getData();
+                if (result.getResultCode() == RESULT_OK && uri != null) {
+                    setAppIcoTexture(HB.a(getApplicationContext(), uri));
+                }
+            });
 
     private void saveBitmapTo(Bitmap bitmap, String path) {
         FileUtil.makeDir(path.substring(0, path.lastIndexOf(File.separator)));
@@ -272,7 +328,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
             }
         });
 
-        binding.texture4.setOnClickListener(view -> pickCustomIcon(712));
+        binding.texture4.setOnClickListener(view -> pickCustomIcon(pickTextureLauncher));
 
         binding.cornersSlider.addOnChangeListener((slider, value, fromUser) -> {
             binding.appIcoCard.setRadius(value);
@@ -371,47 +427,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         loadSavedData();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data == null) {
-            SketchwareUtil.toastError("Received invalid data");
-            return;
-        }
-        Uri uri = data.getData();
-        if (requestCode == REQUEST_CODE_PICK_ICON) {
-            if (resultCode == RESULT_OK && uri != null) {
-                iconFilePath = HB.a(getApplicationContext(), uri);
-                appIconBitmap = null;
-                Bitmap bitmap = iB.a(iconFilePath, 96, 96);
-                try {
-                    int attributeInt = new ExifInterface(iconFilePath).getAttributeInt("Orientation", -1);
-                    Bitmap newBitmap = iB.a(bitmap, attributeInt != 3 ? attributeInt != 6 ? attributeInt != 8 ? 0 : 270 : 90 : 180);
-                    BitmapDrawable bd = new BitmapDrawable(getResources(), newBitmap);
-                    binding.appIcoImg.setBackground(bd);
-                } catch (Exception ignored) {
 
-                }
-            }
-        } else {
-            Bundle extras = data.getExtras();
-            if (requestCode == REQUEST_CODE_PICK_CROPPED_ICON && resultCode == RESULT_OK && extras != null) {
-                try {
-                    appIconBitmap = extras.getParcelable("data");
-                    iconFilePath = null;
-                    BitmapDrawable bd = new BitmapDrawable(getResources(), appIconBitmap);
-                    binding.appIcoImg.setBackground(bd);
-                } catch (Exception ignored) {
-                }
-            }
-
-            if (requestCode == 712) {
-                if (resultCode == RESULT_OK && uri != null) {
-                    setAppIcoTexture(HB.a(getApplicationContext(), uri));
-                }
-            }
-        }
-    }
 
     private void setAppIcoTexture(String texturesFilePath) {
         this.texturesFilePath = texturesFilePath;
@@ -499,7 +515,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         return wq.e() + File.separator + sc_id + File.separator + "icon.png";
     }
 
-    private void pickCustomIcon(int code) {
+    private void pickCustomIcon(ActivityResultLauncher<Intent> launcher) {
         Uri uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon());
 
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -507,8 +523,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         intent.putExtra("output", uri);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
         intent.putExtra("return-data", true);
-        startActivityForResult(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)),
-                code);
+        launcher.launch(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)));
     }
 
     private void pickAndCropCustomIcon() {
@@ -529,8 +544,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         intent.putExtra("output", uri);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
         intent.putExtra("return-data", true);
-        startActivityForResult(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)),
-                REQUEST_CODE_PICK_CROPPED_ICON);
+        pickCroppedIconLauncher.launch(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)));
     }
 
     private void showCustomIconOptions() {
@@ -542,7 +556,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
                 Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery_default)
         }, (dialog, which) -> {
             switch (which) {
-                case 0 -> pickCustomIcon(REQUEST_CODE_PICK_ICON);
+                case 0 -> pickCustomIcon(pickIconLauncher);
                 case 1 -> pickAndCropCustomIcon();
                 case 2 -> binding.appIcoImg.setBackgroundResource(R.drawable.default_image);
             }

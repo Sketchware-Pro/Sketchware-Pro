@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.transition.AutoTransition;
@@ -76,6 +78,19 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private boolean shownPackageNameChangeWarning;
     private boolean isIconAdaptive;
     private Bitmap icon;
+
+    private final ActivityResultLauncher<Intent> createIconLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                Intent data = result.getData();
+                if (result.getResultCode() == RESULT_OK && data != null) {
+                    if (data.getParcelableExtra("appIco") != null) {
+                        icon = data.getParcelableExtra("appIco");
+                        isIconAdaptive = data.getBooleanExtra("isIconAdaptive", false);
+                        binding.appIcon.setImageBitmap(icon);
+                        projectHasCustomIcon = true;
+                    }
+                }
+            });
     private String sc_id;
 
     private ThemePresetAdapter themePresetAdapter;
@@ -199,24 +214,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         syncThemeColors();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data == null) {
-            return;
-        }
 
-        if (requestCode == REQUEST_CODE_CREATE_ICON && resultCode == RESULT_OK) {
-            if (data.getParcelableExtra("appIco") != null) {
-                icon = data.getParcelableExtra("appIco");
-
-                isIconAdaptive = data.getBooleanExtra("isIconAdaptive", false);
-                binding.appIcon.setImageBitmap(icon);
-                projectHasCustomIcon = true;
-            }
-        }
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -225,7 +223,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), IconCreatorActivity.class);
             intent.putExtra("sc_id", sc_id);
-            startActivityForResult(intent, REQUEST_CODE_CREATE_ICON);
+            createIconLauncher.launch(intent);
         } else if (id == R.id.ok_button) {
             mB.a(v);
             if (isInputValid()) {

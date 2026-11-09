@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -77,6 +79,14 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     @IdRes
     private int currentNavItemId = R.id.item_projects;
 
+    public final ActivityResultLauncher<Intent> programInfoLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                Intent data = result.getData();
+                if (result.getResultCode() == RESULT_OK && data != null) {
+                    DataResetter.a(this, data.getBooleanExtra("onlyConfig", true));
+                }
+            });
+
     private static boolean isFirebaseInitialized(Context context) {
         try {
             return FirebaseApp.getApps(context) != null && !FirebaseApp.getApps(context).isEmpty();
@@ -101,7 +111,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     public void h(int i) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
-        startActivityForResult(intent, i);
+        startActivity(intent);
     }
 
     @Override
@@ -118,35 +128,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case 105:
-                    DataResetter.a(this, data.getBooleanExtra("onlyConfig", true));
-                    break;
 
-                case 111:
-                    invalidateOptionsMenu();
-                    break;
-
-                case 113:
-                    if (data != null && data.getBooleanExtra("not_show_popup_anymore", false)) {
-                        u.a("U1I2", (Object) false);
-                    }
-                    break;
-
-                case 212:
-                    if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && isStoragePermissionGranted()) {
-                        if (activeFragment instanceof ProjectsFragment) {
-                            projectsFragment.refreshProjectsList();
-                        }
-                    }
-                    break;
-            }
-        }
-    }
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
