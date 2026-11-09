@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +38,13 @@ public class FontManagerFragment extends qA {
     public ArrayList<ProjectResourceBean> projectResourceBeans;
     private FrManageFontListBinding binding;
     private ManageFontBinding actBinding;
+
+    private final ActivityResultLauncher<Intent> fontImportLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    processProjectResources(result.getData().getParcelableArrayListExtra("results"));
+                }
+            });
 
     public void processProjectResources(ArrayList<ProjectResourceBean> resourceBeans) {
         if (resourceBeans == null || resourceBeans.isEmpty()) {
@@ -116,7 +125,7 @@ public class FontManagerFragment extends qA {
             Intent intent = new Intent(getActivity(), ManageFontImportActivity.class);
             intent.putParcelableArrayListExtra("project_fonts", fontCollection);
             intent.putParcelableArrayListExtra("selected_collections", selectedFonts);
-            startActivityForResult(intent, 232);
+            fontImportLauncher.launch(intent);
         }
 
         resetSelection();
@@ -140,13 +149,7 @@ public class FontManagerFragment extends qA {
         loadProjectResources();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 232 && resultCode == Activity.RESULT_OK && data != null) {
-            processProjectResources(data.getParcelableArrayListExtra("results"));
-        }
-    }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {

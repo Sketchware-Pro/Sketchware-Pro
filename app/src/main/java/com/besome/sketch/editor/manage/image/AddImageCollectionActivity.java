@@ -8,6 +8,9 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -61,6 +64,24 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
     private boolean editing = false;
     private ProjectResourceBean editTarget = null;
 
+    private final ActivityResultLauncher<Intent> imagePickerLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (preview != null) {
+                    preview.setEnabled(true);
+                }
+                Intent data = result.getData();
+                if (result.getResultCode() == RESULT_OK && data != null) {
+                    imageRotationDegrees = 0;
+                    imageScaleY = 1;
+                    imageScaleX = 1;
+                    z = true;
+                    setImageFromUri(data.getData());
+                    if (imageNameValidator != null) {
+                        imageNameValidator.a(1);
+                    }
+                }
+            });
+
     private void flipImageHorizontally() {
         if (imageFilePath != null && !imageFilePath.isEmpty()) {
             if (imageRotationDegrees != 90 && imageRotationDegrees != 270) {
@@ -83,23 +104,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 215 && preview != null) {
-            preview.setEnabled(true);
-            if (resultCode == RESULT_OK) {
-                imageRotationDegrees = 0;
-                imageScaleY = 1;
-                imageScaleX = 1;
-                z = true;
-                setImageFromUri(data.getData());
-                if (imageNameValidator != null) {
-                    imageNameValidator.a(1);
-                }
-            }
-        }
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -200,7 +205,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         try {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
-            startActivityForResult(Intent.createChooser(intent, getString(R.string.common_word_choose)), 215);
+            imagePickerLauncher.launch(Intent.createChooser(intent, getString(R.string.common_word_choose)));
         } catch (ActivityNotFoundException unused) {
             bB.b(this, getString(R.string.common_error_activity_not_found), bB.TOAST_NORMAL).show();
         }

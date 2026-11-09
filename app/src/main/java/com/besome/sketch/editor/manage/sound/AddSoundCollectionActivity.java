@@ -11,6 +11,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.bumptech.glide.Glide;
@@ -47,6 +50,23 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
 
     private ManageSoundAddBinding binding;
 
+    private final ActivityResultLauncher<Intent> soundPickerLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (binding.selectFile != null) {
+                    binding.selectFile.setEnabled(true);
+                }
+                Intent intent = result.getData();
+                if (result.getResultCode() == -1 && intent != null) {
+                    Uri data = intent.getData();
+                    if (data != null) {
+                        K = data;
+                        if (HB.a(this, K) != null) {
+                            a(data);
+                        }
+                    }
+                }
+            });
+
     @Override
     public void finish() {
         if (H != null) H.cancel();
@@ -76,23 +96,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         binding.play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
     }
 
-    @Override
-    public void onActivityResult(int i, int i2, Intent intent) {
-        MaterialCardView relativeLayout;
-        Uri data;
-        super.onActivityResult(i, i2, intent);
-        if (i == 218 && (relativeLayout = binding.selectFile) != null) {
-            relativeLayout.setEnabled(true);
-            if (i2 != -1 || (data = intent.getData()) == null) {
-                return;
-            }
-            K = data;
-            if (HB.a(this, K) == null) {
-                return;
-            }
-            a(data);
-        }
-    }
+
 
     @Override
     public void onClick(View view) {
@@ -182,7 +186,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     private void p() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT", MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("audio/*");
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.common_word_choose)), 218);
+        soundPickerLauncher.launch(Intent.createChooser(intent, getString(R.string.common_word_choose)));
     }
 
     private void q() {

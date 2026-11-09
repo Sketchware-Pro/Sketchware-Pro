@@ -16,6 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.bumptech.glide.Glide;
@@ -65,6 +68,20 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     private Timer timer = new Timer();
     private Uri soundUri = null;
     private boolean isSoundPlayable = false;
+
+    private final ActivityResultLauncher<Intent> soundPickerLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (selectFile != null) {
+                    selectFile.setEnabled(true);
+                }
+                Intent data = result.getData();
+                if (result.getResultCode() == Activity.RESULT_OK && data != null) {
+                    Uri intentData = data.getData();
+                    if (intentData != null) {
+                        playSound(intentData);
+                    }
+                }
+            });
     private boolean editingSound = false;
 
     @Override
@@ -85,7 +102,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     private void pickSound() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("audio/*");
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.common_word_choose)), REQUEST_CODE_SOUND_PICKER);
+        soundPickerLauncher.launch(Intent.createChooser(intent, getString(R.string.common_word_choose)));
     }
 
     private void playOrPause() {
@@ -98,18 +115,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE_SOUND_PICKER && selectFile != null) {
-            selectFile.setEnabled(true);
-            Uri intentData;
-            if (resultCode == Activity.RESULT_OK && (intentData = data.getData()) != null) {
-                playSound(intentData);
-            }
-        }
-    }
 
     @Override
     public void onClick(View v) {

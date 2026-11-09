@@ -9,6 +9,9 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -60,6 +63,44 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
     private int imageExifOrientation = 0;
     private int imageScaleY = 1;
     private int imageScaleX = 1;
+
+    private final ActivityResultLauncher<Intent> imagePickerLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (preview != null) {
+                    preview.setEnabled(true);
+                }
+                Intent data = result.getData();
+                if (result.getResultCode() == RESULT_OK && data != null) {
+                    tv_add_photo.setVisibility(View.GONE);
+                    imageRotationDegrees = 0;
+                    imageScaleY = 1;
+                    imageScaleX = 1;
+                    if (data.getClipData() == null) {
+                        B = true;
+                        multipleImagesPicked = false;
+                        setImageFromUri(data.getData());
+                        if (O != null) {
+                            O.a(1);
+                        }
+                    } else {
+                        ClipData clipData = data.getClipData();
+                        if (clipData.getItemCount() == 1) {
+                            B = true;
+                            multipleImagesPicked = false;
+                            setImageFromUri(clipData.getItemAt(0).getUri());
+                            if (O != null) {
+                                O.a(1);
+                            }
+                        } else {
+                            handleImagePickClipData(clipData);
+                            multipleImagesPicked = true;
+                            if (O != null) {
+                                O.a(clipData.getItemCount());
+                            }
+                        }
+                    }
+                }
+            });
     private String dir_path = "";
     private boolean editing = false;
     private ProjectResourceBean image = null;
@@ -75,43 +116,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 215 && preview != null) {
-            preview.setEnabled(true);
-            if (resultCode == RESULT_OK) {
-                tv_add_photo.setVisibility(View.GONE);
-                imageRotationDegrees = 0;
-                imageScaleY = 1;
-                imageScaleX = 1;
-                if (data.getClipData() == null) {
-                    B = true;
-                    multipleImagesPicked = false;
-                    setImageFromUri(data.getData());
-                    if (O != null) {
-                        O.a(1);
-                    }
-                } else {
-                    ClipData clipData = data.getClipData();
-                    if (clipData.getItemCount() == 1) {
-                        B = true;
-                        multipleImagesPicked = false;
-                        setImageFromUri(clipData.getItemAt(0).getUri());
-                        if (O != null) {
-                            O.a(1);
-                        }
-                    } else {
-                        handleImagePickClipData(clipData);
-                        multipleImagesPicked = true;
-                        if (O != null) {
-                            O.a(clipData.getItemCount());
-                        }
-                    }
-                }
-            }
-        }
-    }
+
 
     @Override
     public void onClick(View view) {
@@ -244,7 +249,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
             if (allowMultiple) {
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             }
-            startActivityForResult(Intent.createChooser(intent, getString(R.string.common_word_choose)), 215);
+            imagePickerLauncher.launch(Intent.createChooser(intent, getString(R.string.common_word_choose)));
         } catch (ActivityNotFoundException unused) {
             bB.b(this, getString(R.string.common_error_activity_not_found), bB.TOAST_NORMAL).show();
         }

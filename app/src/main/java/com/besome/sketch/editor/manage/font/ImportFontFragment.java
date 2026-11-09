@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +45,24 @@ public class ImportFontFragment extends qA {
     private FrManageFontListBinding binding;
     private fontAdapter adapter;
     private ManageFontBinding actBinding;
+
+    private final ActivityResultLauncher<Intent> addFontLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    ProjectResourceBean resourceBean = result.getData().getParcelableExtra("resource_bean");
+                    if (resourceBean != null) {
+                        projectResourceBeans.add(resourceBean);
+                        if (adapter != null) {
+                            adapter.notifyDataSetChanged();
+                        }
+                        toggleEmptyStateVisibility();
+                        if (getActivity() instanceof ManageFontActivity) {
+                            ((ManageFontActivity) getActivity()).collectionFontsFragment.loadProjectResources();
+                        }
+                        SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_add_complete));
+                    }
+                }
+            });
 
     public String getResourceFilePath(ProjectResourceBean resourceBean) {
         String resFullName = resourceBean.resFullName;
@@ -180,7 +200,7 @@ public class ImportFontFragment extends qA {
         Intent intent = new Intent(getContext(), AddFontActivity.class);
         intent.putExtra("sc_id", sc_id);
         intent.putStringArrayListExtra("font_names", getResourceNames());
-        startActivityForResult(intent, 271);
+        addFontLauncher.launch(intent);
     }
 
     @Override
@@ -206,27 +226,7 @@ public class ImportFontFragment extends qA {
         toggleEmptyStateVisibility();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        ProjectResourceBean resourceBean;
-        if (requestCode == 271 && resultCode == Activity.RESULT_OK) {
-            resourceBean = intent.getParcelableExtra("resource_bean");
-            projectResourceBeans.add(resourceBean);
-            adapter.notifyDataSetChanged();
-            toggleEmptyStateVisibility();
-            ((ManageFontActivity) requireActivity()).collectionFontsFragment.loadProjectResources();
-            SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_add_complete));
-        } else if (requestCode == 272 && resultCode == Activity.RESULT_OK) {
-            resourceBean = intent.getParcelableExtra("resource_bean");
-            projectResourceBeans.set(adapter.selectedPosition, resourceBean);
-            adapter.notifyDataSetChanged();
-            toggleEmptyStateVisibility();
-            ((ManageFontActivity) requireActivity()).collectionFontsFragment.loadProjectResources();
-            SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_edit_complete));
-        }
 
-    }
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration configuration) {
