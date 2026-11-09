@@ -15,6 +15,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
@@ -73,6 +74,21 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         fpu = new FilePathUtil();
         current_path = Uri.parse(fpu.getPathAssets(sc_id)).getPath();
 
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (Objects.equals(
+                        Uri.parse(current_path).getPath(),
+                        Uri.parse(fpu.getPathAssets(sc_id)).getPath()
+                )) {
+                    finish();
+                } else {
+                    current_path = current_path.substring(0, current_path.lastIndexOf(File.separator));
+                    refresh();
+                }
+            }
+        });
+
         refresh();
     }
 
@@ -101,19 +117,6 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
                 .translationY(isHide ? 0 : 300)
                 .alpha(isHide ? 1 : 0)
                 .setInterpolator(new OvershootInterpolator());
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (Objects.equals(
-                Uri.parse(current_path).getPath(),
-                Uri.parse(fpu.getPathAssets(sc_id)).getPath()
-        )) {
-            super.onBackPressed();
-        } else {
-            current_path = current_path.substring(0, current_path.lastIndexOf(File.separator));
-            refresh();
-        }
     }
 
     @SuppressLint("SetTextI18n")

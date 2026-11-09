@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -93,12 +94,6 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
     }
 
     @Override
-    public void onBackPressed() {
-        setResult(RESULT_OK);
-        super.onBackPressed();
-    }
-
-    @Override
     public void onClick(View v) {
         if (!mB.a()) {
             int id = v.getId();
@@ -111,7 +106,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
                         finish();
                     }
                 } else {
-                    onBackPressed();
+                    getOnBackPressedDispatcher().onBackPressed();
                 }
             } else {
                 String name = Helper.getText(ed_input_edittext);
@@ -145,6 +140,14 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         }
         binding = ManageImageImportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
         ImageView img_backbtn = binding.imgBackbtn;
         img_backbtn.setOnClickListener(this);
         tv_currentnum = binding.tvCurrentnum;

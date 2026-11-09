@@ -20,6 +20,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
@@ -81,8 +82,25 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(view -> onBackPressed());
+        toolbar.setNavigationOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
         background.addView(toolbar, 0);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (mode.equals("editor")) {
+                    mode = "normal";
+                    Parcelable savedState = block_list.onSaveInstanceState();
+                    block_list.setAdapter(new Adapter(filtered_list));
+                    ((BaseAdapter) block_list.getAdapter()).notifyDataSetChanged();
+                    block_list.onRestoreInstanceState(savedState);
+                    fabButtonVisibility(true);
+                    onCreateOptionsMenu(toolbar.getMenu());
+                } else {
+                    finish();
+                }
+            }
+        });
 
         fab_button.setOnClickListener(v -> {
             Object paletteColor = pallet_list.get(palette - 9).get("color");
@@ -139,21 +157,6 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         if (listViewSavedState != null) {
             block_list.onRestoreInstanceState(listViewSavedState);
             _refreshLists();
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mode.equals("editor")) {
-            mode = "normal";
-            Parcelable savedState = block_list.onSaveInstanceState();
-            block_list.setAdapter(new Adapter(filtered_list));
-            ((BaseAdapter) block_list.getAdapter()).notifyDataSetChanged();
-            block_list.onRestoreInstanceState(savedState);
-            fabButtonVisibility(true);
-            onCreateOptionsMenu(toolbar.getMenu());
-        } else {
-            finish();
         }
     }
 

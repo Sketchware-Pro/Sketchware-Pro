@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
@@ -72,20 +73,6 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
     }
 
     @Override
-    public void onBackPressed() {
-        Intent intent = new Intent();
-        googleMapLibraryBean.useYn = libSwitch.isChecked() ? "Y" : "N";
-        googleMapLibraryBean.data = Helper.getText(editApiKey);
-        intent.putExtra("google_map", googleMapLibraryBean);
-        setResult(RESULT_OK, intent);
-        if (Helper.getText(editApiKey).isEmpty() && libSwitch.isChecked()) {
-            bB.a(getApplicationContext(), "Api key can't be empty!", Toast.LENGTH_SHORT).show();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         int id = v.getId();
 
@@ -125,7 +112,23 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         getSupportActionBar().setTitle("GoogleMap Settings");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent();
+                googleMapLibraryBean.useYn = libSwitch.isChecked() ? "Y" : "N";
+                googleMapLibraryBean.data = Helper.getText(editApiKey);
+                intent.putExtra("google_map", googleMapLibraryBean);
+                setResult(RESULT_OK, intent);
+                if (Helper.getText(editApiKey).isEmpty() && libSwitch.isChecked()) {
+                    bB.a(getApplicationContext(), "Api key can't be empty!", Toast.LENGTH_SHORT).show();
+                } else {
+                    finish();
+                }
+            }
+        });
         LinearLayout switchLayout = binding.layoutSwitch;
         switchLayout.setOnClickListener(this);
         libSwitch = binding.libSwitch;

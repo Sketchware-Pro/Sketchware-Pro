@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
@@ -279,19 +280,6 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         jC.a(sc_id).b(googleMapLibraryBean, jC.b(sc_id));
     }
 
-
-
-    @Override
-    public void onBackPressed() {
-        k();
-        try {
-            new Handler().postDelayed(() -> new SaveLibraryTask(this).execute(), 500L);
-        } catch (Exception e) {
-            e.printStackTrace();
-            h();
-        }
-    }
-
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
@@ -355,7 +343,20 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         getSupportActionBar().setTitle(Helper.getResString(R.string.design_actionbar_title_library));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                k();
+                try {
+                    new Handler().postDelayed(() -> new SaveLibraryTask(ManageLibraryActivity.this).execute(), 500L);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    h();
+                }
+            }
+        });
         libraryItemLayout = findViewById(R.id.contents);
 
         ViewCompat.setOnApplyWindowInsetsListener(libraryItemLayout, (v, windowInsets) -> {

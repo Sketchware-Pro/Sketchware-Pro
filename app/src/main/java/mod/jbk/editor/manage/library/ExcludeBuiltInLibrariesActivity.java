@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -169,7 +170,24 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Exclude built-in libraries");
-        binding.toolbar.setNavigationOnClickListener(view -> onBackPressed());
+        binding.toolbar.setNavigationOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (config != null && config.first.equals(isExcludingEnabled) && config.second.equals(excludedLibraries)) {
+                    finish();
+                } else {
+                    k();
+                    try {
+                        new Handler(Looper.myLooper()).postDelayed(() ->
+                                new SaveConfigTask(ExcludeBuiltInLibrariesActivity.this).execute(), 500);
+                    } catch (Exception e) {
+                        onSaveError(e);
+                    }
+                }
+            }
+        });
 
         binding.tvEnable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
 
@@ -212,21 +230,6 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
             return false;
         }
         return false;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (config != null && config.first.equals(isExcludingEnabled) && config.second.equals(excludedLibraries)) {
-            super.onBackPressed();
-        } else {
-            k();
-            try {
-                new Handler(Looper.myLooper()).postDelayed(() ->
-                        new SaveConfigTask(this).execute(), 500);
-            } catch (Exception e) {
-                onSaveError(e);
-            }
-        }
     }
 
     private void onSaveError(Throwable throwable) {

@@ -28,6 +28,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -414,25 +416,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 .show();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.END)) {
-            drawer.closeDrawer(GravityCompat.END);
-        } else if (viewTabAdapter.isPropertyViewVisible()) {
-            hideViewPropertyView();
-        } else {
-            if (currentTabNumber > 0) {
-                currentTabNumber--;
-                viewPager.setCurrentItem(currentTabNumber);
-            } else if (t.c("P12I2")) {
-                k();
-                saveChangesAndCloseProject();
-            } else {
-                showSaveBeforeQuittingDialog();
-            }
-        }
-    }
-
     public void hideViewPropertyView() {
         viewTabAdapter.a(false);
     }
@@ -471,7 +454,28 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         Toolbar toolbar = binding.toolbar;
         toolbar.setSubtitle(sc_id);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                } else if (viewTabAdapter.isPropertyViewVisible()) {
+                    hideViewPropertyView();
+                } else {
+                    if (currentTabNumber > 0) {
+                        currentTabNumber--;
+                        viewPager.setCurrentItem(currentTabNumber);
+                    } else if (t.c("P12I2")) {
+                        k();
+                        saveChangesAndCloseProject();
+                    } else {
+                        showSaveBeforeQuittingDialog();
+                    }
+                }
+            }
+        });
 
         drawer = binding.drawerLayout;
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);

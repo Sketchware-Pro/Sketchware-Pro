@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -97,12 +98,6 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
     }
 
     @Override
-    public void onBackPressed() {
-        setResult(RESULT_OK);
-        super.onBackPressed();
-    }
-
-    @Override
     public void onClick(View v) {
         if (!mB.a()) {
             int id = v.getId();
@@ -127,7 +122,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
                     ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
                 }
             } else if (id == R.id.img_backbtn) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
             } else if (id == R.id.img_play) {
                 if (mediaPlayerIsPrepared) {
                     if (mediaPlayer.isPlaying()) {
@@ -160,6 +155,14 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         }
         binding = ManageSoundImportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
         ImageView img_backbtn = binding.imgBackbtn;
         img_backbtn.setOnClickListener(this);
         tv_currentnum = binding.tvCurrentnum;

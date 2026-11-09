@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -217,24 +218,6 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         jC.a(sc_id).a(jC.b(sc_id));
     }
 
-
-
-    @Override
-    public void onBackPressed() {
-        if (selecting) {
-            a(false);
-        } else {
-            k();
-
-            try {
-                new Handler().postDelayed(() -> new a(this).execute(), 500L);
-            } catch (Exception e) {
-                e.printStackTrace();
-                h();
-            }
-        }
-    }
-
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
@@ -278,7 +261,25 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
 
         setContentView(R.layout.manage_view);
         MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
-        topAppBar.setNavigationOnClickListener(v -> onBackPressed());
+        topAppBar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (selecting) {
+                    a(false);
+                } else {
+                    k();
+
+                    try {
+                        new Handler().postDelayed(() -> new a(ManageViewActivity.this).execute(), 500L);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        h();
+                    }
+                }
+            }
+        });
 
         actionButtonsContainer = findViewById(R.id.layout_btn_group);
         Button delete = findViewById(R.id.btn_delete);

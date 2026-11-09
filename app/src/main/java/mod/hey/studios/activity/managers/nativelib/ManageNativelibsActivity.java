@@ -15,6 +15,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
@@ -72,6 +73,19 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
         setupDialog();
         checkDir();
         setupUI();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                nativeLibrariesPath = nativeLibrariesPath.substring(0, nativeLibrariesPath.lastIndexOf("/"));
+                if (nativeLibrariesPath.contains("native_libs")) {
+                    handleAdapter(nativeLibrariesPath);
+                    handleFab();
+                } else {
+                    finish();
+                }
+            }
+        });
     }
 
 
@@ -144,17 +158,6 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
                 .translationY(isHide ? 0 : 300)
                 .alpha(isHide ? 1 : 0)
                 .setInterpolator(new OvershootInterpolator());
-    }
-
-    @Override
-    public void onBackPressed() {
-        nativeLibrariesPath = nativeLibrariesPath.substring(0, nativeLibrariesPath.lastIndexOf("/"));
-        if (nativeLibrariesPath.contains("native_libs")) {
-            handleAdapter(nativeLibrariesPath);
-            handleFab();
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override

@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -382,7 +383,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
 
@@ -408,22 +409,20 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             setSelectedIndex(getSelectedIndex(item.getItemId()));
             return true;
         });
-    }
 
-
-
-    @Override
-    public void onBackPressed() {
-        if (selectingToBeDeletedItems) {
-            changeDeletingItemsState(false);
-        } else {
-            if (hasDeletedWidget) {
-                setResult(RESULT_OK);
-                finish();
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (selectingToBeDeletedItems) {
+                    changeDeletingItemsState(false);
+                } else {
+                    if (hasDeletedWidget) {
+                        setResult(RESULT_OK);
+                    }
+                    finish();
+                }
             }
-
-            super.onBackPressed();
-        }
+        });
     }
 
     @Override

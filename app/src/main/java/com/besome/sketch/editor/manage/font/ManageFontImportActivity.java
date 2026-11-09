@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -104,12 +105,6 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     }
 
     @Override
-    public void onBackPressed() {
-        setResult(RESULT_OK);
-        super.onBackPressed();
-    }
-
-    @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == binding.btnDecide.getId()) {
@@ -135,7 +130,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
             }
 
         } else if (id == binding.imgBackbtn.getId()) {
-            onBackPressed();
+            getOnBackPressedDispatcher().onBackPressed();
         } else if (id == binding.tvSendbtn.getId() && !n()) {
             Intent intent = new Intent();
             intent.putParcelableArrayListExtra("results", selectedCollection);
@@ -152,6 +147,14 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         }
         binding = ManageFontImportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
         binding.imgBackbtn.setOnClickListener(this);
         binding.tvSendbtn.setText(getString(R.string.common_word_import).toUpperCase());
         binding.tvSendbtn.setOnClickListener(this);

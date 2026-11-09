@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -30,23 +31,6 @@ public class ManageFontActivity extends BaseAppCompatActivity {
     private String sc_id;
 
     @Override
-    public void onBackPressed() {
-        if (projectFontsFragment.isSelecting) {
-            projectFontsFragment.setSelectingMode(false);
-        } else if (collectionFontsFragment.isSelecting()) {
-            collectionFontsFragment.resetSelection();
-        } else {
-            k();
-            try {
-                new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
-            } catch (Exception e) {
-                h();
-            }
-        }
-
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -59,7 +43,25 @@ public class ManageFontActivity extends BaseAppCompatActivity {
 
         binding.toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (projectFontsFragment.isSelecting) {
+                    projectFontsFragment.setSelectingMode(false);
+                } else if (collectionFontsFragment.isSelecting()) {
+                    collectionFontsFragment.resetSelection();
+                } else {
+                    k();
+                    try {
+                        new Handler().postDelayed(() -> new SaveAsyncTask(ManageFontActivity.this).execute(), 500L);
+                    } catch (Exception e) {
+                        h();
+                    }
+                }
             }
         });
 

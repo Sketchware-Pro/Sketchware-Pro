@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.activity.OnBackPressedCallback;
+
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -122,17 +124,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (stepPosition > 0) {
-            showStep(--stepPosition);
-        } else {
-            setResult(RESULT_CANCELED);
-            finish();
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         int id = v.getId();
 
@@ -143,7 +134,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         } else if (id == binding.tvNextbtn.getId()) {
             nextStep();
         } else if (id == binding.tvPrevbtn.getId()) {
-            onBackPressed();
+            getOnBackPressedDispatcher().onBackPressed();
         } else if (id == binding.btnImport.getId()) {
             LibrarySettingsImporter importer = new LibrarySettingsImporter(sc_id, iC::b);
             importer.addOnProjectSelectedListener(settings -> {
@@ -208,6 +199,18 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         binding.tvPrevbtn.setText(Helper.getResString(R.string.common_word_prev));
         binding.tvPrevbtn.setOnClickListener(this);
         binding.icon.setImageResource(R.drawable.ic_mtrl_admob);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (stepPosition > 0) {
+                    showStep(--stepPosition);
+                } else {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
+            }
+        });
         binding.tvNextbtn.setText(Helper.getResString(R.string.common_word_next));
         binding.tvNextbtn.setOnClickListener(this);
         binding.imgBackbtn.setOnClickListener(Helper.getBackPressedClickListener(this));

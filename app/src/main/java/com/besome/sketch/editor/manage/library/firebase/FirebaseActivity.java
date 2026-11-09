@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
@@ -142,16 +143,6 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void onBackPressed() {
-        if (stepNumber > STEP_1) {
-            setStep(--stepNumber);
-        } else {
-            setResult(Activity.RESULT_CANCELED);
-            finish();
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         if (!mB.a()) {
             int id = v.getId();
@@ -160,7 +151,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
             } else if (id == R.id.cv_console) {
                 openFirebaseConsole();
             } else if (id == R.id.img_backbtn || id == R.id.tv_prevbtn) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
             } else if (id == R.id.tv_nextbtn) {
                 onNextPressed();
             } else if (id == R.id.btn_import) {
@@ -198,7 +189,19 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         getSupportActionBar().setTitle(Helper.getResString(R.string.change_firebase_config_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (stepNumber > STEP_1) {
+                    setStep(--stepNumber);
+                } else {
+                    setResult(Activity.RESULT_CANCELED);
+                    finish();
+                }
+            }
+        });
 
         if (savedInstanceState != null) {
             sc_id = savedInstanceState.getString("sc_id");

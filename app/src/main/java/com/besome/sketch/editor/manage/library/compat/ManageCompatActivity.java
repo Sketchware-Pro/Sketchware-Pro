@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.activity.OnBackPressedCallback;
+
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -50,15 +52,6 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
     }
 
     @Override
-    public void onBackPressed() {
-        compatLibraryBean.useYn = binding.libSwitch.isChecked() ? "Y" : "N";
-        Intent intent = new Intent();
-        intent.putExtra("compat", compatLibraryBean);
-        setResult(RESULT_OK, intent);
-        super.onBackPressed();
-    }
-
-    @Override
     public void onClick(View v) {
         if (v.getId() == R.id.layout_switch) {
             binding.libSwitch.setChecked(!binding.libSwitch.isChecked());
@@ -89,7 +82,18 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        binding.toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                compatLibraryBean.useYn = binding.libSwitch.isChecked() ? "Y" : "N";
+                Intent intent = new Intent();
+                intent.putExtra("compat", compatLibraryBean);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
 
         compatLibraryBean = getIntent().getParcelableExtra("compat");
         firebaseLibraryBean = getIntent().getParcelableExtra("firebase");

@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
@@ -43,16 +44,6 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (makeBlock.a()) {
-            super.onBackPressed();
-        } else {
-            goBackDialog();
-        }
-
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!isStoragePermissionGranted()) {
@@ -75,6 +66,16 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (makeBlock.a()) {
+                    finish();
+                } else {
+                    goBackDialog();
+                }
+            }
+        });
         makeBlock = new MoreBlockBuilderView(this);
         makeBlock.setFuncNameValidator(jC.a(sc_id).a(project));
         LinearLayout makeBlock = findViewById(R.id.makeblock_view);

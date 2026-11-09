@@ -16,6 +16,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -120,17 +121,20 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
         frc = new FileResConfig(sc_id);
         fpu = new FilePathUtil();
         current_path = Uri.parse(fpu.getPathJava(sc_id)).getPath();
-        refresh();
-    }
 
-    @Override
-    public void onBackPressed() {
-        if (Objects.equals(Uri.parse(current_path).getPath(), Uri.parse(fpu.getPathJava(sc_id)).getPath())) {
-            super.onBackPressed();
-        } else {
-            current_path = current_path.substring(0, current_path.lastIndexOf("/"));
-            refresh();
-        }
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (Objects.equals(Uri.parse(current_path).getPath(), Uri.parse(fpu.getPathJava(sc_id)).getPath())) {
+                    finish();
+                } else {
+                    current_path = current_path.substring(0, current_path.lastIndexOf("/"));
+                    refresh();
+                }
+            }
+        });
+
+        refresh();
     }
 
     private void setupUI() {

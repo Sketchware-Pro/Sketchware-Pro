@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -71,6 +72,13 @@ public class BaseBottomSheetDialogActivity extends BaseAppCompatActivity {
 
             @Override
             public void onSlide(@NonNull View view, float v) {
+            }
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
             }
         });
 
@@ -136,11 +144,5 @@ public class BaseBottomSheetDialogActivity extends BaseAppCompatActivity {
     @Override
     public void setContentView(View view) {
         dialogContentView.addView(view);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
     }
 }

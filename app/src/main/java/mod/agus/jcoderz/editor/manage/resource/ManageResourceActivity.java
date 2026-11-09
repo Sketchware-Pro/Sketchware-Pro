@@ -15,6 +15,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,6 +92,23 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         setupDialog();
         checkDir();
         initToolbar();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                try {
+                    temp = temp.substring(0, temp.lastIndexOf("/"));
+                    if (temp.contains("resource")) {
+                        handleAdapter(temp);
+                        handleFab();
+                        return;
+                    }
+                } catch (IndexOutOfBoundsException ignored) {
+                }
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
     }
 
     private void checkDir() {
@@ -135,7 +153,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
 
     private void initToolbar() {
         binding.topAppBar.setTitle(R.string.text_title_menu_resource);
-        binding.topAppBar.setNavigationOnClickListener(v -> onBackPressed());
+        binding.topAppBar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         binding.showOptionsButton.setOnClickListener(view -> {
             if (isInMainDirectory()) {
                 createNewDialog(true);
@@ -171,22 +189,6 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
     public void onResume() {
         super.onResume();
         binding.filesListRecyclerView.getAdapter().notifyDataSetChanged();
-    }
-
-    @Override
-    public void onBackPressed() {
-        try {
-            temp = temp.substring(0, temp.lastIndexOf("/"));
-            if (temp.contains("resource")) {
-                handleAdapter(temp);
-                handleFab();
-                return;
-            }
-        } catch (IndexOutOfBoundsException ignored) {
-        }
-        setResult(RESULT_OK);
-        finish();
-        super.onBackPressed();
     }
 
     private void createNewDialog(boolean isFolder) {

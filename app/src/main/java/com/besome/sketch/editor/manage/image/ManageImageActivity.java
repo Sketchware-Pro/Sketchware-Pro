@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -57,19 +58,6 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     @Override
-    public void onBackPressed() {
-        if (projectImagesFragment.isSelecting) {
-            projectImagesFragment.a(false);
-        } else if (collectionImagesFragment.isSelecting()) {
-            collectionImagesFragment.unselectAll();
-            binding.layoutBtnImport.setVisibility(View.GONE);
-        } else {
-            k();
-            new Handler().postDelayed(() -> new SaveImagesAsyncTask(this).execute(), 500L);
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ManageImageBinding.inflate(getLayoutInflater());
@@ -83,7 +71,22 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         binding.topAppBar.setTitle(R.string.design_actionbar_title_manager_image);
         binding.topAppBar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (projectImagesFragment.isSelecting) {
+                    projectImagesFragment.a(false);
+                } else if (collectionImagesFragment.isSelecting()) {
+                    collectionImagesFragment.unselectAll();
+                    binding.layoutBtnImport.setVisibility(View.GONE);
+                } else {
+                    k();
+                    new Handler().postDelayed(() -> new SaveImagesAsyncTask(ManageImageActivity.this).execute(), 500L);
+                }
             }
         });
         if (savedInstanceState == null) {

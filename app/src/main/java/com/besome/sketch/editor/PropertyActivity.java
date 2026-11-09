@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -150,14 +151,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         finish();
     }
 
-
-
-    @Override
-    public void onBackPressed() {
-        propertyItems.updateBeanFromUI(viewBean);
-        o();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,7 +173,15 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         getSupportActionBar().setTitle(Helper.getResString(R.string.edit_view_properties_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                propertyItems.updateBeanFromUI(viewBean);
+                o();
+            }
+        });
 
         propertyGroups.add(1);
         propertyGroups.add(2);

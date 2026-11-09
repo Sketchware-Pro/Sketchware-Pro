@@ -41,6 +41,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -1850,25 +1851,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return true;
     }
 
-
-
-    @Override
-    public void onBackPressed() {
-        if (ia) {
-            g(false);
-            return;
-        }
-        if (X) {
-            e(false);
-            return;
-        }
-        k();
-        if (!p()) {
-            return;
-        }
-        L();
-    }
-
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
@@ -1945,7 +1927,25 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        });
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (ia) {
+                    g(false);
+                    return;
+                }
+                if (X) {
+                    e(false);
+                    return;
+                }
+                k();
+                if (!p()) {
+                    return;
+                }
+                L();
             }
         });
         G = new DB(this, "P12").a("P12I0", true);
