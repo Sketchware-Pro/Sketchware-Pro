@@ -183,7 +183,7 @@ public class CustomBlocksDialog {
 
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
         dialog.setIcon(R.drawable.icon_style_white_96);
-        dialog.setTitle("Create a new palette");
+        dialog.setTitle(R.string.title_create_a_new_palette);
 
         DialogPaletteBinding binding = DialogPaletteBinding.inflate(((Activity) context).getLayoutInflater());
 

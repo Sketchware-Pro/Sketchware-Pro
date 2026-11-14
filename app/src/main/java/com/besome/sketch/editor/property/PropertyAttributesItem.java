@@ -300,14 +300,14 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
                     dialog.setTitle(R.string.common_word_delete);
                     dialog.setMessage("Are you sure you want to delete " + attr + "?");
-                    dialog.setPositiveButton("Yes", (view, which) -> {
+                    dialog.setPositiveButton(R.string.common_word_yes, (view, which) -> {
                         value.remove(attr);
                         if (valueChangeListener != null)
                             valueChangeListener.a(key, value);
                         submitList(new ArrayList<>(value.keySet()));
                         view.dismiss();
                     });
-                    dialog.setNegativeButton("No", (view, which) -> view.dismiss());
+                    dialog.setNegativeButton(R.string.common_word_no, (view, which) -> view.dismiss());
                     dialog.show();
                     return true;
                 });
@@ -336,7 +336,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
                     dialog.setTitle(R.string.common_word_delete);
                     dialog.setMessage("Are you sure you want to delete " + attr + "?");
-                    dialog.setPositiveButton("Yes", (view, which) -> {
+                    dialog.setPositiveButton(R.string.common_word_yes, (view, which) -> {
                         value.remove(attr);
                         if (valueChangeListener != null)
                             valueChangeListener.a(key, value);
@@ -344,7 +344,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                         view.dismiss();
                     });
 
-                    dialog.setNegativeButton("No", (view, which) -> view.dismiss());
+                    dialog.setNegativeButton(R.string.common_word_no, (view, which) -> view.dismiss());
                     dialog.show();
                     return true;
                 });

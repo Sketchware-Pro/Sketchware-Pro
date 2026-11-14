@@ -172,14 +172,14 @@ public class BlockSelectorManagerFragment extends qA {
             adapter.notifyDataSetChanged();
             v.dismiss();
         });
-        dialog.setNegativeButton("Cancel", (v, which) -> v.dismiss());
+        dialog.setNegativeButton(R.string.common_word_cancel, (v, which) -> v.dismiss());
         dialog.show();
     }
 
     private void showActionsDialog(int index) {
         DialogSelectorActionsBinding dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext()));
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireActivity()).create();
-        dialog.setTitle("Actions");
+        dialog.setTitle(R.string.common_word_actions);
         dialog.setView(dialogBinding.getRoot());
 
         dialogBinding.edit.setOnClickListener(v -> {
@@ -207,10 +207,10 @@ public class BlockSelectorManagerFragment extends qA {
 
     private void showConfirmationDialog(String message, ConfirmListener onConfirm, CancelListener onCancel) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
-        dialog.setTitle("Attention");
+        dialog.setTitle(R.string.common_word_attention);
         dialog.setMessage(message);
-        dialog.setPositiveButton("Yes", (v, which) -> onConfirm.onConfirm(v));
-        dialog.setNegativeButton("Cancel", (v, which) -> onCancel.onCancel(v));
+        dialog.setPositiveButton(R.string.common_word_yes, (v, which) -> onConfirm.onConfirm(v));
+        dialog.setNegativeButton(R.string.common_word_cancel, (v, which) -> onCancel.onCancel(v));
         dialog.setCancelable(false);
         dialog.show();
     }

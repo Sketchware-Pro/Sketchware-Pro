@@ -92,7 +92,7 @@ public class LogicClickListener implements View.OnClickListener {
 
     private void addCustomVariable() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
-        dialog.setTitle("Add a new custom variable");
+        dialog.setTitle(R.string.title_add_a_new_custom_variable);
 
         AddCustomVariableBinding binding = AddCustomVariableBinding.inflate(logicEditor.getLayoutInflater());
 
@@ -220,7 +220,7 @@ public class LogicClickListener implements View.OnClickListener {
 
     private void addCustomList() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
-        dialog.setTitle("Add a new custom List");
+        dialog.setTitle(R.string.title_add_a_new_custom_list);
 
         AddCustomListBinding listBinding = AddCustomListBinding.inflate(logicEditor.getLayoutInflater());
 

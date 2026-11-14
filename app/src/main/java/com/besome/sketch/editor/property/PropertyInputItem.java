@@ -349,7 +349,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         });
 
         dialog.setNegativeButton(Helper.getResString(R.string.common_word_reset), null);
-        dialog.setNeutralButton("Custom", null);
+        dialog.setNeutralButton(R.string.common_word_custom, null);
 
         AlertDialog alertDialog = dialog.create();
 
@@ -1051,12 +1051,12 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void showAddShortcutDialog(AttributeShortcutsManager manager, AttributesAdapter adapter) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-        builder.setTitle("Add Shortcut");
+        builder.setTitle(R.string.common_word_add_shortcut);
 
         StyleEditorAddAttrBinding binding = StyleEditorAddAttrBinding.inflate(LayoutInflater.from(getContext()));
         builder.setView(binding.getRoot());
 
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        builder.setPositiveButton(R.string.common_word_save, (dialog, which) -> {
             String name = binding.attrName.getText().toString().trim();
             String value = binding.attrValue.getText().toString().trim();
 
@@ -1072,13 +1072,13 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             }
         });
 
-        builder.setNegativeButton("Cancel", null);
+        builder.setNegativeButton(R.string.common_word_cancel, null);
         builder.show();
     }
 
     private void addNewAttribute(Map<String, String> attributes) {
         var builder = new MaterialAlertDialogBuilder(getContext());
-        builder.setTitle("Add new attribute");
+        builder.setTitle(R.string.title_add_new_attribute);
 
         PropertyPopupInputTextBinding binding =
                 PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));

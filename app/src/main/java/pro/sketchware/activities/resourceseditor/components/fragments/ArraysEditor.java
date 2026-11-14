@@ -129,7 +129,7 @@ public class ArraysEditor extends Fragment {
     public void showAddArrayDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
         ArraysEditorAddBinding binding = ArraysEditorAddBinding.inflate(getLayoutInflater());
-        dialog.setTitle("Create new array");
+        dialog.setTitle(R.string.title_create_new_array);
 
         binding.arrayType.setOnClickListener(view -> {
             String[] arrayTypes = {"STRING", "INTEGER", "OBJECT"};
@@ -142,7 +142,7 @@ public class ArraysEditor extends Fragment {
                     .show();
         });
 
-        dialog.setPositiveButton("Create", (d, which) -> {
+        dialog.setPositiveButton(R.string.common_word_create, (d, which) -> {
             String arrayName = Objects.requireNonNull(binding.arrayName.getText()).toString();
             String arrayTypeString = Objects.requireNonNull(binding.arrayType.getText()).toString();
             String header = Objects.requireNonNull(binding.arrayHeaderInput.getText()).toString();
@@ -196,8 +196,8 @@ public class ArraysEditor extends Fragment {
                     .show();
         });
 
-        dialog.setTitle("Edit array");
-        dialog.setPositiveButton("Edit", (d, which) -> {
+        dialog.setTitle(R.string.common_word_edit_array);
+        dialog.setPositiveButton(R.string.common_word_edit, (d, which) -> {
             String arrayName = Objects.requireNonNull(binding.arrayName.getText()).toString();
             String arrayType = Objects.requireNonNull(binding.arrayType.getText()).toString();
             String header = Objects.requireNonNull(binding.arrayHeaderInput.getText()).toString();

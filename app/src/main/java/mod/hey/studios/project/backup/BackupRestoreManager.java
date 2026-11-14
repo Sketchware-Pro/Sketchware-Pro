@@ -69,7 +69,7 @@ public class BackupRestoreManager {
 
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(act);
         dialog.setIcon(R.drawable.ic_backup);
-        dialog.setTitle("Backup Options");
+        dialog.setTitle(R.string.common_word_backup_options);
 
         LinearLayout checkboxContainer = new LinearLayout(act);
         checkboxContainer.setOrientation(LinearLayout.VERTICAL);
@@ -118,7 +118,7 @@ public class BackupRestoreManager {
         checkboxContainer.addView(includeUsedCustomBlocks);
 
         dialog.setView(checkboxContainer);
-        dialog.setPositiveButton("Back up", (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_back_up, (v, which) -> {
             v.dismiss();
             doBackup(sc_id, project_name);
         });

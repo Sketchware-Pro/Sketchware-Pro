@@ -127,7 +127,7 @@ public class StringsEditor extends Fragment {
     public void showAddStringDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
         ViewStringEditorAddBinding binding = ViewStringEditorAddBinding.inflate(getLayoutInflater());
-        dialog.setTitle("Create new string");
+        dialog.setTitle(R.string.title_create_new_string);
         binding.stringKeyInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -143,7 +143,7 @@ public class StringsEditor extends Fragment {
                 binding.importantNote.setVisibility(s.toString().equals("app_name") ? View.VISIBLE : View.GONE);
             }
         });
-        dialog.setPositiveButton("Create", (d, which) -> {
+        dialog.setPositiveButton(R.string.common_word_create, (d, which) -> {
             String key = Objects.requireNonNull(binding.stringKeyInput.getText()).toString();
             String value = Objects.requireNonNull(binding.stringValueInput.getText()).toString();
 

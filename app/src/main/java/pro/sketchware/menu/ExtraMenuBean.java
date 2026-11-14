@@ -261,7 +261,7 @@ public class ExtraMenuBean {
             }
         }
 
-        dialog.setTitle("Select Permissions")
+        dialog.setTitle(R.string.common_word_select_permissions)
                 .setMultiChoiceItems(permission, checkedItems, (dialogInterface, which, isChecked) ->
                         checkedItems[which] = isChecked)
                 .setPositiveButton(R.string.common_word_select, (v, which) -> {
@@ -645,7 +645,7 @@ public class ExtraMenuBean {
             case "ResAttr":
             case "ResXml":
                 title = "Deprecated";
-                dialog.setMessage("This Block Menu was initially used to parse resource values, but was too I/O heavy and has been removed due to that. Please use the Code Editor instead.");
+                dialog.setMessage(R.string.msg_this_block_menu_was_initially);
                 break;
 
             case "AdUnit":
@@ -751,7 +751,7 @@ public class ExtraMenuBean {
             v.dismiss();
         });
         dialog.setNegativeButton(R.string.common_word_cancel, null);
-        dialog.setNeutralButton("Code Editor", (v, which) -> {
+        dialog.setNeutralButton(R.string.common_word_code_editor, (v, which) -> {
             AsdDialog editor = new AsdDialog(logicEditor);
             editor.setContent(menu.getArgValue().toString());
             editor.show();
@@ -813,7 +813,7 @@ public class ExtraMenuBean {
             v.dismiss();
         });
         dialog.setNegativeButton(R.string.common_word_cancel, null);
-        dialog.setNeutralButton("Code Editor", (v, which) -> {
+        dialog.setNeutralButton(R.string.common_word_code_editor, (v, which) -> {
             AsdDialog asdDialog = new AsdDialog(logicEditor);
             asdDialog.setContent(Helper.getText(edittext));
             asdDialog.show();

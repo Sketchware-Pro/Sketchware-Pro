@@ -129,7 +129,7 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
 
     private void showDial(int pos) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle("Edit Value");
+        dialog.setTitle(R.string.common_word_edit_value);
         DialogCreateNewFileLayoutBinding attributeBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
         attributeBinding.chipGroupTypes.setVisibility(View.GONE);
         dialog.setView(attributeBinding.getRoot());

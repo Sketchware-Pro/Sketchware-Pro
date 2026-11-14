@@ -196,7 +196,7 @@ public class AppSettings extends BaseAppCompatActivity {
     private void signApkFileDialog() {
         boolean[] isAPKSelected = {false};
         MaterialAlertDialogBuilder apkPathDialog = new MaterialAlertDialogBuilder(this);
-        apkPathDialog.setTitle("Sign APK with testkey");
+        apkPathDialog.setTitle(R.string.title_sign_apk_with_testkey);
 
         DialogSelectApkToSignBinding binding = DialogSelectApkToSignBinding.inflate(getLayoutInflater());
         View testkey_root = binding.getRoot();
@@ -216,7 +216,7 @@ public class AppSettings extends BaseAppCompatActivity {
             dialog.show(getSupportFragmentManager(), "file_picker");
         });
 
-        apkPathDialog.setPositiveButton("Continue", (v, which) -> {
+        apkPathDialog.setPositiveButton(R.string.common_word_continue, (v, which) -> {
             if (!isAPKSelected[0]) {
                 SketchwareUtil.toast("Please select an APK file to sign", Toast.LENGTH_SHORT);
                 shakeView(binding.selectFile);
@@ -230,11 +230,11 @@ public class AppSettings extends BaseAppCompatActivity {
             if (new File(output_apk_path).exists()) {
                 MaterialAlertDialogBuilder confirmOverwrite = new MaterialAlertDialogBuilder(this);
                 confirmOverwrite.setIcon(R.drawable.color_save_as_new_96);
-                confirmOverwrite.setTitle("File exists");
+                confirmOverwrite.setTitle(R.string.common_word_file_exists);
                 confirmOverwrite.setMessage("An APK named " + output_apk_file_name + " already exists at /sketchware/signed_apk/.  Overwrite it?");
 
                 confirmOverwrite.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
-                confirmOverwrite.setPositiveButton("Overwrite", (view, which1) -> {
+                confirmOverwrite.setPositiveButton(R.string.common_word_overwrite, (view, which1) -> {
                     v.dismiss();
                     signApkFileWithDialog(input_apk_path, output_apk_path, true,
                             null, null, null, null);

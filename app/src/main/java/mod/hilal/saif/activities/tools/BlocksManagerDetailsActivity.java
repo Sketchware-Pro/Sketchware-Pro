@@ -425,7 +425,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                 .setNegativeButton(R.string.common_word_cancel, null);
         if (palette == -1) {
             AtomicInteger restoreToChoice = new AtomicInteger(-1);
-            builder.setTitle("Restore to")
+            builder.setTitle(R.string.common_word_restore_to)
                     .setSingleChoiceItems(paletteNames.toArray(new String[0]), -1, (dialog, which) -> restoreToChoice.set(which))
                     .setPositiveButton("Restore", (dialog, which) -> {
                         if (restoreToChoice.get() != -1) {
@@ -437,7 +437,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                     });
         } else {
             AtomicInteger moveToChoice = new AtomicInteger(palette - 9);
-            builder.setTitle("Move to")
+            builder.setTitle(R.string.common_word_move_to)
                     .setSingleChoiceItems(paletteNames.toArray(new String[0]), palette - 9, (dialog, which) -> moveToChoice.set(which))
                     .setPositiveButton("Move", (dialog, which) -> {
                         all_blocks_list.get(position).put("palette", String.valueOf(moveToChoice.get() + 9));
@@ -463,7 +463,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                 }
             }
             MaterialAlertDialogBuilder import_dialog = new MaterialAlertDialogBuilder(this);
-            import_dialog.setTitle("Import blocks")
+            import_dialog.setTitle(R.string.common_word_import_blocks)
                     .setMultiChoiceItems(names.toArray(new CharSequence[0]), null, (dialog, which, isChecked) -> {
                         if (isChecked) {
                             toAdd.add(which);

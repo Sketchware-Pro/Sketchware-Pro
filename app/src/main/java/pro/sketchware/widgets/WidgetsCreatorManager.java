@@ -473,7 +473,7 @@ public class WidgetsCreatorManager {
         Activity activity = viewEditorFragment.requireActivity();
         DialogSelectorActionsBinding dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(activity));
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(activity);
-        dialogBuilder.setTitle("Actions");
+        dialogBuilder.setTitle(R.string.common_word_actions);
         dialogBuilder.setView(dialogBinding.getRoot());
 
         AlertDialog dialog = dialogBuilder.create();

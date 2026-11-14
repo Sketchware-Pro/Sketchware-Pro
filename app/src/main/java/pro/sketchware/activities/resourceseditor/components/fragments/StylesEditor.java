@@ -131,8 +131,8 @@ public class StylesEditor extends Fragment {
     public void showAddStyleDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
         StyleEditorAddBinding binding = StyleEditorAddBinding.inflate(getLayoutInflater());
-        dialog.setTitle("Create new style");
-        dialog.setPositiveButton("Create", (d, which) -> {
+        dialog.setTitle(R.string.title_create_new_style);
+        dialog.setPositiveButton(R.string.common_word_create, (d, which) -> {
             String styleName = Objects.requireNonNull(binding.styleName.getText()).toString();
             String parent = Objects.requireNonNull(binding.styleParent.getText()).toString();
             String header = Objects.requireNonNull(binding.styleHeaderInput.getText()).toString();
@@ -173,8 +173,8 @@ public class StylesEditor extends Fragment {
             binding.styleHeaderInput.setText(notesMap.get(position));
         }
 
-        dialog.setTitle("Edit style");
-        dialog.setPositiveButton("Edit", (d, which) -> {
+        dialog.setTitle(R.string.common_word_edit_style);
+        dialog.setPositiveButton(R.string.common_word_edit, (d, which) -> {
             String styleName = Objects.requireNonNull(binding.styleName.getText()).toString();
             String parent = Objects.requireNonNull(binding.styleParent.getText()).toString();
             String header = Objects.requireNonNull(binding.styleHeaderInput.getText()).toString();

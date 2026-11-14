@@ -149,7 +149,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                                     MaterialAlertDialogBuilder dialog =
                                             new MaterialAlertDialogBuilder(this);
                                     dialog.setTitle(R.string.common_word_delete);
-                                    dialog.setMessage("Are you sure you want to delete this item?");
+                                    dialog.setMessage(R.string.msg_are_you_sure_you_want);
                                     dialog.setPositiveButton(
                                             R.string.common_word_yes,
                                             (d, w) -> {
@@ -299,7 +299,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
 
     private void showConfirmationDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle("Confirmation");
+        dialog.setTitle(R.string.common_word_confirmation);
         dialog.setMessage(
                 "Would you like to enable the new XML Command? It will speed up XML generation and compilation, but this change cannot be undone. Don’t worry, your previous changes with the XML Command Block will transfered here so it will remain unaffected.");
         dialog.setPositiveButton(

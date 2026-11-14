@@ -29,7 +29,7 @@ public class VersionDialog {
     public void show() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
         builder.setIcon(R.drawable.numbers_48);
-        builder.setTitle("Advanced Version Control");
+        builder.setTitle(R.string.title_advanced_version_control);
 
         long initialVerCode = MIN_VERSION_CODE;
         try {

@@ -124,8 +124,8 @@ public class ThemesEditor extends Fragment {
     public void showAddThemeDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         StyleEditorAddBinding binding = StyleEditorAddBinding.inflate(getLayoutInflater());
-        dialog.setTitle("Create new theme");
-        dialog.setPositiveButton("Create", (d, which) -> {
+        dialog.setTitle(R.string.title_create_new_theme);
+        dialog.setPositiveButton(R.string.common_word_create, (d, which) -> {
             String themeName = Objects.requireNonNull(binding.styleName.getText()).toString();
             String parent = Objects.requireNonNull(binding.styleParent.getText()).toString();
             String header = Objects.requireNonNull(binding.styleHeaderInput.getText()).toString();
@@ -161,8 +161,8 @@ public class ThemesEditor extends Fragment {
             binding.styleHeaderInput.setText(notesMap.get(position));
         }
 
-        dialog.setTitle("Edit theme");
-        dialog.setPositiveButton("Edit", (d, which) -> {
+        dialog.setTitle(R.string.common_word_edit_theme);
+        dialog.setPositiveButton(R.string.common_word_edit, (d, which) -> {
             String themeName = Objects.requireNonNull(binding.styleName.getText()).toString();
             String parent = Objects.requireNonNull(binding.styleParent.getText()).toString();
             String header = Objects.requireNonNull(binding.styleHeaderInput.getText()).toString();

@@ -382,14 +382,14 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             if (!optOutFile.exists() && !granted) {
                 MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                 dialog.setIcon(R.drawable.ic_expire_48dp);
-                dialog.setTitle("Android 11 storage access");
+                dialog.setTitle(R.string.title_android_11_storage_access);
                 dialog.setMessage("Starting with Android 11, Sketchware Pro needs a new permission to avoid " + "taking ages to build projects. Don't worry, we can't do more to storage than " + "with current granted permissions.");
                 dialog.setPositiveButton(Helper.getResString(R.string.common_word_settings), (v, which) -> {
                     FileUtil.requestAllFilesAccessPermission(this);
                     v.dismiss();
                 });
-                dialog.setNegativeButton("Skip", null);
-                dialog.setNeutralButton("Don't show anymore", (v, which) -> {
+                dialog.setNegativeButton(R.string.common_word_skip, null);
+                dialog.setNeutralButton(R.string.common_word_don_t_show_anymore, (v, which) -> {
                     try {
                         if (!optOutFile.createNewFile())
                             throw new IOException("Failed to create file " + optOutFile);
