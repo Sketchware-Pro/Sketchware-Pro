@@ -242,7 +242,7 @@ public class InnerAddComponentBottomSheet extends BottomSheetDialogFragment {
             case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
             case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD:
                 if (jC.c(scId).b().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
-                    bB.b(getContext(), Helper.getResString(R.string.design_library_admob_component_setup_first), bB.TOAST_WARNING).show();
+                    bB.b(getContext(), Helper.getResString(R.string.design_library_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 }
                 jC.a(scId).a(projectFileBean.getJavaName(), componentType, componentId);

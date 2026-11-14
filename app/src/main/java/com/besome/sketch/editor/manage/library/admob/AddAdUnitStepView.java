@@ -59,7 +59,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
         SB nameValidator = new SB(getContext(), tiName, 1, 50);
 
         TextInputLayout tiAdUnitId = dialogBinding.tiAdunitId;
-        tiAdUnitId.setHint(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_hint_adunit_id));
+        tiAdUnitId.setHint(Helper.getResString(R.string.design_library_admob_title_ad_unit_id));
         EditText edAdUnitId = dialogBinding.edAdunitId;
         SB adUnitValidator = new SB(getContext(), tiAdUnitId, 1, 100);
 

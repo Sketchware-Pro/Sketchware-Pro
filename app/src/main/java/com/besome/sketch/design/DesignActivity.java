@@ -1614,9 +1614,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         public ViewPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
             labels = new String[]{
-                    Helper.getResString(R.string.design_tab_title_view),
-                    Helper.getResString(R.string.design_tab_title_event),
-                    Helper.getResString(R.string.design_tab_title_component)};
+                    Helper.getResString(R.string.common_word_view),
+                    Helper.getResString(R.string.property_group_event),
+                    Helper.getResString(R.string.common_word_component)};
         }
 
         @Override

@@ -171,7 +171,7 @@ public class ArraysEditor extends Fragment {
             hasUnsavedChanges = true;
         });
 
-        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
         dialog.setView(binding.getRoot());
         dialog.show();
     }
@@ -231,7 +231,7 @@ public class ArraysEditor extends Fragment {
                 })
                 .setNegativeButton("Cancel", null)
                 .show());
-        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
         dialog.setView(binding.getRoot());
         dialog.show();
     }
@@ -322,7 +322,7 @@ public class ArraysEditor extends Fragment {
             hasUnsavedChanges = true;
         });
 
-        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
         dialog.setView(binding.getRoot());
         dialog.show();
     }

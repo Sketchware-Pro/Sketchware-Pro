@@ -79,8 +79,6 @@
     <string name="common_word_store">Store</string>
     <string name="common_word_import_events">Import events</string>
     <string name="common_word_export_events">Export events</string>
-    <string name="str_edit">EDIT</string>
-    <string name="str_remove">remove</string>
     <string name="common_word_blocks_collection">Blocks collection</string>
     <string name="common_word_app_information">App information</string>
     <string name="common_word_create_keystore">Create keystore</string>
@@ -204,7 +202,6 @@
     <string name="common_word_application">Application</string>
     <string name="common_word_title">Title</string>
     <string name="common_word_event_name">Event Name</string>
-    <string name="str_custom_import">Custom Import</string>
     <string name="common_word_activity_name">Activity name</string>
     <string name="common_word_enable_viewbinding">Enable ViewBinding</string>
     <string name="common_word_use_materialcomponents">Use MaterialComponents</string>
@@ -216,8 +213,6 @@
     <string name="common_word_color_value">Color value</string>
     <string name="common_word_activated">Activated</string>
     <string name="common_word_center">center</string>
-    <string name="str_cancel">cancel</string>
-    <string name="str_save">save</string>
     <string name="common_word_value">Value</string>
     <string name="common_word_full_mode">Full Mode</string>
     <string name="common_word_replace_all">Replace all</string>
@@ -267,7 +262,6 @@
     <string name="common_word_regular">regular</string>
     <string name="common_word_block_type">Block type</string>
     <string name="common_word_insert_block">Insert block</string>
-    <string name="str_recycle_bin">Recycle Bin</string>
     <string name="common_word_manage_block">Manage Block</string>
     <string name="common_word_restore_to">Restore to</string>
     <string name="common_word_move_to">Move to</string>
@@ -306,7 +300,6 @@
     <string name="common_word_current_version">Current Version</string>
     <string name="common_word_active">Active</string>
     <string name="common_word_inactive">Inactive</string>
-    <string name="common_word_accept">Save</string>
     <string name="common_word_agree">Agree</string>
     <string name="common_word_all">ALL</string>
     <string name="common_word_change">Change</string>

@@ -26,7 +26,7 @@ public class lv extends LinearLayout implements nv {
     private void initialize(Context context) {
         gB.b(this, 600, 200, null);
         binding.tvTitleProjectId.setText(R.string.design_library_firebase_title_project_id);
-        binding.tvTitleAppId.setText(R.string.design_library_firebase_title_app_id);
+        binding.tvTitleAppId.setText(R.string.design_library_admob_title_app_id);
         binding.tvTitleApiKey.setText(R.string.design_library_firebase_title_api_key);
     }
 

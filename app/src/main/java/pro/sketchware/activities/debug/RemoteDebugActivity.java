@@ -184,7 +184,7 @@ public class RemoteDebugActivity extends BaseAppCompatActivity {
             item.deviceDetail.setText(getString(row.pairing == null ? R.string.remote_debug_connect_available
                     : R.string.remote_debug_pair_available, service.endpoint.host));
             item.deviceAction.setText(connected && row.pairing == null ? R.string.remote_debug_already_connected
-                    : row.pairing == null ? R.string.remote_debug_connect_action : R.string.remote_debug_pair_action);
+                    : row.pairing == null ? R.string.remote_debug_auto_connect : R.string.remote_debug_pair_action);
             item.deviceAction.setEnabled(!busy && (!connected || row.pairing != null));
             item.deviceAction.setOnClickListener(v -> {
                 if (row.pairing != null) showPairing(row.pairing);

@@ -95,7 +95,7 @@ public class oq {
             case "onPause" -> Helper.getResString(R.string.event_onpause);
             case "onPageStarted" -> Helper.getResString(R.string.event_onpagestarted);
             case "onPageFinished" -> Helper.getResString(R.string.event_onpagefinished);
-            case "moreBlock" -> Helper.getResString(R.string.event_definefunc);
+            case "moreBlock" -> Helper.getResString(R.string.common_word_moreblock);
             case "onClick" -> Helper.getResString(R.string.event_onclick);
             case "onCheckedChange" -> Helper.getResString(R.string.event_oncheckchanged);
             case "onItemSelected" -> Helper.getResString(R.string.event_onitemselected);

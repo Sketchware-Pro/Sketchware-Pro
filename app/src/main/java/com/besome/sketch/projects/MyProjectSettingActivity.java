@@ -130,7 +130,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         initializeThemePresets();
 
         binding.tilAppName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
-        binding.tilPackageName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_package_name));
+        binding.tilPackageName.setHint(Helper.getResString(R.string.manage_export_url_list_package_name));
         binding.tilProjectName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_project_name));
 
         projectAppNameValidator = new AppNameValidator(getApplicationContext(), binding.tilAppName);
@@ -163,7 +163,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         }
         if (updatingExistingProject) {
             /* Set the dialog's title & save button label */
-            binding.toolbar.setTitle(R.string.design_library_firebase_setting_step1_title);
+            binding.toolbar.setTitle(R.string.common_word_project_settings);
             HashMap<String, Object> metadata = lC.b(sc_id);
             binding.etPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
             binding.etProjectName.setText(yB.c(metadata, "my_ws_name"));
@@ -281,7 +281,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         dialog.setTitle(Helper.getResString(R.string.myprojects_settings_version_control_title));
         View view = wB.a(getApplicationContext(), R.layout.property_popup_version_control);
         ((TextView) view.findViewById(R.id.tv_code)).setText(Helper.getResString(R.string.myprojects_settings_version_control_title_code));
-        ((TextView) view.findViewById(R.id.tv_name)).setText(Helper.getResString(R.string.myprojects_settings_version_control_title_name));
+        ((TextView) view.findViewById(R.id.tv_name)).setText(Helper.getResString(R.string.common_word_name));
 
         NumberPicker versionCodePicker = view.findViewById(R.id.version_code);
         NumberPicker versionNameFirstPartPicker = view.findViewById(R.id.version_name1);

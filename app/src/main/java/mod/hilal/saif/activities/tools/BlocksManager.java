@@ -509,7 +509,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             }
         });
 
-        dialog.setNegativeButton(Helper.getResString(R.string.cancel), null);
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 

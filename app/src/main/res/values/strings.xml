@@ -72,11 +72,7 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="component_message_no_components">No components to display</string>
     <string name="component_title_add_component">Add component</string>
     <string name="design_actionbar_title_library">Library Manager</string>
-    <string name="design_actionbar_title_manager_collection">Collection Manager</string>
-    <string name="design_actionbar_title_manager_font">Font Manager</string>
     <string name="design_actionbar_title_manager_image">Image Manager</string>
-    <string name="design_actionbar_title_manager_sound">Sound Manager</string>
-    <string name="design_actionbar_title_manager_view">View Manager</string>
     <string name="design_actionbar_title_manager_resources">Resources Editor</string>
     <string name="resource_manager_no_list_title">No %s here</string>
     <string name="resource_manager_no_list_body">You don\'t have any %s here yet, try creating one.</string>
@@ -95,8 +91,6 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="design_drawer_menu_title">Configuration</string>
     <string name="design_drawer_menu_title_collection">Collection Manager</string>
     <string name="design_drawer_menu_title_font">Font Manager</string>
-    <string name="design_drawer_menu_title_image">Image Manager</string>
-    <string name="design_drawer_menu_title_library">Library Manager</string>
     <string name="design_drawer_menu_title_sound">Sound Manager</string>
     <string name="design_drawer_menu_title_source_code">Show Source Code</string>
     <string name="design_drawer_menu_title_theme">Theme Manager</string>
@@ -108,9 +102,7 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="design_library_admob_button_manual_add_to_adunit">Add manually</string>
     <string name="design_library_admob_button_request_adunit">Link AdMob account</string>
     <string name="design_library_admob_button_set_test_device">Add test devices</string>
-    <string name="design_library_admob_component_setup_first">In order to use this component, you have to setup the settings in the Library Manager first.</string>
     <string name="design_library_admob_description">AdMob is a mobile advertisement platform provided by Google. Monetize your apps by adding AdMob.</string>
-    <string name="design_library_admob_dialog_add_adunit_hint_adunit_id">Ad unit ID</string>
     <string name="design_library_admob_dialog_add_adunit_hint_adunit_name">Ad Unit name</string>
     <string name="design_library_admob_dialog_add_adunit_title">Add ad unit</string>
     <string name="design_library_admob_dialog_confirm_delete_adunit">You are about to delete the selected Ad Unit. Are you sure?</string>
@@ -120,7 +112,6 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="design_library_admob_dialog_description_confirm_uncheck">If you uncheck the option for AdMob, existing AdMob widgets and components will be deleted. Are you sure you want to continue?</string>
     <string name="design_library_admob_dialog_select_unit_title">Select ad unit</string>
     <string name="design_library_admob_dialog_set_app_id">Enter app ID</string>
-    <string name="design_library_admob_dialog_set_app_id_title">App ID</string>
     <string name="design_library_admob_dialog_set_test_device_hint_device_id">Device ID</string>
     <string name="design_library_admob_dialog_set_test_device_title">Test devices</string>
     <string name="design_library_admob_dialog_set_test_device_warning_duplicated">Duplicate device ID found</string>
@@ -186,13 +177,11 @@ ex)\"users/username\""</string>
     <string name="design_library_firebase_message_need_compat">AppCompat Library will be enabled since Firebase requires AppCompat as a dependency.</string>
     <string name="design_library_firebase_message_not_input_text">Please provide all necessary information</string>
     <string name="design_library_firebase_setting_step1_desc">Enter Full Database URL, Web API Key, and App ID</string>
-    <string name="design_library_firebase_setting_step1_title">Project Settings</string>
     <string name="design_library_firebase_setting_step2_desc">Enter the Firebase Storage URL</string>
     <string name="design_library_firebase_setting_step2_title">Storage URL Settings</string>
     <string name="design_library_firebase_setting_step3_desc">Please review the information below. If they are all correct, click on \"Save\"..</string>
     <string name="design_library_firebase_setting_step3_title">Settings Review</string>
     <string name="design_library_firebase_title_api_key">API Key</string>
-    <string name="design_library_firebase_title_app_id">App ID</string>
     <string name="design_library_firebase_title_data_location">Data location</string>
     <string name="design_library_firebase_title_firebase">Firebase</string>
     <string name="design_library_firebase_title_firebase_manager">Firebase Manager</string>
@@ -202,7 +191,6 @@ ex)\"users/username\""</string>
     <string name="design_library_firebase_title_storage_bucket_url">Storage Bucket URL</string>
     <string name="design_library_google_map_button_open_doc">Open Documentation</string>
     <string name="design_library_google_map_title">GoogleMap</string>
-    <string name="design_library_google_map_title_api_key">API KEY</string>
     <string name="design_library_google_maps_description_operate_normally">"Google Map View can be operated.
 You must enter the API key to operate the map normally."</string>
     <string name="design_library_guide_setup_first">In order to use this component, you have to setup the settings in the Library Manager first.</string>
@@ -253,7 +241,6 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_sound_title_edit_sound_name">Edit sound name</string>
     <string name="design_manager_tab_title_my_collection">My collection</string>
     <string name="design_manager_tab_title_this_project">This project</string>
-    <string name="design_manager_title_add_to_collection">Add to My Collection</string>
     <string name="design_manager_view_description_guide_create_activity">To create a new Activity, add it here</string>
     <string name="design_manager_view_description_guide_create_custom_view">Create a new Custom View here</string>
     <string name="design_manager_view_description_guide_use_custom_view">Custom View can be used to change the way items are displayed inside the ListView or the Spinner</string>
@@ -287,9 +274,6 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_cancel_build_desc">Are you sure you want to cancel building? This may take some time.</string>
     <string name="design_cancel_build_btn_stop">Stop building</string>
     <string name="design_cancel_build_btn_continue">Continue building</string>
-    <string name="design_tab_title_component">Component</string>
-    <string name="design_tab_title_event">Event</string>
-    <string name="design_tab_title_view">View</string>
     <string name="developer_tools_component_add_var">Additional Variables</string>
     <string name="developer_tools_component_build_class">Build Class</string>
     <string name="developer_tools_component_define_add_var">Define Additional Variables</string>
@@ -305,14 +289,12 @@ You must enter the API key to operate the map normally."</string>
     <string name="developer_tools_component_name">Component Name (Required)</string>
     <string name="developer_tools_component_success_message_export">Successfully exported component to:\n%s</string>
     <string name="developer_tools_component_type_class">Type Class</string>
-    <string name="developer_tools_component_type_name">Type Name</string>
     <string name="developer_tools_component_var_type_name">Variable Type Name</string>
     <string name="docs_url">https://docs.sketchware.io/</string>
     <string name="event_context_menu_title">Event Menu</string>
     <string name="event_context_menu_title_delete_event">Delete Event</string>
     <string name="event_context_menu_title_delete_more_block">Delete moreBlock</string>
     <string name="event_context_menu_title_initialize_logic">Initialize logic</string>
-    <string name="event_definefunc">MoreBlock</string>
     <string name="event_dialog_confirm_delete_component">Are you sure you want to delete the selected component?</string>
     <string name="event_dialog_confirm_delete_logic">"All logic data of the selected event will be lost
 Do you want to continue?"</string>
@@ -399,7 +381,6 @@ Do you want to continue?"</string>
     <string name="invalid_value_rule_5">"Special letters(&amp;, &lt;, >, \", ') are not allowed"</string>
     <string name="invalid_value_rule_6">Spaces aren\'t allowed</string>
     <string name="logic_block_favorites_delete_message">Are you sure you want to delete your saved block from My Collection? This action can not be undone.</string>
-    <string name="logic_block_favorites_delete_title">Delete from My Collection</string>
     <string name="logic_block_favorites_save_guide">Saved blocks are added to My Collection and are accessible from all the projects.</string>
     <string name="logic_block_favorites_save_title">Save Block to My Collection</string>
     <string name="logic_button_explore_shared_more_block">Shared More Block</string>
@@ -422,22 +403,16 @@ Please try again after removing the blocks with this variable"</string>
     <string name="logic_editor_message_select_copy_block">Select a block you want to copy</string>
     <string name="logic_editor_message_variable_name_must_start_letter">The variable name must start with a letter</string>
     <string name="logic_editor_more_block_actionbar_title_create_more_block">Create a new More Block</string>
-    <string name="logic_editor_more_block_button_add">ADD</string>
     <string name="logic_editor_more_block_dialog_description_goback">Your current work will be lost</string>
-    <string name="logic_editor_more_block_dialog_message_confirm_goback">Are you sure?</string>
     <string name="logic_editor_more_block_hint_enter_block_label">Enter a label text</string>
     <string name="logic_editor_more_block_hint_enter_new_block_name">* Enter a new name for the block</string>
     <string name="logic_editor_more_block_hint_enter_variable_name">Enter a variable name</string>
     <string name="logic_editor_more_block_title_add_label">Add Label</string>
     <string name="logic_editor_more_block_title_add_variable">Add Variable</string>
     <string name="logic_editor_more_block_title_add_variable_type">Add Variable Type</string>
-    <string name="logic_editor_more_block_title_name_of_block">Block Name</string>
     <string name="logic_editor_option_menu_title_copy_blocks">Copy blocks</string>
     <string name="logic_editor_option_menu_title_paste_blocks">Paste copied blocks</string>
-    <string name="logic_editor_panel_button_add_component">Add component</string>
     <string name="logic_editor_panel_button_add_list">Add list</string>
-    <string name="logic_editor_panel_button_add_variable">Add variable</string>
-    <string name="logic_editor_panel_button_create_moreblock">Create</string>
     <string name="logic_editor_panel_button_remove_list">Remove list</string>
     <string name="logic_editor_panel_button_remove_variable">Remove variable</string>
     <string name="logic_editor_title_add_new_list">Add new list</string>
@@ -485,7 +460,6 @@ Please try again after removing the blocks with this variable"</string>
     <string name="logic_editor_title_select_component_vibrator">Select vibrator component</string>
     <string name="logic_editor_title_select_directory_type">Select directory type</string>
     <string name="logic_editor_title_select_font">Select font</string>
-    <string name="logic_editor_title_select_gyroscope">Select gyroscope component</string>
     <string name="logic_editor_title_select_image">Select image</string>
     <string name="logic_editor_title_select_image_background">Select background image</string>
     <string name="logic_editor_title_select_list">Select list</string>
@@ -525,7 +499,6 @@ But, components should be added manually for working correctly."</string>
     <string name="main_drawer_title_docs">Documentation</string>
     <string name="main_drawer_title_export_urls">Export URLs</string>
     <string name="main_drawer_title_language_settings">Language Settings</string>
-    <string name="main_drawer_title_program_information">Program information</string>
     <string name="main_drawer_title_purchase_list">Purchase List</string>
     <string name="main_drawer_title_remove_ads">Remove Ads</string>
     <string name="main_drawer_title_save_sketchware">Save Sketchware</string>
@@ -538,7 +511,6 @@ But, components should be added manually for working correctly."</string>
     <string name="main_tab_title_projects_store">Projects store</string>
     <string name="main_tab_title_tutorials">Tutorials</string>
     <string name="manage_export_url_actionbar_title">Manage Exported URLs</string>
-    <string name="manage_export_url_list_app_name">App Name</string>
     <string name="manage_export_url_list_expire_dt_expired">Expired</string>
     <string name="manage_export_url_list_expire_dt_left">Expiration Date : %s days left</string>
     <string name="manage_export_url_list_menu_extend">Expand Expiration Date</string>
@@ -571,34 +543,25 @@ But, components should be added manually for working correctly."</string>
     <string name="myprojects_export_project_button_sign_apk">Sign APK</string>
     <string name="myprojects_export_project_title_export_src">Source Code for Android Studio</string>
     <string name="myprojects_export_project_title_local_path">Local Path</string>
-    <string name="myprojects_export_project_title_sign_apk">Sign APK</string>
     <string name="myprojects_export_src_chooser_title_email">Choose email</string>
     <string name="myprojects_export_src_title_email_body">attached file : %s</string>
     <string name="myprojects_export_src_title_email_subject">%s , Source Code for Android Studio</string>
-    <string name="myprojects_list_menu_title_create_a_new_project">New Project</string>
-    <string name="myprojects_list_menu_title_delete">Delete</string>
     <string name="myprojects_list_menu_title_settings">Setting</string>
     <string name="myprojects_list_menu_title_sign_export">Sign/Export</string>
-    <string name="myprojects_settings_actionbar_title_new_projet">New Project</string>
-    <string name="myprojects_settings_actionbar_title_project_settings">Project Settings</string>
     <string name="myprojects_settings_button_create_app">Create App</string>
-    <string name="myprojects_settings_button_save">Save</string>
     <string name="myprojects_settings_confirm_reset_icon">Are you sure you want to reset the icon?</string>
-    <string name="myprojects_settings_context_menu_title_choose">Choose</string>
     <string name="myprojects_settings_context_menu_title_choose_gallery">Choose from Gallery</string>
     <string name="myprojects_settings_context_menu_title_choose_gallery_default">Change to Default Icon</string>
     <string name="myprojects_settings_context_menu_title_choose_gallery_with_crop">Choose from Gallery (with Crop)</string>
     <string name="myprojects_settings_description_change_icon">Tap to change Icon</string>
     <string name="myprojects_settings_description_create_icon">Tap to create new Icon</string>
     <string name="myprojects_settings_hint_enter_application_name">Enter application name</string>
-    <string name="myprojects_settings_hint_enter_package_name">Package name</string>
     <string name="myprojects_settings_hint_enter_project_name">Project name</string>
     <string name="myprojects_settings_message_contain_dot">Package name must contain at least one or more Dot(.) character</string>
     <string name="myprojects_settings_message_package_rename">This project is linked with Firebase. Firebase may not work properly if you change the package name.</string>
     <string name="myprojects_settings_title_advanced_settings">Advanced Settings</string>
     <string name="myprojects_settings_version_control_title">Version Control</string>
     <string name="myprojects_settings_version_control_title_code">Code</string>
-    <string name="myprojects_settings_version_control_title_name">Name</string>
     
     <string name="theme_section_title">Theme Presets </string>
     <string name="theme_section_description">Choose from predefined themes or generate a random one</string>
@@ -609,7 +572,6 @@ But, components should be added manually for working correctly."</string>
     <string name="myprojects_sign_apk_error_failed_create_new_certificate">Failed to create a new certificate</string>
     <string name="myprojects_sign_apk_hint_enter_new_password">Enter new password</string>
     <string name="myprojects_sign_apk_incorrect_password">Incorrect password</string>
-    <string name="myprojects_sign_apk_new_certificate_button_create">Create</string>
     <string name="myprojects_sign_apk_new_certificate_hint_certificate_name">Enter certificate name</string>
     <string name="myprojects_sign_apk_new_certificate_hint_city">City or Locality</string>
     <string name="myprojects_sign_apk_new_certificate_hint_confirm_password">Confirm the password</string>
@@ -626,7 +588,6 @@ But, components should be added manually for working correctly."</string>
     <string name="picker_color_custom_color_not_found">No custom color found</string>
     <string name="picker_color_hint_enter_hex_color_code">Enter hex color code</string>
     <string name="picker_color_xml_is_empty">colors.xml is empty</string>
-    <string name="picker_color_message_delete_all_custom_color">Are you sure you want to continue? This action can not be undone.</string>
     <string name="picker_color_message_delete_custom_color">Are you sure you want to continue? This action can not be undone.</string>
     <string name="picker_color_title_delete_all_custom_color">Delete All Custom Colors</string>
     <string name="picker_color_title_delete_custom_color">Delete Custom Color</string>
@@ -639,13 +600,11 @@ But, components should be added manually for working correctly."</string>
     <string name="program_information_reset_system_complete_initialize">All of the data was initialized</string>
     <string name="program_information_reset_system_confirm_description">"All projects will be reset.
 Do you want to continue?"</string>
-    <string name="program_information_reset_system_title">Reset</string>
     <string name="program_information_reset_system_title_all_settings">Reset all settings</string>
     <string name="program_information_reset_system_title_all_settings_data">Reset all settings and data</string>
     <string name="program_information_title_docs">Docs</string>
     <string name="program_information_title_open_source_license">Open Source Licenses</string>
     <string name="program_information_title_service_terms">Service terms</string>
-    <string name="program_information_title_share_with_friends">Share with Friends</string>
     <string name="program_information_title_suggest_ideas">Suggest Ideas</string>
     <string name="program_information_title_system_information">System Information</string>
     <string name="property_ad_size">Ad size</string>
@@ -655,7 +614,6 @@ Do you want to continue?"</string>
     <string name="property_checked">Checked</string>
     <string name="property_choice_mode">Choice mode</string>
     <string name="property_clickable">Clickable</string>
-    <string name="property_custom_view_listview">Custom view</string>
     <string name="property_inject">Custom attributes</string>
     <string name="property_convert">Convert</string>
     <string name="property_description_component_intent_usage">"Follow these examples! It may result in a runtime error if you don't!
@@ -667,7 +625,6 @@ ACTION_VIEW
  url type (http://sketchware.io)"</string>
     <string name="property_description_edittext_ime_options">"It does not work when single_line is 'false' and input_type is 'text'"</string>
     <string name="property_divider_height">Divider height</string>
-    <string name="property_enabled">Enabled</string>
     <string name="property_first_day_of_week">firstDayOfWeek</string>
     <string name="property_gravity">Gravity</string>
     <string name="property_group_basic">Basic</string>
@@ -682,7 +639,6 @@ ACTION_VIEW
     <string name="property_hint_color">Hint color</string>
     <string name="property_hint_enter_value">Enter value</string>
     <string name="property_id">ID</string>
-    <string name="property_image">Image</string>
     <string name="property_ime_option">Ime option</string>
     <string name="property_indeterminate">Indeterminate</string>
     <string name="property_input_type">Input type</string>
@@ -764,7 +720,6 @@ ACTION_VIEW
     <string name="title_telegram_community">Telegram</string>
     <string name="title_sketchware">Sketchware Pro</string>
     <string name="view_panel_title_layouts">Layouts</string>
-    <string name="view_panel_title_properties">Properties</string>
     <string name="view_panel_title_widgets">Widgets</string>
     <string name="view_widget_favorites_delete_message">Are you sure you want to delete your saved widget from My Collection? This action can not be undone.</string>
     <string name="view_widget_favorites_delete_title">Delete from My Collection</string>
@@ -877,12 +832,9 @@ ACTION_VIEW
     <string name="delete_project_dialog_message">Are you sure you want to delete this project named %1$s?</string>
     <string name="src_code_editor_unsaved_changes_dialog_warning_message">You have unsaved changes. Are you sure you want to exit?</string>
     <string name="change_firebase_config_title">Change Firebase Config</string>
-    <string name="review_firebase_config_title">Review</string>
     <string name="edit_view_properties_title">Edit Properties</string>
     <string name="search_in_palettes_dialog_title">Search palettes</string>
     <string name="search">Search</string>
-    <string name="cancel">Cancel</string>
-    <string name="restore">Restore</string>
     <string name="searching">Searching…</string>
     <string name="restoring">Restoring…</string>
     <string name="search_error_message">Nothing found,\ntry again with something else</string>
@@ -904,7 +856,6 @@ ACTION_VIEW
     <string name="property_enter_value">Enter %s value</string>
 
     <string name="code_viewer">Code Viewer</string>
-    <string name="block_name">Block Name</string>
 
     <string name="resources_manager_xml_load_failed_message">data loading failed in \"%s\" \nPlease open the code editor to fix the issue manually</string>
     <string name="resources_manager_xml_load_failed_title">Data Loading Failed</string>
@@ -974,7 +925,6 @@ ACTION_VIEW
     <string name="remote_debug_pair_available">Ready to pair · %1$s</string>
     <string name="remote_debug_connect_available">Wireless debugging enabled · %1$s</string>
     <string name="remote_debug_already_connected">Connected</string>
-    <string name="remote_debug_connect_action">Connect</string>
     <string name="remote_debug_pair_action">Pair</string>
     <string name="remote_debug_pair_connect">Pair and connect</string>
     <string name="remote_debug_manual_help">If automatic discovery is unavailable, enter the test device’s IP address. The connection port is shown on the main Wireless debugging screen.</string>

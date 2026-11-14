@@ -133,7 +133,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         switchLayout.setOnClickListener(this);
         libSwitch = binding.libSwitch;
         editApiKey = binding.edApiKey;
-        binding.tvApiKey.setText(Helper.getResString(R.string.design_library_google_map_title_api_key));
+        binding.tvApiKey.setText(Helper.getResString(R.string.design_library_firebase_title_api_key));
         binding.tvDesc.setText(Helper.getResString(R.string.design_library_google_maps_description_operate_normally));
         binding.tvEnable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
         Button btnImport = binding.btnImport;

@@ -108,7 +108,7 @@
                         android:textColor="?colorControlNormal"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        tools:text="@string/design_library_google_map_title_api_key" />
+                        tools:text="@string/design_library_firebase_title_api_key" />
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView

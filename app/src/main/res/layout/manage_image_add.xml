@@ -132,7 +132,7 @@
                     android:layout_marginStart="20dp"
                     android:minWidth="0dp"
                     android:textAppearance="?attr/textAppearanceBodySmall"
-                    tools:text="@string/design_manager_title_add_to_collection" />
+                    tools:text="@string/msg_add_to_my_collection" />
 
             </LinearLayout>
         </LinearLayout>

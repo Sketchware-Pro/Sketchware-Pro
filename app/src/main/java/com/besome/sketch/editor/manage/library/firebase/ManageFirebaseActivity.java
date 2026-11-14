@@ -188,7 +188,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         binding.tvTitleProjectId.setText(
                 Helper.getResString(R.string.design_library_firebase_title_project_id));
         binding.tvTitleAppId.setText(
-                Helper.getResString(R.string.design_library_firebase_title_app_id));
+                Helper.getResString(R.string.design_library_admob_title_app_id));
         binding.tvTitleApiKey.setText(
                 Helper.getResString(R.string.design_library_firebase_title_api_key));
         binding.tvTitleStorageUrl.setText(

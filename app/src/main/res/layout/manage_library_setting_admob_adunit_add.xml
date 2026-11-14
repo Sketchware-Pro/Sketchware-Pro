@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:importantForAutofill="noExcludeDescendants"
-            tools:hint="@string/design_library_admob_dialog_add_adunit_hint_adunit_id">
+            tools:hint="@string/design_library_admob_title_ad_unit_id">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/ed_adunit_id"

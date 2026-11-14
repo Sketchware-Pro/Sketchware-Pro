@@ -79,7 +79,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
 
     private void resetDialog(View view) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.program_information_reset_system_title));
+        dialog.setTitle(Helper.getResString(R.string.common_word_reset));
         dialog.setIcon(R.drawable.rollback_96);
         View rootView = wB.a(this, R.layout.all_init_popup);
         RadioGroup radioGroup = rootView.findViewById(R.id.rg_type);

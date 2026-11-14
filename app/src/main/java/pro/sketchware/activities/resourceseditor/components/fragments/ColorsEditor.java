@@ -269,7 +269,7 @@ public class ColorsEditor extends Fragment {
             });
         }
 
-        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
         dialog.setView(dialogBinding.getRoot());
         dialog.show();
     }

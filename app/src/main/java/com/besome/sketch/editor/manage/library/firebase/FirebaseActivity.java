@@ -208,7 +208,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         } else {
             sc_id = getIntent().getStringExtra("sc_id");
         }
-        String titleStep1 = getString(R.string.design_library_firebase_setting_step1_title);
+        String titleStep1 = getString(R.string.common_word_project_settings);
         String titleStep2 = getString(R.string.design_library_firebase_setting_step2_title);
         String titleStep3 = getString(R.string.design_library_firebase_setting_step3_title);
         String descriptionStep1 = getString(R.string.design_library_firebase_setting_step1_desc);

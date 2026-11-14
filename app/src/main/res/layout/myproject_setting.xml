@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="@string/myprojects_list_menu_title_create_a_new_project" />
+            app:title="@string/common_word_new_project" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView

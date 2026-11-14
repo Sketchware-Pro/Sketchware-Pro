@@ -94,7 +94,7 @@ public class ColorPickerDialog extends PopupWindow {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         dialog.setIcon(R.drawable.delete_96);
         dialog.setTitle(R.string.picker_color_title_delete_all_custom_color);
-        dialog.setMessage(R.string.picker_color_message_delete_all_custom_color);
+        dialog.setMessage(R.string.picker_color_message_delete_custom_color);
         dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
             colorPref.a();
             colorGroups.set(0, getSavedColorBeans());

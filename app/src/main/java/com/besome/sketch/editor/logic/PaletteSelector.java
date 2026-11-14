@@ -117,9 +117,9 @@ public class PaletteSelector extends RecyclerView {
             }
             v1.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.cancel), (v1, which) -> v1.dismiss());
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v1, which) -> v1.dismiss());
         if (!searchValue.isEmpty()) {
-            dialog.setNeutralButton(Helper.getResString(R.string.restore), (v1, which) -> startSearch(v1, ""));
+            dialog.setNeutralButton(Helper.getResString(R.string.common_word_restore), (v1, which) -> startSearch(v1, ""));
         }
         dialog.setView(binding.getRoot());
         binding.edittextSearchValue.setText(searchValue);

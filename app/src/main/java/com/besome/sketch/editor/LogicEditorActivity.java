@@ -1830,7 +1830,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void n(String str) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(R.string.logic_block_favorites_delete_title);
+        dialog.setTitle(R.string.view_widget_favorites_delete_title);
         dialog.setMessage(R.string.logic_block_favorites_delete_message);
         dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
             Mp.h().a(str, true);

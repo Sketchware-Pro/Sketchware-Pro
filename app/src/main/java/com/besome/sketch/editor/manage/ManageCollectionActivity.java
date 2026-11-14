@@ -378,7 +378,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(Helper.getResString(R.string.design_actionbar_title_manager_collection));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(Helper.getResString(R.string.design_drawer_menu_title_collection));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {

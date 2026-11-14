@@ -109,7 +109,7 @@
                         android:id="@+id/component_type_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/developer_tools_component_type_name"
+                        android:hint="@string/common_word_type_name"
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:singleLine="true" />

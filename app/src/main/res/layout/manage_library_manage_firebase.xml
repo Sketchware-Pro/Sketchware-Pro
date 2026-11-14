@@ -136,7 +136,7 @@
                         android:textColor="?colorControlNormal"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        tools:text="@string/design_library_firebase_title_app_id" />
+                        tools:text="@string/design_library_admob_title_app_id" />
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView

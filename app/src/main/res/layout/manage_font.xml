@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="@string/design_actionbar_title_manager_font" />
+            app:title="@string/design_drawer_menu_title_font" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
                     android:layout_weight="1"
-                    android:text="@string/cancel" />
+                    android:text="@string/common_word_cancel" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_delete"
