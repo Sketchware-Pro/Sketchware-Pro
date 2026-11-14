@@ -65,7 +65,7 @@ ${
                 }
 ${
                     views.filter { it.isInclude }
-                        .joinToString("\n") { "        ${it.type} ${it.name} = ${it.fullType}.bind(findChildViewById(view, R.id.${it.id}));" }
+                        .joinToString("\n") { "        ${it.type} ${it.name} = ${it.type}.bind(findChildViewById(view, R.id.${it.id}));" }
                 }
         if (${views.joinToString(" || ") { "${it.name} == null" }}) {
              throw new IllegalStateException("Required views are missing");
@@ -102,7 +102,7 @@ ${
 
     private fun generateImports(views: List<View>, rootView: View): String {
         val copy = views.toMutableSet().filterNot {
-            it.type == "View" || it.type == "ViewGroup"
+            it.type == "View" || it.type == "ViewGroup" || it.isInclude
         }.distinctBy { it.fullType }
         val imports = mutableSetOf(
             "import android.view.View;",
@@ -153,7 +153,7 @@ ${
                             views.add(
                                 View(
                                     generateFileNameForLayout(layout),
-                                    packageName + "." + generateFileNameForLayout(layout),
+                                    packageName + ".databinding." + generateFileNameForLayout(layout),
                                     id.nodeValue.substringAfter("/"),
                                     true
                                 )
