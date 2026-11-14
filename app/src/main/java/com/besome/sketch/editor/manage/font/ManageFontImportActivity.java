@@ -158,7 +158,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         binding.imgBackbtn.setOnClickListener(this);
         binding.tvSendbtn.setText(getString(R.string.common_word_import).toUpperCase());
         binding.tvSendbtn.setOnClickListener(this);
-        binding.tvSamename.setText(getString(R.string.design_manager_font_title_apply_same_naming));
+        binding.tvSamename.setText(R.string.design_manager_font_title_apply_same_naming);
         itemAdapter = new ItemAdapter();
         binding.recyclerList.setHasFixedSize(true);
         binding.recyclerList.setAdapter(itemAdapter);

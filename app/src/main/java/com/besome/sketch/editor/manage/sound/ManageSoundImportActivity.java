@@ -197,7 +197,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             }
         });
         Button btn_decide = binding.btnDecide;
-        btn_decide.setText(getString(R.string.design_manager_change_name_button));
+        btn_decide.setText(R.string.design_manager_change_name_button);
         btn_decide.setOnClickListener(this);
         img_album = binding.imgAlbum;
         img_play = binding.imgPlay;

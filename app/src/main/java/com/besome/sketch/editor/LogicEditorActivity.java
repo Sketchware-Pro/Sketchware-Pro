@@ -1343,7 +1343,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(R.string.logic_editor_title_enter_string_value);
         PropertyPopupInputTextBinding dialogBinding = PropertyPopupInputTextBinding.inflate(getLayoutInflater());
-        dialogBinding.tiInput.setHint(getString(R.string.property_hint_enter_value));
+        dialogBinding.tiInput.setHint(R.string.property_hint_enter_value);
         EditText editText = dialogBinding.edInput;
         editText.setSingleLine(true);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
@@ -1492,9 +1492,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(R.string.logic_editor_title_enter_data_value);
         PropertyPopupInputIntentDataBinding dialogBinding = PropertyPopupInputIntentDataBinding.inflate(getLayoutInflater());
-        dialogBinding.tvDescIntentUsage.setText(getString(R.string.property_description_component_intent_usage));
+        dialogBinding.tvDescIntentUsage.setText(R.string.property_description_component_intent_usage);
         EditText editText = dialogBinding.edInput;
-        dialogBinding.tiInput.setHint(getString(R.string.property_hint_enter_value));
+        dialogBinding.tiInput.setHint(R.string.property_hint_enter_value);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setText(ss.getArgValue().toString());
         dialog.setView(dialogBinding.getRoot());
