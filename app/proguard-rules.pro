@@ -45,10 +45,8 @@
 }
 
 # ----------------------------------------------------------------------------
-# 4. R Classes and BuildConfig Constants
+# 4. BuildConfig Constants (R classes inlining enabled for R8)
 # ----------------------------------------------------------------------------
--keep class **.R$* { *; }
--keep class **.R { *; }
 -keep class **.BuildConfig { *; }
 
 # ----------------------------------------------------------------------------
@@ -68,7 +66,17 @@
     @com.google.gson.annotations.SerializedName <fields>;
 }
 -keep class com.google.gson.** { *; }
--keep class * implements java.io.Serializable { *; }
+
+# Preserve standard Java serialization members without keeping whole classes/methods
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
 -keep class * implements android.os.Parcelable {
     public static final android.os.Parcelable$Creator *;
     *;
@@ -103,12 +111,10 @@
 -keep class javax.xml.stream.** { *; }
 
 # ----------------------------------------------------------------------------
-# 9. Google Material Components, AndroidX & Firebase
+# 9. Third-Party Consumer ProGuard Rules
+# AndroidX, Google Material, Firebase, and Play Services bundle their own
+# consumer keep rules; manual broad rules are removed to allow unused code shrinking.
 # ----------------------------------------------------------------------------
--keep class com.google.android.material.** { *; }
--keep class androidx.** { *; }
--keep class com.google.firebase.** { *; }
--keep class com.google.android.gms.** { *; }
 
 # ----------------------------------------------------------------------------
 # 10. Suppress Warnings for Optional Desktop JVM & Internal Third-Party Classes
@@ -168,9 +174,7 @@
 # 12. XML Parsers & DOM Interfaces (Prevent R8 Return Type Narrowing Crash)
 # ----------------------------------------------------------------------------
 -keep class javax.xml.parsers.** { *; }
--keepclassmembers class javax.xml.parsers.** { *; }
 -keep class javax.xml.transform.** { *; }
--keepclassmembers class javax.xml.transform.** { *; }
 -keep interface org.w3c.dom.** { *; }
 -keep interface org.xml.sax.** { *; }
 
