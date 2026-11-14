@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="String header value ( optional )">
+        android:hint="@string/msg_string_header_value_optional">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/string_header_input"

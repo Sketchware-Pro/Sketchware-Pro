@@ -25,7 +25,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="Last Compile Log" />
+                app:title="@string/msg_last_compile_log" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Awesome, no bugs to fix!"
+            android:text="@string/msg_awesome_no_bugs_to_fix"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="20sp" />
 
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="Let's continue working on the project"
+            android:text="@string/msg_let_s_continue_working_on"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
 

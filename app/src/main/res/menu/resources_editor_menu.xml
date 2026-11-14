@@ -28,7 +28,7 @@
 
     <item
         android:id="@+id/action_open_editor"
-        android:title="Open in editor"
+        android:title="@string/msg_open_in_editor"
         app:showAsAction="never" />
 
 </menu>

@@ -3,7 +3,7 @@
     <item
         android:id="@+id/about_team"
         android:icon="@drawable/ic_mtrl_team"
-        android:title="About the team" />
+        android:title="@string/msg_about_the_team" />
 
     <item
         android:id="@+id/changelog"

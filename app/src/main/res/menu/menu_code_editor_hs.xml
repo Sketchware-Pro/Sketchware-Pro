@@ -32,7 +32,7 @@
 
     <item
         android:id="@+id/action_find_replace"
-        android:title="Find &amp; Replace"
+        android:title="@string/msg_find_amp_replace"
         app:showAsAction="never" />
 
     <item
@@ -44,7 +44,7 @@
     <item
         android:id="@+id/action_autocomplete_symbol_pair"
         android:checkable="true"
-        android:title="Auto complete symbol pair"
+        android:title="@string/msg_auto_complete_symbol_pair"
         app:showAsAction="never" />
 
 </menu>

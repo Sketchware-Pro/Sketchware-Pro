@@ -43,7 +43,7 @@
                  android:id="@+id/colorEditText"
                  android:layout_height="match_parent"
                  android:layout_width="match_parent"
-                 android:hint="Color hex code"
+                 android:hint="@string/msg_color_hex_code"
                  android:textSize="16sp"
                  android:paddingLeft="32dp"
                  android:singleLine="true"

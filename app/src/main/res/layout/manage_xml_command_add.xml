@@ -54,7 +54,7 @@
                     android:id="@+id/xml_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="XML name(with .xml)"
+                    android:hint="@string/msg_xml_name_with_xml"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 

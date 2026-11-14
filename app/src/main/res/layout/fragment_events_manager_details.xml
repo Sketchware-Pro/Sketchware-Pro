@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="Start by creating a new one"
+            android:text="@string/msg_start_by_creating_a_new"
             android:textColor="?attr/colorOnSurface"
             android:textSize="14sp" />
 

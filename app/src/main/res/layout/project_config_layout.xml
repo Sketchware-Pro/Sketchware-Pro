@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
-        android:hint="Classpath 'separated by :'">
+        android:hint="@string/msg_classpath_separated_by">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:text="Hide warnings in error log"
+            android:text="@string/msg_hide_warnings_in_error_log"
             android:textAppearance="?attr/textAppearanceBodyMedium" />
 
         <CheckBox
@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:text="Don't include http-legacy-28.dex"
+            android:text="@string/msg_don_t_include_http_legacy"
             android:textAppearance="?attr/textAppearanceBodyMedium" />
 
         <CheckBox
@@ -158,7 +158,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:text="Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs."
+            android:text="@string/msg_enable_debug_logcat_logs_viewable"
             android:textAppearance="?attr/textAppearanceBodyMedium" />
 
         <CheckBox

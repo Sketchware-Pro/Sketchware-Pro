@@ -17,7 +17,7 @@
     <item
         android:id="@+id/action_filter"
         android:icon="@drawable/ic_mtrl_filter"
-        android:title="Filter by package name"
+        android:title="@string/msg_filter_by_package_name"
         app:showAsAction="never" />
 
     <item
@@ -29,7 +29,7 @@
     <item
         android:id="@+id/action_clear"
         android:icon="@drawable/ic_mtrl_clear_all"
-        android:title="Clear all logs"
+        android:title="@string/msg_clear_all_logs"
         app:showAsAction="always" />
 
 

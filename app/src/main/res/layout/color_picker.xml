@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="14dp"
             android:layout_marginTop="10dp"
-            android:text="Pick your color"
+            android:text="@string/msg_pick_your_color"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="14dp"
             android:layout_marginTop="4dp"
-            android:text="Either enter a hex color code or pick a color from the list below." />
+            android:text="@string/msg_either_enter_a_hex_color" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"

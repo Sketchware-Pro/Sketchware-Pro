@@ -22,7 +22,7 @@
                 app:layout_collapseMode="pin"
                 app:menu="@menu/manage_custom_attribute_menu"
                 app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="Manage Custom Attribute" />
+                app:title="@string/msg_manage_custom_attribute" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

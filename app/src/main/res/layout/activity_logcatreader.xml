@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Logcat hasn't captured anything yet"
+            android:text="@string/msg_logcat_hasn_t_captured_anything"
             android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
 
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="Keep this screen open then run your app"
+            android:text="@string/msg_keep_this_screen_open_then"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
 

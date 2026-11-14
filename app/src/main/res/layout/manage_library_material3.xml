@@ -113,7 +113,7 @@
                         android:textColor="?colorControlNormal"
                         android:textSize="18sp"
                         android:layout_marginVertical="8dp"
-                        android:text="Material3 Theme Preference :" />
+                        android:text="@string/msg_material3_theme_preference" />
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/toggle_group"
@@ -201,7 +201,7 @@
                         android:singleLine="true"
                         android:textColor="?colorControlNormal"
                         android:textSize="18sp"
-                        android:text="Enable Dynamic Colors" />
+                        android:text="@string/msg_enable_dynamic_colors" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/dynamic_colors_switch"

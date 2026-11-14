@@ -3,61 +3,61 @@
     <SwitchPreferenceCompat
         app:iconSpaceReserved="false"
         app:key="built-in-blocks"
-        app:summary="May slow down loading blocks in Logic Editor."
-        app:title="Built-in blocks" />
+        app:summary="@string/pref_may_slow_down_loading_blocks"
+        app:title="@string/pref_built_in_blocks" />
 
     <SwitchPreferenceCompat
         app:iconSpaceReserved="false"
         app:key="always-show-blocks"
-        app:summary="All variable blocks will be visible, even if you don't have variables for them."
-        app:title="Show all variable blocks" />
+        app:summary="@string/pref_all_variable_blocks_will_be"
+        app:title="@string/pref_show_all_variable_blocks" />
 
     <SwitchPreferenceCompat
         app:iconSpaceReserved="false"
         app:key="show-every-single-block"
-        app:summary="Every single available block will be shown. Will slow down opening palettes!"
-        app:title="Show all blocks of palettes" />
+        app:summary="@string/pref_every_single_available_block_will"
+        app:title="@string/pref_show_all_blocks_of_palettes" />
 
     <Preference
         app:iconSpaceReserved="false"
         app:key="backup-dir"
-        app:summary="The default directory is /Internal storage/.sketchware/backups/."
+        app:summary="@string/pref_the_default_directory_is_internal"
         app:title="@string/common_word_backup_directory" />
 
     <SwitchPreferenceCompat
         app:iconSpaceReserved="false"
         app:key="root-auto-install-projects"
-        app:summary="Automatically installs project APKs after building using root access."
-        app:title="Install projects with root access" />
+        app:summary="@string/pref_automatically_installs_project_apks"
+        app:title="@string/pref_install_projects_with_root_access" />
 
     <SwitchPreferenceCompat
         app:iconSpaceReserved="false"
         app:key="root-auto-open-after-installing"
-        app:summary="Opens projects automatically after auto-installation using root."
-        app:title="Launch projects after installing" />
+        app:summary="@string/pref_opens_projects_automatically_after"
+        app:title="@string/pref_launch_projects_after_installing" />
 
     <SwitchPreferenceCompat
         app:iconSpaceReserved="false"
         app:key="use-new-version-control"
-        app:summary="Enables custom version code and name for projects."
-        app:title="Use new Version Control" />
+        app:summary="@string/pref_enables_custom_version_code_and"
+        app:title="@string/pref_use_new_version_control" />
 
     <SwitchPreferenceCompat
         app:iconSpaceReserved="false"
         app:key="use-asd-highlighter"
-        app:summary="Enables syntax highlighting while editing blocks' text parameters."
-        app:title="Enable block text input highlighting" />
+        app:summary="@string/pref_enables_syntax_highlighting_while_e"
+        app:title="@string/pref_enable_block_text_input_highlightin" />
 
     <Preference
         app:iconSpaceReserved="false"
         app:key="backup-filename"
-        app:summary="Default is &quot;$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)&quot;"
-        app:title="Backup filename format" />
+        app:summary="@string/pref_default_is_quot_projectname_v"
+        app:title="@string/pref_backup_filename_format" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:iconSpaceReserved="false"
         app:key="background-building"
-        app:summary="Show floating build progress when Sketchware Pro is paused. Requires overlay permission."
-        app:title="Background building" />
+        app:summary="@string/pref_show_floating_build_progress_when"
+        app:title="@string/pref_background_building" />
 </PreferenceScreen>

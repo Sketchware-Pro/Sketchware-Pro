@@ -46,7 +46,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:padding="4dp"
-                android:text="use (moreblockName[type|typeName] or\nmoreblockName[type|typeName|typeCode]) for custom moreblock type(S)"
+                android:text="@string/msg_use_moreblockname_type_typename_or"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -90,7 +90,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Select Moreblock type"
+                android:text="@string/msg_select_moreblock_type"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />

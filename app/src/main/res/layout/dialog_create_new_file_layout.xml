@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="2dp"
         android:layout_marginTop="4dp"
-        android:hint="Enter a name"
+        android:hint="@string/msg_enter_a_name"
         app:hintEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText

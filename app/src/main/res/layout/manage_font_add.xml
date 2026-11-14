@@ -35,7 +35,7 @@
                 android:id="@+id/font_preview_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="This is how your font looks like."
+                android:text="@string/msg_this_is_how_your_font"
                 android:textSize="18sp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -136,6 +136,6 @@
         android:layout_marginTop="4dp"
         android:minWidth="0dp"
         android:minHeight="0dp"
-        android:text="Add to my collection"
+        android:text="@string/msg_add_to_my_collection"
         android:translationX="-5dp" />
 </LinearLayout>
