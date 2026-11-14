@@ -17,6 +17,7 @@ import com.besome.sketch.export.ExportProjectActivity;
 import com.besome.sketch.lib.ui.LoadingDialog;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -160,6 +161,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
                 if (!activity.isFinishing() && !activity.isDestroyed()) {
                     Glide.with(activity)
                             .load(iconFile)
+                            .signature(new ObjectKey(iconFile.lastModified()))
                             .placeholder(R.drawable.default_icon)
                             .error(R.drawable.default_icon)
                             .into(holder.binding.imgIcon);
