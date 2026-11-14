@@ -16,7 +16,7 @@ dependencyresolver = "05ec26af0b"
 #noinspection NewerVersionAvailable
 ecj = "3.26.0"
 exifinterface = "1.4.2"
-filepicker = "3e930dc088"
+filepicker = "74526bea66"
 flexbox = "3.0.0"
 glide = "5.0.9"
 gson = "2.14.0"
