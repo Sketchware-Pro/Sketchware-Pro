@@ -81,7 +81,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/select_file"
-                style="?attr/materialIconButtonOutlinedStyle"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -90,8 +90,8 @@
                 android:insetTop="0dp"
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
-                android:paddingRight="25dp"
                 android:text="@string/common_word_select"
+                android:textSize="14dp"
                 app:cornerRadius="10dp"
                 app:icon="@drawable/ic_mtrl_add"
                 app:iconGravity="start"
@@ -103,7 +103,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/clear_input"
-                style="?attr/materialIconButtonOutlinedStyle"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -113,8 +113,8 @@
                 android:insetTop="0dp"
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
-                android:paddingRight="25dp"
                 android:text="@string/common_word_clear"
+                android:textSize="14dp"
                 android:visibility="gone"
                 app:cornerRadius="10dp"
                 app:icon="@drawable/ic_mtrl_reset"
