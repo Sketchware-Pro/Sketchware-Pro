@@ -18,12 +18,9 @@
 # ----------------------------------------------------------------------------
 # 2. Bytecode Optimization Configuration
 # ----------------------------------------------------------------------------
-# Allow R8 bytecode optimization passes (method inlining, dead code removal, constant folding)
--optimizationpasses 5
--allowaccessmodification
-
+# Disallow access modification and horizontal class merging to prevent IllegalAccessError on Dalvik/ART
 # Skip arithmetic/cast simplification if needed for precise float/double precision
--optimizations !code/simplification/arithmetic,!code/simplification/cast
+-optimizations !code/simplification/arithmetic,!code/simplification/cast,!class/merging/horizontal,!class/merging/vertical
 
 # ----------------------------------------------------------------------------
 # 3. Android Components & Application Lifecycle
@@ -181,3 +178,10 @@
 
 
 
+
+-keep class org.xml.sax.** { *; }
+-keepclassmembers class org.xml.sax.** { *; }
+-keep class org.xml.sax.helpers.** { *; }
+-keepclassmembers class org.xml.sax.helpers.** { *; }
+-keep class com.fasterxml.jackson.** { *; }
+-keep class org.jetbrains.kotlin.ir.** { *; }
