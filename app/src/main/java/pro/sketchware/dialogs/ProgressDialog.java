@@ -38,7 +38,7 @@ public class ProgressDialog {
     public void show() {
         if (dialog == null) {
             var dialogBuilder = new MaterialAlertDialogBuilder(context);
-            dialogBuilder.setTitle(getStr(R.string.common_message_loading));
+            dialogBuilder.setTitle(R.string.common_message_loading);
             dialogBuilder.setView(binding.getRoot());
             dialog = dialogBuilder.create();
             dialog.setCancelable(isCancelable);

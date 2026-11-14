@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Objects;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
 import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
 import pro.sketchware.activities.resourceseditor.components.adapters.ArraysAdapter;
 import pro.sketchware.activities.resourceseditor.components.models.ArrayModel;
@@ -171,7 +170,7 @@ public class ArraysEditor extends Fragment {
             hasUnsavedChanges = true;
         });
 
-        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.setView(binding.getRoot());
         dialog.show();
     }
@@ -231,7 +230,7 @@ public class ArraysEditor extends Fragment {
                 })
                 .setNegativeButton("Cancel", null)
                 .show());
-        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.setView(binding.getRoot());
         dialog.show();
     }
@@ -322,7 +321,7 @@ public class ArraysEditor extends Fragment {
             hasUnsavedChanges = true;
         });
 
-        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.setView(binding.getRoot());
         dialog.show();
     }

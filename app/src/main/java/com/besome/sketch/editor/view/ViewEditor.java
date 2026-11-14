@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -784,15 +785,15 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     private void deleteWidgetFromCollection(String str) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-        dialog.setTitle(getString(R.string.view_widget_favorites_delete_title));
+        dialog.setTitle(R.string.view_widget_favorites_delete_title);
         dialog.setIcon(R.drawable.ic_mtrl_delete);
-        dialog.setMessage(getString(R.string.view_widget_favorites_delete_message));
-        dialog.setPositiveButton(getString(R.string.common_word_delete), (v, which) -> {
+        dialog.setMessage(R.string.view_widget_favorites_delete_message);
+        dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
             Rp.h().a(str, true);
             setFavoriteData(Rp.h().f());
             v.dismiss();
         });
-        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -1122,7 +1123,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     @Override
-    public void onInitializeAccessibilityNodeInfo(android.view.accessibility.AccessibilityNodeInfo info) {
+    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
         super.onInitializeAccessibilityNodeInfo(info);
         info.setClassName(ViewEditor.class.getName());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

@@ -145,7 +145,7 @@ public class ThemesEditor extends Fragment {
             updateNoContentLayout();
             hasUnsavedChanges = true;
         });
-        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.setView(binding.getRoot());
         dialog.show();
     }
@@ -196,7 +196,7 @@ public class ThemesEditor extends Fragment {
                 })
                 .setNegativeButton("Cancel", null)
                 .show());
-        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.setView(binding.getRoot());
         dialog.show();
     }
@@ -278,7 +278,7 @@ public class ThemesEditor extends Fragment {
             hasUnsavedChanges = true;
         });
 
-        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.setView(binding.getRoot());
         dialog.show();
     }
