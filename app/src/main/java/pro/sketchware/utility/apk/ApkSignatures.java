@@ -37,12 +37,12 @@ public class ApkSignatures {
     public void showSignaturesDialog() {
         DialogAppSignaturesBinding signaturesBinding = DialogAppSignaturesBinding.inflate(LayoutInflater.from(context));
         MaterialAlertDialogBuilder signaturesDialog = new MaterialAlertDialogBuilder(context);
-        signaturesDialog.setTitle(Helper.getResString(R.string.signatures_title));
+        signaturesDialog.setTitle(R.string.signatures_title);
 
         signaturesBinding.tvMsg.setText(abMsg);
 
         signaturesDialog.setView(signaturesBinding.getRoot());
-        signaturesDialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
+        signaturesDialog.setPositiveButton(R.string.common_word_ok, null);
         signaturesDialog.show();
     }
 }

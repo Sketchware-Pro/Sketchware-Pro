@@ -278,7 +278,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private void showOldVersionControlDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.numbers_48);
-        dialog.setTitle(Helper.getResString(R.string.myprojects_settings_version_control_title));
+        dialog.setTitle(R.string.myprojects_settings_version_control_title);
         View view = wB.a(getApplicationContext(), R.layout.property_popup_version_control);
         ((TextView) view.findViewById(R.id.tv_code)).setText(Helper.getResString(R.string.myprojects_settings_version_control_title_code));
         ((TextView) view.findViewById(R.id.tv_name)).setText(Helper.getResString(R.string.common_word_name));
@@ -347,14 +347,14 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 picker.setValue(projectVersionNameSecondPart);
             }
         });
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (!mB.a()) {
                 binding.verCode.setText(String.valueOf(versionCodePicker.getValue()));
                 binding.verName.setText(projectNewVersionNameFirstPart + "." + projectNewVersionNameSecondPart);
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -395,15 +395,15 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
     private void showResetIconConfirmation() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.common_word_settings));
+        dialog.setTitle(R.string.common_word_settings);
         dialog.setIcon(R.drawable.default_icon);
-        dialog.setMessage(Helper.getResString(R.string.myprojects_settings_confirm_reset_icon));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_reset), (v, which) -> {
+        dialog.setMessage(R.string.myprojects_settings_confirm_reset_icon);
+        dialog.setPositiveButton(R.string.common_word_reset, (v, which) -> {
             binding.appIcon.setImageResource(R.drawable.default_icon);
             projectHasCustomIcon = false;
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -430,10 +430,10 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private void showPackageNameChangeWarning() {
         shownPackageNameChangeWarning = true;
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
+        dialog.setTitle(R.string.common_word_warning);
         dialog.setIcon(R.drawable.break_warning_96_red);
-        dialog.setMessage(Helper.getResString(R.string.myprojects_settings_message_package_rename));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
+        dialog.setMessage(R.string.myprojects_settings_message_package_rename);
+        dialog.setPositiveButton(R.string.common_word_ok, null);
         dialog.show();
     }
 

@@ -118,7 +118,7 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         MinMaxInputValidator validator = new MinMaxInputValidator(context, popupBinding.tiInput, 0, 999);
         validator.a(String.valueOf(value));
         dialog.setView(popupBinding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (validator.b()) {
                 setValue(Integer.parseInt(Helper.getText(input)));
                 if (valueChangeListener != null) {
@@ -127,7 +127,7 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 }

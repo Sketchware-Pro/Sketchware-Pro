@@ -140,14 +140,14 @@ public class ViewEvents extends LinearLayout {
                         dialog.setTitle(R.string.common_word_confirm_delete);
                         dialog.setMessage(R.string.msg_click_on_confirm_to_delete);
 
-                        dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (view, which) -> {
+                        dialog.setPositiveButton(R.string.common_word_delete, (view, which) -> {
                             view.dismiss();
                             EventBean.deleteEvent(sc_id, event, projectFileBean);
                             bB.a(getContext(), getContext().getString(R.string.common_message_complete_delete), 0).show();
                             event.isSelected = false;
                             eventAdapter.notifyItemChanged(position);
                         });
-                        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+                        dialog.setNegativeButton(R.string.common_word_cancel, null);
                         dialog.show();
                         return true;
                     });

@@ -422,8 +422,8 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 new MaterialAlertDialogBuilder(ManageLocalLibraryActivity.this)
                         .setTitle(R.string.common_word_warning)
                         .setMessage("This library \"" + library.getName() + "\" already used in your project, removing it may break your project\rDo you want to continue removing it?")
-                        .setPositiveButton(Helper.getResString(R.string.common_word_yes), (dialog, which) -> dialog.dismiss())
-                        .setNegativeButton(Helper.getResString(R.string.common_word_cancel), (dialog, which) -> {
+                        .setPositiveButton(R.string.common_word_yes, (dialog, which) -> dialog.dismiss())
+                        .setNegativeButton(R.string.common_word_cancel, (dialog, which) -> {
                             toggleLocalLibrary(card, library, onLocalLibrarySelectedStateChangedListener);
                             dialog.dismiss();
                         })

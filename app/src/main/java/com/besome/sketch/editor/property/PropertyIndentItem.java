@@ -217,7 +217,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         popupBinding.tiTop.setSuffixText("dp");
 
         dialog.setView(view);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (popupBinding.chkPtyAll.isChecked()) {
                 if (ti_all.b() && ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
                     int left = Integer.parseInt(Helper.getText(popupBinding.etLeft));
@@ -242,7 +242,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                 }
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 }

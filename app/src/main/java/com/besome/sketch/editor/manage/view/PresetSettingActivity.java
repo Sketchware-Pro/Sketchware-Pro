@@ -46,12 +46,12 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
 
     private void confirmBeforeClose() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.preset_setting_title));
+        dialog.setTitle(R.string.preset_setting_title);
         dialog.setIcon(R.drawable.ic_detail_setting_48dp);
         dialog.setCancelable(false);
-        dialog.setMessage(Helper.getResString(R.string.preset_setting_edit_warning));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> close());
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setMessage(R.string.preset_setting_edit_warning);
+        dialog.setPositiveButton(R.string.common_word_ok, (v, which) -> close());
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

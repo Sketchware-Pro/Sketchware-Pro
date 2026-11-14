@@ -79,14 +79,14 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
 
     private void resetDialog(View view) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.common_word_reset));
+        dialog.setTitle(R.string.common_word_reset);
         dialog.setIcon(R.drawable.rollback_96);
         View rootView = wB.a(this, R.layout.all_init_popup);
         RadioGroup radioGroup = rootView.findViewById(R.id.rg_type);
         ((RadioButton) rootView.findViewById(R.id.rb_all)).setText(Helper.getResString(R.string.program_information_reset_system_title_all_settings_data));
         ((RadioButton) rootView.findViewById(R.id.rb_only_config)).setText(Helper.getResString(R.string.program_information_reset_system_title_all_settings));
         dialog.setView(rootView);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_yes), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_yes, (v, which) -> {
             if (!mB.a()) {
                 int buttonId = radioGroup.getCheckedRadioButtonId();
                 boolean resetOnlySettings = buttonId != R.id.rb_all;
@@ -95,7 +95,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
                 finish();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

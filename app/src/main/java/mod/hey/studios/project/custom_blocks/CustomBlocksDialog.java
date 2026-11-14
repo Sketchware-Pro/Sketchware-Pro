@@ -50,9 +50,9 @@ public class CustomBlocksDialog {
         dialogBinding = ViewUsedCustomBlocksBinding.inflate(context.getLayoutInflater());
 
         var dialog = new MaterialAlertDialogBuilder(context)
-                .setTitle(Helper.getResString(R.string.used_custom_blocks))
-                .setPositiveButton(Helper.getResString(R.string.common_word_import), null)
-                .setNegativeButton(Helper.getResString(R.string.common_word_dismiss), (dialogInterface, which) -> dialogInterface.dismiss())
+                .setTitle(R.string.used_custom_blocks)
+                .setPositiveButton(R.string.common_word_import, null)
+                .setNegativeButton(R.string.common_word_dismiss, (dialogInterface, which) -> dialogInterface.dismiss())
                 .setView(dialogBinding.getRoot())
                 .show();
 
@@ -203,7 +203,7 @@ public class CustomBlocksDialog {
         });
 
         dialog.setView(binding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (dialogInterface, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (dialogInterface, which) -> {
             String name = Helper.getText(binding.nameEditText);
             String color = Helper.getText(binding.colorEditText);
 
@@ -222,7 +222,7 @@ public class CustomBlocksDialog {
             SketchwareUtil.toast("Blocks imported!");
             dialogInterface.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

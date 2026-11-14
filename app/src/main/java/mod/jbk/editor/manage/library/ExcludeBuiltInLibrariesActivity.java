@@ -277,16 +277,16 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
     private void showResetDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.rollback_96);
-        dialog.setTitle(Helper.getResString(R.string.common_word_reset));
+        dialog.setTitle(R.string.common_word_reset);
         dialog.setMessage(R.string.msg_reset_excluded_built_in_libraries);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_reset), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_reset, (v, which) -> {
             saveConfig(sc_id, false, Collections.emptyList());
             binding.libSwitch.setChecked(false);
             excludedLibraries = Collections.emptyList();
             refresh();
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -331,12 +331,12 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
         });
 
         dialog.setView(binding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             excludedLibraries = adapter.getSelectedBuiltInLibraries();
             v.dismiss();
             refresh();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
 
         dialog.show();
     }

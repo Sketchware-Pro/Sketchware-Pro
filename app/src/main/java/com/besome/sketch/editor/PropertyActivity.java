@@ -170,7 +170,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
-        getSupportActionBar().setTitle(Helper.getResString(R.string.edit_view_properties_title));
+        getSupportActionBar().setTitle(R.string.edit_view_properties_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());

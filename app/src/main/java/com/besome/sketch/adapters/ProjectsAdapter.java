@@ -317,13 +317,13 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
             projectOptionsBSD.dismiss();
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
             dialog.setIcon(R.drawable.icon_delete);
-            dialog.setTitle(Helper.getResString(R.string.delete_project_dialog_title));
+            dialog.setTitle(R.string.delete_project_dialog_title);
             dialog.setMessage(Helper.getResString(R.string.delete_project_dialog_message).replace("%1$s", yB.c(projectMap, "my_app_name")));
-            dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v1, which) -> {
+            dialog.setPositiveButton(R.string.common_word_delete, (v1, which) -> {
                 deleteProject(projectMap, position);
                 v1.dismiss();
             });
-            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+            dialog.setNegativeButton(R.string.common_word_cancel, null);
             dialog.show();
         });
 

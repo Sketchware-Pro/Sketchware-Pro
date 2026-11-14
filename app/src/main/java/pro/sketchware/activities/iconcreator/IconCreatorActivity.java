@@ -549,7 +549,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
 
     private void showCustomIconOptions() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle(Helper.getResString(R.string.common_word_choose));
+        builder.setTitle(R.string.common_word_choose);
         builder.setItems(new String[]{
                 Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery),
                 Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery_with_crop),

@@ -29,17 +29,17 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
 
     private void goBackDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.common_message_confirm));
+        dialog.setTitle(R.string.common_message_confirm);
         dialog.setIcon(R.drawable.exit_96);
-        dialog.setMessage(Helper.getResString(R.string.logic_editor_more_block_dialog_description_goback));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_goback), (v, which) -> {
+        dialog.setMessage(R.string.logic_editor_more_block_dialog_description_goback);
+        dialog.setPositiveButton(R.string.common_word_goback, (v, which) -> {
             if (!mB.a()) {
                 v.dismiss();
                 finish();
             }
 
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -62,7 +62,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(Helper.getResString(R.string.logic_editor_more_block_actionbar_title_create_more_block));
+        getSupportActionBar().setTitle(R.string.logic_editor_more_block_actionbar_title_create_more_block);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
@@ -85,7 +85,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.moreblock_menu, menu);
-        menu.findItem(R.id.moreblock_create).setTitle(Helper.getResString(R.string.common_word_create));
+        menu.findItem(R.id.moreblock_create).setTitle(R.string.common_word_create);
         return true;
     }
 

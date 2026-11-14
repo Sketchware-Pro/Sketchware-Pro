@@ -178,13 +178,13 @@ public class SketchwareUtil {
             afterRenameLogic.accept(null);
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
     public static void showAnErrorOccurredDialog(Activity activity, String errorMessage) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
-        builder.setTitle(Helper.getResString(R.string.common_error_an_error_occurred));
+        builder.setTitle(R.string.common_error_an_error_occurred);
         builder.setIcon(R.drawable.ic_mtrl_warning);
         builder.setMessage(errorMessage);
         builder.setPositiveButton(R.string.common_word_ok, null);

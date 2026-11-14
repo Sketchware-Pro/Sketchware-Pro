@@ -122,7 +122,7 @@ public class BackupRestoreManager {
             v.dismiss();
             doBackup(sc_id, project_name);
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

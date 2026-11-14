@@ -215,7 +215,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
         dialog.setView(dialogBinding.getRoot());
 
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (view, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (view, which) -> {
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH, Objects.requireNonNull(dialogBinding.palettesPath.getText()).toString());
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH, Objects.requireNonNull(dialogBinding.blocksPath.getText()).toString());
 
@@ -224,7 +224,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             view.dismiss();
         });
 
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
 
         dialog.setNeutralButton(R.string.common_word_defaults, (view, which) -> {
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH, ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH));
@@ -462,7 +462,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
         dialog.setView(dialogBinding.getRoot());
 
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             String nameInput = Objects.requireNonNull(dialogBinding.nameEditText.getText()).toString();
             String colorInput = Objects.requireNonNull(dialogBinding.colorEditText.getText()).toString();
 
@@ -509,7 +509,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             }
         });
 
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

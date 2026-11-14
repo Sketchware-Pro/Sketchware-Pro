@@ -204,7 +204,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
                 .collect(Collectors.toList());
         if (componentNames.size() > 1) {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-            dialog.setTitle(Helper.getResString(R.string.logic_editor_title_select_component));
+            dialog.setTitle(R.string.logic_editor_title_select_component);
             ArrayList<Integer> selectedPositions = new ArrayList<>();
             var listView = new ListView(this);
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, componentNames);
@@ -222,7 +222,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
                 }
             });
             dialog.setView(listView);
-            dialog.setPositiveButton(Helper.getResString(R.string.common_word_import), (v, which) -> {
+            dialog.setPositiveButton(R.string.common_word_import, (v, which) -> {
                 for (int position : selectedPositions) {
                     var component = components.get(position);
                     if (position != -1 && ComponentsHandler.isValidComponent(component)) {
@@ -235,7 +235,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
                 readSettings();
                 v.dismiss();
             });
-            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+            dialog.setNegativeButton(R.string.common_word_cancel, null);
             dialog.show();
         } else {
             var component = components.get(0);
@@ -257,17 +257,17 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
     private void export(int position) {
         String componentName = componentsList.get(position).get("name").toString();
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.common_word_export));
+        dialog.setTitle(R.string.common_word_export);
         dialog.setMessage(Helper.getResString(R.string.developer_tools_component_message_export, componentName));
         dialog.setIcon(R.drawable.export_96);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_yes), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_yes, (v, which) -> {
             String fileName = componentName + ".json";
             String filePath = new File(COMPONENT_EXPORT_DIR, fileName).getAbsolutePath();
             FileUtil.writeFile(filePath, getGson().toJson(List.of(componentsList.get(position))));
             SketchwareUtil.toast(Helper.getResString(R.string.developer_tools_component_success_message_export, filePath));
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

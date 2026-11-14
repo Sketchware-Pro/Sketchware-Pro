@@ -135,7 +135,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         binding = ManageCollectionShowBlockBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setTitle(Helper.getResString(R.string.design_manager_block_detail_actionbar_title));
+        getSupportActionBar().setTitle(R.string.design_manager_block_detail_actionbar_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));

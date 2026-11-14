@@ -59,14 +59,14 @@ public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickLis
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         PropertyPopupSelectorSingleBinding dialogBinding = PropertyPopupSelectorSingleBinding.inflate(LayoutInflater.from(getContext()));
         ViewGroup viewGroup = dialogBinding.rgContent;
-        dialog.setTitle(Helper.getResString(R.string.design_library_admob_dialog_select_unit_title));
+        dialog.setTitle(R.string.design_library_admob_dialog_select_unit_title);
 
         for (String adUnit : adUnits) {
             viewGroup.addView(addRadioButton(adUnit));
         }
 
         dialog.setView(dialogBinding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_select, (v, which) -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -82,7 +82,7 @@ public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickLis
             }
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

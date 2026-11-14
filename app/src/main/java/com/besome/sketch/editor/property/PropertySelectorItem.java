@@ -172,7 +172,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             }
         }
         dialog.setView(popupBinding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_select, (v, which) -> {
             for (int i = 0; radioGroupContent.getChildCount() > i; i++) {
                 RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -184,7 +184,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             }
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

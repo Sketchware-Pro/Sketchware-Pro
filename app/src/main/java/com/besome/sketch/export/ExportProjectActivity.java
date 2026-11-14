@@ -118,7 +118,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
-        getSupportActionBar().setTitle(Helper.getResString(R.string.myprojects_export_project_actionbar_title));
+        getSupportActionBar().setTitle(R.string.myprojects_export_project_actionbar_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
@@ -752,7 +752,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 dialog.setTitle(R.string.title_finished_exporting_aab);
                 dialog.setMessage("You can find the generated, signed AAB file at:\n" +
                         "/Internal storage/sketchware/signed_aab/" + aabFilename);
-                dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
+                dialog.setPositiveButton(R.string.common_word_ok, null);
                 dialog.show();
             }
         }

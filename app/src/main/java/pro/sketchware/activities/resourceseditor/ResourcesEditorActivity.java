@@ -201,10 +201,10 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
     private void showLoadFailedDialog(String title, String contentPath) {
         if (builder != null) return;
         builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle(Helper.getResString(R.string.resources_manager_xml_load_failed_title))
+        builder.setTitle(R.string.resources_manager_xml_load_failed_title)
                 .setMessage(String.format(Helper.getResString(R.string.resources_manager_xml_load_failed_message), title))
                 .setPositiveButton("Open code editor", (dialog, which) -> goToCodeEditor(title, contentPath))
-                .setNegativeButton(Helper.getResString(R.string.common_word_exit), (dialogInterface, i) -> finish())
+                .setNegativeButton(R.string.common_word_exit, (dialogInterface, i) -> finish())
                 .setCancelable(false)
                 .create()
                 .show();
@@ -221,14 +221,14 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
                     String message = String.format(Helper.getResString(R.string.resources_editor_unsaved_changes_message), files);
 
                     new MaterialAlertDialogBuilder(ResourcesEditorActivity.this)
-                            .setTitle(Helper.getResString(R.string.common_word_warning))
+                            .setTitle(R.string.common_word_warning)
                             .setMessage(message)
-                            .setPositiveButton(Helper.getResString(R.string.design_quit_button_save_and_exit), (dialog, which) -> {
+                            .setPositiveButton(R.string.design_quit_button_save_and_exit, (dialog, which) -> {
                                 saveEditorsChanges();
                                 finish();
                             })
-                            .setNegativeButton(Helper.getResString(R.string.common_word_exit), (dialog, which) -> finish())
-                            .setNeutralButton(Helper.getResString(R.string.common_word_cancel), null)
+                            .setNegativeButton(R.string.common_word_exit, (dialog, which) -> finish())
+                            .setNeutralButton(R.string.common_word_cancel, null)
                             .create()
                             .show();
                     return;
@@ -455,13 +455,13 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
             String message = String.format(Helper.getResString(R.string.resources_editor_unsaved_changes_message_variant_change), files);
 
             new MaterialAlertDialogBuilder(this)
-                    .setTitle(Helper.getResString(R.string.common_word_warning))
+                    .setTitle(R.string.common_word_warning)
                     .setMessage(message)
-                    .setPositiveButton(Helper.getResString(R.string.common_word_save), (dialog, which) -> {
+                    .setPositiveButton(R.string.common_word_save, (dialog, which) -> {
                         saveEditorsChanges();
                         changeTheVariantDialog();
                     })
-                    .setNegativeButton(Helper.getResString(R.string.common_word_cancel), null)
+                    .setNegativeButton(R.string.common_word_cancel, null)
                     .create()
                     .show();
             return;
@@ -475,11 +475,11 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
 
         ResourcesVariantSelectorDialogBinding binding = ResourcesVariantSelectorDialogBinding.inflate(getLayoutInflater());
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.common_word_select_variant));
+        dialog.setTitle(R.string.common_word_select_variant);
 
         setupDialog(binding, dialog, variants, selectedChoice);
 
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.setView(binding.getRoot());
         dialog.show();
     }
@@ -537,7 +537,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
             }
         });
 
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (d, which) -> saveVariant(binding, variants, selectedChoice));
+        dialog.setPositiveButton(R.string.common_word_save, (d, which) -> saveVariant(binding, variants, selectedChoice));
     }
 
     private void saveVariant(ResourcesVariantSelectorDialogBinding binding, ArrayList<String> variants, AtomicInteger selectedChoice) {
@@ -572,7 +572,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         ResourcesEditorImportDialogBinding binding = ResourcesEditorImportDialogBinding.inflate(getLayoutInflater());
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setView(binding.getRoot());
-        dialog.setTitle(Helper.getResString(R.string.common_word_import_variant));
+        dialog.setTitle(R.string.common_word_import_variant);
 
         ArrayList<String> resourcesFileNames = new ArrayList<>(List.of(
                 "strings.xml",
@@ -588,7 +588,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (d, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (d, which) -> {
             SparseBooleanArray selectedItems = listView.getCheckedItemPositions();
             boolean isSkippingMode = binding.chipMergeAndSkip.isChecked();
             boolean isMergeAndReplace = binding.chipMergeAndReplace.isChecked();
@@ -611,7 +611,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
             }
         });
 
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

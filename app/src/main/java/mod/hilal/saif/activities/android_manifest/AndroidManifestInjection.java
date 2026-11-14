@@ -156,7 +156,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     private void showLauncherActDialog(String actnamr) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.ic_mtrl_lifecycle);
-        dialog.setTitle(Helper.getResString(R.string.change_launcher_activity_dialog_title));
+        dialog.setTitle(R.string.change_launcher_activity_dialog_title);
         View view = wB.a(this, R.layout.dialog_add_custom_activity);
 
         TextInputEditText activity_name_input = view.findViewById(R.id.activity_name_input);
@@ -164,7 +164,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         activity_name_input.setText(actnamr);
 
         dialog.setView(view);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (!Helper.getText(activity_name_input).trim().isEmpty()) {
                 AndroidManifestInjector.setLauncherActivity(sc_id, Helper.getText(activity_name_input));
                 SketchwareUtil.toast("Saved");
@@ -173,14 +173,14 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
                 activity_name_input.setError("Enter activity name");
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
     public void showAddActivityDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.ic_mtrl_add);
-        dialog.setTitle(Helper.getResString(R.string.common_word_add_activtiy));
+        dialog.setTitle(R.string.common_word_add_activtiy);
         View inflate = wB.a(this, R.layout.dialog_add_custom_activity);
 
         TextInputEditText activity_name_input = inflate.findViewById(R.id.activity_name_input);
@@ -188,7 +188,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         activity_name_input.setText(currentActivityName);
 
         dialog.setView(inflate);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (!Helper.getText(activity_name_input).trim().isEmpty()) {
                 addNewActivity(Helper.getText(activity_name_input));
                 SketchwareUtil.toast("New Activity added");
@@ -197,7 +197,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
                 activity_name_input.setError("Enter activity name");
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -402,14 +402,14 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
                 {
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(AndroidManifestInjection.this);
                     dialog.setIcon(R.drawable.icon_delete);
-                    dialog.setTitle(Helper.getResString(R.string.delete_custom_activity_dialog_title));
+                    dialog.setTitle(R.string.delete_custom_activity_dialog_title);
                     dialog.setMessage(Helper.getResString(R.string.delete_custom_activity_dialog_message).replace("%1$s", (String) _data.get(position).get("act_name")));
 
-                    dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v1, which) -> {
+                    dialog.setPositiveButton(R.string.common_word_delete, (v1, which) -> {
                         deleteActivity(position);
                         v1.dismiss();
                     });
-                    dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+                    dialog.setNegativeButton(R.string.common_word_cancel, null);
                     dialog.show();
                 }
                 return true;

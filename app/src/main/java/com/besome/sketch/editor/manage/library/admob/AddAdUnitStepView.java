@@ -49,7 +49,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
 
     private void createAdUnit() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-        dialog.setTitle(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_title));
+        dialog.setTitle(R.string.design_library_admob_dialog_add_adunit_title);
         dialog.setIcon(R.drawable.ic_mtrl_add);
         ManageLibrarySettingAdmobAdunitAddBinding dialogBinding = ManageLibrarySettingAdmobAdunitAddBinding.inflate(LayoutInflater.from(getContext()));
 
@@ -65,7 +65,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
 
         edName.setPrivateImeOptions("defaultInputmode=english;");
         dialog.setView(dialogBinding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_add), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_add, (v, which) -> {
             if (!nameValidator.b()) {
                 edName.requestFocus();
             } else if (!adUnitValidator.b()) {
@@ -78,22 +78,22 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
     private void deleteAdUnit(int position) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-        dialog.setTitle(Helper.getResString(R.string.design_library_admob_dialog_delete_adunit_title));
+        dialog.setTitle(R.string.design_library_admob_dialog_delete_adunit_title);
         dialog.setIcon(R.drawable.delete_96);
-        dialog.setMessage(Helper.getResString(R.string.design_library_admob_dialog_confirm_delete_adunit));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v, which) -> {
+        dialog.setMessage(R.string.design_library_admob_dialog_confirm_delete_adunit);
+        dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
             adUnitBeanArrayList.remove(position);
             adUnitsAdapter.notifyItemRemoved(position);
             bB.a(getContext(), Helper.getResString(R.string.common_message_complete_delete), 0).show();
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

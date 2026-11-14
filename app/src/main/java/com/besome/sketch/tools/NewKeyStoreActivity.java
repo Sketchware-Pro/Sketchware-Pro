@@ -49,16 +49,16 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
 
     private void showDoneDialog(boolean success, String password) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_certificate));
+        dialog.setTitle(R.string.myprojects_sign_apk_new_certificate_title_certificate);
         if (success) {
             dialog.setIcon(R.drawable.certificate_96_blue);
-            dialog.setMessage(Helper.getResString(R.string.myprojects_sign_apk_dialog_complete_create_certificate));
+            dialog.setMessage(R.string.myprojects_sign_apk_dialog_complete_create_certificate);
         } else {
             dialog.setIcon(R.drawable.error_96_yellow);
-            dialog.setMessage(Helper.getResString(R.string.myprojects_sign_apk_error_failed_create_new_certificate));
+            dialog.setMessage(R.string.myprojects_sign_apk_error_failed_create_new_certificate);
         }
 
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_close), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_close, (v, which) -> {
             if (!mB.a()) {
                 v.dismiss();
                 if (success) {
@@ -148,7 +148,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
-        getSupportActionBar().setTitle(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_new_certificate));
+        getSupportActionBar().setTitle(R.string.myprojects_sign_apk_new_certificate_title_new_certificate);
         getSupportActionBar().setSubtitle("Export path: " + wq.D);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);

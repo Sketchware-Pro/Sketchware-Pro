@@ -787,10 +787,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      */
     private void showSaveBeforeQuittingDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.design_quit_title_exit_projet));
+        dialog.setTitle(R.string.design_quit_title_exit_projet);
         dialog.setIcon(R.drawable.ic_mtrl_exit);
-        dialog.setMessage(Helper.getResString(R.string.design_quit_message_confirm_save));
-        dialog.setPositiveButton(Helper.getResString(R.string.design_quit_button_save_and_exit), (v, which) -> {
+        dialog.setMessage(R.string.design_quit_message_confirm_save);
+        dialog.setPositiveButton(R.string.design_quit_button_save_and_exit, (v, which) -> {
             if (!mB.a()) {
                 v.dismiss();
                 try {
@@ -801,7 +801,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 }
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_exit), (v, which) -> {
+        dialog.setNegativeButton(R.string.common_word_exit, (v, which) -> {
             if (!mB.a()) {
                 v.dismiss();
                 try {
@@ -814,7 +814,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 }
             }
         });
-        dialog.setNeutralButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNeutralButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -823,10 +823,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      */
     private void warnAboutInsufficientStorageSpace() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
+        dialog.setTitle(R.string.common_word_warning);
         dialog.setIcon(R.drawable.break_warning_96_red);
-        dialog.setMessage(Helper.getResString(R.string.common_message_insufficient_storage_space));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
+        dialog.setMessage(R.string.common_message_insufficient_storage_space);
+        dialog.setPositiveButton(R.string.common_word_ok, null);
         dialog.show();
     }
 
@@ -834,9 +834,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         B = true;
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.ic_mtrl_history);
-        dialog.setTitle(Helper.getResString(R.string.design_restore_data_title));
-        dialog.setMessage(Helper.getResString(R.string.design_restore_data_message_confirm));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_restore), (v, which) -> {
+        dialog.setTitle(R.string.design_restore_data_title);
+        dialog.setMessage(R.string.design_restore_data_message_confirm);
+        dialog.setPositiveButton(R.string.common_word_restore, (v, which) -> {
             if (!mB.a()) {
                 boolean g = jC.c(sc_id).g();
                 boolean g2 = jC.b(sc_id).g();
@@ -874,7 +874,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_no), (v, which) -> {
+        dialog.setNegativeButton(R.string.common_word_no, (v, which) -> {
             B = false;
             v.dismiss();
         });

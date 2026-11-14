@@ -340,7 +340,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         setContentView(R.layout.manage_library);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(Helper.getResString(R.string.design_actionbar_title_library));
+        getSupportActionBar().setTitle(R.string.design_actionbar_title_library);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
@@ -447,9 +447,9 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     private void showFirebaseNeedCompatDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.ic_mtrl_firebase);
-        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
-        dialog.setMessage(Helper.getResString(R.string.design_library_firebase_message_need_compat));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
+        dialog.setTitle(R.string.common_word_warning);
+        dialog.setMessage(R.string.design_library_firebase_message_need_compat);
+        dialog.setPositiveButton(R.string.common_word_ok, null);
         dialog.show();
     }
 

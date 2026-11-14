@@ -150,7 +150,7 @@ public class VariableItemView extends LinearLayout {
         VarTypeSelectorDialogBinding binding =
                 VarTypeSelectorDialogBinding.inflate(LayoutInflater.from(activity));
 
-        builder.setTitle(Helper.getResString(R.string.logic_editor_more_block_title_add_variable_type));
+        builder.setTitle(R.string.logic_editor_more_block_title_add_variable_type);
 
         VariableItemAdapter adapter = new VariableItemAdapter();
         binding.list.setLayoutManager(new LinearLayoutManager(activity));

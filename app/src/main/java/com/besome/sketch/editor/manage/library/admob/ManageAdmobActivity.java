@@ -174,7 +174,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         }
 
         setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setTitle(Helper.getResString(R.string.design_library_admob_title_admob_manager));
+        getSupportActionBar().setTitle(R.string.design_library_admob_title_admob_manager);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         binding.toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
@@ -240,26 +240,26 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     private void configureLibrary() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.delete_96);
-        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
-        dialog.setMessage(Helper.getResString(R.string.design_library_admob_dialog_description_confirm_uncheck));
+        dialog.setTitle(R.string.common_word_warning);
+        dialog.setMessage(R.string.design_library_admob_dialog_description_confirm_uncheck);
         dialog.setCancelable(false);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
             if (!mB.a()) {
                 admobLibraryBean.useYn = "N";
                 binding.libSwitch.setChecked(false);
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
     private void downloadChromeDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.chrome_96);
-        dialog.setTitle(Helper.getResString(R.string.title_compatible_chrome_browser));
-        dialog.setMessage(Helper.getResString(R.string.message_compatible_chrome_brower));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
+        dialog.setTitle(R.string.title_compatible_chrome_browser);
+        dialog.setMessage(R.string.message_compatible_chrome_brower);
+        dialog.setPositiveButton(R.string.common_word_ok, (v, which) -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
@@ -267,7 +267,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

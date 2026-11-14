@@ -121,7 +121,7 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
 
             String keyInput = Objects.requireNonNull(dialogBinding.stringKeyInput.getText()).toString();
             if (!keyInput.equals("app_name")) {
-                dialog.setNeutralButton(Helper.getResString(R.string.common_word_delete), (d, which) -> {
+                dialog.setNeutralButton(R.string.common_word_delete, (d, which) -> {
                     if (isXmlStringUsed(key)) {
                         SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_title_remove_xml_string_error));
                     } else {
@@ -132,7 +132,7 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
                     }
                 });
             }
-            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+            dialog.setNegativeButton(R.string.common_word_cancel, null);
             dialog.setView(dialogBinding.getRoot());
             dialog.show();
         });

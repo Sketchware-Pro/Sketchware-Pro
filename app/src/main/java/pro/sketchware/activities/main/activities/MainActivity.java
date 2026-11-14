@@ -384,7 +384,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                 dialog.setIcon(R.drawable.ic_expire_48dp);
                 dialog.setTitle(R.string.title_android_11_storage_access);
                 dialog.setMessage("Starting with Android 11, Sketchware Pro needs a new permission to avoid " + "taking ages to build projects. Don't worry, we can't do more to storage than " + "with current granted permissions.");
-                dialog.setPositiveButton(Helper.getResString(R.string.common_word_settings), (v, which) -> {
+                dialog.setPositiveButton(R.string.common_word_settings, (v, which) -> {
                     FileUtil.requestAllFilesAccessPermission(this);
                     v.dismiss();
                 });
@@ -405,10 +405,10 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
     private void showNoticeNeedStorageAccess() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.common_message_permission_title_storage));
+        dialog.setTitle(R.string.common_message_permission_title_storage);
         dialog.setIcon(R.drawable.color_about_96);
-        dialog.setMessage(Helper.getResString(R.string.common_message_permission_need_load_project));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
+        dialog.setMessage(R.string.common_message_permission_need_load_project);
+        dialog.setPositiveButton(R.string.common_word_ok, (v, which) -> {
             v.dismiss();
             requestStoragePermission(9501);
         });
@@ -417,10 +417,10 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
     private void showNoticeNotEnoughFreeStorageSpace() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.common_message_insufficient_storage_space_title));
+        dialog.setTitle(R.string.common_message_insufficient_storage_space_title);
         dialog.setIcon(R.drawable.high_priority_96_red);
-        dialog.setMessage(Helper.getResString(R.string.common_message_insufficient_storage_space));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
+        dialog.setMessage(R.string.common_message_insufficient_storage_space);
+        dialog.setPositiveButton(R.string.common_word_ok, null);
         dialog.show();
     }
 

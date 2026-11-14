@@ -107,7 +107,7 @@ public class LogicClickListener implements View.OnClickListener {
         ZB validator = new ZB(getContext(), binding.nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.setView(binding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_add), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_add, (v, which) -> {
             String variableModifier = Helper.getText(binding.modifier).trim();
             String variableType = Helper.getText(binding.type).trim();
             String variableName = Helper.getText(binding.name).trim();
@@ -154,7 +154,7 @@ public class LogicClickListener implements View.OnClickListener {
             logicEditor.b(6, variable.trim());
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
 
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -163,7 +163,7 @@ public class LogicClickListener implements View.OnClickListener {
 
     private void removeVariable() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
-        dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_variable));
+        dialog.setTitle(R.string.logic_editor_title_remove_variable);
 
         int horizontalPadding = SketchwareUtil.dpToPx(20f);
         RecyclerView recyclerView = new RecyclerView(logicEditor);
@@ -206,7 +206,7 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         dialog.setView(recyclerView);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_remove, (v, which) -> {
             for (Item item : data) {
                 if (item.type == Item.TYPE_ITEM && item.isChecked) {
                     logicEditor.m(item.text);
@@ -214,7 +214,7 @@ public class LogicClickListener implements View.OnClickListener {
             }
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -227,7 +227,7 @@ public class LogicClickListener implements View.OnClickListener {
         ZB validator = new ZB(getContext(), listBinding.nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.setView(listBinding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_add), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_add, (v, which) -> {
             String variableType = Helper.getText(listBinding.type);
             String variableName = Helper.getText(listBinding.name);
 
@@ -260,7 +260,7 @@ public class LogicClickListener implements View.OnClickListener {
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
 
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -269,7 +269,7 @@ public class LogicClickListener implements View.OnClickListener {
 
     private void removeList() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
-        dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_list));
+        dialog.setTitle(R.string.logic_editor_title_remove_list);
 
         int horizontalPadding = SketchwareUtil.dpToPx(20f);
         RecyclerView recyclerView = new RecyclerView(logicEditor);
@@ -299,7 +299,7 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         dialog.setView(recyclerView);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_remove, (v, which) -> {
             for (Item item : data) {
                 if (item.type == Item.TYPE_ITEM && item.isChecked) {
                     logicEditor.l(item.text);
@@ -307,7 +307,7 @@ public class LogicClickListener implements View.OnClickListener {
             }
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

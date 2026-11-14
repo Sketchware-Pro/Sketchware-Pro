@@ -268,9 +268,9 @@ public class InnerAddComponentBottomSheet extends BottomSheetDialogFragment {
     public void showInstallBrowserDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         dialog.setIcon(R.drawable.chrome_96);
-        dialog.setTitle(Helper.getResString(R.string.title_compatible_chrome_browser));
-        dialog.setMessage(Helper.getResString(R.string.message_compatible_chrome_brower));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
+        dialog.setTitle(R.string.title_compatible_chrome_browser);
+        dialog.setMessage(R.string.message_compatible_chrome_brower);
+        dialog.setPositiveButton(R.string.common_word_ok, (v, which) -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
@@ -278,7 +278,7 @@ public class InnerAddComponentBottomSheet extends BottomSheetDialogFragment {
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

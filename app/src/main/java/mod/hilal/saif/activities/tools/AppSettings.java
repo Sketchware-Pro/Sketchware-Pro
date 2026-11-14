@@ -233,7 +233,7 @@ public class AppSettings extends BaseAppCompatActivity {
                 confirmOverwrite.setTitle(R.string.common_word_file_exists);
                 confirmOverwrite.setMessage("An APK named " + output_apk_file_name + " already exists at /sketchware/signed_apk/.  Overwrite it?");
 
-                confirmOverwrite.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+                confirmOverwrite.setNegativeButton(R.string.common_word_cancel, null);
                 confirmOverwrite.setPositiveButton(R.string.common_word_overwrite, (view, which1) -> {
                     v.dismiss();
                     signApkFileWithDialog(input_apk_path, output_apk_path, true,
@@ -246,7 +246,7 @@ public class AppSettings extends BaseAppCompatActivity {
             }
         });
 
-        apkPathDialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        apkPathDialog.setNegativeButton(R.string.common_word_cancel, null);
 
         apkPathDialog.setView(testkey_root);
         apkPathDialog.setCancelable(false);

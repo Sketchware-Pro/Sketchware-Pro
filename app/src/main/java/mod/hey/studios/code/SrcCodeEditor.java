@@ -339,14 +339,14 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                 } else {
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(SrcCodeEditor.this);
                     dialog.setIcon(R.drawable.ic_warning_96dp);
-                    dialog.setTitle(Helper.getResString(R.string.common_word_warning));
-                    dialog.setMessage(Helper.getResString(R.string.src_code_editor_unsaved_changes_dialog_warning_message));
+                    dialog.setTitle(R.string.common_word_warning);
+                    dialog.setMessage(R.string.src_code_editor_unsaved_changes_dialog_warning_message);
 
-                    dialog.setPositiveButton(Helper.getResString(R.string.common_word_exit), (v, which) -> {
+                    dialog.setPositiveButton(R.string.common_word_exit, (v, which) -> {
                         v.dismiss();
                         finish();
                     });
-                    dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+                    dialog.setNegativeButton(R.string.common_word_cancel, null);
                     dialog.show();
                 }
             }

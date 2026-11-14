@@ -239,7 +239,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
                 .collect(Collectors.toList());
         if (componentNames.size() > 1) {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-            dialog.setTitle(Helper.getResString(R.string.logic_editor_title_select_component));
+            dialog.setTitle(R.string.logic_editor_title_select_component);
             var choiceToImport = new AtomicInteger(-1);
             var listView = new ListView(this);
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, componentNames);
@@ -249,7 +249,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
             listView.setDividerHeight(0);
             listView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> choiceToImport.set(position));
             dialog.setView(listView);
-            dialog.setPositiveButton(Helper.getResString(R.string.common_word_import), (v, which) -> {
+            dialog.setPositiveButton(R.string.common_word_import, (v, which) -> {
                 int position = choiceToImport.get();
                 var component = components.get(position);
                 if (position != -1 && ComponentsHandler.isValidComponent(component)) {
@@ -259,7 +259,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
                 }
                 v.dismiss();
             });
-            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+            dialog.setNegativeButton(R.string.common_word_cancel, null);
             dialog.show();
         } else {
             var component = components.get(0);

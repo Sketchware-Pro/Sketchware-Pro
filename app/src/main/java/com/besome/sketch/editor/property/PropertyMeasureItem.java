@@ -165,7 +165,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         popupBinding.tiInput.setSuffixText("dp");
 
         dialog.setView(popupBinding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_select, (v, which) -> {
             int checkedRadioButtonId = popupBinding.rgWidthHeight.getCheckedRadioButtonId();
             if (checkedRadioButtonId == R.id.rb_matchparent) {
                 setValue(LayoutParams.MATCH_PARENT);
@@ -181,7 +181,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
             }
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 }

@@ -262,9 +262,9 @@ public class ColorPickerDialog extends PopupWindow {
         dialogBinding.etCustomColor.setPrivateImeOptions("defaultInputmode=english;");
 
         new MaterialAlertDialogBuilder(activity)
-                .setTitle(Helper.getResString(R.string.save_to_collection))
+                .setTitle(R.string.save_to_collection)
                 .setView(dialogBinding.getRoot())
-                .setPositiveButton(Helper.getResString(R.string.common_word_save), (dialog, which) -> {
+                .setPositiveButton(R.string.common_word_save, (dialog, which) -> {
                     if (colorValidator.b()) {
                         String customColor = Helper.getText(dialogBinding.etCustomColor);
                         if (customColor.startsWith("#")) {
@@ -275,7 +275,7 @@ public class ColorPickerDialog extends PopupWindow {
                         notifyChanges();
                     }
                 })
-                .setNegativeButton(Helper.getResString(R.string.common_word_cancel), (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(R.string.common_word_cancel, (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
@@ -326,10 +326,10 @@ public class ColorPickerDialog extends PopupWindow {
         });
 
         var dialog = new MaterialAlertDialogBuilder(activity)
-                .setTitle(Helper.getResString(R.string.save_to_collection))
+                .setTitle(R.string.save_to_collection)
                 .setView(dialogBinding.getRoot())
-                .setPositiveButton(Helper.getResString(R.string.common_word_save), null)
-                .setNegativeButton(Helper.getResString(R.string.common_word_cancel), null)
+                .setPositiveButton(R.string.common_word_save, null)
+                .setNegativeButton(R.string.common_word_cancel, null)
                 .show();
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {

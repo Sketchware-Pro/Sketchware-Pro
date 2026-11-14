@@ -45,8 +45,8 @@ public class VersionDialog {
             binding.versionName2.setText(Helper.getText(activity.binding.verName).split(" ")[1]);
 
         builder.setView(binding.getRoot());
-        builder.setPositiveButton(Helper.getResString(R.string.common_word_save), null);
-        builder.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        builder.setPositiveButton(R.string.common_word_save, null);
+        builder.setNegativeButton(R.string.common_word_cancel, null);
 
         binding.versionName2.addTextChangedListener(new VersionNamePostfixValidator(activity, binding.tilVersionNameExtra));
 

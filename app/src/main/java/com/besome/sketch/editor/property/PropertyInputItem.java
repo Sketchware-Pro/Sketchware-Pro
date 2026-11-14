@@ -325,7 +325,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         });
 
         dialog.setView(binding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             float finalValue;
             try {
                 finalValue = Float.parseFloat(binding.edInput.getText().toString());
@@ -348,7 +348,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             v.dismiss();
         });
 
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_reset), null);
+        dialog.setNegativeButton(R.string.common_word_reset, null);
         dialog.setNeutralButton(R.string.common_word_custom, null);
 
         AlertDialog alertDialog = dialog.create();
@@ -484,14 +484,14 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         PropertyNameValidator validator = new PropertyNameValidator(context, binding.tiInput, uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
         validator.a(value);
         dialog.setView(binding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (validator.b()) {
                 setValue(Helper.getText(binding.edInput));
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -530,9 +530,9 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
         lengthValidator.a(value);
         dialog.setView(binding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) ->
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) ->
                 handleSave(lengthValidator, binding.edInput, binding.edTiAutoCompleteInput, binding.tiAutoCompleteInput, isInject, v));
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
 
         AlertDialog alertDialog = dialog.create();
 
@@ -656,14 +656,14 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         OB validator = new OB(context, binding.tiInput, minValue, maxValue);
 
         dialog.setView(binding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (validator.b()) {
                 setValue(Helper.getText(binding.edInput));
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
@@ -682,14 +682,14 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         SB lengthValidator = new SB(context, binding.tiInput, 0, 99);
         lengthValidator.a(value);
         dialog.setView(binding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (lengthValidator.b()) {
                 setValue(Helper.getText(input));
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 

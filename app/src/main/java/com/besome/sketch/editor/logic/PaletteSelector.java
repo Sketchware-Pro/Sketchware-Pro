@@ -110,16 +110,16 @@ public class PaletteSelector extends RecyclerView {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
         PalettesSearchDialogBinding binding = PalettesSearchDialogBinding.inflate(((Activity) context).getLayoutInflater());
 
-        dialog.setTitle(Helper.getResString(R.string.search_in_palettes_dialog_title));
-        dialog.setPositiveButton(Helper.getResString(R.string.search), (v1, which) -> {
+        dialog.setTitle(R.string.search_in_palettes_dialog_title);
+        dialog.setPositiveButton(R.string.search, (v1, which) -> {
             if (binding.textInputLayoutSearch.getError() == null) {
                 startSearch(v1, Helper.getText(binding.edittextSearchValue).trim());
             }
             v1.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v1, which) -> v1.dismiss());
+        dialog.setNegativeButton(R.string.common_word_cancel, (v1, which) -> v1.dismiss());
         if (!searchValue.isEmpty()) {
-            dialog.setNeutralButton(Helper.getResString(R.string.common_word_restore), (v1, which) -> startSearch(v1, ""));
+            dialog.setNeutralButton(R.string.common_word_restore, (v1, which) -> startSearch(v1, ""));
         }
         dialog.setView(binding.getRoot());
         binding.edittextSearchValue.setText(searchValue);

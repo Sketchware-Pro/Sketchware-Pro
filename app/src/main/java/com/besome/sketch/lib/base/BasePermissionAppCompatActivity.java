@@ -57,16 +57,16 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
     public void i(int i) {
         if (!Sp.a) {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-            dialog.setTitle(Helper.getResString(R.string.common_message_permission_title_storage));
+            dialog.setTitle(R.string.common_message_permission_title_storage);
             dialog.setIcon(R.drawable.break_warning_96_red);
-            dialog.setMessage(Helper.getResString(R.string.common_message_permission_storage));
-            dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
+            dialog.setMessage(R.string.common_message_permission_storage);
+            dialog.setPositiveButton(R.string.common_word_ok, (v, which) -> {
                 if (!mB.a()) {
                     requestStoragePermission(i);
                     v.dismiss();
                 }
             });
-            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v, which) -> {
+            dialog.setNegativeButton(R.string.common_word_cancel, (v, which) -> {
                 l();
                 v.dismiss();
             });
@@ -92,16 +92,16 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
     public void j(int i) {
         if (!Sp.a) {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-            dialog.setTitle(Helper.getResString(R.string.common_message_permission_title_storage));
+            dialog.setTitle(R.string.common_message_permission_title_storage);
             dialog.setIcon(R.drawable.break_warning_96_red);
-            dialog.setMessage(Helper.getResString(R.string.common_message_permission_storage1));
-            dialog.setPositiveButton(Helper.getResString(R.string.common_word_settings), (v, which) -> {
+            dialog.setMessage(R.string.common_message_permission_storage1);
+            dialog.setPositiveButton(R.string.common_word_settings, (v, which) -> {
                 if (!mB.a()) {
                     h(i);
                     v.dismiss();
                 }
             });
-            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v, which) -> {
+            dialog.setNegativeButton(R.string.common_word_cancel, (v, which) -> {
                 m();
                 v.dismiss();
             });

@@ -185,7 +185,7 @@ public class WidgetsCreatorManager {
             binding.addWidgetTo.setText(map.get("Class").toString());
             binding.injectCode.setText(map.get("inject").toString());
         } else {
-            builder.setNeutralButton(Helper.getResString(R.string.common_word_see_more), null);
+            builder.setNeutralButton(R.string.common_word_see_more, null);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -205,7 +205,7 @@ public class WidgetsCreatorManager {
             showCategorySelectorDialog(types, binding.addWidgetTo);
         });
 
-        builder.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        builder.setPositiveButton(R.string.common_word_save, (v, which) -> {
             try {
                 String widgetTitle = Objects.requireNonNull(binding.widgetTitle.getText()).toString().trim();
                 String widgetName = Objects.requireNonNull(binding.widgetName.getText()).toString().trim();
@@ -254,7 +254,7 @@ public class WidgetsCreatorManager {
             }
         });
 
-        builder.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        builder.setNegativeButton(R.string.common_word_cancel, null);
 
         builder.setView(inflate);
 
@@ -340,7 +340,7 @@ public class WidgetsCreatorManager {
     private void showTypeViewSelectorDialog(List<String> choices, List<String> types, TextInputEditText type) {
         AtomicInteger choice = new AtomicInteger();
         new MaterialAlertDialogBuilder(context)
-                .setTitle(Helper.getResString(R.string.widget_type_title))
+                .setTitle(R.string.widget_type_title)
                 .setSingleChoiceItems(choices.toArray(new String[0]),
                         types.indexOf(Objects.requireNonNull(type.getText()).toString()), (dialog2, which) -> choice.set(which))
                 .setPositiveButton(R.string.common_word_save, (dialog2, which) ->
@@ -396,7 +396,7 @@ public class WidgetsCreatorManager {
             newEditText.setText(Helper.getText(type));
         }
 
-        builder.setTitle(Helper.getResString(R.string.add_to))
+        builder.setTitle(R.string.add_to)
                 .setView(layout)
                 .setPositiveButton(R.string.common_word_save, (dialog2, which) -> {
                     String newWidget = Objects.requireNonNull(newEditText.getText()).toString();

@@ -217,7 +217,7 @@ public class ArraysEditor extends Fragment {
             adapter.notifyItemChanged(position);
             hasUnsavedChanges = true;
         });
-        dialog.setNeutralButton(Helper.getResString(R.string.common_word_delete), (d, which) -> new MaterialAlertDialogBuilder(requireContext())
+        dialog.setNeutralButton(R.string.common_word_delete, (d, which) -> new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.common_word_warning)
                 .setMessage("Are you sure you want to delete " + array.getArrayName() + "?")
                 .setPositiveButton(R.string.common_word_yes, (d2, w) -> {
@@ -304,7 +304,7 @@ public class ArraysEditor extends Fragment {
 
         dialog.setTitle(isEditing ? "Edit item" : "Create new item");
 
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (d, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (d, which) -> {
             String attribute = Objects.requireNonNull(binding.itemName.getText()).toString();
             String value = Objects.requireNonNull(binding.itemValue.getText()).toString();
 

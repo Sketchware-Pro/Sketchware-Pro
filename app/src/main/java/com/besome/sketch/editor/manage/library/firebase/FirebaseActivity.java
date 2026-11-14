@@ -186,7 +186,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
-        getSupportActionBar().setTitle(Helper.getResString(R.string.change_firebase_config_title));
+        getSupportActionBar().setTitle(R.string.change_firebase_config_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());

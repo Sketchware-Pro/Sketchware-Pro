@@ -101,30 +101,30 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     private void downloadChromeDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.chrome_96);
-        dialog.setTitle(Helper.getResString(R.string.title_compatible_chrome_browser));
-        dialog.setMessage(Helper.getResString(R.string.message_compatible_chrome_brower));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
+        dialog.setTitle(R.string.title_compatible_chrome_browser);
+        dialog.setMessage(R.string.message_compatible_chrome_brower);
+        dialog.setPositiveButton(R.string.common_word_ok, (v, which) -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("market://details?id=com.android.chrome"));
             startActivity(intent);
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
     private void configureLibraryDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
+        dialog.setTitle(R.string.common_word_warning);
         dialog.setIcon(R.drawable.delete_96);
-        dialog.setMessage(Helper.getResString(R.string.design_library_firebase_dialog_description_confirm_uncheck_firebase));
+        dialog.setMessage(R.string.design_library_firebase_dialog_description_confirm_uncheck_firebase);
         dialog.setCancelable(false);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
             firebaseLibraryBean.useYn = "N";
             libSwitch.setChecked(false);
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v, which) -> {
+        dialog.setNegativeButton(R.string.common_word_cancel, (v, which) -> {
             libSwitch.setChecked(true);
             v.dismiss();
         });
@@ -164,7 +164,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
-        getSupportActionBar().setTitle(Helper.getResString(R.string.design_library_firebase_title_firebase_manager));
+        getSupportActionBar().setTitle(R.string.design_library_firebase_title_firebase_manager);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());

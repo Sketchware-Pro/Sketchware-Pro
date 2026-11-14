@@ -29,8 +29,8 @@ public class GetKeyStoreCredentialsDialog {
         dialog.setIcon(iconResourceId);
         dialog.setTitle(title);
         dialog.setMessage(noticeText);
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_next), (dialog1, which) -> onNextButtonClick(dialog1));
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
+        dialog.setPositiveButton(R.string.common_word_next, (dialog1, which) -> onNextButtonClick(dialog1));
 
         binding = DialogKeystoreCredentialsBinding.inflate(LayoutInflater.from(activity));
         dialog.setView(binding.getRoot());

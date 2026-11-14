@@ -192,7 +192,7 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     private void showSaveToCollectionDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-        dialog.setTitle(Helper.getResString(R.string.view_widget_favorites_save_title));
+        dialog.setTitle(R.string.view_widget_favorites_save_title);
         dialog.setIcon(R.drawable.ic_bookmark_red_48dp);
         PropertyPopupSaveToFavoriteBinding dialogBinding = PropertyPopupSaveToFavoriteBinding.inflate(LayoutInflater.from(getContext()));
         dialogBinding.tvFavoritesGuide.setText(Helper.getResString(R.string.view_widget_favorites_save_guide_new));
@@ -204,7 +204,7 @@ public class ViewProperty extends LinearLayout implements Kw {
 
         NB validator = new NB(getContext(), dialogBinding.tiInput, Rp.h().g());
         dialog.setView(dialogBinding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (!mB.a() && validator.b()) {
                 String widgetName = Helper.getText(editText);
                 ArrayList<ViewBean> viewBeans = jC.a(sc_id).b(projectFile.getXmlName(), projectActivityViews.get(idsAdapter.getSelectedItemPosition()));
@@ -235,20 +235,20 @@ public class ViewProperty extends LinearLayout implements Kw {
                 v.dismiss();
             }
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
     private void showDeleteViewBeanWidget() {
         new MaterialAlertDialogBuilder(context)
-                .setTitle(Helper.getResString(R.string.view_widget_delete_title))
-                .setMessage(Helper.getResString(R.string.view_widget_delete_description))
-                .setPositiveButton(Helper.getResString(R.string.common_word_delete), (d, w) -> {
+                .setTitle(R.string.view_widget_delete_title)
+                .setMessage(R.string.view_widget_delete_description)
+                .setPositiveButton(R.string.common_word_delete, (d, w) -> {
                     if (onPropertyDeletedListener != null) {
                         onPropertyDeletedListener.deleteProperty(projectActivityViews.get(idsAdapter.getSelectedItemPosition()));
                     }
                 })
-                .setNegativeButton(Helper.getResString(R.string.common_word_cancel), (d, w) -> d.dismiss())
+                .setNegativeButton(R.string.common_word_cancel, (d, w) -> d.dismiss())
                 .show();
     }
 

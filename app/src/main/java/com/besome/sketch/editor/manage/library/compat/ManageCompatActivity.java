@@ -24,7 +24,7 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
     private void showWarningDialog(String value) {
         new MaterialAlertDialogBuilder(this)
                 .setIcon(R.drawable.ic_mtrl_warning)
-                .setTitle(Helper.getResString(R.string.common_word_warning))
+                .setTitle(R.string.common_word_warning)
                 .setMessage(value)
                 .setPositiveButton(R.string.common_word_ok, (dialog, which) -> dialog.dismiss())
                 .show();
@@ -32,15 +32,15 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
 
     private void configureLibraryDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
+        dialog.setTitle(R.string.common_word_warning);
         dialog.setIcon(R.drawable.delete_96);
-        dialog.setMessage(Helper.getResString(R.string.design_library_message_confirm_uncheck_appcompat_and_design));
+        dialog.setMessage(R.string.design_library_message_confirm_uncheck_appcompat_and_design);
         dialog.setCancelable(false);
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
             binding.libSwitch.setChecked(false);
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v, which) -> {
+        dialog.setNegativeButton(R.string.common_word_cancel, (v, which) -> {
             binding.libSwitch.setChecked(true);
             v.dismiss();
         });

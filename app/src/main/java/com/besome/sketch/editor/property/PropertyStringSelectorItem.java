@@ -149,7 +149,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         }
 
         dialog.setView(popupBinding.getRoot());
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
+        dialog.setPositiveButton(R.string.common_word_select, (v, which) -> {
             int childCount = radioGroupContent.getChildCount();
             int counter = 0;
             while (true) {
@@ -168,7 +168,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
             }
             v.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.show();
     }
 
