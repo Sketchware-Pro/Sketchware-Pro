@@ -262,9 +262,10 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         boolean isSameView = c != null && c.id.equals(bean.id);
         c = bean;
         Cx.a().b(c.getClassInfo().getClassName());
-        
+
+        // Always remove views to clear empty-state labels or stale items
+        removeAllViews();
         if (!isSameView) {
-            removeAllViews();
             f.clear();
         }
         
