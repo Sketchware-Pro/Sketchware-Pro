@@ -913,4 +913,7 @@ ACTION_VIEW
     <string name="title_create_new_color">"Create new color"</string>
     <string name="title_create_new_array">"Create new array"</string>
     <string name="msg_are_you_sure_you_want">"Are you sure you want to delete this item?"</string>
+    <string name="property_enabled">Enabled</string>
+    <string name="property_image">Image</string>
+    <string name="property_custom_view_listview">Custom view</string>
 </resources>
