@@ -248,16 +248,17 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
                                         default:
                                     }
+                                    return;
                                 } else {
                                     throw e;
                                 }
                             }
-                        } else {
-                            Intent intent = new Intent();
-                            intent.putExtra("project_resource", projectResourceBean);
-                            setResult(Activity.RESULT_OK, intent);
-                            finish();
                         }
+
+                        Intent intent = new Intent();
+                        intent.putExtra("project_resource", projectResourceBean);
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
                     }, e -> {
                         SketchwareUtil.toastError("Error while loading sound: " + e.getMessage());
                         LogUtil.e("AddSoundActivity", "Failed to load sound", e);
