@@ -316,7 +316,6 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             inputText.setText(path);
         }
 
-        dialog.setView(dialogBinding.getRoot());
         dialog.show();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);

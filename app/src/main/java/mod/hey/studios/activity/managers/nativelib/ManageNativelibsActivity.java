@@ -295,7 +295,6 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
         } catch (Exception ignored) {
         }
 
-        dialog.setView(dialogBinding.getRoot());
         dialog.show();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
