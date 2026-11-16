@@ -24,12 +24,15 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
+import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseApp;
@@ -43,12 +46,14 @@ import java.util.Objects;
 import a.a.a.DB;
 import a.a.a.GB;
 import mod.hey.studios.project.backup.BackupFactory;
+import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.tyron.backup.SingleCopyTask;
 import pro.sketchware.R;
 import pro.sketchware.activities.about.AboutActivity;
+import pro.sketchware.activities.main.fragments.ai.AiFragment;
 import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
 import pro.sketchware.activities.main.fragments.projects_store.ProjectsStoreFragment;
 import pro.sketchware.databinding.MainBinding;
@@ -61,6 +66,7 @@ import pro.sketchware.utility.UI;
 public class MainActivity extends BasePermissionAppCompatActivity {
     private static final String PROJECTS_FRAGMENT_TAG = "projects_fragment";
     private static final String PROJECTS_STORE_FRAGMENT_TAG = "projects_store_fragment";
+    private static final String AI_FRAGMENT_TAG = "ai_fragment";
     private ActionBarDrawerToggle drawerToggle;
     private DB u;
     private Snackbar storageAccessDenied;
@@ -74,6 +80,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     };
     private ProjectsFragment projectsFragment;
     private ProjectsStoreFragment projectsStoreFragment;
+    private AiFragment aiFragment;
     private Fragment activeFragment;
     @IdRes
     private int currentNavItemId = R.id.item_projects;
@@ -236,6 +243,9 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             if (id == R.id.item_projects) {
                 navigateToProjectsFragment();
                 return true;
+            } else if (id == R.id.item_ai) {
+                navigateToAiFragment();
+                return true;
             } else if (id == R.id.item_sketchub) {
                 navigateToSketchubFragment();
                 return true;
@@ -246,12 +256,15 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         if (savedInstanceState != null) {
             projectsFragment = (ProjectsFragment) getSupportFragmentManager().findFragmentByTag(PROJECTS_FRAGMENT_TAG);
             projectsStoreFragment = (ProjectsStoreFragment) getSupportFragmentManager().findFragmentByTag(PROJECTS_STORE_FRAGMENT_TAG);
+            aiFragment = (AiFragment) getSupportFragmentManager().findFragmentByTag(AI_FRAGMENT_TAG);
             currentNavItemId = savedInstanceState.getInt("selected_tab_id");
             Fragment current = getFragmentForNavId(currentNavItemId);
             if (current instanceof ProjectsFragment) {
                 navigateToProjectsFragment();
             } else if (current instanceof ProjectsStoreFragment) {
                 navigateToSketchubFragment();
+            } else if (current instanceof AiFragment) {
+                navigateToAiFragment();
             }
 
             return;
@@ -265,8 +278,50 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             return projectsFragment;
         } else if (navItemId == R.id.item_sketchub) {
             return projectsStoreFragment;
+        } else if (navItemId == R.id.item_ai) {
+            return aiFragment;
         }
         throw new IllegalArgumentException();
+    }
+
+    /**
+     * Opens a project in the editor, e.g. one the AI tab has just generated.
+     */
+    public void openProject(String sc_id) {
+        Intent intent = new Intent(this, DesignActivity.class);
+        ProjectTracker.setScId(sc_id);
+        intent.putExtra("sc_id", sc_id);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+
+    /**
+     * Opens the settings of an existing project, e.g. to rename one the AI tab has generated.
+     */
+    public void editProject(String sc_id) {
+        Intent intent = new Intent(this, MyProjectSettingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", sc_id);
+        intent.putExtra("is_update", true);
+        if (projectsFragment != null) {
+            // Refreshes the project's entry in the list when the user saves
+            projectsFragment.openProjectSettings.launch(intent);
+        } else {
+            startActivity(intent);
+        }
+    }
+
+    public void openDrawer() {
+        binding.drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    /**
+     * Reloads the project list, no matter which tab is showing.
+     */
+    public void refreshProjects() {
+        if (projectsFragment != null) {
+            projectsFragment.refreshProjectsList();
+        }
     }
 
     @Override
@@ -285,6 +340,8 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();
 
         binding.createNewProject.show();
+        // The AI tab collapses the search bar to show its own top bar
+        binding.appbar.setExpanded(true, false);
         if (activeFragment != null) transaction.hide(activeFragment);
         if (fm.findFragmentByTag(PROJECTS_FRAGMENT_TAG) == null) {
             shouldShow = false;
@@ -307,6 +364,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();
 
         binding.createNewProject.hide();
+        binding.appbar.setExpanded(true, false);
         if (activeFragment != null) transaction.hide(activeFragment);
         if (fm.findFragmentByTag(PROJECTS_STORE_FRAGMENT_TAG) == null) {
             shouldShow = false;
@@ -317,6 +375,28 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
         activeFragment = projectsStoreFragment;
         currentNavItemId = R.id.item_sketchub;
+    }
+
+    private void navigateToAiFragment() {
+        if (aiFragment == null) {
+            aiFragment = new AiFragment();
+        }
+
+        boolean shouldShow = true;
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        binding.createNewProject.hide();
+        if (activeFragment != null) transaction.hide(activeFragment);
+        if (fm.findFragmentByTag(AI_FRAGMENT_TAG) == null) {
+            shouldShow = false;
+            transaction.add(binding.container.getId(), aiFragment, AI_FRAGMENT_TAG);
+        }
+        if (shouldShow) transaction.show(aiFragment);
+        transaction.commit();
+
+        activeFragment = aiFragment;
+        currentNavItemId = R.id.item_ai;
     }
 
     @NonNull

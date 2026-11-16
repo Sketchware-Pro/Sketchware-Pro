@@ -6,6 +6,11 @@
         android:title="@string/common_word_projects" />
 
     <item
+        android:id="@+id/item_ai"
+        android:icon="@drawable/ic_mtrl_ai"
+        android:title="@string/ai_tab_title" />
+
+    <item
         android:id="@+id/item_sketchub"
         android:icon="@drawable/sketchub_letter_logo"
         android:title="@string/common_word_store" />

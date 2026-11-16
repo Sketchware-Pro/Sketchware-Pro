@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import pro.sketchware.databinding.ActivitySettingsBinding;
+import pro.sketchware.fragments.settings.ai.AiConfigurationFragment;
 import pro.sketchware.fragments.settings.appearance.SettingsAppearanceFragment;
 import pro.sketchware.fragments.settings.block.selector.BlockSelectorManagerFragment;
 import pro.sketchware.fragments.settings.events.EventsManagerFragment;
@@ -17,6 +18,7 @@ public class SettingsActivity extends BaseAppCompatActivity {
     public static final String SETTINGS_APPEARANCE_FRAGMENT = "settings_appearance";
     public static final String EVENTS_MANAGER_FRAGMENT = "events_manager";
     public static final String BLOCK_SELECTOR_MANAGER_FRAGMENT = "block_selector_manager";
+    public static final String AI_CONFIGURATION_FRAGMENT = "ai_configuration";
     private ActivitySettingsBinding binding;
 
     @Override
@@ -31,6 +33,7 @@ public class SettingsActivity extends BaseAppCompatActivity {
             case SETTINGS_APPEARANCE_FRAGMENT -> new SettingsAppearanceFragment();
             case EVENTS_MANAGER_FRAGMENT -> new EventsManagerFragment();
             case BLOCK_SELECTOR_MANAGER_FRAGMENT -> new BlockSelectorManagerFragment();
+            case AI_CONFIGURATION_FRAGMENT -> new AiConfigurationFragment();
             default -> throw new IllegalArgumentException("Unknown fragment tag: " + fragmentTag);
         };
 

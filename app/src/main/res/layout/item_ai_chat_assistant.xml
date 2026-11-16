@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="12dp"
+    android:paddingEnd="24dp"
+    android:paddingBottom="4dp">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/bg_ai_avatar"
+        android:importantForAccessibility="no"
+        android:padding="6dp"
+        android:src="@drawable/ic_mtrl_ai"
+        app:tint="?attr/colorOnPrimaryContainer" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:minHeight="32dp"
+        android:orientation="vertical">
+
+        <!-- Animated while the model is working -->
+        <LinearLayout
+            android:id="@+id/typing"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <View
+                android:id="@+id/dot1"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/bg_ai_typing_dot" />
+
+            <View
+                android:id="@+id/dot2"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_ai_typing_dot" />
+
+            <View
+                android:id="@+id/dot3"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_ai_typing_dot" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="?attr/colorOnSurface"
+            android:textIsSelectable="true"
+            tools:text="Created Notes: 2 screens, saved as project 604." />
+
+        <LinearLayout
+            android:id="@+id/actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <Button
+                android:id="@+id/primary_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/ai_result_open" />
+
+            <Button
+                android:id="@+id/secondary_action"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                tools:text="@string/ai_chat_edit_details" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

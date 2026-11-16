@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
+    style="?attr/materialCardViewFilledStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="4dp"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+    app:checkedIcon="@null"
+    app:shapeAppearanceOverlay="?attr/shapeAppearanceCornerLarge">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="12dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp">
+
+        <RadioButton
+            android:id="@+id/selected"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/ai_configuration_use" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorOnSurface"
+                tools:text="Gemini Flash" />
+
+            <TextView
+                android:id="@+id/details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="middle"
+                android:maxLines="1"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="Google Gemini · gemini-flash" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                tools:text="@string/ai_configuration_verified" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/delete"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/common_word_delete"
+            app:icon="@drawable/ic_mtrl_delete" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

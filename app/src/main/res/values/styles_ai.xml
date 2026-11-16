@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The user's chat bubble, with the corner pointing at the sender cut smaller -->
+    <style name="ShapeAppearance.SketchwarePro.AiUserBubble" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+        <item name="cornerSizeBottomRight">6dp</item>
+    </style>
+
+    <style name="ShapeAppearance.SketchwarePro.AiComposer" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">28dp</item>
+    </style>
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:orientation="vertical"
+    android:paddingStart="56dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="4dp">
+
+    <!-- The project this message changes -->
+    <TextView
+        android:id="@+id/project"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:textAppearance="?attr/textAppearanceLabelMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:visibility="gone"
+        app:drawableStartCompat="@drawable/ic_mtrl_folder_code"
+        app:drawableTint="?attr/colorOnSurfaceVariant"
+        tools:text="Notes"
+        tools:visibility="visible" />
+
+    <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="?attr/colorPrimaryContainer"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.SketchwarePro.AiUserBubble">
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="?attr/colorOnPrimaryContainer"
+            android:textIsSelectable="true"
+            tools:text="Create a complete notes app" />
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

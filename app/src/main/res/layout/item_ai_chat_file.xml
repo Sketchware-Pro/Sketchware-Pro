@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="44dp"
+    android:paddingTop="6dp">
+
+    <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerLow">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:minHeight="56dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp">
+
+                <FrameLayout
+                    android:layout_width="24dp"
+                    android:layout_height="24dp">
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/creating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        app:indicatorSize="20dp"
+                        app:trackThickness="2dp" />
+
+                    <ImageView
+                        android:id="@+id/created"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_mtrl_code"
+                        android:visibility="gone"
+                        app:tint="?attr/colorPrimary" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="middle"
+                        android:fontFamily="monospace"
+                        android:singleLine="true"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="?attr/colorOnSurface"
+                        tools:text="MainActivity.java" />
+
+                    <TextView
+                        android:id="@+id/details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        tools:text="Logic of MainActivity · 42 lines" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/chevron"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_ai_chevron_down"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <TextView
+                        android:id="@+id/code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:padding="12dp"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textIsSelectable="true"
+                        android:textSize="12sp"
+                        tools:text="LinearLayout android:layout_width=match_parent" />
+                </HorizontalScrollView>
+
+                <Button
+                    android:id="@+id/copy"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/ai_chat_copy" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

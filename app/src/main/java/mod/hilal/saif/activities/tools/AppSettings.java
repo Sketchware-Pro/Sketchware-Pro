@@ -108,6 +108,7 @@ public class AppSettings extends BaseAppCompatActivity {
         preferences.add(generalCategory);
 
         generalCategory.addLibraryItem(createPreference(R.drawable.ic_mtrl_settings_applications, "App settings", "Change general app settings", new ActivityLauncher(ConfigActivity.class)), true);
+        generalCategory.addLibraryItem(createPreference(R.drawable.ic_mtrl_ai, Helper.getResString(R.string.ai_configuration_title), Helper.getResString(R.string.ai_configuration_description), openSettingsActivity(SettingsActivity.AI_CONFIGURATION_FRAGMENT)), true);
         generalCategory.addLibraryItem(createPreference(R.drawable.ic_mtrl_palette, Helper.getResString(R.string.settings_appearance), Helper.getResString(R.string.settings_appearance_description), openSettingsActivity(SettingsActivity.SETTINGS_APPEARANCE_FRAGMENT)), true);
         generalCategory.addLibraryItem(createPreference(R.drawable.ic_mtrl_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", v -> openWorkingDirectory()), true);
         generalCategory.addLibraryItem(createPreference(R.drawable.ic_mtrl_apk_document, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", v -> signApkFileDialog()), true);

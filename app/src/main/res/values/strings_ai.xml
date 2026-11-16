@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Home tab: AI chat -->
+    <string name="ai_tab_title">AI</string>
+    <string name="ai_chat_welcome_title">What should I build?</string>
+    <string name="ai_chat_welcome_message">Describe an app and I\'ll create a complete Sketchware project for it: screens, logic and all. You can edit it like any other project.</string>
+    <string name="ai_no_configuration_message">Set up a Gemini, Claude, OpenRouter, NVIDIA, Coarena or other model first.</string>
+    <string name="ai_open_configuration">Set up a model</string>
+    <string name="ai_chat_hint">Describe the app you want…</string>
+    <string name="ai_chat_send">Send</string>
+    <string name="ai_chat_open_menu">Open menu</string>
+    <string name="ai_chat_new">New chat</string>
+    <string name="ai_chat_more_options">More options</string>
+    <string name="ai_chat_menu_configuration">AI configuration</string>
+    <string name="ai_chat_menu_new_chat">New chat (clears history)</string>
+    <string name="ai_chat_choose_project">Choose a project to change</string>
+    <string name="ai_chat_no_projects">There are no projects yet. Describe an app to create one.</string>
+    <string name="ai_chat_project_details">ID %1$s · %2$s</string>
+    <string name="ai_chat_hint_edit">Describe what to change…</string>
+    <string name="ai_stage_reading">Reading the project…</string>
+    <string name="ai_chat_updated">Updated %1$s. Here\'s what it\'s made of now:</string>
+    <string name="ai_chat_not_carried_over">These parts couldn\'t be kept: %1$s. Undo brings them back.</string>
+    <string name="ai_chat_undo">Undo</string>
+    <string name="ai_chat_undone">Restored %1$s to how it was before the last change.</string>
+    <string name="ai_chat_undo_failed">Couldn\'t undo the change: %1$s</string>
+    <string name="ai_chat_no_model">Choose a model</string>
+    <string name="ai_manage_models">Manage models…</string>
+    <string name="ai_stage_generating">%1$s is writing your app…</string>
+    <string name="ai_stage_repairing">Fixing a problem in the answer…</string>
+    <string name="ai_stage_building">Creating the project…</string>
+    <string name="ai_chat_result">Created %1$s with %2$s. It\'s saved as project %3$s (%4$s) and listed under Projects. Your next message will change it; remove the project from the chat box to start a new one. Here\'s what I wrote:</string>
+    <plurals name="ai_result_screens">
+        <item quantity="one">%1$d screen</item>
+        <item quantity="other">%1$d screens</item>
+    </plurals>
+    <string name="ai_result_open">Open project</string>
+    <string name="ai_chat_edit_details">Edit details</string>
+    <string name="ai_chat_retry">Try again</string>
+    <string name="ai_chat_file_details">%1$s · %2$d lines</string>
+    <string name="ai_chat_copy">Copy</string>
+    <string name="ai_chat_copied">Copied %1$s</string>
+    <string name="ai_error_unusable_answer">The model\'s answer couldn\'t be turned into a project: %1$s</string>
+    <string name="ai_error_storage">Storage access is needed to create projects.</string>
+    <string-array name="ai_ideas">
+        <item>Create a complete notes app</item>
+        <item>Build a to-do list that remembers my tasks</item>
+        <item>Make a tip calculator that splits the bill</item>
+        <item>Make a BMI calculator with history</item>
+        <item>Build a stopwatch with lap times</item>
+        <item>Build an expense tracker with a monthly total</item>
+    </string-array>
+
+    <!-- Settings: configuration list -->
+    <string name="ai_configuration_title">AI configuration</string>
+    <string name="ai_configuration_description">Set up the AI models that generate apps</string>
+    <string name="ai_configuration_add">Add model</string>
+    <string name="ai_configuration_empty_title">No models yet</string>
+    <string name="ai_configuration_empty_message">Add a model from Gemini, Claude, OpenRouter, NVIDIA, Coarena, OpenAI or any OpenAI-compatible provider.</string>
+    <string name="ai_configuration_details">%1$s Â· %2$s</string>
+    <string name="ai_configuration_verified">Tested</string>
+    <string name="ai_configuration_unverified">Not tested</string>
+    <string name="ai_configuration_use">Use for generating</string>
+    <string name="ai_configuration_delete_title">Delete model?</string>
+    <string name="ai_configuration_delete_message">%1$s and its API key will be removed.</string>
+
+    <!-- Settings: configuration editor -->
+    <string name="ai_editor_title_add">Add model</string>
+    <string name="ai_editor_title_edit">Edit model</string>
+    <string name="ai_editor_provider">Provider</string>
+    <string name="ai_editor_name">Name (optional)</string>
+    <string name="ai_editor_base_url">Base URL</string>
+    <string name="ai_editor_api_key">API key</string>
+    <string name="ai_editor_get_api_key">Get an API key</string>
+    <string name="ai_editor_model">Model</string>
+    <string name="ai_editor_model_helper">Pick from the list, or type a model ID</string>
+    <string name="ai_editor_fetch_models">Load models</string>
+    <string name="ai_editor_test">Test connection</string>
+    <string name="ai_editor_save">Test and save</string>
+    <string name="ai_editor_save_anyway">Save anyway</string>
+    <string name="ai_editor_field_required">Required</string>
+    <string name="ai_editor_fetching_models">Loading modelsâ€¦</string>
+    <string name="ai_editor_models_loaded">%1$d models available</string>
+    <string name="ai_editor_models_failed">Couldn\'t load models: %1$s</string>
+    <string name="ai_editor_testing">Testing %1$sâ€¦</string>
+    <string name="ai_editor_test_succeeded">Connection works. %1$s answered.</string>
+    <string name="ai_editor_test_failed">Test failed: %1$s</string>
+    <string name="ai_editor_test_failed_title">The test failed</string>
+    <string name="ai_editor_saved">Model saved</string>
+</resources>

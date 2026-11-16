@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The bottom padding is set at runtime, to keep the composer above the bottom navigation and the keyboard -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:orientation="vertical"
+    android:transitionGroup="true">
+
+    <!-- The chat's own top bar; the home screen's search bar is hidden while the chat shows -->
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="64dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp">
+
+        <Button
+            android:id="@+id/open_drawer"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:paddingHorizontal="12dp"
+            android:contentDescription="@string/ai_chat_open_menu"
+            app:icon="@drawable/ic_ai_menu" />
+
+        <Button
+            android:id="@+id/model"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="start|center_vertical"
+            android:singleLine="true"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="?attr/colorOnSurface"
+            app:icon="@drawable/ic_ai_chevron_down"
+            app:iconGravity="end"
+            app:iconTint="?attr/colorOnSurfaceVariant"
+            tools:text="gemini-5.1" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.SketchwarePro.AiComposer">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/new_chat"
+                    style="?attr/materialIconButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:paddingHorizontal="12dp"
+                    android:contentDescription="@string/ai_chat_new"
+                    app:icon="@drawable/ic_ai_new_chat" />
+
+                <Button
+                    android:id="@+id/overflow"
+                    style="?attr/materialIconButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:paddingHorizontal="12dp"
+                    android:contentDescription="@string/ai_chat_more_options"
+                    app:icon="@drawable/ic_mtrl_more_vertical" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/messages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_ai_chat_assistant" />
+
+        <!-- Shown while the chat is empty -->
+        <LinearLayout
+            android:id="@+id/welcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="32dp">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_ai_avatar"
+                android:importantForAccessibility="no"
+                android:padding="12dp"
+                android:src="@drawable/ic_mtrl_ai"
+                app:tint="?attr/colorOnPrimaryContainer" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/ai_chat_welcome_title"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                android:textColor="?attr/colorOnSurface" />
+
+            <TextView
+                android:id="@+id/welcome_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@string/ai_chat_welcome_message"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
+            <Button
+                android:id="@+id/setup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/ai_open_configuration"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/suggestions_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingHorizontal="12dp"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/suggestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleLine="true" />
+    </HorizontalScrollView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/composer"
+        style="?attr/materialCardViewOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="10dp"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.SketchwarePro.AiComposer">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <!-- The project the next prompt changes -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/attached_project"
+                style="@style/Widget.Material3.Chip.Input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:checkable="false"
+                android:visibility="gone"
+                app:chipIcon="@drawable/ic_mtrl_folder_code"
+                tools:text="Notes"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/attach_project"
+                    style="?attr/materialIconButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:paddingHorizontal="12dp"
+                    android:contentDescription="@string/ai_chat_choose_project"
+                    app:icon="@drawable/ic_mtrl_add" />
+
+                <EditText
+                    android:id="@+id/prompt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/ai_chat_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:maxLines="6"
+                    android:minHeight="48dp"
+                    android:paddingHorizontal="4dp"
+                    android:paddingVertical="12dp"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <Button
+                    android:id="@+id/send"
+                    style="?attr/materialIconButtonFilledStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:paddingHorizontal="12dp"
+                    android:contentDescription="@string/ai_chat_send"
+                    android:enabled="false"
+                    app:icon="@drawable/ic_ai_send" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>
