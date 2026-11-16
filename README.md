@@ -40,26 +40,32 @@ If you'd like to contribute to Sketchware Pro, follow these steps:
 4. Create a pull request in this repository.
 5. Your pull request will be reviewed by the repository members and merged if accepted.
 
-We welcome contributions of any size, whether they are major features or bug fixes, but please note that all contributions will be thoroughly reviewed.
+We welcome contributions focused on core stability, modern Android tooling, compiler updates, and visual block functionality. Please note that all contributions are thoroughly reviewed.
+
+> [!NOTE]
+> Generative AI, LLM coding assistants, and AI-agent integrations are strictly out of scope for Sketchware Pro and will not be accepted.
 
 ### Commit Message
 
-When you make changes to one or more files, you need to commit those changes with a commit message. Here are some guidelines:
+When you make changes to one or more files, you need to commit those changes with a commit message adhering to [Conventional Commits](https://www.conventionalcommits.org/) (enforced by repository ruleset):
 
-- Keep the commit message short and detailed.
-- Use one of these commit types as a prefix:
-  - `feat:` for a feature, possibly improving something already existing.
-  - `fix:` for a fix, such as a bug fix.
-  - `style:` for features and updates related to styling.
-  - `refactor:` for refactoring a specific section of the codebase.
-  - `test:` for everything related to testing.
-  - `docs:` for everything related to documentation.
-  - `chore:` for code maintenance (you can also use emojis to represent commit types).
+- Use lowercase commit types with an optional scope: `<type>(<scope>): <subject>` or `<type>: <subject>`
+  - `feat:` for a feature or enhancement.
+  - `fix:` for a bug fix.
+  - `build:` for build system, Gradle, or dependency changes.
+  - `refactor:` for code refactoring without behavior change.
+  - `style:` for formatting, themes, or visual adjustments.
+  - `docs:` for documentation changes.
+  - `test:` for test changes.
+  - `ci:` for CI/CD workflow updates.
+  - `chore:` for tooling and maintenance.
+- Keep the commit message short, imperative, and descriptive.
+- Do not use emojis in the commit prefix, as pushes failing the conventional regex pattern will be rejected.
 
 Examples:
-- `feat: Speed up compiling with new technique`
-- `fix: Fix crash during launch on certain phones`
-- `refactor: Reformat code in File.java`
+- `feat(editor): speed up compiling with new technique`
+- `fix(runtime): fix crash during launch on certain devices`
+- `build(deps): bump androidx core dependencies`
 
 > [!IMPORTANT]
 > If you want to add new features that don't require editing other packages other than `pro.sketchware`, make your changes in `pro.sketchware` package, and respect the directories and files structure and names. Also, even though the project compiles just fine with Kotlin classes that you might add, try to make your changes or additions in Java, not Kotlin unless it is more than necessary.
@@ -72,11 +78,11 @@ Thank you for contributing to Sketchware Pro! Your contributions help keep Sketc
 
 Want to chat with us, discuss changes, or just hang out? We have a Discord server just for that.
 
-[![Join our Discord server!](https://invidget.switchblade.xyz/kq39yhT4rX)](http://discord.gg/kq39yhT4rX)
+[![Join our Discord server!](https://img.shields.io/discord/790686719753846785?label=Discord&logo=discord&logoColor=white&color=5865F2)](https://discord.gg/kq39yhT4rX)
 
 ## Disclaimer
 
-This mod was not created for any harmful purposes, such as harming Sketchware; quite the opposite, actually. It was made to keep Sketchware alive by the community for the community. Please use it at your own discretion and consider becoming a Patreon backer to support the developers. Unfortunately, other ways to support them are not working anymore, so Patreon is the only available option currently. You can find their Patreon page [here](https://www.patreon.com/sketchware).
+This mod was not created for any harmful purposes, such as harming Sketchware; quite the opposite, actually. It was made to keep Sketchware alive by the community for the community. Please use it at your own discretion.
 
 We do NOT permit publishing Sketchware Pro as it is, or with modifications, on Play Store or on any other app store. Keep in mind that this project is still a mod. Unauthorized modding of apps is considered illegal and we discourage such behavior.
 
