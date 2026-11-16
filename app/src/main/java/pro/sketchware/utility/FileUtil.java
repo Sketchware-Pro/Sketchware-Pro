@@ -109,8 +109,43 @@ public class FileUtil {
         }
     }
 
-    public static boolean renameFile(String str, String str2) {
-        return new File(str).renameTo(new File(str2));
+    public static boolean renameFile(String oldPath, String newPath) {
+        File oldFile = new File(oldPath);
+        File newFile = new File(newPath);
+
+        // Problem: On case-insensitive file systems (FAT32, exFAT, some Android
+        // internal storage configurations), renaming "abc.java" to "Abc.java"
+        // via renameTo() returns true but does NOT actually change the name.
+        // The OS treats both names as identical, so it sees no change to perform
+        // and silently succeeds without doing anything.
+        //
+        // Solution: Detect this specific scenario (same path, only case differs)
+        // and perform a two-step rename through a temporary name. Since the
+        // temporary name is completely different from both the old and new names,
+        // the file system is forced to actually perform the rename operation.
+        //
+        // Note: This two-step approach uses renameTo() internally, which only
+        // modifies the directory entry — it does NOT copy file data. Therefore
+        // it is fast even for large files and will not cause ANR or storage
+        // exhaustion. We only apply this special handling when the case differs,
+        // so all other renames keep the original (single-step) behavior.
+        if (oldFile.getAbsolutePath().equalsIgnoreCase(newFile.getAbsolutePath())) {
+            // Step 1: Rename to a temporary, distinct name so the file system
+            // cannot consider it a no-op due to case-insensitive comparison.
+            File tempFile = new File(newFile.getParent(), newFile.getName() + ".tmp_rename");
+            if (!oldFile.renameTo(tempFile)) {
+                return false; // Temporary rename failed — abort and report failure
+            }
+
+            // Step 2: Rename the temporary file to the actual target name.
+            // If this fails, the file is left with the temp name, which is
+            // undesirable but still recoverable (the file itself is not lost).
+            return tempFile.renameTo(newFile);
+        }
+
+        // Normal rename: old and new paths differ in more than just case,
+        // so a single renameTo() call works correctly on all file systems.
+        return oldFile.renameTo(newFile);
     }
 
     /**
