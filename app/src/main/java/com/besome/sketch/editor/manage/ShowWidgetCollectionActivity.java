@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -29,7 +28,6 @@ import pro.sketchware.databinding.ManageCollectionShowWidgetBinding;
 
 public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private String widgetName;
-    private EditText widgetNameInput;
     private NB widgetNameValidator;
     private ManageCollectionShowWidgetBinding binding;
 
@@ -62,7 +60,7 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
         if (id == R.id.img_back) {
             onBackPressed();
         } else if (id == R.id.save_button && widgetNameValidator.b()) {
-            Rp.h().a(widgetName, Helper.getText(widgetNameInput), true);
+            Rp.h().a(widgetName, Helper.getText(binding.edInput), true);
             bB.a(getApplicationContext(), getString(R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
             finish();
         }
@@ -97,12 +95,11 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
         kC kCVar = new kC("", wq.a() + "/image/data/", "", "");
         kCVar.b(Op.g().f());
         binding.pane.setResourceManager(kCVar);
-        widgetNameInput = binding.edInput.getEditText();
-        widgetNameInput.setPrivateImeOptions("defaultInputmode=english;");
-        widgetNameInput.setText(widgetName);
-        binding.edInput.setHint(getString(R.string.design_manager_widget_hint_enter_widget_name));
+
+        binding.edInput.setText(widgetName);
+
         binding.saveButton.setOnClickListener(this);
-        widgetNameValidator = new NB(this, binding.edInput.getTextInputLayout(), Rp.h().g());
+        widgetNameValidator = new NB(this, binding.tiInput, Rp.h().g());
     }
 
     @Override

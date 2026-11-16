@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,7 +33,6 @@ import pro.sketchware.databinding.ManageFontImportBinding;
 @SuppressLint("NotifyDataSetChanged")
 public class ManageFontImportActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    private EditText r;
     private ItemAdapter itemAdapter;
     private ArrayList<ProjectResourceBean> projectFonts;
     private ArrayList<ProjectResourceBean> selectedCollection;
@@ -108,10 +106,10 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     public void onClick(View v) {
         int id = v.getId();
         if (id == binding.btnDecide.getId()) {
-            String resName = Helper.getText(r);
+            String resName = Helper.getText(binding.edInput);
             if (!isNameValid()) {
                 ProjectResourceBean font = selectedCollection.get(selectedItem);
-                r.setText(font.resName);
+                binding.edInput.setText(font.resName);
             } else {
                 if (!binding.chkSamename.isChecked()) {
                     ProjectResourceBean resourceBean = selectedCollection.get(selectedItem);
@@ -167,11 +165,10 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         selectedCollection = getIntent().getParcelableArrayListExtra("selected_collections");
         binding.tvCurrentnum.setText(String.valueOf(1));
         binding.tvTotalnum.setText(String.valueOf(selectedCollection.size()));
-        r = binding.edInput.getEditText();
-        r.setText(selectedCollection.get(0).resName);
-        r.setPrivateImeOptions("defaultInputmode=english;");
-        binding.edInput.setHint(getString(R.string.design_manager_font_hint_enter_font_name));
-        nameValidator = new QB(getApplicationContext(), binding.edInput.getTextInputLayout(), uq.b, getReservedProjectImageNames(), getReservedSelectedCollectionNames());
+
+        binding.edInput.setText(selectedCollection.get(0).resName);
+
+        nameValidator = new QB(getApplicationContext(), binding.tiInput, uq.b, getReservedProjectImageNames(), getReservedSelectedCollectionNames());
         binding.chkSamename.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 nameValidator.c(null);
@@ -181,9 +178,8 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
                 nameValidator.a(1);
             }
         });
-        Button btnDecide = findViewById(R.id.btn_decide);
-        btnDecide.setText(R.string.design_manager_change_name_button);
-        btnDecide.setOnClickListener(this);
+        binding.btnDecide.setText(R.string.design_manager_change_name_button);
+        binding.btnDecide.setOnClickListener(this);
     }
 
     @Override
@@ -276,7 +272,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
                         selectedItem = getLayoutPosition();
                         showPreview(selectedItem);
                         binding.tvCurrentnum.setText(String.valueOf(getLayoutPosition() + 1));
-                        r.setText(selectedCollection.get(getLayoutPosition()).resName);
+                        ManageFontImportActivity.this.binding.edInput.setText(selectedCollection.get(getLayoutPosition()).resName);
                         if (binding.chkSamename.isChecked()) {
                             nameValidator.c(null);
                             nameValidator.a(selectedCollection.size());

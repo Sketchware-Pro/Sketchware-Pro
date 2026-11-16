@@ -36,7 +36,7 @@ import pro.sketchware.core.debug.RemoteDebugSettings;
 import pro.sketchware.core.debug.RemoteLogBuffer;
 import android.os.Environment;
 import pro.sketchware.databinding.ActivityLogcatreaderBinding;
-import pro.sketchware.databinding.EasyDeleteEdittextBinding;
+import pro.sketchware.databinding.DialogLogcatFilterBinding;
 import pro.sketchware.databinding.ViewLogcatItemBinding;
 import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.utility.FileUtil;
@@ -132,10 +132,10 @@ public class LogReaderActivity extends BaseAppCompatActivity {
     }
 
     void showFilterDialog() {
-        var dialogBinding = EasyDeleteEdittextBinding.inflate(getLayoutInflater());
+        var dialogBinding = DialogLogcatFilterBinding.inflate(getLayoutInflater());
         View view = dialogBinding.getRoot();
 
-        dialogBinding.imgDelete.setVisibility(View.GONE);
+        dialogBinding.inputText.setText(pkgFilter);
 
         var builder = new MaterialAlertDialogBuilder(this)
                 .setTitle("Filter by package name")
@@ -143,7 +143,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 .setIcon(R.drawable.ic_mtrl_filter)
                 .setView(view)
                 .setPositiveButton("Apply", (dialog, which) -> {
-                    pkgFilter = Helper.getText(dialogBinding.easyEdInput);
+                    pkgFilter = Helper.getText(dialogBinding.inputText);
                     pkgFilterList = new ArrayList<>();
                     for (String name : pkgFilter.split(",")) if (!name.trim().isEmpty()) pkgFilterList.add(name.trim());
                     applyFilters();
@@ -151,7 +151,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 .setNeutralButton("Reset", (dialog, which) -> {
                     pkgFilter = "";
                     pkgFilterList.clear();
-                    dialogBinding.easyEdInput.setText("");
+                    dialogBinding.inputText.setText("");
                     applyFilters();
                 })
                 .setNegativeButton(R.string.common_word_cancel, null)

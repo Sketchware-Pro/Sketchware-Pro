@@ -106,12 +106,24 @@
                 android:textAppearance="?attr/textAppearanceBodyMedium" />
         </LinearLayout>
 
-        <com.besome.sketch.lib.ui.EasyDeleteEditText
-            android:id="@+id/ed_input"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="16dp"
+            android:hint="@string/design_manager_font_hint_enter_font_name"
+            android:importantForAutofill="noExcludeDescendants">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1"
+                android:privateImeOptions="defaultInputmode=english;" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btn_decide"

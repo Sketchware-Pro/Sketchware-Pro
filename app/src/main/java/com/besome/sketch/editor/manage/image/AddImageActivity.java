@@ -12,15 +12,9 @@ import android.view.animation.AnimationUtils;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.besome.sketch.lib.ui.EasyDeleteEditText;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -43,35 +37,29 @@ import pro.sketchware.databinding.ManageImageAddBinding;
 public class AddImageActivity extends BaseDialogActivity implements View.OnClickListener {
     public ManageImageAddBinding binding;
     private ArrayList<ProjectResourceBean> existingImages;
-    private TextView tv_add_photo;
-    private ImageView preview;
     private ArrayList<Uri> pickedImageUris;
     private PB O;
-    private EditText ed_input_edittext;
-    private EasyDeleteEditText ed_input;
-    private ImageView tv_desc;
-    private CheckBox chk_collection;
     private String sc_id;
     private ArrayList<ProjectResourceBean> images;
     private boolean multipleImagesPicked = false;
-    private LinearLayout layout_img_inform = null;
-    private LinearLayout layout_img_modify = null;
-    private TextView tv_imgcnt = null;
     private boolean B = false;
     private String imageFilePath = null;
     private int imageRotationDegrees = 0;
     private int imageExifOrientation = 0;
     private int imageScaleY = 1;
     private int imageScaleX = 1;
+    private String dir_path = "";
+    private boolean editing = false;
+    private ProjectResourceBean image = null;
 
     private final ActivityResultLauncher<Intent> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (preview != null) {
-                    preview.setEnabled(true);
+                if (binding != null && binding.imgSelected != null) {
+                    binding.imgSelected.setEnabled(true);
                 }
                 Intent data = result.getData();
                 if (result.getResultCode() == RESULT_OK && data != null) {
-                    tv_add_photo.setVisibility(View.GONE);
+                    binding.tvAddPhoto.setVisibility(View.GONE);
                     imageRotationDegrees = 0;
                     imageScaleY = 1;
                     imageScaleX = 1;
@@ -101,9 +89,6 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                     }
                 }
             });
-    private String dir_path = "";
-    private boolean editing = false;
-    private ProjectResourceBean image = null;
 
     private void flipImageVertically() {
         if (imageFilePath != null && !imageFilePath.isEmpty()) {
@@ -115,8 +100,6 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
             refreshPreview();
         }
     }
-
-
 
     @Override
     public void onClick(View view) {
@@ -133,7 +116,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         } else if (id == R.id.img_rotate) {
             setImageRotation(imageRotationDegrees + 90);
         } else if (id == R.id.img_selected) {
-            preview.setEnabled(false);
+            binding.imgSelected.setEnabled(false);
             pickImages(!editing);
         } else if (id == R.id.img_vertical) {
             flipImageVertically();
@@ -145,40 +128,33 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         super.onCreate(bundle);
         e(getString(R.string.design_manager_image_title_add_image));
         d(getString(R.string.common_word_save));
+        
         binding = ManageImageAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         Intent intent = getIntent();
         existingImages = intent.getParcelableArrayListExtra("images");
         sc_id = intent.getStringExtra("sc_id");
         dir_path = intent.getStringExtra("dir_path");
         image = intent.getParcelableExtra("edit_target");
+        
         if (image != null) {
             editing = true;
         }
-        layout_img_inform = binding.layoutImgInform;
-        layout_img_modify = binding.layoutImgModify;
-        chk_collection = binding.chkCollection;
-        tv_desc = binding.tvDesc;
-        tv_imgcnt = binding.tvImgcnt;
-        tv_add_photo = binding.tvAddPhoto;
-        preview = binding.imgSelected;
-        ImageView img_rotate = binding.imgRotate;
-        ImageView img_vertical = binding.imgVertical;
-        ImageView img_horizontal = binding.imgHorizontal;
-        ed_input = binding.edInput;
-        ed_input_edittext = ed_input.getEditText();
-        ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
-        ed_input.setHint(getString(R.string.design_manager_image_hint_enter_image_name));
-        O = new PB(this, ed_input.getTextInputLayout(), uq.b, getReservedImageNames());
-        O.a(1);
-        chk_collection.setText(R.string.msg_add_to_my_collection);
-        tv_add_photo.setText(R.string.design_manager_image_title_add_image);
-        preview.setOnClickListener(this);
-        img_rotate.setOnClickListener(this);
-        img_vertical.setOnClickListener(this);
-        img_horizontal.setOnClickListener(this);
+
+        binding.chkCollection.setText(R.string.msg_add_to_my_collection);
+        binding.tvAddPhoto.setText(R.string.design_manager_image_title_add_image);
+        
+        binding.imgSelected.setOnClickListener(this);
+        binding.imgRotate.setOnClickListener(this);
+        binding.imgVertical.setOnClickListener(this);
+        binding.imgHorizontal.setOnClickListener(this);
         r.setOnClickListener(this);
         s.setOnClickListener(this);
+
+        O = new PB(this, binding.tiInput, uq.b, getReservedImageNames());
+        O.a(1);
+        
         B = false;
         imageRotationDegrees = 0;
         imageScaleY = 1;
@@ -196,12 +172,15 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
             imageRotationDegrees = image.rotate;
             imageScaleX = image.flipHorizontal;
             imageScaleY = image.flipVertical;
-            O = new PB(this, ed_input.getTextInputLayout(), uq.b, getReservedImageNames(), image.resName);
+            
+            O = new PB(this, binding.tiInput, uq.b, getReservedImageNames(), image.resName);
             O.a(1);
-            ed_input_edittext.setText(image.resName);
-            ed_input_edittext.setEnabled(false);
-            chk_collection.setEnabled(false);
-            tv_add_photo.setVisibility(View.GONE);
+            
+            binding.edInput.setText(image.resName);
+            binding.edInput.setEnabled(false);
+            binding.chkCollection.setEnabled(false);
+            binding.tvAddPhoto.setVisibility(View.GONE);
+            
             if (image.savedPos == 0) {
                 setImageFromFile(a(image));
             } else {
@@ -219,7 +198,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
     }
 
     private void refreshPreview() {
-        preview.setImageBitmap(iB.a(iB.a(iB.a(imageFilePath, 1024, 1024), imageExifOrientation), imageRotationDegrees, imageScaleX, imageScaleY));
+        binding.imgSelected.setImageBitmap(iB.a(iB.a(iB.a(imageFilePath, 1024, 1024), imageExifOrientation), imageRotationDegrees, imageScaleX, imageScaleY));
     }
 
     private void save() {
@@ -232,13 +211,13 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
     }
 
     private void s() {
-        if (tv_desc != null) {
-            tv_desc.setVisibility(View.INVISIBLE);
+        if (binding.tvDesc != null) {
+            binding.tvDesc.setVisibility(View.INVISIBLE);
         }
-        if (layout_img_inform != null && layout_img_modify != null && tv_imgcnt != null) {
-            layout_img_inform.setVisibility(View.GONE);
-            layout_img_modify.setVisibility(View.VISIBLE);
-            tv_imgcnt.setVisibility(View.GONE);
+        if (binding.layoutImgInform != null && binding.layoutImgModify != null && binding.tvImgcnt != null) {
+            binding.layoutImgInform.setVisibility(View.GONE);
+            binding.layoutImgModify.setVisibility(View.VISIBLE);
+            binding.tvImgcnt.setVisibility(View.GONE);
         }
     }
 
@@ -257,14 +236,17 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
 
     private void setImageFromFile(String path) {
         imageFilePath = path;
-        preview.setImageBitmap(iB.a(path, 1024, 1024));
+        binding.imgSelected.setImageBitmap(iB.a(path, 1024, 1024));
+        
         int indexOfFilenameExtension = path.lastIndexOf(".");
         if (path.endsWith(".9.png")) {
             indexOfFilenameExtension = path.lastIndexOf(".9.png");
         }
-        if (ed_input_edittext != null && (ed_input_edittext.getText() == null || ed_input_edittext.getText().length() <= 0)) {
-            ed_input_edittext.setText(path.substring(path.lastIndexOf("/") + 1, indexOfFilenameExtension));
+        
+        if (binding.edInput != null && (binding.edInput.getText() == null || binding.edInput.getText().length() <= 0)) {
+            binding.edInput.setText(path.substring(path.lastIndexOf("/") + 1, indexOfFilenameExtension));
         }
+        
         try {
             imageExifOrientation = iB.a(path);
             refreshPreview();
@@ -285,13 +267,13 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
     }
 
     private void onMultipleImagesPicked(int count) {
-        if (layout_img_inform == null || layout_img_modify == null || tv_imgcnt == null) {
+        if (binding.layoutImgInform == null || binding.layoutImgModify == null || binding.tvImgcnt == null) {
             return;
         }
-        layout_img_inform.setVisibility(View.VISIBLE);
-        layout_img_modify.setVisibility(View.GONE);
-        tv_imgcnt.setVisibility(View.VISIBLE);
-        tv_imgcnt.setText("+ " + (count - 1) + " more");
+        binding.layoutImgInform.setVisibility(View.VISIBLE);
+        binding.layoutImgModify.setVisibility(View.GONE);
+        binding.tvImgcnt.setVisibility(View.VISIBLE);
+        binding.tvImgcnt.setText("+ " + (count - 1) + " more");
     }
 
     private void flipImageHorizontally() {
@@ -312,7 +294,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         if (B || imageFilePath != null) {
             return true;
         }
-        tv_desc.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
+        binding.tvDesc.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
         return false;
     }
 
@@ -372,13 +354,13 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                 if (!activity.multipleImagesPicked) {
                     if (!activity.editing) {
                         var image = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                                Helper.getText(activity.ed_input_edittext).trim(), activity.imageFilePath);
+                                Helper.getText(activity.binding.edInput).trim(), activity.imageFilePath);
                         image.savedPos = 1;
                         image.isNew = true;
                         image.rotate = activity.imageRotationDegrees;
                         image.flipVertical = activity.imageScaleY;
                         image.flipHorizontal = activity.imageScaleX;
-                        if (activity.chk_collection.isChecked()) {
+                        if (activity.binding.chkCollection.isChecked()) {
                             Op.g().a(activity.sc_id, image);
                         }
                         activity.images.add(image);
@@ -402,7 +384,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                     int i = 0;
                     while (i < activity.pickedImageUris.size()) {
                         var uri = activity.pickedImageUris.get(i);
-                        var imageName = Helper.getText(activity.ed_input_edittext).trim() + "_" + ++i;
+                        var imageName = Helper.getText(activity.binding.edInput).trim() + "_" + ++i;
                         var imageFilePath = HB.a(activity.getApplicationContext(), uri);
                         if (imageFilePath == null) {
                             return;
@@ -416,7 +398,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                         image.flipHorizontal = 1;
                         toAdd.add(image);
                     }
-                    if (activity.chk_collection.isChecked()) {
+                    if (activity.binding.chkCollection.isChecked()) {
                         Op.g().a(activity.sc_id, toAdd, true);
                     }
                     activity.multipleImagesPicked = false;

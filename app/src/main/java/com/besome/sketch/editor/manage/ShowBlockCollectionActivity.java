@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -37,7 +36,6 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
 
     private String blockName;
     private BlockPane pane;
-    private EditText blockNameEditorText;
     private NB blockNameValidator;
 
     private ManageCollectionShowBlockBinding binding;
@@ -117,7 +115,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.save_button && blockNameValidator.b()) {
-            Mp.h().a(blockName, Helper.getText(blockNameEditorText), true);
+            Mp.h().a(blockName, Helper.getText(binding.edInput), true);
             bB.a(getApplicationContext(), Helper.getResString(R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
             finish();
         }
@@ -144,14 +142,11 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         binding.editor.setScrollEnabled(true);
         pane = binding.editor.getBlockPane();
 
-        blockNameEditorText = binding.edInput.getEditText();
-        blockNameEditorText.setPrivateImeOptions("defaultInputmode=english;");
-        blockNameEditorText.setText(blockName);
-        binding.edInput.setHint(Helper.getResString(R.string.design_manager_block_hint_enter_block_name));
+        binding.edInput.setText(blockName);
 
         binding.saveButton.setText(Helper.getResString(R.string.common_word_save));
         binding.saveButton.setOnClickListener(this);
-        blockNameValidator = new NB(this, binding.edInput.getTextInputLayout(), Mp.h().g());
+        blockNameValidator = new NB(this, binding.tiInput, Mp.h().g());
     }
 
     @Override

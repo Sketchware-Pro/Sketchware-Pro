@@ -11,15 +11,9 @@ import android.view.animation.AnimationUtils;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.besome.sketch.lib.ui.EasyDeleteEditText;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -43,18 +37,9 @@ import pro.sketchware.databinding.ManageImageAddBinding;
 public class AddImageCollectionActivity extends BaseDialogActivity implements View.OnClickListener {
 
     public ManageImageAddBinding binding;
-    private TextView tv_add_photo;
-    private ImageView preview;
     private PB imageNameValidator;
-    private EditText ed_input_edittext;
-    private EasyDeleteEditText ed_input;
-    private ImageView tv_desc;
-    private CheckBox chk_collection;
     private String sc_id;
     private ArrayList<ProjectResourceBean> images;
-    private LinearLayout layout_img_inform = null;
-    private LinearLayout layout_img_modify = null;
-    private TextView tv_imgcnt = null;
     private boolean z = false;
     private String imageFilePath = null;
     private int imageRotationDegrees = 0;
@@ -66,8 +51,8 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
 
     private final ActivityResultLauncher<Intent> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (preview != null) {
-                    preview.setEnabled(true);
+                if (binding != null && binding.imgSelected != null) {
+                    binding.imgSelected.setEnabled(true);
                 }
                 Intent data = result.getData();
                 if (result.getResultCode() == RESULT_OK && data != null) {
@@ -104,8 +89,6 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
-
-
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
@@ -122,7 +105,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
             } else if (id == R.id.img_rotate) {
                 setImageRotation(imageRotationDegrees + 90);
             } else if (id == R.id.img_selected) {
-                preview.setEnabled(false);
+                binding.imgSelected.setEnabled(false);
                 if (!editing) {
                     pickImage();
                 }
@@ -137,39 +120,33 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         super.onCreate(savedInstanceState);
         e(getString(R.string.design_manager_image_title_add_image));
         d(getString(R.string.common_word_save));
+        
         binding = ManageImageAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        
         Intent intent = getIntent();
         images = intent.getParcelableArrayListExtra("images");
         sc_id = intent.getStringExtra("sc_id");
         editTarget = intent.getParcelableExtra("edit_target");
+        
         if (editTarget != null) {
             editing = true;
         }
-        layout_img_inform = binding.layoutImgInform;
-        layout_img_modify = binding.layoutImgModify;
-        chk_collection = binding.chkCollection;
-        chk_collection.setVisibility(View.GONE);
-        tv_desc = binding.tvDesc;
-        tv_imgcnt = binding.tvImgcnt;
-        tv_add_photo = binding.tvAddPhoto;
-        preview = binding.imgSelected;
-        ImageView img_rotate = binding.imgRotate;
-        ImageView img_vertical = binding.imgVertical;
-        ImageView img_horizontal = binding.imgHorizontal;
-        ed_input = binding.edInput;
-        ed_input_edittext = ed_input.getEditText();
-        ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
-        ed_input.setHint(getString(R.string.design_manager_image_hint_enter_image_name));
-        imageNameValidator = new PB(this, ed_input.getTextInputLayout(), uq.b, getReservedImageNames());
+
+        binding.chkCollection.setVisibility(View.GONE);
+
+        imageNameValidator = new PB(this, binding.tiInput, uq.b, getReservedImageNames());
         imageNameValidator.a(1);
-        tv_add_photo.setText(R.string.design_manager_image_title_add_image);
-        preview.setOnClickListener(this);
-        img_rotate.setOnClickListener(this);
-        img_vertical.setOnClickListener(this);
-        img_horizontal.setOnClickListener(this);
+        
+        binding.tvAddPhoto.setText(R.string.design_manager_image_title_add_image);
+        
+        binding.imgSelected.setOnClickListener(this);
+        binding.imgRotate.setOnClickListener(this);
+        binding.imgVertical.setOnClickListener(this);
+        binding.imgHorizontal.setOnClickListener(this);
         r.setOnClickListener(this);
         s.setOnClickListener(this);
+        
         z = false;
         imageRotationDegrees = 0;
         imageScaleY = 1;
@@ -182,13 +159,16 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         if (editing) {
             editTarget.isEdited = true;
             e(getString(R.string.design_manager_image_title_edit_image_name));
-            imageNameValidator = new PB(this, ed_input.getTextInputLayout(), uq.b, getReservedImageNames(), editTarget.resName);
+            
+            imageNameValidator = new PB(this, binding.tiInput, uq.b, getReservedImageNames(), editTarget.resName);
             imageNameValidator.a(1);
-            ed_input_edittext.setText(editTarget.resName);
-            chk_collection.setVisibility(View.GONE);
-            tv_add_photo.setVisibility(View.GONE);
+            
+            binding.edInput.setText(editTarget.resName);
+            binding.chkCollection.setVisibility(View.GONE);
+            binding.tvAddPhoto.setVisibility(View.GONE);
+            binding.layoutImgModify.setVisibility(View.GONE);
+            
             setImageFromFile(a(editTarget));
-            layout_img_modify.setVisibility(View.GONE);
         }
     }
 
@@ -212,7 +192,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
     }
 
     private void refreshPreview() {
-        preview.setImageBitmap(iB.a(iB.a(iB.a(imageFilePath, 1024, 1024), imageExifOrientation), imageRotationDegrees, imageScaleX, imageScaleY));
+        binding.imgSelected.setImageBitmap(iB.a(iB.a(iB.a(imageFilePath, 1024, 1024), imageExifOrientation), imageRotationDegrees, imageScaleX, imageScaleY));
     }
 
     private void save() {
@@ -225,13 +205,13 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
     }
 
     private void t() {
-        if (tv_desc != null) {
-            tv_desc.setVisibility(View.INVISIBLE);
+        if (binding.tvDesc != null) {
+            binding.tvDesc.setVisibility(View.INVISIBLE);
         }
-        if (layout_img_inform != null && layout_img_modify != null && tv_imgcnt != null) {
-            layout_img_inform.setVisibility(View.GONE);
-            layout_img_modify.setVisibility(View.VISIBLE);
-            tv_imgcnt.setVisibility(View.GONE);
+        if (binding.layoutImgInform != null && binding.layoutImgModify != null && binding.tvImgcnt != null) {
+            binding.layoutImgInform.setVisibility(View.GONE);
+            binding.layoutImgModify.setVisibility(View.VISIBLE);
+            binding.tvImgcnt.setVisibility(View.GONE);
         }
     }
 
@@ -242,20 +222,23 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         if (z || imageFilePath != null) {
             return true;
         }
-        tv_desc.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
+        binding.tvDesc.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
         return false;
     }
 
     private void setImageFromFile(String path) {
         imageFilePath = path;
-        preview.setImageBitmap(iB.a(path, 1024, 1024));
+        binding.imgSelected.setImageBitmap(iB.a(path, 1024, 1024));
+        
         int indexOfFilenameExtension = path.lastIndexOf(".");
         if (path.endsWith(".9.png")) {
             indexOfFilenameExtension = path.lastIndexOf(".9.png");
         }
-        if (ed_input_edittext != null && (ed_input_edittext.getText() == null || ed_input_edittext.getText().length() <= 0)) {
-            ed_input_edittext.setText(path.substring(path.lastIndexOf("/") + 1, indexOfFilenameExtension));
+        
+        if (binding.edInput != null && (binding.edInput.getText() == null || binding.edInput.getText().length() <= 0)) {
+            binding.edInput.setText(path.substring(path.lastIndexOf("/") + 1, indexOfFilenameExtension));
         }
+        
         try {
             imageExifOrientation = iB.a(path);
             refreshPreview();
@@ -312,7 +295,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
                 publishProgress("Now processing..");
                 if (!activity.editing) {
                     var image = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                            Helper.getText(activity.ed_input_edittext).trim(), activity.imageFilePath);
+                            Helper.getText(activity.binding.edInput).trim(), activity.imageFilePath);
                     image.savedPos = 1;
                     image.isNew = true;
                     image.rotate = activity.imageRotationDegrees;
@@ -320,7 +303,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
                     image.flipHorizontal = activity.imageScaleX;
                     Op.g().a(activity.sc_id, image);
                 } else {
-                    Op.g().a(activity.editTarget, Helper.getText(activity.ed_input_edittext), false);
+                    Op.g().a(activity.editTarget, Helper.getText(activity.binding.edInput), false);
                 }
             } catch (Exception e) {
                 // the bytecode's lying

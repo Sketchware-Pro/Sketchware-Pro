@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
@@ -38,10 +34,6 @@ import pro.sketchware.databinding.ManageImportListItemBinding;
 
 public class ManageImageImportActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public ManageImageImportBinding binding;
-    private ImageView img;
-    private TextView tv_currentnum;
-    private EditText ed_input_edittext;
-    private CheckBox chk_samename;
     private ItemAdapter adapter;
     private ArrayList<ProjectResourceBean> projectImages;
     private ArrayList<ProjectResourceBean> selectedCollections;
@@ -97,22 +89,11 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
     public void onClick(View v) {
         if (!mB.a()) {
             int id = v.getId();
-            if (id != R.id.btn_decide) {
-                if (id != R.id.img_backbtn) {
-                    if (id == R.id.tv_sendbtn && !n()) {
-                        Intent intent = new Intent();
-                        intent.putParcelableArrayListExtra("results", selectedCollections);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                } else {
-                    getOnBackPressedDispatcher().onBackPressed();
-                }
-            } else {
-                String name = Helper.getText(ed_input_edittext);
+            if (id == R.id.btn_decide) {
+                String name = Helper.getText(binding.edInput);
                 if (!isNameValid()) {
-                    ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
-                } else if (!chk_samename.isChecked()) {
+                    binding.edInput.setText(selectedCollections.get(selectedItem).resName);
+                } else if (!binding.chkSamename.isChecked()) {
                     ProjectResourceBean projectResourceBean = selectedCollections.get(selectedItem);
                     projectResourceBean.resName = name;
                     projectResourceBean.isDuplicateCollection = false;
@@ -128,6 +109,13 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
                     nameValidator.a(getReservedSelectedCollectionNames());
                     adapter.notifyDataSetChanged();
                 }
+            } else if (id == R.id.img_backbtn) {
+                getOnBackPressedDispatcher().onBackPressed();
+            } else if (id == R.id.tv_sendbtn && !n()) {
+                Intent intent = new Intent();
+                intent.putParcelableArrayListExtra("results", selectedCollections);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         }
     }
@@ -137,7 +125,9 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         super.onCreate(savedInstanceState);
         if (!super.j()) {
             finish();
+            return;
         }
+        
         binding = ManageImageImportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -148,32 +138,29 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
                 finish();
             }
         });
-        ImageView img_backbtn = binding.imgBackbtn;
-        img_backbtn.setOnClickListener(this);
-        tv_currentnum = binding.tvCurrentnum;
-        TextView tv_totalnum = binding.tvTotalnum;
-        TextView tv_sendbtn = binding.tvSendbtn;
-        tv_sendbtn.setText(getString(R.string.common_word_import).toUpperCase());
-        tv_sendbtn.setOnClickListener(this);
-        TextView tv_samename = binding.tvSamename;
-        tv_samename.setText(R.string.design_manager_image_title_apply_same_naming);
+
+        binding.imgBackbtn.setOnClickListener(this);
+        binding.tvSendbtn.setText(getString(R.string.common_word_import).toUpperCase());
+        binding.tvSendbtn.setOnClickListener(this);
+        binding.tvSamename.setText(R.string.design_manager_image_title_apply_same_naming);
+
         adapter = new ItemAdapter();
-        RecyclerView recycler_list = binding.recyclerList;
-        recycler_list.setAdapter(adapter);
-        recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
+        binding.recyclerList.setAdapter(adapter);
+        binding.recyclerList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
+
         projectImages = getIntent().getParcelableArrayListExtra("project_images");
         selectedCollections = getIntent().getParcelableArrayListExtra("selected_collections");
+        
         int selectedCollectionsSize = selectedCollections.size();
-        tv_currentnum.setText(String.valueOf(1));
-        tv_totalnum.setText(String.valueOf(selectedCollectionsSize));
-        EasyDeleteEditText ed_input = binding.edInput;
-        ed_input_edittext = ed_input.getEditText();
-        ed_input_edittext.setText(selectedCollections.get(0).resName);
-        ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
-        ed_input.setHint(getString(R.string.design_manager_image_hint_enter_image_name));
-        nameValidator = new QB(getApplicationContext(), ed_input.getTextInputLayout(), uq.b, getReservedProjectImageNames(), getReservedSelectedCollectionNames());
-        chk_samename = binding.chkSamename;
-        chk_samename.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        binding.tvCurrentnum.setText(String.valueOf(1));
+        binding.tvTotalnum.setText(String.valueOf(selectedCollectionsSize));
+
+        binding.edInput.setText(selectedCollections.get(0).resName);
+        // hint & privateImeOptions are now handled in XML
+        
+        nameValidator = new QB(getApplicationContext(), binding.tiInput, uq.b, getReservedProjectImageNames(), getReservedSelectedCollectionNames());
+
+        binding.chkSamename.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 nameValidator.c(null);
                 nameValidator.a(selectedCollections.size());
@@ -182,10 +169,9 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
                 nameValidator.a(1);
             }
         });
-        Button btn_decide = binding.btnDecide;
-        btn_decide.setText(R.string.design_manager_change_name_button);
-        btn_decide.setOnClickListener(this);
-        img = binding.img;
+
+        binding.btnDecide.setText(R.string.design_manager_change_name_button);
+        binding.btnDecide.setOnClickListener(this);
     }
 
     @Override
@@ -232,7 +218,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
                 .load(selectedCollections.get(index).resFullName)
                 .centerCrop()
                 .error(R.drawable.ic_remove_grey600_24dp)
-                .into(new BitmapImageViewTarget(img).getView());
+                .into(new BitmapImageViewTarget(binding.img).getView());
     }
 
     private boolean isNameInUseByProjectImage(String name) {
@@ -252,9 +238,9 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             ProjectResourceBean projectResourceBean = selectedCollections.get(position);
             if (projectResourceBean.isDuplicateCollection) {
-                viewHolder.img_conflict.setImageResource(R.drawable.ic_cancel_48dp);
+                viewHolder.imgConflict.setImageResource(R.drawable.ic_cancel_48dp);
             } else {
-                viewHolder.img_conflict.setImageResource(R.drawable.ic_ok_48dp);
+                viewHolder.imgConflict.setImageResource(R.drawable.ic_ok_48dp);
             }
             if (position == selectedItem) {
                 viewHolder.img.setBackgroundResource(R.drawable.bg_outline_dark_yellow);
@@ -263,11 +249,10 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             }
             Glide.with(getApplicationContext())
                     .load(projectResourceBean.resFullName)
-                    //.asBitmap()
                     .centerCrop()
                     .error(R.drawable.ic_remove_grey600_24dp)
                     .into(new BitmapImageViewTarget(viewHolder.img).getView());
-            viewHolder.tv_name.setText(selectedCollections.get(position).resName);
+            viewHolder.tvName.setText(selectedCollections.get(position).resName);
         }
 
         @Override
@@ -282,24 +267,26 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public final LinearLayout layout_item;
-            public final ImageView img_conflict;
+            public final LinearLayout layoutItem;
+            public final ImageView imgConflict;
             public final ImageView img;
-            public final TextView tv_name;
+            public final TextView tvName;
 
-            public ViewHolder(ManageImportListItemBinding binding) {
-                super(binding.getRoot());
-                layout_item = binding.layoutItem;
-                img_conflict = binding.imgConflict;
-                img = binding.img;
-                tv_name = binding.tvName;
+            public ViewHolder(ManageImportListItemBinding itemBinding) {
+                super(itemBinding.getRoot());
+                layoutItem = itemBinding.layoutItem;
+                imgConflict = itemBinding.imgConflict;
+                img = itemBinding.img;
+                tvName = itemBinding.tvName;
+                
                 img.setOnClickListener(v -> {
                     if (!mB.a()) {
                         selectedItem = getLayoutPosition();
                         showPreview(selectedItem);
-                        tv_currentnum.setText(String.valueOf(selectedItem + 1));
-                        ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
-                        if (chk_samename.isChecked()) {
+                        binding.tvCurrentnum.setText(String.valueOf(selectedItem + 1));
+                        binding.edInput.setText(selectedCollections.get(selectedItem).resName);
+                        
+                        if (binding.chkSamename.isChecked()) {
                             nameValidator.c(null);
                             nameValidator.a(selectedCollections.size());
                         } else {
