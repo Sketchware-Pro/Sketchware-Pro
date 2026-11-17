@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import com.besome.sketch.tools.CollectErrorActivity;
 
 import pro.sketchware.utility.AnalyticsHelper;
+import pro.sketchware.utility.LanguageManager;
 import pro.sketchware.utility.theme.ThemeManager;
 
 public class SketchApplication extends Application {
@@ -18,6 +19,11 @@ public class SketchApplication extends Application {
 
     public static Context getContext() {
         return mApplicationContext;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LanguageManager.wrap(base));
     }
 
     @Override
@@ -36,6 +42,7 @@ public class SketchApplication extends Application {
         });
         super.onCreate();
         ThemeManager.applyTheme(this, ThemeManager.getCurrentTheme(this));
+        LanguageManager.applyLanguage(this);
         AnalyticsHelper.logDeviceAbi(this);
     }
 }
