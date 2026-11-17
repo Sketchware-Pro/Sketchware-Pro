@@ -1,6 +1,6 @@
 <resources>
     <!--  properties  -->
-    <string-array name="property_convert_options">
+    <string-array name="property_convert_options" translatable="false">
         <item>LinearLayout</item>
         <item>FrameLayout</item>
         <item>RelativeLayout</item>
