@@ -1,8 +1,5 @@
 package mod.agus.jcoderz.editor.manifest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import pro.sketchware.xml.XmlBuilder;
 
 /**

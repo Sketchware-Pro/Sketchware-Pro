@@ -4,14 +4,12 @@ import android.Manifest;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import a.a.a.Sp;
 import a.a.a.mB;
-import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
 public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActivity {

@@ -1,7 +1,5 @@
 package pro.sketchware.activities.resourceseditor.components.fragments;
 
-import pro.sketchware.R;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

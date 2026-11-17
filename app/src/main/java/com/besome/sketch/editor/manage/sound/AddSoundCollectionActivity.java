@@ -17,7 +17,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.bumptech.glide.Glide;
-import com.google.android.material.card.MaterialCardView;
 
 import java.io.File;
 import java.util.ArrayList;

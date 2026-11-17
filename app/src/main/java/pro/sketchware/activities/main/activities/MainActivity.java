@@ -1,8 +1,5 @@
 package pro.sketchware.activities.main.activities;
 
-import pro.sketchware.R;
-
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;

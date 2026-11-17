@@ -24,7 +24,6 @@ import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.oq;
 import a.a.a.wB;
-import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.EventGridItemBinding;
 

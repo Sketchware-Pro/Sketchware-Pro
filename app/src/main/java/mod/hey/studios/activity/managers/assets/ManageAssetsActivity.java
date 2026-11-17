@@ -1,7 +1,5 @@
 package mod.hey.studios.activity.managers.assets;
 
-import pro.sketchware.R;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;

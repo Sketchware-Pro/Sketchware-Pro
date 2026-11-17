@@ -1,7 +1,5 @@
 package mod.hilal.saif.activities.android_manifest;
 
-import pro.sketchware.R;
-
 import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.annotation.SuppressLint;

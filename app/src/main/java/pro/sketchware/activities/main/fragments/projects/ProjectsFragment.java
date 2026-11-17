@@ -1,7 +1,5 @@
 package pro.sketchware.activities.main.fragments.projects;
 
-import pro.sketchware.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;

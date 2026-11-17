@@ -1,7 +1,5 @@
 package com.besome.sketch.editor.manage.view;
 
-import pro.sketchware.R;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.transition.AutoTransition;

@@ -1,7 +1,5 @@
 package pro.sketchware.activities.about.adapters;
 
-import pro.sketchware.R;
-
 import static pro.sketchware.utility.UI.advancedCorners;
 import static pro.sketchware.utility.UI.loadImageFromUrl;
 import static pro.sketchware.utility.UI.rippleRound;

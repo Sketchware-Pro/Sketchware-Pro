@@ -1,7 +1,5 @@
 package mod.hey.studios.project.backup;
 
-import pro.sketchware.R;
-
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -27,7 +25,6 @@ import a.a.a.lC;
 import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
 import dev.pranav.filepicker.FilePickerOptions;
-import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
 import pro.sketchware.databinding.ProgressMsgBoxBinding;

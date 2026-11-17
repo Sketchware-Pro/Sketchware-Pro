@@ -1,7 +1,5 @@
 package mod.hey.studios.project.proguard;
 
-import pro.sketchware.R;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;

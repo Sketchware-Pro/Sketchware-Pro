@@ -44,7 +44,6 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.ro;
 import mod.hey.studios.project.ProjectSettings;
-import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.CommonCategoryTriangleItemBinding;
 import pro.sketchware.databinding.PropertyBinding;

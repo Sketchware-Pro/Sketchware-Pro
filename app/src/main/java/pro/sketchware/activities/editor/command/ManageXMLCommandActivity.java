@@ -1,7 +1,5 @@
 package pro.sketchware.activities.editor.command;
 
-import pro.sketchware.R;
-
 import static pro.sketchware.utility.GsonUtils.getGson;
 import static pro.sketchware.utility.SketchwareUtil.getDip;
 

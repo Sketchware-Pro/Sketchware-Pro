@@ -1,7 +1,5 @@
 package dev.aldi.sayuti.editor.manage;
 
-import pro.sketchware.R;
-
 import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.createLibraryMap;
 import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.deleteSelectedLocalLibraries;
 import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.getAllLocalLibraries;
@@ -41,7 +39,6 @@ import java.util.concurrent.Executors;
 import a.a.a.MA;
 import a.a.a.mB;
 import mod.hey.studios.build.BuildSettings;
-import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLocallibrariesBinding;
 import pro.sketchware.databinding.ViewItemLocalLibBinding;

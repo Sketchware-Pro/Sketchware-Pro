@@ -1,7 +1,5 @@
 package mod.hey.studios.activity.managers.nativelib;
 
-import pro.sketchware.R;
-
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;

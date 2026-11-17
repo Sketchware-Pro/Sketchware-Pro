@@ -1,8 +1,6 @@
 // ImportIconActivity.java
 package pro.sketchware.activities.importicon;
 
-import pro.sketchware.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;

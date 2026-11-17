@@ -1,7 +1,5 @@
 package mod.hey.studios.activity.managers.java;
 
-import pro.sketchware.R;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;

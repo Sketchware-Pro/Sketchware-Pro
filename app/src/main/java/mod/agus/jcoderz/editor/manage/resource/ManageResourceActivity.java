@@ -1,7 +1,5 @@
 package mod.agus.jcoderz.editor.manage.resource;
 
-import pro.sketchware.R;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;

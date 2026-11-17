@@ -1,7 +1,5 @@
 package com.besome.sketch.editor.property;
 
-import pro.sketchware.R;
-
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;

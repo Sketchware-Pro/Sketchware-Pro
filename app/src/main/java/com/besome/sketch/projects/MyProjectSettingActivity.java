@@ -1,7 +1,5 @@
 package com.besome.sketch.projects;
 
-import pro.sketchware.R;
-
 import static mod.hey.studios.util.ProjectFile.getDefaultColor;
 
 import android.content.Context;
