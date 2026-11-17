@@ -2649,7 +2649,7 @@ public class BlocksHandler {
             boolean isIntUsed,
             boolean isStrUsed,
             boolean isMapUsed) {
-        logicEditorActivity.a("Blocks", getTitleBgColor(logicEditorActivity));
+        logicEditorActivity.a(logicEditorActivity.getString(R.string.ui_g3_palette_header_blocks), getTitleBgColor(logicEditorActivity));
         if (showAll() || isBoolUsed) {
             logicEditorActivity.a(" ", "setVarBoolean");
         }
@@ -2663,7 +2663,7 @@ public class BlocksHandler {
         }
         if (showAll() || isMapUsed) {
             logicEditorActivity.a(" ", "mapCreateNew");
-            logicEditorActivity.a("Map put values", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.ui_g3_palette_header_map_put_values), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a(" ", "mapPut");
         }
         if (showBuiltIn() && (showAll() || isMapUsed)) {
@@ -2675,7 +2675,7 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "hashmapPutListmap");
         }
         if (showAll() || isMapUsed) {
-            logicEditorActivity.a("Map get values", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.ui_g3_palette_header_map_get_values), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a("s", "mapGet");
         }
         if (showBuiltIn() && (showAll() || isMapUsed)) {
@@ -2686,7 +2686,7 @@ public class BlocksHandler {
             logicEditorActivity.a("", "l", "List Map", "hashmapGetListmap");
         }
         if (showAll() || isMapUsed) {
-            logicEditorActivity.a("Map general", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.ui_g3_palette_header_map_general), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a("b", "mapIsEmpty");
             logicEditorActivity.a("b", "mapContainKey");
             logicEditorActivity.a("b", "mapContainValue");
@@ -2706,7 +2706,7 @@ public class BlocksHandler {
         boolean inOnBindCustomViewEvent = eventName.equals("onBindCustomView");
         boolean inOnFilesPickedEvent = eventName.equals("onFilesPicked");
         if (showAll() || isListNumUsed) {
-            logicEditorActivity.a("List Number", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.ui_g3_palette_header_list_number), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a("b", "containListInt");
             logicEditorActivity.a("d", "getAtListInt");
             logicEditorActivity.a("d", "indexListInt");
@@ -2720,7 +2720,7 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "sortListnum");
         }
         if (showAll() || isListStrUsed || inOnFilesPickedEvent) {
-            logicEditorActivity.a("List String", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.ui_g3_palette_header_list_string), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a("b", "containListStr");
             logicEditorActivity.a("d", "indexListStr");
             logicEditorActivity.a("s", "getAtListStr");
@@ -2734,7 +2734,7 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "sortList");
         }
         if (showAll() || isListMapUsed || inOnBindCustomViewEvent) {
-            logicEditorActivity.a("List Map", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.ui_g3_palette_header_list_map), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a("b", "containListMap");
             logicEditorActivity.a("s", "getAtListMap");
             if (showBuiltIn()) {
@@ -2758,7 +2758,7 @@ public class BlocksHandler {
                 || isListNumUsed
                 || inOnBindCustomViewEvent
                 || inOnFilesPickedEvent) {
-            logicEditorActivity.a("General", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.common_word_general), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a(" ", "listAddAll");
             logicEditorActivity.a("d", "lengthList");
             logicEditorActivity.a(" ", "deleteList");
@@ -2862,7 +2862,7 @@ public class BlocksHandler {
             logicEditorActivity.a("s", "GsonListTojsonString");
             logicEditorActivity.a(" ", "stringSplitToList");
         }
-        logicEditorActivity.a("add source directly", getTitleBgColor(logicEditorActivity));
+        logicEditorActivity.a(logicEditorActivity.getString(R.string.ui_g3_palette_header_add_source_directly), getTitleBgColor(logicEditorActivity));
         logicEditorActivity.a(" ", "addSourceDirectly");
         logicEditorActivity.a("b", "asdBoolean");
         logicEditorActivity.a("d", "asdNumber");
