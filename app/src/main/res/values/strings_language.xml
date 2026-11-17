@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_title">Language</string>
+    <string name="settings_language_system">System language</string>
+    <!-- Language names are shown in their own language. -->
+    <string name="settings_language_english" translatable="false">English</string>
+    <string name="settings_language_turkish" translatable="false">Türkçe</string>
+</resources>

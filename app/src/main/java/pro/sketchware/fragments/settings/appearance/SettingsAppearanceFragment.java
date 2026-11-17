@@ -11,9 +11,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.Arrays;
 
 import a.a.a.qA;
+import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentSettingsAppearanceBinding;
+import pro.sketchware.utility.LanguageManager;
 import pro.sketchware.utility.theme.ThemeManager;
 
 public class SettingsAppearanceFragment extends qA {
@@ -32,6 +37,7 @@ public class SettingsAppearanceFragment extends qA {
         setupToolbar();
         initializeThemeSettings();
         setupClickListeners();
+        setupLanguageSetting();
 
         {
             View view1 = binding.content;
@@ -109,6 +115,28 @@ public class SettingsAppearanceFragment extends qA {
                 ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_DARK);
             }
         });
+    }
+
+    private void setupLanguageSetting() {
+        String[] languages = {LanguageManager.LANGUAGE_SYSTEM, LanguageManager.LANGUAGE_ENGLISH, LanguageManager.LANGUAGE_TURKISH};
+        String[] labels = {
+                getString(R.string.settings_language_system),
+                getString(R.string.settings_language_english),
+                getString(R.string.settings_language_turkish)
+        };
+        int current = Math.max(0, Arrays.asList(languages).indexOf(LanguageManager.getLanguage(requireContext())));
+        binding.languageCurrent.setText(labels[current]);
+
+        binding.language.setOnClickListener(v -> new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.settings_language_title)
+                .setSingleChoiceItems(labels, current, (dialog, which) -> {
+                    dialog.dismiss();
+                    if (which != current) {
+                        LanguageManager.setLanguageAndRestart(requireContext().getApplicationContext(), languages[which]);
+                    }
+                })
+                .setNegativeButton(R.string.common_word_cancel, null)
+                .show());
     }
 
     private void updateThemeCardSelection(int theme) {
