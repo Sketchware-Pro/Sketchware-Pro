@@ -1,1 +1,0 @@
-pro.sketchware:string/root_spec_common_when = 0x7f0e082a

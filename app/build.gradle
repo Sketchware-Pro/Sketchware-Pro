@@ -44,10 +44,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    androidResources {
-        additionalParameters.addAll("--stable-ids", "${rootDir}/public-stable-ids.txt")
-    }
-
     signingConfigs {
         debug {
             storeFile = file("../testkey.keystore")
