@@ -1,10 +1,10 @@
 package pro.sketchware.utility
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.util.Log
 import android.widget.ImageView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.scale
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.load
@@ -85,12 +85,7 @@ class SvgUtils(private val context: Context) {
                         (context.resources.displayMetrics.density * scaleFactor).roundToInt()
                     val bitmap = drawable.toBitmap()
                     // Apply scaling to width and height
-                    val scaledBitmap = Bitmap.createScaledBitmap(
-                        bitmap,
-                        48 * densityScale,
-                        48 * densityScale,
-                        true
-                    )
+                    val scaledBitmap = bitmap.scale(48 * densityScale, 48 * densityScale)
                     // Set the scaled image on the ImageView
                     imageView.setImageBitmap(scaledBitmap)
                 }

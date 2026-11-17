@@ -7,7 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.EditText;
+
+import androidx.appcompat.widget.AppCompatEditText;
 
 /**
  * A lightweight Code Editor with syntax highlighting, auto indentation, word wrap and lines.
@@ -15,7 +16,7 @@ import android.widget.EditText;
  * @author Hey! Studios DEV - 28.07.2020
  */
 
-public class CodeEditorEditText extends EditText {
+public class CodeEditorEditText extends AppCompatEditText {
 
     private static final int HIGHLIGHTER_COLOR = 0xffefefef;
     private static final boolean LINES = true;
