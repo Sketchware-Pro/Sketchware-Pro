@@ -29,6 +29,8 @@ import pro.sketchware.lib.validator.FontNameValidator;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
+import java.util.Locale;
+
 public class AddFontActivity extends BaseDialogActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_FONT_PICKER = 229;
@@ -58,7 +60,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
                                 return;
                             }
                             validFontPicked = true;
-                            String extractedFontName = SketchwareUtil.getSafDocumentDisplayName(intentData).orElse("invalid.tff").toLowerCase();
+                            String extractedFontName = SketchwareUtil.getSafDocumentDisplayName(intentData).orElse("invalid.tff").toLowerCase(Locale.ROOT);
                             int dotIndex = extractedFontName.lastIndexOf(".");
                             if (dotIndex > 0) {
                                 extractedFontName = extractedFontName.substring(0, dotIndex);

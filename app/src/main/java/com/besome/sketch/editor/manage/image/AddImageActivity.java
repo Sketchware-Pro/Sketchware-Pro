@@ -19,6 +19,7 @@ import com.besome.sketch.lib.base.BaseDialogActivity;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import a.a.a.By;
 import a.a.a.HB;
@@ -244,7 +245,9 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
         
         if (binding.edInput != null && (binding.edInput.getText() == null || binding.edInput.getText().length() <= 0)) {
-            binding.edInput.setText(path.substring(path.lastIndexOf("/") + 1, indexOfFilenameExtension));
+            String extractedName = path.substring(path.lastIndexOf("/") + 1, indexOfFilenameExtension);
+            extractedName = extractedName.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9_]", "_");
+            binding.edInput.setText(extractedName);
         }
         
         try {

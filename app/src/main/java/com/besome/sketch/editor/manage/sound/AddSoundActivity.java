@@ -10,11 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -22,13 +18,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.bumptech.glide.Glide;
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,30 +44,19 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     private static final int REQUEST_CODE_SOUND_PICKER = 218;
 
     public ManageSoundAddBinding binding;
-    private CheckBox addToCollection;
-    private TextInputEditText soundName;
-    private TextView nowPlayingFilename;
-    private TextView nowPlayingProgress;
-    private TextView nowPlayingTotalDuration;
-    private ImageView albumCover;
-    private ImageView playPause;
     private MediaPlayer nowPlayingPlayer;
     private TimerTask nowPlayingProgressUpdater;
-    private SeekBar nowPlayingProgressBar;
     private WB soundNameValidator;
     private String sc_id;
     private String soundsDirectory;
-    private MaterialCardView nowPlayingContainer;
-    private LinearLayout guide;
-    private MaterialCardView selectFile;
     private Timer timer = new Timer();
     private Uri soundUri = null;
     private boolean isSoundPlayable = false;
 
     private final ActivityResultLauncher<Intent> soundPickerLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (selectFile != null) {
-                    selectFile.setEnabled(true);
+                if (binding != null) {
+                    binding.selectFile.setEnabled(true);
                 }
                 Intent data = result.getData();
                 if (result.getResultCode() == Activity.RESULT_OK && data != null) {
@@ -111,7 +95,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         } else {
             nowPlayingPlayer.start();
             startNowPlayingProgressUpdater();
-            playPause.setImageResource(R.drawable.ic_mtrl_circle_pause);
+            binding.play.setImageResource(R.drawable.ic_mtrl_circle_pause);
         }
     }
 
@@ -128,7 +112,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         } else if (id == R.id.play) {
             playOrPause();
         } else if (id == R.id.select_file) {
-            selectFile.setEnabled(false);
+            binding.selectFile.setEnabled(false);
             pickSound();
         }
     }
@@ -147,23 +131,12 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         sc_id = intent.getStringExtra("sc_id");
         soundsDirectory = intent.getStringExtra("dir_path");
         int requestCode = intent.getIntExtra("request_code", -1);
-        nowPlayingFilename = binding.fileName;
-        nowPlayingProgress = binding.currentTime;
-        nowPlayingTotalDuration = binding.fileLength;
-        nowPlayingContainer = binding.layoutControl;
-        guide = binding.layoutGuide;
-        addToCollection = binding.chkCollection;
-        selectFile = binding.selectFile;
-        playPause = binding.play;
-        albumCover = binding.imgAlbum;
-        nowPlayingProgressBar = binding.seek;
-        nowPlayingContainer.setVisibility(View.GONE);
+        binding.layoutControl.setVisibility(View.GONE);
         TextInputLayout soundInputLayout = binding.tiInput;
-        soundName = binding.edInput;
         soundNameValidator = new WB(this, soundInputLayout, uq.b, existingSoundNames);
-        playPause.setEnabled(false);
-        playPause.setOnClickListener(this);
-        nowPlayingProgressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.play.setEnabled(false);
+        binding.play.setOnClickListener(this);
+        binding.seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             }
@@ -187,16 +160,16 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 }
             }
         });
-        selectFile.setOnClickListener(this);
+        binding.selectFile.setOnClickListener(this);
         r.setOnClickListener(this);
         s.setOnClickListener(this);
         if (requestCode == 270) {
             e(getString(R.string.design_manager_sound_title_edit_sound));
             ProjectResourceBean projectResourceBean = intent.getParcelableExtra("project_resource");
             soundNameValidator = new WB(this, soundInputLayout, uq.b, new ArrayList<>());
-            soundName.setText(projectResourceBean.resName);
-            soundName.setEnabled(false);
-            addToCollection.setEnabled(false);
+            binding.edInput.setText(projectResourceBean.resName);
+            binding.edInput.setEnabled(false);
+            binding.chkCollection.setEnabled(false);
             String soundPath;
             if (projectResourceBean.isNew) {
                 soundPath = projectResourceBean.resFullName;
@@ -216,7 +189,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
     private void saveSound() {
         if (isSoundValid(soundNameValidator)) {
-            String soundName = Helper.getText(this.soundName);
+            String soundName = Helper.getText(binding.edInput);
 
             SketchwareUtil.copySafDocumentToTempFile(soundUri, this, FileUtil.getFileExtension(getFilenameOfPickedFile(soundUri)),
                     tempFile -> {
@@ -224,7 +197,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                         ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, soundName, soundFilePath);
                         projectResourceBean.savedPos = 1;
                         projectResourceBean.isNew = true;
-                        if (addToCollection.isChecked()) {
+                        if (binding.chkCollection.isChecked()) {
                             try {
                                 Qp.g().a(sc_id, projectResourceBean);
                             } catch (Exception e) {
@@ -270,7 +243,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         if (nowPlayingPlayer != null && nowPlayingPlayer.isPlaying()) {
             timer.cancel();
             nowPlayingPlayer.pause();
-            playPause.setImageResource(R.drawable.ic_mtrl_circle_play);
+            binding.play.setImageResource(R.drawable.ic_mtrl_circle_play);
         }
     }
 
@@ -284,8 +257,8 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                         timer.cancel();
                     } else {
                         int currentPosition = nowPlayingPlayer.getCurrentPosition() / 1000;
-                        nowPlayingProgress.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
-                        nowPlayingProgressBar.setProgress(nowPlayingPlayer.getCurrentPosition() / 100);
+                        binding.currentTime.setText(String.format("%d:%02d", currentPosition / 60, currentPosition % 60));
+                        binding.seek.setProgress(nowPlayingPlayer.getCurrentPosition() / 100);
                     }
                 });
             }
@@ -316,38 +289,40 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build());
             nowPlayingPlayer.setOnPreparedListener(mp -> {
-                playPause.setImageResource(R.drawable.ic_mtrl_circle_pause);
-                playPause.setEnabled(true);
-                nowPlayingProgressBar.setMax(mp.getDuration() / 100);
-                nowPlayingProgressBar.setProgress(0);
+                binding.play.setImageResource(R.drawable.ic_mtrl_circle_pause);
+                binding.play.setEnabled(true);
+                binding.seek.setMax(mp.getDuration() / 100);
+                binding.seek.setProgress(0);
 
                 int duration = mp.getDuration() / 1000;
-                nowPlayingTotalDuration.setText(String.format("%d:%02d", duration / 60, duration % 60));
+                binding.fileLength.setText(String.format("%d:%02d", duration / 60, duration % 60));
 
-                nowPlayingFilename.setText(editingSound ? soundUri.getLastPathSegment() : getFilenameOfPickedFile(soundUri));
+                binding.fileName.setText(editingSound ? soundUri.getLastPathSegment() : getFilenameOfPickedFile(soundUri));
 
                 mp.start();
                 startNowPlayingProgressUpdater();
             });
             nowPlayingPlayer.setOnCompletionListener(mp -> {
                 timer.cancel();
-                playPause.setImageResource(R.drawable.ic_mtrl_circle_play);
-                nowPlayingProgressBar.setProgress(0);
-                nowPlayingProgress.setText("0:00");
+                binding.play.setImageResource(R.drawable.ic_mtrl_circle_play);
+                binding.seek.setProgress(0);
+                binding.currentTime.setText("0:00");
             });
             nowPlayingPlayer.setDataSource(this, uri);
             nowPlayingPlayer.prepare();
             isSoundPlayable = true;
             setAlbumCover();
-            nowPlayingContainer.setVisibility(View.VISIBLE);
-            guide.setVisibility(View.GONE);
-            if (soundName.getText() == null || soundName.getText().length() <= 0) {
-                soundName.setText(FileUtil.getFileNameNoExtension(getFilenameOfPickedFile(soundUri)));
+            binding.layoutControl.setVisibility(View.VISIBLE);
+            binding.layoutGuide.setVisibility(View.GONE);
+            if (binding.edInput.getText() == null || binding.edInput.getText().length() <= 0) {
+                String extractedName = FileUtil.getFileNameNoExtension(getFilenameOfPickedFile(soundUri));
+                extractedName = extractedName.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9_]", "_");
+                binding.edInput.setText(extractedName);
             }
         } catch (Exception e) {
             isSoundPlayable = false;
-            nowPlayingContainer.setVisibility(View.GONE);
-            guide.setVisibility(View.VISIBLE);
+            binding.layoutControl.setVisibility(View.GONE);
+            binding.layoutGuide.setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
     }
@@ -361,12 +336,12 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 mediaMetadataRetriever.setDataSource(getContentResolver().openFileDescriptor(soundUri, "r").getFileDescriptor());
             }
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(albumCover);
+                Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(binding.imgAlbum);
             } else {
-                Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(albumCover);
+                Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(binding.imgAlbum);
             }
         } catch (IllegalArgumentException e) {
-            Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(albumCover);
+            Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(binding.imgAlbum);
         }
         mediaMetadataRetriever.release();
     }
@@ -378,7 +353,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
         if (isSoundPlayable && soundUri != null) {
             return true;
         }
-        selectFile.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
+        binding.selectFile.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
         return false;
     }
 
