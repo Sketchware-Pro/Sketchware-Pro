@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -501,13 +502,13 @@ public class VectorDrawableParser {
                 if (!p.getStrokeLineCap().isEmpty()) {
                     svg
                             .append("stroke-linecap=\"")
-                            .append(p.getStrokeLineCap().toLowerCase())
+                            .append(p.getStrokeLineCap().toLowerCase(Locale.ROOT))
                             .append("\" ");
                 }
                 if (!p.getStrokeLineJoin().isEmpty()) {
                     svg
                             .append("stroke-linejoin=\"")
-                            .append(p.getStrokeLineJoin().toLowerCase())
+                            .append(p.getStrokeLineJoin().toLowerCase(Locale.ROOT))
                             .append("\" ");
                 }
                 if (!p.getStrokeMiterLimit().isEmpty()) {

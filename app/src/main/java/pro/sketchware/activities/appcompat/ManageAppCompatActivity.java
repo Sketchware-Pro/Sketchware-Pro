@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import a.a.a.jC;
@@ -124,7 +125,7 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                 new TabLayout.OnTabSelectedListener() {
                     @Override
                     public void onTabSelected(TabLayout.Tab tab) {
-                        var widget = tab.getTag().toString().toLowerCase();
+                        var widget = tab.getTag().toString().toLowerCase(Locale.ROOT);
                         tabSelected = widget;
                         adapter.submitList(filterInjections(widget));
                     }

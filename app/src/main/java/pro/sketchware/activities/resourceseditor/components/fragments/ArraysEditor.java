@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import mod.hey.studios.util.Helper;
@@ -157,7 +158,7 @@ public class ArraysEditor extends Fragment {
                 return;
             }
 
-            ARRAYS_TYPES arrayType = ARRAYS_TYPES.valueOf(arrayTypeString.toUpperCase());
+            ARRAYS_TYPES arrayType = ARRAYS_TYPES.valueOf(arrayTypeString.toUpperCase(Locale.ROOT));
 
             ArrayModel array = new ArrayModel(arrayName, arrayType);
             arraysList.add(array);
@@ -208,7 +209,7 @@ public class ArraysEditor extends Fragment {
             }
 
             array.setArrayName(arrayName);
-            array.setArrayType(ARRAYS_TYPES.valueOf(arrayType.toUpperCase()));
+            array.setArrayType(ARRAYS_TYPES.valueOf(arrayType.toUpperCase(Locale.ROOT)));
             if (header.isEmpty()) {
                 notesMap.remove(position);
             } else {

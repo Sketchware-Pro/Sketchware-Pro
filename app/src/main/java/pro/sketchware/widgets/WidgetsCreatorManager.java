@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -554,7 +555,7 @@ public class WidgetsCreatorManager {
         if (lastIndex != -1) {
             input = input.substring(lastIndex + 1);
         }
-        return input.substring(0, 1).toLowerCase() + input.substring(1);
+        return input.substring(0, 1).toLowerCase(Locale.ROOT) + input.substring(1);
     }
 
     private List<String> getSuggestions() {

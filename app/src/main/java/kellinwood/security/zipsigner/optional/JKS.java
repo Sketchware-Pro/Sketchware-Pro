@@ -51,6 +51,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Vector;
 
 import javax.crypto.EncryptedPrivateKeyInfo;
@@ -185,7 +186,7 @@ public class JKS extends KeyStoreSpi
     public Key engineGetKey(String alias, char[] password)
         throws NoSuchAlgorithmException, UnrecoverableKeyException
     {
-        alias = alias.toLowerCase();
+        alias = alias.toLowerCase(Locale.ROOT);
 
         if (!privateKeys.containsKey(alias))
             return null;
@@ -212,13 +213,13 @@ public class JKS extends KeyStoreSpi
 
     public Certificate[] engineGetCertificateChain(String alias)
     {
-        alias = alias.toLowerCase();
+        alias = alias.toLowerCase(Locale.ROOT);
         return (Certificate[]) certChains.get(alias);
     }
 
     public Certificate engineGetCertificate(String alias)
     {
-        alias = alias.toLowerCase();
+        alias = alias.toLowerCase(Locale.ROOT);
         if (engineIsKeyEntry(alias)) {
             Certificate[] certChain = (Certificate[]) certChains.get(alias);
             if (certChain != null && certChain.length > 0) return certChain[0];
@@ -228,7 +229,7 @@ public class JKS extends KeyStoreSpi
 
     public Date engineGetCreationDate(String alias)
     {
-        alias = alias.toLowerCase();
+        alias = alias.toLowerCase(Locale.ROOT);
         return (Date) dates.get(alias);
     }
 
@@ -237,7 +238,7 @@ public class JKS extends KeyStoreSpi
     public void engineSetKeyEntry(String alias, Key key, char[] passwd, Certificate[] certChain)
         throws KeyStoreException
     {
-        alias = alias.toLowerCase();
+        alias = alias.toLowerCase(Locale.ROOT);
         if (trustedCerts.containsKey(alias))
             throw new KeyStoreException("\"" + alias + " is a trusted certificate entry");
         privateKeys.put(alias, encryptKey(key, charsToBytes(passwd)));
@@ -255,7 +256,7 @@ public class JKS extends KeyStoreSpi
     public void engineSetKeyEntry(String alias, byte[] encodedKey, Certificate[] certChain)
         throws KeyStoreException
     {
-        alias = alias.toLowerCase();
+        alias = alias.toLowerCase(Locale.ROOT);
         if (trustedCerts.containsKey(alias))
             throw new KeyStoreException("\"" + alias + "\" is a trusted certificate entry");
         try
@@ -281,7 +282,7 @@ public class JKS extends KeyStoreSpi
     public void engineSetCertificateEntry(String alias, Certificate cert)
         throws KeyStoreException
     {
-        alias = alias.toLowerCase();
+        alias = alias.toLowerCase(Locale.ROOT);
         if (privateKeys.containsKey(alias))
             throw new KeyStoreException("\"" + alias + "\" is a private key entry");
         if (cert == null)
@@ -296,7 +297,7 @@ public class JKS extends KeyStoreSpi
 
     public void engineDeleteEntry(String alias) throws KeyStoreException
     {
-        alias = alias.toLowerCase();
+        alias = alias.toLowerCase(Locale.ROOT);
         aliases.remove(alias);
     }
 
@@ -307,7 +308,7 @@ public class JKS extends KeyStoreSpi
 
     public boolean engineContainsAlias(String alias)
     {
-        alias = alias.toLowerCase();
+        alias = alias.toLowerCase(Locale.ROOT);
         return aliases.contains(alias);
     }
 
@@ -318,13 +319,13 @@ public class JKS extends KeyStoreSpi
 
     public boolean engineIsKeyEntry(String alias)
     {
-        alias = alias.toLowerCase();
+        alias = alias.toLowerCase(Locale.ROOT);
         return privateKeys.containsKey(alias);
     }
 
     public boolean engineIsCertificateEntry(String alias)
     {
-        alias = alias.toLowerCase();
+        alias = alias.toLowerCase(Locale.ROOT);
         return trustedCerts.containsKey(alias);
     }
 

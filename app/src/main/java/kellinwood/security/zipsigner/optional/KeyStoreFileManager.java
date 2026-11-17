@@ -14,6 +14,7 @@ import java.security.KeyStore;
 import java.security.Provider;
 import java.security.Security;
 import java.security.cert.Certificate;
+import java.util.Locale;
 
 import kellinwood.logging.Logger;
 
@@ -59,7 +60,7 @@ public class KeyStoreFileManager {
         throws Exception
     {
         KeyStore ks = null;
-        if (keystorePath.toLowerCase().endsWith(".bks")) {
+        if (keystorePath.toLowerCase(Locale.ROOT).endsWith(".bks")) {
             ks = KeyStore.getInstance("bks", new BouncyCastleProvider());
         }
         else ks = new JksKeyStore();
@@ -205,7 +206,7 @@ public class KeyStoreFileManager {
 
         try {
             KeyStore ks = loadKeyStore(keystorePath, storePass);
-            if (ks instanceof JksKeyStore) newKeyName = newKeyName.toLowerCase();
+            if (ks instanceof JksKeyStore) newKeyName = newKeyName.toLowerCase(Locale.ROOT);
 
             if (ks.containsAlias(newKeyName)) throw new KeyNameConflictException();
 

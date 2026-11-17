@@ -6,6 +6,7 @@ import com.google.gson.JsonParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 
 import a.a.a.Gx;
 import a.a.a.oq;
@@ -363,7 +364,7 @@ public class EventsHandler {
                                     String formattedCode = codeStr.replace("###", targetId)
                                             .replace("$name", targetId)
                                             .replace("$Name", capitalize(targetId))
-                                            .replace("$NAME", targetId.toUpperCase());
+                                            .replace("$NAME", targetId.toUpperCase(Locale.ROOT));
                                     yield String.format(formattedCode, param);
                                 } else {
                                     SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
@@ -488,7 +489,7 @@ public class EventsHandler {
                                 String formattedCode = codeStr.replace("###", var)
                                         .replace("$name", var)
                                         .replace("$Name", capitalize(var))
-                                        .replace("$NAME", var.toUpperCase());
+                                        .replace("$NAME", var.toUpperCase(Locale.ROOT));
                                 yield String.format(formattedCode, param);
                             } else {
                                 SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
@@ -508,7 +509,7 @@ public class EventsHandler {
         if (value == null || value.isEmpty()) {
             return value;
         }
-        return value.substring(0, 1).toUpperCase() +
+        return value.substring(0, 1).toUpperCase(Locale.ROOT) +
                 value.substring(1);
     }
 

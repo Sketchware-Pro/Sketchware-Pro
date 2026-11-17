@@ -26,6 +26,7 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -490,7 +491,7 @@ public class Ox {
         String resName = viewBean.image.resName;
         if (resName != null && !resName.isEmpty() && !resName.equals("NONE") &&
                 !toNotAdd.contains("app:srcCompat") && !injectHandler.contains("srcCompat")) {
-            floatingActionButtonTag.addAttribute("app", "srcCompat", "@drawable/" + resName.toLowerCase());
+            floatingActionButtonTag.addAttribute("app", "srcCompat", "@drawable/" + resName.toLowerCase(Locale.ROOT));
         }
         if (viewBean.id.equals("_fab")) {
             aci.inject(floatingActionButtonTag, "FloatingActionButton");
@@ -550,7 +551,7 @@ public class Ox {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         String resName = viewBean.image.resName;
         if (!resName.isEmpty() && !"NONE".equals(resName)) {
-            String value = "@drawable/" + resName.toLowerCase();
+            String value = "@drawable/" + resName.toLowerCase(Locale.ROOT);
             if (nx.c().equals("FloatingActionButton")) {
                 if (!toNotAdd.contains("app:srcCompat") && !injectHandler.contains("srcCompat")) {
                     nx.addAttribute("app", "srcCompat", value);

@@ -11,6 +11,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Locale;
 
 public class ProjectFileBean extends SelectableBean implements Parcelable {
     public static final Creator<ProjectFileBean> CREATOR = new Creator<>() {
@@ -164,7 +165,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
     }
 
     public static String getActivityName(String name) {
-        name = name.toLowerCase();
+        name = name.toLowerCase(Locale.ROOT);
         while (name.contains("_")) {
             int index = name.indexOf('_');
             if (index + 1 == name.length()) {

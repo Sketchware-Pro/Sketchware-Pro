@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -514,7 +515,7 @@ public class ComponentsHandler {
                                         addVar.replace("###", varName).
                                                 replace("$name", varName).
                                                 replace("$Name", capitalize(varName)).
-                                                replace("$NAME", varName.toUpperCase());
+                                                replace("$NAME", varName.toUpperCase(Locale.ROOT));
                             }
                         } else {
                             SketchwareUtil.toastError("Invalid additional variable entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
@@ -553,7 +554,7 @@ public class ComponentsHandler {
                                 return defAddVar.replace("###", varName).
                                         replace("$name", varName).
                                         replace("$Name", capitalize(varName)).
-                                        replace("$NAME", varName.toUpperCase());
+                                        replace("$NAME", varName.toUpperCase(Locale.ROOT));
                             }
                         } else {
                             SketchwareUtil.toastError("Invalid additional variable entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);

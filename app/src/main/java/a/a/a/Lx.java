@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import mod.agus.jcoderz.editor.event.ManageEvent;
@@ -217,7 +218,7 @@ public class Lx {
             default -> "";
         };
 
-        return "case REQ_CD_" + componentName.toUpperCase() + ":\r\n" +
+        return "case REQ_CD_" + componentName.toUpperCase(Locale.ROOT) + ":\r\n" +
                 "if (_resultCode == Activity.RESULT_OK) {\r\n" +
                 componentLogic + "\r\n" +
                 onSuccessLogic + "\r\n" +
@@ -249,7 +250,7 @@ public class Lx {
     public static String a(String widgetName, boolean isViewBindingEnabled) {
         if (isViewBindingEnabled)
             widgetName = ViewBindingBuilder.generateParameterFromId(widgetName);
-        return widgetName.substring(0, 1).toUpperCase() +
+        return widgetName.substring(0, 1).toUpperCase(Locale.ROOT) +
                 widgetName.substring(1) +
                 "Adapter";
     }
@@ -258,7 +259,7 @@ public class Lx {
      * @return A component request code constant declaration
      */
     public static String getRequestCodeConstant(String componentName, int value) {
-        return "public final int REQ_CD_" + componentName.toUpperCase() + " = " + value + ";";
+        return "public final int REQ_CD_" + componentName.toUpperCase(Locale.ROOT) + " = " + value + ";";
     }
 
     public static String getEventCode(String targetId, String eventName, String eventLogic) {

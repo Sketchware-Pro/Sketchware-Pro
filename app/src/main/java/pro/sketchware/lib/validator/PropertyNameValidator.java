@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import a.a.a.MB;
@@ -31,7 +32,7 @@ public class PropertyNameValidator extends MB {
 
     @Override
     public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-        String trimmedLowerName = charSequence.toString().trim().toLowerCase();
+        String trimmedLowerName = charSequence.toString().trim().toLowerCase(Locale.ROOT);
         if (trimmedLowerName.length() < 1) {
             b.setErrorEnabled(true);
             b.setError(a.getString(R.string.invalid_value_min_lenth, 1));
@@ -44,7 +45,7 @@ public class PropertyNameValidator extends MB {
             d = false;
             return;
         }
-        if (value != null && value.length() > 0 && trimmedLowerName.equals(value.toLowerCase())) {
+        if (value != null && value.length() > 0 && trimmedLowerName.equals(value.toLowerCase(Locale.ROOT))) {
             b.setErrorEnabled(false);
             d = true;
             return;

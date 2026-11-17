@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -231,7 +232,7 @@ public class Fx {
         Matcher matcher = pattern.matcher(input);
 
         while (matcher.find()) {
-            matches.add(matcher.group().toLowerCase());
+            matches.add(matcher.group().toLowerCase(Locale.ROOT));
         }
 
         return matches;
@@ -629,7 +630,7 @@ public class Fx {
                 break;
             case "setImage":
                 String name = params.get(1).replaceAll("\\.9", "");
-                opcode = String.format("%s.setImageResource(R.drawable.%s);", params.get(0), name.toLowerCase());
+                opcode = String.format("%s.setImageResource(R.drawable.%s);", params.get(0), name.toLowerCase(Locale.ROOT));
                 break;
             case "setColorFilter":
                 opcode = String.format("%s.setColorFilter(%s, PorterDuff.Mode.MULTIPLY);", params.get(0), params.get(1));
@@ -885,7 +886,7 @@ public class Fx {
                 break;
             case "mapViewSetMarkerIcon":
                 name = params.get(2).endsWith(".9") ? params.get(2).replaceAll("\\.9", "") : params.get(2);
-                opcode = String.format("_%s_controller.setMarkerIcon(%s, R.drawable.%s);", params.get(0), params.get(1), name.toLowerCase());
+                opcode = String.format("_%s_controller.setMarkerIcon(%s, R.drawable.%s);", params.get(0), params.get(1), name.toLowerCase(Locale.ROOT));
                 break;
             case "mapViewSetMarkerVisible":
                 opcode = String.format("_%s_controller.setMarkerVisible(%s, %s);", params.get(0), params.get(1), params.get(2));
@@ -1007,7 +1008,7 @@ public class Fx {
                 opcode = String.format("%s.setNeutralButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", params.get(0), params.get(1), onClick);
                 break;
             case "mediaplayerCreate":
-                opcode = String.format("%s = MediaPlayer.create(getApplicationContext(), R.raw.%s);", params.get(0), params.get(1).toLowerCase());
+                opcode = String.format("%s = MediaPlayer.create(getApplicationContext(), R.raw.%s);", params.get(0), params.get(1).toLowerCase(Locale.ROOT));
                 break;
             case "mediaplayerStart":
                 opcode = String.format("%s.start();", params.get(0));
@@ -1056,11 +1057,11 @@ public class Fx {
                 break;
             case "setThumbResource":
                 name = params.get(1).replaceAll("\\.9", "");
-                opcode = String.format("%s.setThumbResource(R.drawable.%s)", params.get(0), name.toLowerCase());
+                opcode = String.format("%s.setThumbResource(R.drawable.%s)", params.get(0), name.toLowerCase(Locale.ROOT));
                 break;
             case "setTrackResource":
                 name = params.get(1).replaceAll("\\.9", "");
-                opcode = String.format("%s.setTrackResource(R.drawable.%s)", params.get(0), name.toLowerCase());
+                opcode = String.format("%s.setTrackResource(R.drawable.%s)", params.get(0), name.toLowerCase(Locale.ROOT));
 
                 break;
             case "seekBarSetProgress":
@@ -1285,10 +1286,10 @@ public class Fx {
                 }
                 break;
             case "filepickerstartpickfiles":
-                opcode = String.format("startActivityForResult(%s, REQ_CD_%s);", params.get(0), params.get(0).toUpperCase());
+                opcode = String.format("startActivityForResult(%s, REQ_CD_%s);", params.get(0), params.get(0).toUpperCase(Locale.ROOT));
                 break;
             case "camerastarttakepicture":
-                opcode = String.format("startActivityForResult(%s, REQ_CD_%s);", params.get(0), params.get(0).toUpperCase());
+                opcode = String.format("startActivityForResult(%s, REQ_CD_%s);", params.get(0), params.get(0).toUpperCase(Locale.ROOT));
                 break;
             case "setImageFilePath":
                 if (!params.get(1).equals("\"\"")) {

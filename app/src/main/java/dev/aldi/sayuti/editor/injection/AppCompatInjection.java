@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -79,7 +80,7 @@ public class AppCompatInjection {
 
             for (Map<String, Object> injection : Objects.requireNonNull(projectInjections.get(projectFile.fileName))) {
                 Object value;
-                if (str.toLowerCase().equals(injection.get("type")) && (value = injection.get("value")) instanceof String) {
+                if (str.toLowerCase(Locale.ROOT).equals(injection.get("type")) && (value = injection.get("value")) instanceof String) {
                     nx.addAttributeValue((String) value);
                 }
             }

@@ -3,6 +3,7 @@ package kellinwood.security.zipsigner.optional;
 import org.spongycastle.util.encoders.HexTranslator;
 
 import java.security.MessageDigest;
+import java.util.Locale;
 
 import kellinwood.logging.Logger;
 import kellinwood.security.zipsigner.Base64;
@@ -40,7 +41,7 @@ public class Fingerprint {
                 builder.append((char)hex[i+1]);
                 if (i != (hex.length - 2)) builder.append(':');
             }
-            return builder.toString().toUpperCase();
+            return builder.toString().toUpperCase(Locale.ROOT);
         } catch (Exception x) {
             logger.error(x.getMessage(),x);
         }
