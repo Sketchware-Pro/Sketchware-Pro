@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import pro.sketchware.databinding.FragmentStringfogManagerBinding;
+import pro.sketchware.R;
 
 public class ManageStringFogFragment extends BottomSheetDialogFragment {
 
@@ -37,9 +38,9 @@ public class ManageStringFogFragment extends BottomSheetDialogFragment {
 
     private void setStringFogStatus(boolean enabled) {
         if (enabled) {
-            binding.swPgEnabled.setText("StringFog is enabled");
+            binding.swPgEnabled.setText(R.string.ui_g3_stringfog_enabled);
         } else {
-            binding.swPgEnabled.setText("StringFog is disabled");
+            binding.swPgEnabled.setText(R.string.ui_g3_stringfog_disabled);
         }
     }
 }

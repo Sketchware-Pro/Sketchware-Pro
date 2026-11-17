@@ -64,7 +64,7 @@ public class EventsManagerDetailsFragment extends qA {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureToolbar(binding.toolbar);
-        binding.toolbar.setTitle("Event Details");
+        binding.toolbar.setTitle(R.string.ui_g5_event_details);
         binding.toolbar.setSubtitle(listName);
         binding.fabNewEvent.setOnClickListener(v -> {
             Bundle args = new Bundle();
@@ -184,7 +184,7 @@ public class EventsManagerDetailsFragment extends qA {
 
             holder.binding.eventTitle.setText((String) item.get("name"));
             if ("".equals(dataArray.get(position).get("var"))) {
-                holder.binding.eventSubtitle.setText("Activity event");
+                holder.binding.eventSubtitle.setText(R.string.ui_g5_activity_event);
             } else {
                 holder.binding.eventSubtitle.setText((String) dataArray.get(position).get("var"));
             }
@@ -208,9 +208,9 @@ public class EventsManagerDetailsFragment extends qA {
             holder.itemView.setOnLongClickListener(v -> {
                 new MaterialAlertDialogBuilder(requireContext())
                         .setTitle((String) dataArray.get(position).get("name"))
-                        .setMessage("Delete this event?")
-                        .setPositiveButton("Delete", (dialog, i) -> deleteItem(position))
-                        .setNeutralButton("Edit", (dialog, i) -> {
+                        .setMessage(R.string.ui_g5_delete_this_event)
+                        .setPositiveButton(R.string.common_word_delete, (dialog, i) -> deleteItem(position))
+                        .setNeutralButton(R.string.common_word_edit, (dialog, i) -> {
                             Bundle args = new Bundle();
                             args.putString("lis_name", listName);
                             args.putString("event", (String) dataArray.get(position).get("name"));
@@ -227,7 +227,7 @@ public class EventsManagerDetailsFragment extends qA {
                             fragment.setArguments(args);
                             openFragment(fragment);
                         })
-                        .setNegativeButton("Cancel", (di, i) -> di.dismiss())
+                        .setNegativeButton(R.string.common_word_cancel, (di, i) -> di.dismiss())
                         .show();
                 return true;
             });
