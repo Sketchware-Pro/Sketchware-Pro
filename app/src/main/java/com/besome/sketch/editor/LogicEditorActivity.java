@@ -2004,9 +2004,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (eventName.equals("moreBlock")) {
             title = getString(R.string.root_spec_common_define) + " " + ReturnMoreblockManager.getLogicEditorTitle(jC.a(scId).b(M.getJavaName(), id));
         } else if (id.equals("_fab")) {
-            title = xB.b().a(this, "fab", eventName);
+            title = xB.getEventTitle(this, "fab", eventName);
         } else {
-            title = xB.b().a(this, id, eventName);
+            title = xB.getEventTitle(this, id, eventName);
         }
         String e1 = title;
 
