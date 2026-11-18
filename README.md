@@ -68,7 +68,7 @@ Examples:
 - `build(deps): bump androidx core dependencies`
 
 > [!IMPORTANT]
-> If you want to add new features that don't require editing other packages other than `pro.sketchware`, make your changes in `pro.sketchware` package, and respect the directories and files structure and names. Also, even though the project compiles just fine with Kotlin classes that you might add, try to make your changes or additions in Java, not Kotlin unless it is more than necessary.
+> If you want to add new features that don't require editing other packages other than `pro.sketchware`, make your changes in `pro.sketchware` package, and respect the directories and files structure and names.
 
 ## Thanks for Contributing
 
