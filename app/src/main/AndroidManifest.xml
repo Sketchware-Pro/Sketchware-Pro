@@ -120,6 +120,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.besome.sketch.editor.manage.common.AddResourceActivity"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent" />
         <activity
             android:name="com.besome.sketch.editor.manage.view.ManageViewActivity"
