@@ -25,8 +25,8 @@ import pro.sketchware.databinding.ManageFontBinding;
 
 public class ManageFontActivity extends BaseAppCompatActivity {
 
-    public ImportFontFragment projectFontsFragment;
-    public FontManagerFragment collectionFontsFragment;
+    public ProjectFontsFragment projectFontsFragment;
+    public CollectionFontsFragment collectionFontsFragment;
     public ManageFontBinding binding;
     private String sc_id;
 
@@ -163,9 +163,9 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             if (position == 0) {
-                projectFontsFragment = (ImportFontFragment) fragment;
+                projectFontsFragment = (ProjectFontsFragment) fragment;
             } else {
-                collectionFontsFragment = (FontManagerFragment) fragment;
+                collectionFontsFragment = (CollectionFontsFragment) fragment;
             }
             return fragment;
         }
@@ -173,7 +173,7 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         @Override
         @NonNull
         public Fragment getItem(int position) {
-            return position == 0 ? new ImportFontFragment() : new FontManagerFragment();
+            return position == 0 ? new ProjectFontsFragment() : new CollectionFontsFragment();
         }
 
         @Override

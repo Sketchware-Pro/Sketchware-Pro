@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.manage.sound;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,7 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
-import com.besome.sketch.editor.manage.sound.ManageSoundImportActivity;
+import com.besome.sketch.editor.manage.common.CollectionImportActivity;
+import com.besome.sketch.editor.manage.common.ResourceType;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -28,12 +29,19 @@ import java.util.Locale;
 
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
+
+import a.a.a.mB;
+import a.a.a.oB;
+import a.a.a.qA;
+import a.a.a.Qp;
+import a.a.a.wq;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.FrManageSoundListBinding;
 import pro.sketchware.databinding.ManageSoundBinding;
 import pro.sketchware.databinding.ManageSoundListItemBinding;
 
-public class Yv extends qA {
+public class CollectionSoundsFragment extends qA {
     private String sc_id;
     private ArrayList<ProjectResourceBean> sounds;
     private String dirPath = "";
@@ -96,7 +104,8 @@ public class Yv extends qA {
                 }
                 if (!arrayList.isEmpty()) {
                     ArrayList<ProjectResourceBean> d = ((ManageSoundActivity) requireActivity()).projectSounds.sounds;
-                    Intent intent = new Intent(requireActivity(), ManageSoundImportActivity.class);
+                    Intent intent = new Intent(requireActivity(), CollectionImportActivity.class);
+                    intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.SOUND.name());
                     intent.putParcelableArrayListExtra("project_sounds", d);
                     intent.putParcelableArrayListExtra("selected_collections", arrayList);
                     importSoundsHandler.launch(intent);

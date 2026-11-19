@@ -17,9 +17,7 @@ import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
 import a.a.a.Qp;
-import a.a.a.Yv;
 import a.a.a.mB;
-import a.a.a.ow;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageSoundBinding;
 
@@ -27,8 +25,8 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
     private final int TAB_COUNT = 2;
     public ManageSoundBinding binding;
-    public ow projectSounds;
-    public Yv collectionSounds;
+    public ProjectSoundsFragment projectSounds;
+    public CollectionSoundsFragment collectionSounds;
     private String sc_id;
 
     @Override
@@ -158,9 +156,9 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         public Object instantiateItem(@NonNull ViewGroup viewGroup, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(viewGroup, position);
             if (position != 0) {
-                collectionSounds = (Yv) fragment;
+                collectionSounds = (CollectionSoundsFragment) fragment;
             } else {
-                projectSounds = (ow) fragment;
+                projectSounds = (ProjectSoundsFragment) fragment;
             }
             return fragment;
         }
@@ -168,7 +166,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         @Override
         @NonNull
         public Fragment getItem(int position) {
-            return position == 0 ? new ow() : new Yv();
+            return position == 0 ? new ProjectSoundsFragment() : new CollectionSoundsFragment();
         }
 
         @Override

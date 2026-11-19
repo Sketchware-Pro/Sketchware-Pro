@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.manage.image;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
-import com.besome.sketch.editor.manage.image.ManageImageImportActivity;
+import com.besome.sketch.editor.manage.common.CollectionImportActivity;
+import com.besome.sketch.editor.manage.common.ResourceType;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.material.card.MaterialCardView;
@@ -27,11 +29,16 @@ import com.google.android.material.card.MaterialCardView;
 import java.io.File;
 import java.util.ArrayList;
 
+import a.a.a.mB;
+import a.a.a.Op;
+import a.a.a.qA;
+import a.a.a.wq;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.FrManageImageListBinding;
 import pro.sketchware.databinding.ManageImageListItemBinding;
 
-public class fu extends qA implements View.OnClickListener {
+public class CollectionImagesFragment extends qA implements View.OnClickListener {
 
     private final ActivityResultLauncher<Intent> openImageImportDetails = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         var data = result.getData();
@@ -95,7 +102,8 @@ public class fu extends qA implements View.OnClickListener {
             }
         }
         if (!selectedCollections.isEmpty()) {
-            Intent intent = new Intent(requireActivity(), ManageImageImportActivity.class);
+            Intent intent = new Intent(requireActivity(), CollectionImportActivity.class);
+            intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.IMAGE.name());
             intent.putParcelableArrayListExtra("project_images", ((ManageImageActivity) requireActivity()).m().d());
             intent.putParcelableArrayListExtra("selected_collections", selectedCollections);
             openImageImportDetails.launch(intent);

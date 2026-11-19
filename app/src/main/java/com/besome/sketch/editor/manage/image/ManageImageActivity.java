@@ -20,16 +20,14 @@ import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
 import a.a.a.Op;
-import a.a.a.fu;
 import a.a.a.mB;
-import a.a.a.pu;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageImageBinding;
 
 public class ManageImageActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
     private String sc_id;
-    private pu projectImagesFragment;
-    private fu collectionImagesFragment;
+    private ProjectImagesFragment projectImagesFragment;
+    private CollectionImagesFragment collectionImagesFragment;
     private ManageImageBinding binding;
 
     public static int getImageGridColumnCount(Context context) {
@@ -49,11 +47,11 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         binding.viewPager.setCurrentItem(i);
     }
 
-    public fu l() {
+    public CollectionImagesFragment l() {
         return collectionImagesFragment;
     }
 
-    public pu m() {
+    public ProjectImagesFragment m() {
         return projectImagesFragment;
     }
 
@@ -180,9 +178,9 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             if (position == 0) {
-                projectImagesFragment = (pu) fragment;
+                projectImagesFragment = (ProjectImagesFragment) fragment;
             } else {
-                collectionImagesFragment = (fu) fragment;
+                collectionImagesFragment = (CollectionImagesFragment) fragment;
             }
             return fragment;
         }
@@ -191,9 +189,9 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         @NonNull
         public Fragment getItem(int position) {
             if (position != 0) {
-                return new fu();
+                return new CollectionImagesFragment();
             }
-            return new pu();
+            return new ProjectImagesFragment();
         }
 
         @Override

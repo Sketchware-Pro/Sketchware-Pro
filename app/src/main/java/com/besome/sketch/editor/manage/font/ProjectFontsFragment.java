@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
+import com.besome.sketch.editor.manage.common.AddResourceActivity;
+import com.besome.sketch.editor.manage.common.ResourceType;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 import a.a.a.jC;
 import a.a.a.oB;
 import a.a.a.qA;
+
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FrManageFontListBinding;
@@ -35,7 +38,7 @@ import pro.sketchware.databinding.ManageFontListItemBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
-public class ImportFontFragment extends qA {
+public class ProjectFontsFragment extends qA {
 
     public String sc_id;
     public boolean isSelecting = false;
@@ -159,7 +162,6 @@ public class ImportFontFragment extends qA {
             if (resourceBean.isNew) {
                 try {
                     importFont(resourceBean.resFullName, getResourceFilePath(resourceBean));
-                    oB.c(resourceBean.resFullName);
                 } catch (Exception ignored) {
                 }
             }
@@ -197,7 +199,8 @@ public class ImportFontFragment extends qA {
     }
 
     public void toFontActivity() {
-        Intent intent = new Intent(getContext(), AddFontActivity.class);
+        Intent intent = new Intent(requireContext(), AddResourceActivity.class);
+        intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.FONT.name());
         intent.putExtra("sc_id", sc_id);
         intent.putStringArrayListExtra("font_names", getResourceNames());
         addFontLauncher.launch(intent);

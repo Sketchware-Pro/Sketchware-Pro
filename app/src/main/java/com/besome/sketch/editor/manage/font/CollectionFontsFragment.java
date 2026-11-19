@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
+import com.besome.sketch.editor.manage.common.CollectionImportActivity;
+import com.besome.sketch.editor.manage.common.ResourceType;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,13 +26,14 @@ import a.a.a.Np;
 import a.a.a.oB;
 import a.a.a.qA;
 import a.a.a.wq;
+
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FrManageFontListBinding;
 import pro.sketchware.databinding.ManageFontBinding;
 import pro.sketchware.databinding.ManageFontListItemBinding;
 
-public class FontManagerFragment extends qA {
+public class CollectionFontsFragment extends qA {
 
     public String sc_id;
     public fontAdapter adapter;
@@ -122,7 +125,8 @@ public class FontManagerFragment extends qA {
 
         if (!selectedFonts.isEmpty()) {
             ArrayList<ProjectResourceBean> fontCollection = ((ManageFontActivity) requireActivity()).projectFontsFragment.getProjectResourceBeans();
-            Intent intent = new Intent(getActivity(), ManageFontImportActivity.class);
+            Intent intent = new Intent(requireContext(), CollectionImportActivity.class);
+            intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.FONT.name());
             intent.putParcelableArrayListExtra("project_fonts", fontCollection);
             intent.putParcelableArrayListExtra("selected_collections", selectedFonts);
             fontImportLauncher.launch(intent);

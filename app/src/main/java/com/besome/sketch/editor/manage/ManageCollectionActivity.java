@@ -33,10 +33,8 @@ import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.SelectableBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.beans.WidgetCollectionBean;
-import com.besome.sketch.editor.manage.font.AddFontActivity;
-import com.besome.sketch.editor.manage.font.AddFontCollectionActivity;
-import com.besome.sketch.editor.manage.image.AddImageCollectionActivity;
-import com.besome.sketch.editor.manage.sound.AddSoundCollectionActivity;
+import com.besome.sketch.editor.manage.common.AddResourceActivity;
+import com.besome.sketch.editor.manage.common.ResourceType;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -120,7 +118,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> loadMoreBlocks());
 
     private void showAddImageDialog() {
-        Intent intent = new Intent(getApplicationContext(), AddImageCollectionActivity.class);
+        Intent intent = new Intent(getApplicationContext(), AddResourceActivity.class);
+        intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.IMAGE.name());
+        intent.putExtra(ResourceType.EXTRA_COLLECTION_MODE, true);
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
         imageCollectionLauncher.launch(intent);
@@ -128,17 +128,20 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
     private void showAddSoundDialog() {
         collectionAdapter.stopPlayback();
-        Intent intent = new Intent(getApplicationContext(), AddSoundCollectionActivity.class);
+        Intent intent = new Intent(getApplicationContext(), AddResourceActivity.class);
+        intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.SOUND.name());
+        intent.putExtra(ResourceType.EXTRA_COLLECTION_MODE, true);
         intent.putParcelableArrayListExtra("sounds", sounds);
         intent.putExtra("sc_id", sc_id);
         soundCollectionLauncher.launch(intent);
     }
 
     private void showAddFontDialog() {
-        Intent intent = new Intent(getApplicationContext(), AddFontActivity.class);
-        intent.putParcelableArrayListExtra("font_names", fonts);
+        Intent intent = new Intent(getApplicationContext(), AddResourceActivity.class);
+        intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.FONT.name());
+        intent.putExtra(ResourceType.EXTRA_COLLECTION_MODE, true);
+        intent.putParcelableArrayListExtra("fonts", fonts);
         intent.putExtra("sc_id", sc_id);
-        intent.putExtra("add_to_collection", true);
         fontCollectionLauncher.launch(intent);
     }
 
@@ -183,7 +186,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
     private void openImageDetails(int position) {
         ProjectResourceBean editTarget = images.get(position);
-        Intent intent = new Intent(getApplicationContext(), AddImageCollectionActivity.class);
+        Intent intent = new Intent(getApplicationContext(), AddResourceActivity.class);
+        intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.IMAGE.name());
+        intent.putExtra(ResourceType.EXTRA_COLLECTION_MODE, true);
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("edit_target", editTarget);
@@ -193,7 +198,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private void openSoundDetails(int position) {
         ProjectResourceBean editTarget = sounds.get(position);
         collectionAdapter.stopPlayback();
-        Intent intent = new Intent(getApplicationContext(), AddSoundCollectionActivity.class);
+        Intent intent = new Intent(getApplicationContext(), AddResourceActivity.class);
+        intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.SOUND.name());
+        intent.putExtra(ResourceType.EXTRA_COLLECTION_MODE, true);
         intent.putParcelableArrayListExtra("sounds", sounds);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("edit_target", editTarget);
@@ -202,7 +209,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
     private void openFontDetails(int position) {
         ProjectResourceBean editTarget = fonts.get(position);
-        Intent intent = new Intent(getApplicationContext(), AddFontCollectionActivity.class);
+        Intent intent = new Intent(getApplicationContext(), AddResourceActivity.class);
+        intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.FONT.name());
+        intent.putExtra(ResourceType.EXTRA_COLLECTION_MODE, true);
         intent.putParcelableArrayListExtra("fonts", fonts);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("edit_target", editTarget);

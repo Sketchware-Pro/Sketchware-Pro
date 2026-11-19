@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.manage.image;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,11 +24,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
-import com.besome.sketch.editor.manage.image.AddImageActivity;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
+import com.besome.sketch.editor.manage.common.AddResourceActivity;
+import com.besome.sketch.editor.manage.common.ResourceType;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -47,6 +50,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import a.a.a.iB;
+import a.a.a.jC;
+import a.a.a.kC;
+import a.a.a.oB;
+import a.a.a.qA;
+import a.a.a.bB;
+
 import pro.sketchware.R;
 import pro.sketchware.activities.importicon.ImportIconActivity;
 import pro.sketchware.databinding.FrManageImageListBinding;
@@ -54,7 +64,7 @@ import pro.sketchware.databinding.ManageImageListItemBinding;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.SvgUtils;
 
-public class pu extends qA {
+public class ProjectImagesFragment extends qA {
 
     private final FilePathUtil fpu = new FilePathUtil();
     public boolean isSelecting = false;
@@ -187,7 +197,7 @@ public class pu extends qA {
                 Files.createDirectories(svgDir);
             }
         } catch (IOException error) {
-            Log.d("pu.java", "Failed to create directory for saving svgs at: " + fpu.getPathResource(sc_id));
+            Log.d("ProjectImagesFragment.java", "Failed to create directory for saving svgs at: " + fpu.getPathResource(sc_id));
         }
         int index = 0;
         for (ProjectResourceBean image : images) {
@@ -261,7 +271,8 @@ public class pu extends qA {
     }
 
     private void showAddImageDialog() {
-        Intent intent = new Intent(requireContext(), AddImageActivity.class);
+        Intent intent = new Intent(requireContext(), AddResourceActivity.class);
+        intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.IMAGE.name());
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("dir_path", projectImagesDirectory);
@@ -365,7 +376,7 @@ public class pu extends qA {
     }
 
     private void showImageDetailsDialog(ProjectResourceBean projectResourceBean) {
-        Intent intent = new Intent(requireContext(), AddImageActivity.class);
+        Intent intent = new Intent(requireContext(), AddResourceActivity.class);
         intent.putParcelableArrayListExtra("images", images);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("dir_path", projectImagesDirectory);
@@ -506,22 +517,24 @@ public class pu extends qA {
                         .asBitmap()
                         .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
                                 : images.get(position).resFullName)
-                        .transform(new BitmapTransformation() {
+                        .transform(new MultiTransformation<>(
+                            new BitmapTransformation() {
 
-                            final String ID = "my-transformation";
-                            final byte[] ID_BYTES = ID.getBytes(StandardCharsets.UTF_8);
+                                final String ID = "my-transformation";
+                                final byte[] ID_BYTES = ID.getBytes(StandardCharsets.UTF_8);
 
-                            @Override
-                            protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
-                                return iB.a(toTransform, image.rotate, image.flipHorizontal, image.flipVertical);
-                            }
+                                @Override
+                                protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
+                                    return iB.a(toTransform, image.rotate, image.flipHorizontal, image.flipVertical);
+                                }
 
-                            @Override
-                            public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
-                                messageDigest.update(ID_BYTES);
-                            }
-                        })
-                        .centerCrop()
+                                @Override
+                                public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+                                    messageDigest.update(ID_BYTES);
+                                }
+                            },
+                            new CenterCrop()
+                        ))
                         .signature(kC.n())
                         .error(R.drawable.ic_remove_grey600_24dp)
                         .into(holder.binding.img);

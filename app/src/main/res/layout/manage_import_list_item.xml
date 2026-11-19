@@ -4,20 +4,17 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="5dp"
-    android:paddingTop="10dp"
-    android:paddingRight="5dp"
-    android:paddingBottom="10dp">
+    android:paddingHorizontal="5dp"
+    android:paddingVertical="10dp">
 
-    <RelativeLayout
-        android:layout_width="52dp"
-        android:layout_height="52dp">
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/img"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             tools:background="@drawable/bg_outline_dark_yellow"
             tools:src="@tools:sample/avatars" />
 
@@ -25,9 +22,9 @@
             android:id="@+id/img_conflict"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
             tools:src="@drawable/ic_ok_48dp" />
-    </RelativeLayout>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_name"
@@ -35,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:textColor="#ff000000"
+        android:textColor="?colorOnSurface"
         android:textSize="10sp"
-        tools:text="some_sound" />
+        tools:text="sketchware_pro" />
 </LinearLayout>

@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.manage.sound;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,8 +20,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
-import com.besome.sketch.editor.manage.sound.AddSoundActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
+import com.besome.sketch.editor.manage.common.AddResourceActivity;
+import com.besome.sketch.editor.manage.common.ResourceType;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -32,6 +33,12 @@ import java.util.Locale;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
+
+import a.a.a.jC;
+import a.a.a.mB;
+import a.a.a.oB;
+import a.a.a.qA;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.FrManageSoundListBinding;
 import pro.sketchware.databinding.ManageSoundBinding;
@@ -39,7 +46,7 @@ import pro.sketchware.databinding.ManageSoundListItemBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
-public class ow extends qA {
+public class ProjectSoundsFragment extends qA {
 
     public ArrayList<ProjectResourceBean> sounds;
     public boolean isSelecting = false;
@@ -91,7 +98,8 @@ public class ow extends qA {
 
     private void addSound() {
         stopPlayback();
-        Intent intent = new Intent(getContext(), AddSoundActivity.class);
+        Intent intent = new Intent(requireContext(), AddResourceActivity.class);
+        intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.SOUND.name());
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("dir_path", dirPath);
         intent.putExtra("sound_names", getSoundsNames());
@@ -99,7 +107,8 @@ public class ow extends qA {
     }
 
     private void editSound() {
-        Intent intent = new Intent(getContext(), AddSoundActivity.class);
+        Intent intent = new Intent(requireContext(), AddResourceActivity.class);
+        intent.putExtra(ResourceType.EXTRA_RESOURCE_TYPE, ResourceType.SOUND.name());
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("dir_path", dirPath);
         intent.putExtra("sound_names", getSoundsNames());
