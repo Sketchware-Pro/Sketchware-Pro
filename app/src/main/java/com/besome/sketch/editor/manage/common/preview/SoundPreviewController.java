@@ -162,6 +162,13 @@ public class SoundPreviewController {
             binding.tvCurrenttime.setText("0:00");
         });
 
+        mediaPlayer.setOnErrorListener((mp, what, extra) -> {
+            mediaPlayerIsPrepared = false;
+            stopProgressUpdater();
+            releaseMediaPlayer();
+            return true;
+        });
+
         try {
             loadAlbumArtFromUri(activity, uri, isFileUri, binding.imgAlbum);
             mediaPlayer.setDataSource(activity, uri);
@@ -271,9 +278,11 @@ public class SoundPreviewController {
                         .centerCrop()
                         .into(target);
             } else {
+                Glide.with(context.getApplicationContext()).clear(target);
                 target.setImageResource(R.drawable.default_album_art_200dp);
             }
         } catch (Exception ignored) {
+            Glide.with(context.getApplicationContext()).clear(target);
             target.setImageResource(R.drawable.default_album_art_200dp);
         } finally {
             try {
