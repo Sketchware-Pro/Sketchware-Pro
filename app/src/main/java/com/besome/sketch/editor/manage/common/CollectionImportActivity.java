@@ -527,10 +527,15 @@ public class CollectionImportActivity extends BaseAppCompatActivity {
 
         // Final gate: re-validate every produced name. This catches both
         // per-item problems and any cross-item duplicates that survived.
+        Set<String> seenNames = new HashSet<>();
         for (int i = 0; i < finalNames.size(); i++) {
-            String error = getValidationError(finalNames.get(i), i, true);
+            String name = finalNames.get(i);
+            String error = getValidationError(name, i, true);
+            if (error == null && !seenNames.add(name)) {
+                error = getString(R.string.common_message_name_unavailable);
+            }
             if (error != null) {
-                bB.b(this, error + "\n[" + finalNames.get(i) + "]", bB.TOAST_WARNING).show();
+                bB.b(this, error + "\n[" + name + "]", bB.TOAST_WARNING).show();
                 return;
             }
         }
