@@ -460,6 +460,7 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
 
     private void handleFontPickedResult(Uri intentData) {
         final int currentGeneration = ++fontPickGeneration;
+        validFontPicked = false;
         String filenameExtension = FileUtil.getFileExtension(
                 SketchwareUtil.getSafDocumentDisplayName(intentData).orElse(".ttf"));
         SketchwareUtil.copySafDocumentToTempFile(intentData, this, filenameExtension, tempFontFile -> {
