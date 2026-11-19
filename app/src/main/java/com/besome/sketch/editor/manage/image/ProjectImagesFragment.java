@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -531,6 +532,12 @@ public class ProjectImagesFragment extends qA {
                                 @Override
                                 public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
                                     messageDigest.update(ID_BYTES);
+                                    byte[] orientationData = ByteBuffer.allocate(12)
+                                            .putInt(image.rotate)
+                                            .putInt(image.flipHorizontal)
+                                            .putInt(image.flipVertical)
+                                            .array();
+                                    messageDigest.update(orientationData);
                                 }
                             },
                             new CenterCrop()
