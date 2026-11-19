@@ -92,6 +92,7 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
     private Uri fontUri = null;
     private ProjectResourceBean editingFontBean = null;
     private boolean validFontPicked = false;
+    private int fontPickGeneration = 0;
 
     // ---------------------------------------------------------------------
     // Activity Result Launchers
@@ -458,9 +459,13 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
     }
 
     private void handleFontPickedResult(Uri intentData) {
+        final int currentGeneration = ++fontPickGeneration;
         String filenameExtension = FileUtil.getFileExtension(
                 SketchwareUtil.getSafDocumentDisplayName(intentData).orElse(".ttf"));
         SketchwareUtil.copySafDocumentToTempFile(intentData, this, filenameExtension, tempFontFile -> {
+            if (currentGeneration != fontPickGeneration) {
+                return;
+            }
             fontUri = Uri.fromFile(tempFontFile);
             if (!fontPreviewController.loadFont(tempFontFile, false)) {
                 validFontPicked = false;
@@ -478,12 +483,15 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
             extractedFontName = extractedFontName.replaceAll("[^a-z0-9_]", "_");
             binding.edInput.requestFocus();
             binding.edInput.setText(extractedFontName);
-        }, e -> {
+        }, e -> runOnUiThread(() -> {
+            if (currentGeneration != fontPickGeneration) {
+                return;
+            }
             validFontPicked = false;
             fontPreviewController.hidePreview();
             SketchwareUtil.toast("Couldn't read picked font: " + e.getMessage());
             LogUtil.e("AddResourceActivity", "Failed to read picked font", e);
-        });
+        }));
     }
 
     // ---------------------------------------------------------------------
@@ -513,9 +521,14 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
             imagePreviewController.playEmptySelectionAnimation();
             return;
         }
+        String imageName = Helper.getText(binding.edInput).trim();
+        int rotation = imagePreviewController.getRotationDegrees();
+        int flipHorizontal = imagePreviewController.getScaleX();
+        int flipVertical = imagePreviewController.getScaleY();
+
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             k();
-            new ImageSaveAsyncTask(this).execute();
+            new ImageSaveAsyncTask(this, imageName, rotation, flipHorizontal, flipVertical).execute();
         }, 500L);
     }
 
@@ -692,10 +705,18 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
 
     private static class ImageSaveAsyncTask extends MA {
         private final WeakReference<AddResourceActivity> activityRef;
+        private final String imageName;
+        private final int rotation;
+        private final int flipHorizontal;
+        private final int flipVertical;
 
-        public ImageSaveAsyncTask(AddResourceActivity activity) {
+        public ImageSaveAsyncTask(AddResourceActivity activity, String imageName, int rotation, int flipHorizontal, int flipVertical) {
             super(activity.getApplicationContext());
             this.activityRef = new WeakReference<>(activity);
+            this.imageName = imageName;
+            this.rotation = rotation;
+            this.flipHorizontal = flipHorizontal;
+            this.flipVertical = flipVertical;
             activity.a(this);
         }
 
@@ -732,32 +753,31 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
                     if (activity.editing) {
                         Op.g().a(
                                 activity.editingImageBean,
-                                Helper.getText(activity.binding.edInput).trim(),
+                                imageName,
                                 false);
                     } else if (!activity.multipleImagesPicked) {
                         ProjectResourceBean image = new ProjectResourceBean(
                                 ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                                Helper.getText(activity.binding.edInput).trim(),
+                                imageName,
                                 preview.getImageFilePath());
                         image.savedPos = 1;
                         image.isNew = true;
-                        image.rotate = preview.getRotationDegrees();
-                        image.flipVertical = preview.getScaleY();
-                        image.flipHorizontal = preview.getScaleX();
+                        image.rotate = rotation;
+                        image.flipVertical = flipVertical;
+                        image.flipHorizontal = flipHorizontal;
                         Op.g().a(activity.sc_id, image);
                     } else {
                         ArrayList<ProjectResourceBean> toAdd = new ArrayList<>();
                         int i = 0;
                         while (i < activity.pickedImageUris.size()) {
                             Uri uri = activity.pickedImageUris.get(i);
-                            String imageName = Helper.getText(activity.binding.edInput).trim()
-                                    + "_" + (++i);
+                            String itemImageName = imageName + "_" + (++i);
                             String filePath = HB.a(activity.getApplicationContext(), uri);
                             if (filePath == null) {
                                 throw new By("Unable to read selected image");
                             }
                             ProjectResourceBean image = new ProjectResourceBean(
-                                    ProjectResourceBean.PROJECT_RES_TYPE_FILE, imageName, filePath);
+                                    ProjectResourceBean.PROJECT_RES_TYPE_FILE, itemImageName, filePath);
                             image.savedPos = 1;
                             image.isNew = true;
                             image.rotate = iB.a(filePath);
@@ -774,30 +794,30 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
                     if (!activity.editing) {
                         ProjectResourceBean image = new ProjectResourceBean(
                                 ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                                Helper.getText(activity.binding.edInput).trim(),
+                                imageName,
                                 preview.getImageFilePath());
                         image.savedPos = 1;
                         image.isNew = true;
-                        image.rotate = preview.getRotationDegrees();
-                        image.flipVertical = preview.getScaleY();
-                        image.flipHorizontal = preview.getScaleX();
+                        image.rotate = rotation;
+                        image.flipVertical = flipVertical;
+                        image.flipHorizontal = flipHorizontal;
                         if (activity.binding.chkCollection.isChecked()) {
                             Op.g().a(activity.sc_id, image);
                         }
                         activity.savedImagesResult.add(image);
                     } else if (!activity.newImagePicked) {
                         ProjectResourceBean image = activity.editingImageBean;
-                        image.rotate = preview.getRotationDegrees();
-                        image.flipHorizontal = preview.getScaleX();
-                        image.flipVertical = preview.getScaleY();
+                        image.rotate = rotation;
+                        image.flipHorizontal = flipHorizontal;
+                        image.flipVertical = flipVertical;
                         image.isEdited = true;
                     } else {
                         ProjectResourceBean image = activity.editingImageBean;
                         image.resFullName = preview.getImageFilePath();
                         image.savedPos = 1;
-                        image.rotate = preview.getRotationDegrees();
-                        image.flipVertical = preview.getScaleY();
-                        image.flipHorizontal = preview.getScaleX();
+                        image.rotate = rotation;
+                        image.flipVertical = flipVertical;
+                        image.flipHorizontal = flipHorizontal;
                         image.isEdited = true;
                     }
                 } else {
@@ -805,13 +825,13 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
                     int i = 0;
                     while (i < activity.pickedImageUris.size()) {
                         Uri uri = activity.pickedImageUris.get(i);
-                        String imageName = Helper.getText(activity.binding.edInput).trim() + "_" + (++i);
+                        String itemImageName = imageName + "_" + (++i);
                         String filePath = HB.a(activity.getApplicationContext(), uri);
                         if (filePath == null) {
                             return;
                         }
                         ProjectResourceBean image = new ProjectResourceBean(
-                                ProjectResourceBean.PROJECT_RES_TYPE_FILE, imageName, filePath);
+                                ProjectResourceBean.PROJECT_RES_TYPE_FILE, itemImageName, filePath);
                         image.savedPos = 1;
                         image.isNew = true;
                         image.rotate = iB.a(filePath);
