@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.AtomicFile;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,10 @@ import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager
 import com.besome.sketch.editor.view.ColorGroupItem;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -114,7 +120,24 @@ public class ColorPickerDialog extends PopupWindow {
     }
 
     private void writeCustomColorsData(CustomColorsData data) {
-        FileUtil.writeFile(CUSTOM_COLORS_FILE, GsonUtils.getGson().toJson(data));
+        File file = new File(CUSTOM_COLORS_FILE);
+        File parent = file.getParentFile();
+        if (parent != null && !parent.exists()) {
+            parent.mkdirs();
+        }
+        AtomicFile atomicFile = new AtomicFile(file);
+        FileOutputStream fos = null;
+        try {
+            byte[] bytes = GsonUtils.getGson().toJson(data).getBytes(StandardCharsets.UTF_8);
+            fos = atomicFile.startWrite();
+            fos.write(bytes);
+            atomicFile.finishWrite(fos);
+        } catch (IOException e) {
+            if (fos != null) {
+                atomicFile.failWrite(fos);
+            }
+            Log.e("ColorPickerDialog", "Failed to write custom colors data", e);
+        }
     }
 
     private ArrayList<String> readCustomColors() {
