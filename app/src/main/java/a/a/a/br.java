@@ -77,6 +77,9 @@ public class br extends qA implements View.OnClickListener {
         if (binding != null) {
             binding.componentList.setAdapter(null);
         }
+        if (adapter != null) {
+            adapter.eventViewHolders.clear();
+        }
         binding = null;
     }
 
