@@ -40,6 +40,7 @@ import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesLibraryItemView;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryBinding;
 import pro.sketchware.utility.AnalyticsHelper;
 import pro.sketchware.utility.UI;
 
@@ -336,8 +337,9 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             sc_id = savedInstanceState.getString("sc_id");
         }
 
-        setContentView(R.layout.manage_library);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        ManageLibraryBinding binding = ManageLibraryBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.design_actionbar_title_library);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -356,7 +358,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                 }
             }
         });
-        libraryItemLayout = findViewById(R.id.contents);
+        libraryItemLayout = binding.contents;
 
         ViewCompat.setOnApplyWindowInsetsListener(libraryItemLayout, (v, windowInsets) -> {
             var insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;

@@ -6,7 +6,6 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -20,6 +19,7 @@ import a.a.a.jC;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.MakeBlockBinding;
 
 public class MakeBlockActivity extends BaseAppCompatActivity {
 
@@ -50,7 +50,8 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
             finish();
         }
 
-        setContentView(R.layout.make_block);
+        MakeBlockBinding binding = MakeBlockBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
             project = getIntent().getParcelableExtra("project_file");
@@ -59,9 +60,9 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
             project = savedInstanceState.getParcelable("project_file");
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         getSupportActionBar().setTitle(R.string.logic_editor_more_block_actionbar_title_create_more_block);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -78,8 +79,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
         });
         makeBlock = new MoreBlockBuilderView(this);
         makeBlock.setFuncNameValidator(jC.a(sc_id).a(project));
-        LinearLayout makeBlock = findViewById(R.id.makeblock_view);
-        makeBlock.addView(this.makeBlock);
+        binding.makeblockView.addView(this.makeBlock);
     }
 
     @Override
