@@ -230,18 +230,23 @@ public class ProjectsFragment extends DA {
 
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProjectDiffCallback(projectsList, loadedProjects));
 
-            requireActivity().runOnUiThread(() -> {
-                if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);
-                if (binding.loadingContainer.getVisibility() == View.VISIBLE) {
-                    binding.loadingContainer.setVisibility(View.GONE);
-                    binding.myprojects.setVisibility(View.VISIBLE);
-                }
-                projectsList.clear();
-                projectsList.addAll(loadedProjects);
-                diffResult.dispatchUpdatesTo(projectsAdapter);
-                if (projectsSearchView != null)
-                    projectsAdapter.filterData(projectsSearchView.getQuery().toString());
-            });
+            Activity activity = getActivity();
+            if (activity != null && !activity.isFinishing()) {
+                activity.runOnUiThread(() -> {
+                    if (binding != null) {
+                        if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);
+                        if (binding.loadingContainer.getVisibility() == View.VISIBLE) {
+                            binding.loadingContainer.setVisibility(View.GONE);
+                            binding.myprojects.setVisibility(View.VISIBLE);
+                        }
+                        projectsList.clear();
+                        projectsList.addAll(loadedProjects);
+                        diffResult.dispatchUpdatesTo(projectsAdapter);
+                        if (projectsSearchView != null)
+                            projectsAdapter.filterData(projectsSearchView.getQuery().toString());
+                    }
+                });
+            }
         });
     }
 
@@ -249,11 +254,16 @@ public class ProjectsFragment extends DA {
         executorService.execute(() -> {
             HashMap<String, Object> newProject = lC.b(sc_id);
             if (newProject != null) {
-                requireActivity().runOnUiThread(() -> {
-                    projectsList.add(0, newProject);
-                    projectsAdapter.notifyDataSetChanged();
-                    binding.myprojects.scrollToPosition(0);
-                });
+                Activity activity = getActivity();
+                if (activity != null && !activity.isFinishing()) {
+                    activity.runOnUiThread(() -> {
+                        if (binding != null) {
+                            projectsList.add(0, newProject);
+                            projectsAdapter.notifyDataSetChanged();
+                            binding.myprojects.scrollToPosition(0);
+                        }
+                    });
+                }
             }
         });
     }
@@ -265,7 +275,10 @@ public class ProjectsFragment extends DA {
                 int index = IntStream.range(0, projectsList.size()).filter(i -> projectsList.get(i).get("sc_id").equals(sc_id)).findFirst().orElse(-1);
                 if (index != -1) {
                     projectsList.set(index, updatedProject);
-                    requireActivity().runOnUiThread(() -> projectsAdapter.notifyDataSetChanged());
+                    Activity activity = getActivity();
+                    if (activity != null && !activity.isFinishing()) {
+                        activity.runOnUiThread(() -> projectsAdapter.notifyDataSetChanged());
+                    }
                 }
             }
         });

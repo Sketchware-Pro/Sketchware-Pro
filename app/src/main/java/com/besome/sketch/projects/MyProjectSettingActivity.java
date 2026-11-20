@@ -29,6 +29,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -226,7 +227,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         } else if (id == R.id.ok_button) {
             mB.a(v);
             if (isInputValid()) {
-                new SaveProjectAsyncTask(getApplicationContext()).execute();
+                new SaveProjectAsyncTask(this).execute();
                 if (icon != null) saveBitmapTo(icon, getCustomIconPath());
             }
         } else if (id == R.id.cancel) {
@@ -505,74 +506,83 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private class SaveProjectAsyncTask extends MA {
+    private static class SaveProjectAsyncTask extends MA {
 
-        public SaveProjectAsyncTask(Context context) {
-            super(context);
-            addTask(this);
-            k();
+        private final WeakReference<MyProjectSettingActivity> activityRef;
+
+        public SaveProjectAsyncTask(MyProjectSettingActivity activity) {
+            super(activity.getApplicationContext());
+            activityRef = new WeakReference<>(activity);
+            activity.addTask(this);
+            activity.k();
         }
 
         @Override
         public void a() {
-            h();
-            Intent intent = getIntent();
-            intent.putExtra("sc_id", sc_id);
-            intent.putExtra("is_new", !updatingExistingProject);
-            intent.putExtra("index", intent.getIntExtra("index", -1));
-            setResult(RESULT_OK, intent);
-            finish();
+            MyProjectSettingActivity activity = activityRef.get();
+            if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+                activity.h();
+                Intent intent = activity.getIntent();
+                intent.putExtra("sc_id", activity.sc_id);
+                intent.putExtra("is_new", !activity.updatingExistingProject);
+                intent.putExtra("index", intent.getIntExtra("index", -1));
+                activity.setResult(RESULT_OK, intent);
+                activity.finish();
+            }
         }
 
         @Override
         public void b() {
+            MyProjectSettingActivity activity = activityRef.get();
+            if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+
             HashMap<String, Object> data = new HashMap<>();
-            data.put("sc_id", sc_id);
-            data.put("my_sc_pkg_name", Helper.getText(binding.etPackageName));
-            data.put("my_ws_name", Helper.getText(binding.etProjectName));
-            data.put("my_app_name", Helper.getText(binding.etAppName));
-            if (updatingExistingProject) {
-                data.put("custom_icon", projectHasCustomIcon);
-                data.put("isIconAdaptive", isIconAdaptive);
-                data.put("sc_ver_code", Helper.getText(binding.verCode));
-                data.put("sc_ver_name", Helper.getText(binding.verName));
-                data.put("sketchware_ver", GB.d(getApplicationContext()));
-                for (int i = 0; i < themeColorKeys.length; i++) {
-                    data.put(themeColorKeys[i], projectThemeColors[i]);
+            data.put("sc_id", activity.sc_id);
+            data.put("my_sc_pkg_name", Helper.getText(activity.binding.etPackageName));
+            data.put("my_ws_name", Helper.getText(activity.binding.etProjectName));
+            data.put("my_app_name", Helper.getText(activity.binding.etAppName));
+            if (activity.updatingExistingProject) {
+                data.put("custom_icon", activity.projectHasCustomIcon);
+                data.put("isIconAdaptive", activity.isIconAdaptive);
+                data.put("sc_ver_code", Helper.getText(activity.binding.verCode));
+                data.put("sc_ver_name", Helper.getText(activity.binding.verName));
+                data.put("sketchware_ver", GB.d(activity.getApplicationContext()));
+                for (int i = 0; i < activity.themeColorKeys.length; i++) {
+                    data.put(activity.themeColorKeys[i], activity.projectThemeColors[i]);
                 }
-                lC.b(sc_id, data);
-                updateProjectResourcesContents(data);
+                lC.b(activity.sc_id, data);
+                updateProjectResourcesContents(activity, data);
             } else {
                 data.put("my_sc_reg_dt", new nB().a("yyyyMMddHHmmss"));
-                data.put("custom_icon", projectHasCustomIcon);
-                data.put("isIconAdaptive", isIconAdaptive);
-                data.put("sc_ver_code", Helper.getText(binding.verCode));
-                data.put("sc_ver_name", Helper.getText(binding.verName));
-                data.put("sketchware_ver", GB.d(getApplicationContext()));
-                for (int i = 0; i < themeColorKeys.length; i++) {
-                    data.put(themeColorKeys[i], projectThemeColors[i]);
+                data.put("custom_icon", activity.projectHasCustomIcon);
+                data.put("isIconAdaptive", activity.isIconAdaptive);
+                data.put("sc_ver_code", Helper.getText(activity.binding.verCode));
+                data.put("sc_ver_name", Helper.getText(activity.binding.verName));
+                data.put("sketchware_ver", GB.d(activity.getApplicationContext()));
+                for (int i = 0; i < activity.themeColorKeys.length; i++) {
+                    data.put(activity.themeColorKeys[i], activity.projectThemeColors[i]);
                 }
-                lC.a(sc_id, data);
-                updateProjectResourcesContents(data);
-                wq.a(getApplicationContext(), sc_id);
-                new oB().b(wq.b(sc_id));
-                ProjectSettings projectSettings = new ProjectSettings(sc_id);
+                lC.a(activity.sc_id, data);
+                updateProjectResourcesContents(activity, data);
+                wq.a(activity.getApplicationContext(), activity.sc_id);
+                new oB().b(wq.b(activity.sc_id));
+                ProjectSettings projectSettings = new ProjectSettings(activity.sc_id);
                 projectSettings.setValue(ProjectSettings.SETTING_NEW_XML_COMMAND, ProjectSettings.SETTING_GENERIC_VALUE_TRUE);
                 projectSettings.setValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, ProjectSettings.SETTING_GENERIC_VALUE_FALSE);
-
             }
             try {
-                FileUtil.deleteFile(getTempIconsFolderPath("mipmaps" + File.separator));
-                FileUtil.copyDirectory(new File(getTempIconsFolderPath("temp_icons" + File.separator)), new File(getIconsFolderPath()));
-                FileUtil.deleteFile(getTempIconsFolderPath("temp_icons" + File.separator));
+                FileUtil.deleteFile(activity.getTempIconsFolderPath("mipmaps" + File.separator));
+                FileUtil.copyDirectory(new File(activity.getTempIconsFolderPath("temp_icons" + File.separator)), new File(activity.getIconsFolderPath()));
+                FileUtil.deleteFile(activity.getTempIconsFolderPath("temp_icons" + File.separator));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
 
-        private void updateProjectResourcesContents(HashMap<String, Object> data) {
-            String baseDir = wq.b(sc_id) + "/files/resource/values/";
+        private void updateProjectResourcesContents(MyProjectSettingActivity activity, HashMap<String, Object> data) {
+            String baseDir = wq.b(activity.sc_id) + "/files/resource/values/";
             String stringsFilePath = baseDir + "strings.xml";
             String colorsFilePath = baseDir + "colors.xml";
             String newAppName = Objects.requireNonNull(data.get("my_app_name")).toString();
@@ -585,19 +595,21 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
             if (FileUtil.isExistFile(colorsFilePath)) {
                 String xmlContent = FileUtil.readFile(colorsFilePath);
-                for (int i = 0; i < themeColorKeys.length; i++) {
-                    String colorName = themeColorLabels[i];
-                    String newColor = String.format("#%06X", (0xFFFFFF & projectThemeColors[i]));
+                for (int i = 0; i < activity.themeColorKeys.length; i++) {
+                    String colorName = activity.themeColorLabels[i];
+                    String newColor = String.format("#%06X", (0xFFFFFF & activity.projectThemeColors[i]));
                     xmlContent = xmlContent.replaceAll("(<color\\s+name=\"" + colorName + "\">)(.*?)(</color>)", "$1" + newColor + "$3");
                 }
                 FileUtil.writeFile(colorsFilePath, xmlContent);
             }
-
         }
 
         @Override
         public void a(String str) {
-            h();
+            MyProjectSettingActivity activity = activityRef.get();
+            if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+                activity.h();
+            }
         }
 
     }

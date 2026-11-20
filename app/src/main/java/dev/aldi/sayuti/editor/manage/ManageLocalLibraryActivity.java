@@ -172,6 +172,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 Executors.newSingleThreadExecutor().execute(() -> {
                     deleteSelectedLocalLibraries(scId, adapter.getLocalLibraries(), projectUsedLibs);
                     runOnUiThread(() -> {
+                        if (isFinishing() || isDestroyed()) return;
                         h();
                         SketchwareUtil.toast("Deleted successfully");
                         adapter.isSelectionModeEnabled = false;
@@ -295,6 +296,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
         });
 
         runOnUiThread(() -> {
+            if (isFinishing() || isDestroyed()) return;
             adapter.setLocalLibraries(localLibraries);
             binding.noContentLayout.setVisibility(localLibraries.isEmpty() ? View.VISIBLE : View.GONE);
         });

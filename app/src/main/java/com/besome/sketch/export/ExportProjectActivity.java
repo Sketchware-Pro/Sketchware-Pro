@@ -247,9 +247,13 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
             new KB().a(exportedSourcesZipPath, toCompress, toExclude);
             project_metadata.e();
-            runOnUiThread(() -> initializeAfterExportedSourceViews(exportedFilename));
+            runOnUiThread(() -> {
+                if (isFinishing() || isDestroyed()) return;
+                initializeAfterExportedSourceViews(exportedFilename);
+            });
         } catch (Exception e) {
             runOnUiThread(() -> {
+                if (isFinishing() || isDestroyed()) return;
                 Log.e("ProjectExporter", "While trying to export project's sources: "
                         + e.getMessage(), e);
                 SketchwareUtil.showAnErrorOccurredDialog(this, Log.getStackTraceString(e));

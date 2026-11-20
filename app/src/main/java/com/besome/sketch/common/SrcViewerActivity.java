@@ -24,6 +24,7 @@ import a.a.a.ProjectBuilder;
 import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.yq;
+import a.a.a.yq.ExportType;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.SrcViewerBinding;
@@ -81,13 +82,14 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
             var fileManager = jC.b(sc_id);
             var dataManager = jC.a(sc_id);
             var libraryManager = jC.c(sc_id);
-            yq.a(libraryManager, fileManager, dataManager, a.a.a.yq.ExportType.SOURCE_CODE_VIEWING);
+            yq.a(libraryManager, fileManager, dataManager, ExportType.SOURCE_CODE_VIEWING);
             ProjectBuilder builder = new ProjectBuilder(this, yq);
             builder.buildBuiltInLibraryInformation();
             sourceCodeBeans = yq.a(fileManager, dataManager, builder.getBuiltInLibraryManager());
 
             try {
                 runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) return;
                     if (sourceCodeBeans == null) {
                         bB.b(getApplicationContext(), Helper.getResString(R.string.common_error_unknown), bB.TOAST_NORMAL).show();
                     } else {
