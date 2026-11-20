@@ -2562,18 +2562,8 @@ public class Lx {
                 "import com.google.gson.Gson;\r\n" +
                 "\r\n" +
                 "import java.io.IOException;\r\n" +
-                "import java.security.SecureRandom;\r\n" +
-                "import java.security.cert.CertificateException;\r\n" +
-                "import java.security.cert.X509Certificate;\r\n" +
                 "import java.util.HashMap;\r\n" +
                 "import java.util.concurrent.TimeUnit;\r\n" +
-                "\r\n" +
-                "import javax.net.ssl.HostnameVerifier;\r\n" +
-                "import javax.net.ssl.SSLContext;\r\n" +
-                "import javax.net.ssl.SSLSession;\r\n" +
-                "import javax.net.ssl.SSLSocketFactory;\r\n" +
-                "import javax.net.ssl.TrustManager;\r\n" +
-                "import javax.net.ssl.X509TrustManager;\r\n" +
                 "\r\n" +
                 "import okhttp3.Call;\r\n" +
                 "import okhttp3.Callback;\r\n" +
@@ -2612,43 +2602,9 @@ public class Lx {
                 "private OkHttpClient getClient() {\r\n" +
                 "if (client == null) {\r\n" +
                 "OkHttpClient.Builder builder = new OkHttpClient.Builder();\r\n" +
-                "\r\n" +
-                "try {\r\n" +
-                "final TrustManager[] trustAllCerts = new TrustManager[]{\r\n" +
-                "new X509TrustManager() {\r\n" +
-                "@Override\r\n" +
-                "public void checkClientTrusted(X509Certificate[] chain, String authType)\r\n" +
-                "throws CertificateException {\r\n" +
-                "}\r\n" +
-                "\r\n" +
-                "@Override\r\n" +
-                "public void checkServerTrusted(X509Certificate[] chain, String authType)\r\n" +
-                "throws CertificateException {\r\n" +
-                "}\r\n" +
-                "\r\n" +
-                "@Override\r\n" +
-                "public X509Certificate[] getAcceptedIssuers() {\r\n" +
-                "return new X509Certificate[]{};\r\n" +
-                "}\r\n" +
-                "}\r\n" +
-                "};\r\n" +
-                "\r\n" +
-                "final SSLContext sslContext = SSLContext.getInstance(\"TLS\");\r\n" +
-                "sslContext.init(null, trustAllCerts, new SecureRandom());\r\n" +
-                "final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();\r\n" +
-                "builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);\r\n" +
                 "builder.connectTimeout(SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);\r\n" +
                 "builder.readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);\r\n" +
                 "builder.writeTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);\r\n" +
-                "builder.hostnameVerifier(new HostnameVerifier() {\r\n" +
-                "@Override\r\n" +
-                "public boolean verify(String hostname, SSLSession session) {\r\n" +
-                "return true;\r\n" +
-                "}\r\n" +
-                "});\r\n" +
-                "} catch (Exception e) {\r\n" +
-                "}\r\n" +
-                "\r\n" +
                 "client = builder.build();\r\n" +
                 "}\r\n" +
                 "\r\n" +
