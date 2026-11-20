@@ -169,7 +169,9 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         });
 
         binding.openColorPalette.setOnClickListener(v -> {
-            ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, 0, false, false);
+            String color = binding.colour.getText().toString();
+            int hexColor = PropertiesUtil.isHexColor(color) ? PropertiesUtil.parseColor(color) : 0;
+            ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, hexColor, false, false);
             colorPickerDialog.a(new PCP(binding.colour));
             colorPickerDialog.showAtLocation(v, Gravity.CENTER, 0, 0);
         });
