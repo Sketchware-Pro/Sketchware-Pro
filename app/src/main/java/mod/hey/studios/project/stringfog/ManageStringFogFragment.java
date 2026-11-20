@@ -25,6 +25,12 @@ public class ManageStringFogFragment extends BottomSheetDialogFragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
     private void initializeLogic() {
         stringfogHandler = new StringfogHandler(requireActivity().getIntent().getStringExtra("sc_id"));
         binding.swPgEnabled.setChecked(stringfogHandler.isStringfogEnabled());

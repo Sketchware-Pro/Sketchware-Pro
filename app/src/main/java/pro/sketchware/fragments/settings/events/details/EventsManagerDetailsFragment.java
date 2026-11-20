@@ -61,6 +61,12 @@ public class EventsManagerDetailsFragment extends qA {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureToolbar(binding.toolbar);
