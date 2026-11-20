@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import a.a.a.mB;
 import a.a.a.wB;
-import pro.sketchware.R;
+import pro.sketchware.databinding.CommonDialogLayoutBinding;
 
 public class BaseDialogActivity extends BaseAppCompatActivity {
 
@@ -29,7 +29,8 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.common_dialog_layout);
+        CommonDialogLayoutBinding binding = CommonDialogLayoutBinding.inflate(getLayoutInflater());
+        super.setContentView(binding.getRoot());
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -39,15 +40,15 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
         View decor = getWindow().getDecorView();
         decor.setSystemUiVisibility(0);
 
-        dialogIcon = findViewById(R.id.common_dialog_icon);
-        dialogContainerView = findViewById(R.id.common_dialog_container);
-        dialogContentView = findViewById(R.id.common_dialog_content);
-        dialogButtonsView = findViewById(R.id.common_dialog_button_layout);
-        dialogTitle = findViewById(R.id.common_dialog_tv_title);
-        dialogTitleView = findViewById(R.id.common_dialog_title_layout);
-        dialogDefaultButton = findViewById(R.id.common_dialog_default_button);
-        r = findViewById(R.id.common_dialog_ok_button);
-        s = findViewById(R.id.common_dialog_cancel_button);
+        dialogIcon = binding.commonDialogIcon;
+        dialogContainerView = binding.commonDialogContainer;
+        dialogContentView = binding.commonDialogContent;
+        dialogButtonsView = binding.commonDialogButtonLayout;
+        dialogTitle = binding.commonDialogTvTitle;
+        dialogTitleView = binding.commonDialogTitleLayout;
+        dialogDefaultButton = binding.commonDialogDefaultButton;
+        r = binding.commonDialogOkButton;
+        s = binding.commonDialogCancelButton;
         dialogContainerView.setOnClickListener(v -> {
             if (!mB.a()) {
                 finish();

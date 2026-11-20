@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import a.a.a.rq;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageScreenActivityAddViewPresetSettingBinding;
 
 public class PresetSettingActivity extends BaseDialogActivity implements View.OnClickListener {
 
@@ -89,19 +90,18 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_screen_activity_add_view_preset_setting);
+        ManageScreenActivityAddViewPresetSettingBinding binding = ManageScreenActivityAddViewPresetSettingBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         e(Helper.getResString(R.string.preset_setting_title));
         requestCode = getIntent().getIntExtra("request_code", -1);
         if (getIntent().hasExtra("edit_mode")) {
             inEditMode = true;
         }
 
-        ImageView left = findViewById(R.id.btn_left);
-        left.setOnClickListener(this);
-        ImageView right = findViewById(R.id.btn_right);
-        right.setOnClickListener(this);
-        activity = findViewById(R.id.img_activity);
-        activityName = findViewById(R.id.tv_activity_name);
+        binding.btnLeft.setOnClickListener(this);
+        binding.btnRight.setOnClickListener(this);
+        activity = binding.imgActivity;
+        activityName = binding.tvActivityName;
         if (requestCode == 276) {
             presets = rq.d();
         } else if (requestCode == AddCustomViewActivity.REQ_CD_PRESET_ACTIVITY) {

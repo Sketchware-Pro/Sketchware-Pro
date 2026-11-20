@@ -20,6 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import a.a.a.mB;
 import a.a.a.wB;
 import pro.sketchware.R;
+import pro.sketchware.databinding.CommonBottomSheetDialogLayoutBinding;
 
 public class BaseBottomSheetDialogActivity extends BaseAppCompatActivity {
 
@@ -37,7 +38,8 @@ public class BaseBottomSheetDialogActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.common_bottom_sheet_dialog_layout);
+        CommonBottomSheetDialogLayoutBinding binding = CommonBottomSheetDialogLayoutBinding.inflate(getLayoutInflater());
+        super.setContentView(binding.getRoot());
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -46,17 +48,17 @@ public class BaseBottomSheetDialogActivity extends BaseAppCompatActivity {
 
         overridePendingTransition(R.anim.design_bottom_sheet_slide_in, 0);
 
-        dialogIcon = findViewById(R.id.common_dialog_icon);
-        dialogContainerView = findViewById(R.id.common_dialog_container);
-        View bottomSheet = findViewById(R.id.bottom_sheet);
+        dialogIcon = binding.commonDialogIcon;
+        dialogContainerView = binding.commonDialogContainer;
+        View bottomSheet = binding.bottomSheet;
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        dialogContentView = findViewById(R.id.common_dialog_content);
-        dialogButtonsView = findViewById(R.id.common_dialog_button_layout);
-        dialogTitle = findViewById(R.id.common_dialog_tv_title);
-        dialogTitleView = findViewById(R.id.common_dialog_title_layout);
-        dialogDefaultButton = findViewById(R.id.common_dialog_default_button);
-        r = findViewById(R.id.common_dialog_ok_button);
-        s = findViewById(R.id.common_dialog_cancel_button);
+        dialogContentView = binding.commonDialogContent;
+        dialogButtonsView = binding.commonDialogButtonLayout;
+        dialogTitle = binding.commonDialogTvTitle;
+        dialogTitleView = binding.commonDialogTitleLayout;
+        dialogDefaultButton = binding.commonDialogDefaultButton;
+        r = binding.commonDialogOkButton;
+        s = binding.commonDialogCancelButton;
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         bottomSheetBehavior.setHideable(true);
