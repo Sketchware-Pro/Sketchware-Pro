@@ -62,10 +62,9 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     private DB u;
     private Snackbar storageAccessDenied;
     private MainBinding binding;
-    private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
+    private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(false) {
         @Override
         public void handleOnBackPressed() {
-            setEnabled(false);
             binding.drawerLayout.closeDrawers();
         }
     };
@@ -159,6 +158,8 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(null);
 
+        getOnBackPressedDispatcher().addCallback(this, closeDrawer);
+
         drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, R.string.app_name, R.string.app_name);
         binding.drawerLayout.addDrawerListener(drawerToggle);
         binding.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -169,11 +170,11 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
                 closeDrawer.setEnabled(true);
-                getOnBackPressedDispatcher().addCallback(closeDrawer);
             }
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
+                closeDrawer.setEnabled(false);
             }
 
             @Override
