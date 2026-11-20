@@ -195,6 +195,9 @@ public class ProjectSoundsFragment extends qA {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (binding != null) {
+            binding.soundList.setAdapter(null);
+        }
         binding = null;
         actBinding = null;
     }

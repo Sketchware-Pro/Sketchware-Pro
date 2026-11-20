@@ -242,6 +242,9 @@ public class Fw extends qA {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (activitiesList != null) {
+            activitiesList.setAdapter(null);
+        }
         activitiesList = null;
         tvGuide = null;
     }

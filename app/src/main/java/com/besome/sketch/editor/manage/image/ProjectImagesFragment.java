@@ -360,6 +360,9 @@ public class ProjectImagesFragment extends qA {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (binding != null) {
+            binding.imageList.setAdapter(null);
+        }
         binding = null;
         actionButtonContainer = null;
         fab = null;

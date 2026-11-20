@@ -174,6 +174,9 @@ public class CollectionFontsFragment extends qA {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (binding != null) {
+            binding.fontList.setAdapter(null);
+        }
         binding = null;
         actBinding = null;
     }
