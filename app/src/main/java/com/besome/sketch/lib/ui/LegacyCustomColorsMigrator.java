@@ -1,6 +1,13 @@
 package com.besome.sketch.lib.ui;
 
 import android.content.Context;
+import android.util.AtomicFile;
+import android.util.Log;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import a.a.a.DB;
 import a.a.a.wq;
@@ -28,6 +35,7 @@ import pro.sketchware.utility.GsonUtils;
  */
 final class LegacyCustomColorsMigrator {
 
+    private static final String TAG = "LegacyCustomColorsMigrator";
     private static final String PREF_NAME = "P24";
     private static final String KEY_COLORS = "P24I1";
     private static final String KEY_ATTRS = "P24I2";
@@ -50,11 +58,36 @@ final class LegacyCustomColorsMigrator {
         merge(rawColors, data.colors);
         merge(rawAttrs, data.attrs);
 
-        FileUtil.writeFile(wq.getCustomColors(), GsonUtils.getGson().toJson(data));
+        try {
+            writeAtomic(wq.getCustomColors(), GsonUtils.getGson().toJson(data));
 
-        // Remove keys after successful write
-        pref.a(KEY_COLORS);
-        pref.a(KEY_ATTRS);
+            // Remove keys after successful write
+            pref.a(KEY_COLORS);
+            pref.a(KEY_ATTRS);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to migrate custom colors", e);
+        }
+    }
+
+    private static void writeAtomic(String path, String content) throws IOException {
+        File file = new File(path);
+        File parent = file.getParentFile();
+        if (parent != null && !parent.exists()) {
+            parent.mkdirs();
+        }
+        AtomicFile atomicFile = new AtomicFile(file);
+        FileOutputStream fos = null;
+        try {
+            byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
+            fos = atomicFile.startWrite();
+            fos.write(bytes);
+            atomicFile.finishWrite(fos);
+        } catch (IOException e) {
+            if (fos != null) {
+                atomicFile.failWrite(fos);
+            }
+            throw e;
+        }
     }
 
     private static void merge(String raw, ArrayList<String> target) {
