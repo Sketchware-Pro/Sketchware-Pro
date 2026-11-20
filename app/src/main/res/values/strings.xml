@@ -780,7 +780,7 @@ ACTION_VIEW
     <string name="msg_delete_selected_local_libraries">Delete selected local libraries</string>
     <string name="msg_import_block_selector_menus">Import block selector menus</string>
     <string name="msg_export_all_block_selector_menus">Export all block selector menus</string>
-    <string name="msg_find_amp_replace">Find &amp;amp; Replace</string>
+    <string name="msg_find_amp_replace">Find &amp; Replace</string>
     <string name="msg_auto_complete_symbol_pair">Auto complete symbol pair</string>
     <string name="msg_about_the_team">About the team</string>
     <string name="msg_style_header_value_optional">Style header value ( optional )</string>
