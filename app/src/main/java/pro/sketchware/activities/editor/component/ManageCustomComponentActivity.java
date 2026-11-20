@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
@@ -46,6 +45,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.util.OldResourceIdMapper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageCustomComponentBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -61,25 +61,25 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
     public void onCreate(Bundle _savedInstanceState) {
         enableEdgeToEdgeNoContrast();
         super.onCreate(_savedInstanceState);
-        setContentView(R.layout.manage_custom_component);
-        init();
+        ManageCustomComponentBinding binding = ManageCustomComponentBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        init(binding);
     }
 
-    private void init() {
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    private void init(ManageCustomComponentBinding binding) {
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
-        tv_guide = findViewById(R.id.tv_guide);
-        componentView = findViewById(R.id.list);
+        tv_guide = binding.tvGuide;
+        componentView = binding.list;
 
-        findViewById(R.id.fab).setOnClickListener(_view ->
+        binding.fab.setOnClickListener(_view ->
                 startActivity(new Intent(getApplicationContext(), AddCustomComponentActivity.class)));
 
         {
-            View view = findViewById(R.id.content);
+            View view = binding.content;
             int left = view.getPaddingLeft();
             int top = view.getPaddingTop();
             int right = view.getPaddingRight();
@@ -93,7 +93,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
         }
 
         {
-            View view = findViewById(R.id.app_bar_layout);
+            View view = binding.appBarLayout;
             int left = view.getPaddingLeft();
             int top = view.getPaddingTop();
             int right = view.getPaddingRight();
@@ -107,7 +107,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
         }
 
         {
-            View view = findViewById(R.id.fab);
+            View view = binding.fab;
             ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
             int end = lp.getMarginEnd();
             int bottom = lp.bottomMargin;

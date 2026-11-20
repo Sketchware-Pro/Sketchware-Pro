@@ -28,6 +28,7 @@ import androidx.cardview.widget.CardView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonParseException;
 
 import java.io.File;
@@ -41,6 +42,7 @@ import dev.pranav.filepicker.FilePickerDialogFragment;
 import dev.pranav.filepicker.FilePickerOptions;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ActivityBlocksManagerDetailsBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -61,16 +63,17 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
     private Toolbar toolbar;
     private ListView block_list;
     private LinearLayout background;
-    private com.google.android.material.floatingactionbutton.FloatingActionButton fab_button;
+    private FloatingActionButton fab_button;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blocks_manager_details);
+        ActivityBlocksManagerDetailsBinding binding = ActivityBlocksManagerDetailsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        background = findViewById(R.id.background);
-        block_list = findViewById(R.id.block_list);
-        fab_button = findViewById(R.id.fab_button);
+        background = binding.background;
+        block_list = binding.blockList;
+        fab_button = binding.fabButton;
 
         initialize();
         _receive_intents();
