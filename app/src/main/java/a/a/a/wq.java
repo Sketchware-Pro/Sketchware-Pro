@@ -34,6 +34,7 @@ public class wq {
 
     public static final String EXTRA_SYSTEM_DATA = ".sketchware" + File.separator + "data" + File.separator + "system";
     public static final String CUSTOM_COMPONENT_FILE = EXTRA_SYSTEM_DATA + File.separator + "component.json";
+    public static final String CUSTOM_COLORS_FILE = EXTRA_SYSTEM_DATA + File.separator + "custom_colors.json";
     public static final String EXTRA_DATA_EXPORT = EXTRA_SYSTEM_DATA + File.separator + "export";
 
     public static String getAbsolutePathOf(String path) {
@@ -217,6 +218,10 @@ public class wq {
 
     public static String getCustomComponent() {
         return getAbsolutePathOf(CUSTOM_COMPONENT_FILE);
+    }
+
+    public static String getCustomColors() {
+        return getAbsolutePathOf(CUSTOM_COLORS_FILE);
     }
 
     public static String getExtraDataExport() {

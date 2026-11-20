@@ -26,7 +26,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import a.a.a.DB;
 import a.a.a.GB;
 import a.a.a.bB;
 import a.a.a.jC;
@@ -43,10 +42,13 @@ import pro.sketchware.databinding.ColorPickerSimpleHexBinding;
 import pro.sketchware.databinding.ItemAttrBinding;
 import pro.sketchware.lib.validator.ColorInputValidator;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.GsonUtils;
 import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class ColorPickerDialog extends PopupWindow {
+
+    private static final String CUSTOM_COLORS_FILE = wq.getCustomColors();
 
     private static String sc_id;
     private final ArrayList<ColorBean> colorList = new ArrayList<>();
@@ -62,7 +64,6 @@ public class ColorPickerDialog extends PopupWindow {
     private int k;
     private int l;
     private int m = -1;
-    private DB colorPref;
     private boolean hasMaterialColors;
     private Material3LibraryManager material3LibraryManager;
     private yq yq;
@@ -90,13 +91,59 @@ public class ColorPickerDialog extends PopupWindow {
         return String.format("#%06X", color);
     }
 
+    private CustomColorsData readCustomColorsData() {
+        if (!FileUtil.isExistFile(CUSTOM_COLORS_FILE)) {
+            return new CustomColorsData();
+        }
+        try {
+            CustomColorsData data = GsonUtils.getGson().fromJson(
+                    FileUtil.readFile(CUSTOM_COLORS_FILE), CustomColorsData.class);
+            if (data == null) {
+                return new CustomColorsData();
+            }
+            if (data.colors == null) {
+                data.colors = new ArrayList<>();
+            }
+            if (data.attrs == null) {
+                data.attrs = new ArrayList<>();
+            }
+            return data;
+        } catch (Exception e) {
+            return new CustomColorsData();
+        }
+    }
+
+    private void writeCustomColorsData(CustomColorsData data) {
+        FileUtil.writeFile(CUSTOM_COLORS_FILE, GsonUtils.getGson().toJson(data));
+    }
+
+    private ArrayList<String> readCustomColors() {
+        return readCustomColorsData().colors;
+    }
+
+    private ArrayList<String> readCustomAttrs() {
+        return readCustomColorsData().attrs;
+    }
+
+    private void saveCustomColors(ArrayList<String> colors) {
+        CustomColorsData data = readCustomColorsData();
+        data.colors = colors;
+        writeCustomColorsData(data);
+    }
+
+    private void saveCustomAttrs(ArrayList<String> attrs) {
+        CustomColorsData data = readCustomColorsData();
+        data.attrs = attrs;
+        writeCustomColorsData(data);
+    }
+
     private void deleteAllSavedColors() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         dialog.setIcon(R.drawable.delete_96);
         dialog.setTitle(R.string.picker_color_title_delete_all_custom_color);
         dialog.setMessage(R.string.picker_color_message_delete_custom_color);
         dialog.setPositiveButton(R.string.common_word_delete, (v, which) -> {
-            colorPref.a();
+            saveCustomColors(new ArrayList<>());
             colorGroups.set(0, getSavedColorBeans());
             notifyChanges();
             v.dismiss();
@@ -115,7 +162,10 @@ public class ColorPickerDialog extends PopupWindow {
 
     public void initialize(Activity activity, String color, boolean isTransparentColor, boolean isNoneColor) {
         this.activity = activity;
-        colorPref = new DB(activity, "P24");
+        
+        // ↓↓↓ TEMPORARY — safe to delete along with LegacyCustomColorsMigrator
+        LegacyCustomColorsMigrator.migrateIfNeeded(activity);
+
         initializeColorData(isTransparentColor, isNoneColor);
         initializeResColors();
         initializeAttrsList();
@@ -341,10 +391,12 @@ public class ColorPickerDialog extends PopupWindow {
                     return;
                 }
 
-                String savedAttrs = colorPref.f("P24I2");
-                String attrsToSave = savedAttrs + "," + attributeName;
-                colorPref.a("P24I2", (Object) attrsToSave);
-                attributes.add(new Attribute(attributeName, savedAttrs.isEmpty() ? "Custom" : null));
+                ArrayList<String> savedAttrs = readCustomAttrs();
+                boolean isFirstCustomAttr = savedAttrs.isEmpty();
+                savedAttrs.add(attributeName);
+                saveCustomAttrs(savedAttrs);
+
+                attributes.add(new Attribute(attributeName, isFirstCustomAttr ? "Custom" : null));
                 assert binding.colorList.getAdapter() != null;
                 binding.colorList.getAdapter().notifyItemInserted(attributes.size());
                 binding.colorList.smoothScrollToPosition(attributes.size());
@@ -442,26 +494,24 @@ public class ColorPickerDialog extends PopupWindow {
     }
 
     private void removeSavedColor(String color) {
-        String savedColors = colorPref.f("P24I1");
-        if (savedColors.contains(color)) {
-            String colorToRemove = color + ",";
-            String colorToSave = savedColors.replaceAll(colorToRemove, "");
-            colorPref.a("P24I1", (Object) colorToSave);
+        ArrayList<String> savedColors = readCustomColors();
+        if (savedColors.remove(color)) {
+            saveCustomColors(savedColors);
             colorGroups.set(0, getSavedColorBeans());
             notifyChanges();
         }
     }
 
     private ColorBean[] getSavedColorBeans() {
-        String savedColors = colorPref.f("P24I1");
+        ArrayList<String> savedColors = readCustomColors();
         ColorBean[] colorBeansResult;
         if (!savedColors.isEmpty()) {
-            String[] colorStrings = savedColors.split(",");
-            ColorBean[] colorBeans = new ColorBean[colorStrings.length];
+            ColorBean[] colorBeans = new ColorBean[savedColors.size()];
             int index = 0;
-            while (index < colorStrings.length) {
+            while (index < savedColors.size()) {
                 try {
-                    int parsedColor = Color.parseColor(colorStrings[index]);
+                    String colorString = savedColors.get(index);
+                    int parsedColor = Color.parseColor(colorString);
                     int red = Color.red(parsedColor);
                     int green = Color.green(parsedColor);
                     int blue = Color.blue(parsedColor);
@@ -472,12 +522,13 @@ public class ColorPickerDialog extends PopupWindow {
                     if (blue > 240) count++;
 
 
-                    colorBeans[index] = new ColorBean(colorStrings[index], "CUSTOM",
+                    colorBeans[index] = new ColorBean(colorString, "CUSTOM",
                             count >= 2 ? "#212121" : "#ffffff",
                             R.drawable.checked_white_32);
 
                 } catch (Exception e) {
-                    colorPref.a();
+                    // If any entry is corrupt, reset only the colors list and keep attrs intact.
+                    saveCustomColors(new ArrayList<>());
                     colorBeans = new ColorBean[0];
                     break;
                 }
@@ -500,12 +551,12 @@ public class ColorPickerDialog extends PopupWindow {
     }
 
     private void savePickedColor(String color) {
-        String savedColors = colorPref.f("P24I1");
+        ArrayList<String> savedColors = readCustomColors();
         if (savedColors.contains(color)) {
             bB.b(activity, activity.getString(R.string.picker_color_already_exist), 0).show();
         } else {
-            String colorsToSave = color + "," + savedColors;
-            colorPref.a("P24I1", (Object) colorsToSave);
+            savedColors.add(0, color);
+            saveCustomColors(savedColors);
             colorGroups.set(0, getSavedColorBeans());
             notifyChanges();
             k = 0;
@@ -551,18 +602,12 @@ public class ColorPickerDialog extends PopupWindow {
         attributes.add(new Attribute("colorErrorContainer"));
         attributes.add(new Attribute("colorOnErrorContainer"));
 
-        String savedAttrs = colorPref.f("P24I2");
-        if (savedAttrs != null && !savedAttrs.isEmpty()) {
-            String[] customAttrs = savedAttrs.split(",");
-            for (int i = 0; i < customAttrs.length; i++) {
-                String attr = customAttrs[i];
-                if (attr.isEmpty()) continue;
-                attributes.add(new Attribute(
-                        attr,
-                        i == 0 ? "Custom" : null));
-            }
+        ArrayList<String> savedAttrs = readCustomAttrs();
+        for (int i = 0; i < savedAttrs.size(); i++) {
+            String attr = savedAttrs.get(i);
+            if (attr.isEmpty()) continue;
+            attributes.add(new Attribute(attr, i == 0 ? "Custom" : null));
         }
-
     }
 
     private void initializeResColors() {
@@ -619,6 +664,15 @@ public class ColorPickerDialog extends PopupWindow {
     }
 
     public record ResColor(String colorName, int colorValue, int nightColorValue) {
+    }
+
+    /**
+     * Container for both custom colors and custom Material 3 attributes,
+     * persisted as a single JSON file at {@link #CUSTOM_COLORS_FILE}.
+     */
+    private static class CustomColorsData {
+        ArrayList<String> colors = new ArrayList<>();
+        ArrayList<String> attrs = new ArrayList<>();
     }
 
     private class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ColorViewHolder> {
