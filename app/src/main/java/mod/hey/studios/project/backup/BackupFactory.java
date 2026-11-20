@@ -46,6 +46,7 @@ import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.project.custom_blocks.CustomBlocksManager;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -300,7 +301,7 @@ public class BackupFactory {
                 finalFileName = finalFileName.replaceFirst(Pattern.quote(Objects.requireNonNull(matcher.group(0))), getFormattedDateFrom(matcher.group(1)));
             }
         } catch (Exception ignored) {
-            SketchwareUtil.toastError("Failed To Parse Custom Filename For Backup. Using default");
+            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_backup_filename_parse_failed));
             // Example name: InternalDemo v1.0 (com.jbk.internal.demo, 1) 2021-12-31T125827
             finalFileName = projectNameOnly + " v" + versionName + " (" + pkgName + ", " + versionCode + ") " + getFormattedDateFrom("yyyy-M-dd'T'HHmmss");
         }
@@ -474,7 +475,7 @@ public class BackupFactory {
 
         // Unzip
         if (!unzip(swbPath, outFolder)) {
-            error = "couldn't unzip the backup";
+            error = Helper.getResString(R.string.ui_g2_backup_unzip_failed);
             restoreSuccess = false;
             return;
         }
@@ -487,7 +488,7 @@ public class BackupFactory {
         HashMap<String, Object> map = getProject(project);
 
         if (map == null) {
-            error = "couldn't read the project file";
+            error = Helper.getResString(R.string.ui_g2_backup_read_project_failed);
             restoreSuccess = false;
             return;
         }
@@ -497,7 +498,7 @@ public class BackupFactory {
 
         // Write new file
         if (!writeEncrypted(project, new Gson().toJson(map))) {
-            error = "couldn't write to the project file";
+            error = Helper.getResString(R.string.ui_g2_backup_write_project_failed);
             restoreSuccess = false;
             return;
         }

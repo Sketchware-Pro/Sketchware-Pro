@@ -183,7 +183,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         getMenuInflater().inflate(R.menu.menu_import_icon, menu);
         search = menu.findItem(R.id.menu_find);
         searchView = (SearchView) search.getActionView();
-        searchView.setQueryHint("Search");
+        searchView.setQueryHint(getString(R.string.search));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -293,9 +293,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
-                .setTitle("Filter icons")
-                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
-                .setPositiveButton("Apply", null)
+                .setTitle(R.string.common_word_filter_icons)
+                .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(R.string.ui_g4_apply, null)
                 .create();
         dialog.setView(dialogBinding.getRoot());
 
@@ -412,8 +412,8 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
                 .setTitle(R.string.common_word_save)
-                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
-                .setPositiveButton("Save", null)
+                .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(R.string.common_word_save, null)
                 .create();
 
         dialog.setOnShowListener(dialogInterface -> {

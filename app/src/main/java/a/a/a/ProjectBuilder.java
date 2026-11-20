@@ -85,6 +85,8 @@ import proguard.Configuration;
 import proguard.ConfigurationParser;
 import proguard.ParseException;
 import proguard.ProGuard;
+import pro.sketchware.R;
+import mod.hey.studios.util.Helper;
 
 public class ProjectBuilder {
     public static final String TAG = "AppBuilder";
@@ -229,7 +231,7 @@ public class ProjectBuilder {
         }
     }
     public String getDxRunningText() {
-        return "D8 is running...";
+        return Helper.getResString(R.string.ui_g1_progress_d8_running);
     }
 
     /**
@@ -656,10 +658,10 @@ public class ProjectBuilder {
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid DEX file path of enabled Local library #" + i1, Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_invalid_local_lib_dex_file_path, i1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid name of enabled Local library #" + i1, Toast.LENGTH_LONG);
+                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_invalid_local_lib_name, i1), Toast.LENGTH_LONG);
             }
         }
 

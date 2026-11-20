@@ -149,7 +149,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         setSupportActionBar(toolbar);
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         getSupportActionBar().setTitle(R.string.myprojects_sign_apk_new_certificate_title_new_certificate);
-        getSupportActionBar().setSubtitle("Export path: " + wq.D);
+        getSupportActionBar().setSubtitle(Helper.getResString(R.string.ui_g1_export_path, wq.D));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));

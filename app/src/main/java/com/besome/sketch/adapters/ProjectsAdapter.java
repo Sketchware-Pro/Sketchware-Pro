@@ -327,10 +327,10 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
         if (isPinned(projectMap)) {
             binding.pinIcon.setImageResource(R.drawable.ic_mtrl_unpin);
-            binding.pinText.setText("Unpin project");
+            binding.pinText.setText(R.string.common_word_unpin_project);
         } else {
             binding.pinIcon.setImageResource(R.drawable.ic_mtrl_pin);
-            binding.pinText.setText("Pin project");
+            binding.pinText.setText(R.string.common_word_pin_project);
         }
 
         projectOptionsBSD.show();
