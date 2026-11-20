@@ -172,6 +172,13 @@ public class CollectionFontsFragment extends qA {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+        actBinding = null;
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         Np.g().d();

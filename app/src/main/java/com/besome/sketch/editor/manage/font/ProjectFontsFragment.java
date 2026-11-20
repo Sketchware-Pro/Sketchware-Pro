@@ -299,6 +299,13 @@ public class ProjectFontsFragment extends qA {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+        actBinding = null;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_font_delete) {
             setSelectingMode(!isSelecting);
