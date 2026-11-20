@@ -25,7 +25,6 @@ import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -44,6 +43,7 @@ import a.a.a.mB;
 import a.a.a.wq;
 import a.a.a.xw;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageViewBinding;
 
 public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.OnPageChangeListener {
     private static final int TAB_COUNT = 2;
@@ -52,6 +52,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     private final int[] x = new int[19];
     // signature mustn't be changed: used in La/a/a/Bw;->a(Landroidx/recyclerview/widget/RecyclerView;II)V, La/a/a/tw;->a(Landroidx/recyclerview/widget/RecyclerView;II)V
     public FloatingActionButton s;
+    private ManageViewBinding binding;
     private MaterialCardView actionButtonsContainer;
     private boolean selecting = false;
     private String isAppCompatEnabled = "N";
@@ -259,9 +260,9 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
             finish();
         }
 
-        setContentView(R.layout.manage_view);
-        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
-        topAppBar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+        binding = ManageViewBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        binding.topAppBar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -281,9 +282,9 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
             }
         });
 
-        actionButtonsContainer = findViewById(R.id.layout_btn_group);
-        Button delete = findViewById(R.id.btn_delete);
-        Button cancel = findViewById(R.id.btn_cancel);
+        actionButtonsContainer = binding.layoutBtnGroup;
+        Button delete = binding.btnDelete;
+        Button cancel = binding.btnCancel;
         delete.setText(R.string.common_word_delete);
         cancel.setText(R.string.common_word_cancel);
         delete.setOnClickListener(this);
@@ -297,13 +298,13 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
             isAppCompatEnabled = savedInstanceState.getString("compatUseYn");
         }
 
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        viewPager = findViewById(R.id.view_pager);
+        TabLayout tabLayout = binding.tabLayout;
+        viewPager = binding.viewPager;
         viewPager.setAdapter(new ManageViewActivity.b(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(TAB_COUNT);
         viewPager.addOnPageChangeListener(this);
         tabLayout.setupWithViewPager(viewPager);
-        s = findViewById(R.id.fab);
+        s = binding.fab;
         s.setOnClickListener(this);
     }
 

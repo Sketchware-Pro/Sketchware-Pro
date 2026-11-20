@@ -3,7 +3,6 @@ package com.besome.sketch.editor.manage.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -12,7 +11,6 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
@@ -22,6 +20,7 @@ import a.a.a.rq;
 import a.a.a.uq;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageScreenCustomViewAddBinding;
 
 public class AddCustomViewActivity extends BaseDialogActivity implements View.OnClickListener {
 
@@ -43,18 +42,18 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_screen_custom_view_add);
+        ManageScreenCustomViewAddBinding binding = ManageScreenCustomViewAddBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         e(Helper.getResString(R.string.design_manager_view_title_add_custom_view));
         f(R.drawable.ic_mtrl_add);
         d(Helper.getResString(R.string.common_word_add));
         b(Helper.getResString(R.string.common_word_cancel));
 
         ArrayList<String> alreadyInUseNames = getIntent().getStringArrayListExtra("screen_names");
-        customViewName = findViewById(R.id.ed_input);
-        ((TextInputLayout) findViewById(R.id.ti_input)).setHint(Helper.getResString(R.string.design_manager_view_hint_enter_view_name));
-        TextView description = findViewById(R.id.tv_desc);
-        description.setText(Helper.getResString(R.string.design_manager_view_description_guide_use_custom_view));
-        viewNameValidator = new YB(this, findViewById(R.id.ti_input), uq.b, alreadyInUseNames);
+        customViewName = binding.edInput;
+        binding.tiInput.setHint(Helper.getResString(R.string.design_manager_view_hint_enter_view_name));
+        binding.tvDesc.setText(Helper.getResString(R.string.design_manager_view_description_guide_use_custom_view));
+        viewNameValidator = new YB(this, binding.tiInput, uq.b, alreadyInUseNames);
         super.r.setOnClickListener(this);
         super.s.setOnClickListener(this);
     }
