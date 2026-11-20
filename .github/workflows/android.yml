@@ -2,6 +2,8 @@ name: Android CI
 
 on:
   push:
+    branches:
+      - 'main'
     paths:
       - '.github/workflows/android.yml'
       - 'app/**'
@@ -10,13 +12,24 @@ on:
       - 'gradle.properties'
       - 'gradlew'
       - 'gradlew.bat'
-      - 'public-stable-ids.txt'
+      - 'settings.gradle'
+  pull_request:
+    branches:
+      - 'main'
+    paths:
+      - '.github/workflows/android.yml'
+      - 'app/**'
+      - 'gradle/**'
+      - 'build.gradle'
+      - 'gradle.properties'
+      - 'gradlew'
+      - 'gradlew.bat'
       - 'settings.gradle'
   workflow_dispatch:
 
 jobs:
   notifyTelegram:
-    if: ${{ !startsWith(github.ref, 'refs/heads/wip/') }}
+    if: github.event_name == 'push'
     name: Notify Telegram
     runs-on: ubuntu-latest
     steps:
@@ -88,7 +101,7 @@ jobs:
           path: app/build/outputs/apk/release/app-release-${{ steps.set_sha.outputs.short_sha }}.apk
 
   aggregateAndSend:
-    if: ${{ !startsWith(github.ref, 'refs/heads/wip/') }}
+    if: github.event_name == 'push'
     name: Send APKs to Telegram
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     needs: build
@@ -135,7 +148,7 @@ jobs:
         continue-on-error: true
 
   updateAppData:
-    if: ${{ !startsWith(github.ref, 'refs/heads/wip/') }}
+    if: github.event_name == 'push'
     name: Update App Data
     runs-on: ubuntu-latest
     steps:
