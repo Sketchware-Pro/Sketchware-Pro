@@ -779,6 +779,21 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         binding.gradColorPreview2.setBackgroundColor(gradClr1);
         binding.appIcoTexture.setColor(patternColor);
         binding.patternColorPreview.setBackgroundColor(patternColor);
+
+        // Restore icon from app_icon.png
+        String iconImgFilePath = baseDir() + "app_icon.png";
+        if (FileUtil.isExistFile(iconImgFilePath)) {
+            Bitmap bitmap = iB.a(iconImgFilePath, 96, 96);
+            try {
+                int attributeInt = new ExifInterface(iconImgFilePath).getAttributeInt("Orientation", -1);
+                Bitmap newBitmap = iB.a(bitmap, attributeInt != 3 ? attributeInt != 6 ? attributeInt != 8 ? 0 : 270 : 90 : 180);
+                BitmapDrawable bd = new BitmapDrawable(getResources(), newBitmap);
+                binding.appIcoImg.setBackground(bd);
+                iconFilePath = iconImgFilePath;
+            } catch (Exception ignored) {
+            }
+        }
+
         binding.appIcoImg.getBackground().setColorFilter(new PorterDuffColorFilter(imgColor, PorterDuff.Mode.SRC_ATOP));
         binding.imgColorPreview.setBackgroundColor(imgColor);
         binding.appIcoText.setTextColor(txtClr);
