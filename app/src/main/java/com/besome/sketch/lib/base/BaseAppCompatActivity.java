@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -166,10 +167,14 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     protected void enableEdgeToEdgeNoContrast() {
-        SystemBarStyle systemBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT);
-        EdgeToEdge.enable(this, systemBarStyle);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            getWindow().setNavigationBarContrastEnforced(false);
+        try {
+            SystemBarStyle systemBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT);
+            EdgeToEdge.enable(this, systemBarStyle);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                getWindow().setNavigationBarContrastEnforced(false);
+            }
+        } catch (Throwable t) {
+            Log.e("BaseAppCompatActivity", "Failed to enable edge-to-edge: " + t.getMessage(), t);
         }
     }
 }
