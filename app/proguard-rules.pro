@@ -18,9 +18,9 @@
 # ----------------------------------------------------------------------------
 # 2. Bytecode Optimization Configuration
 # ----------------------------------------------------------------------------
-# Disallow access modification and horizontal class merging to prevent IllegalAccessError on Dalvik/ART
-# Skip arithmetic/cast simplification if needed for precise float/double precision
--optimizations !code/simplification/arithmetic,!code/simplification/cast,!class/merging/horizontal,!class/merging/vertical
+# Strictly disable bytecode optimizations to prevent horizontal class merging, method inlining,
+# and member rebinding bugs on ART/Dalvik (e.g. NoSuchMethodError / IllegalAccessError)
+-dontoptimize
 
 # ----------------------------------------------------------------------------
 # 3. Android Components & Application Lifecycle
@@ -109,9 +109,12 @@
 
 # ----------------------------------------------------------------------------
 # 9. Third-Party Consumer ProGuard Rules
-# AndroidX, Google Material, Firebase, and Play Services bundle their own
-# consumer keep rules; manual broad rules are removed to allow unused code shrinking.
 # ----------------------------------------------------------------------------
+-keep class androidx.** { *; }
+-keep interface androidx.** { *; }
+-dontwarn androidx.**
+-keep class com.google.android.material.** { *; }
+-dontwarn com.google.android.material.**
 
 # ----------------------------------------------------------------------------
 # 10. Suppress Warnings for Optional Desktop JVM & Internal Third-Party Classes
