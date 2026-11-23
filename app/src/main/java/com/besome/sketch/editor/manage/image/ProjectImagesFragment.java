@@ -218,9 +218,16 @@ public class ProjectImagesFragment extends qA {
                         // convert the svg to vectors
                         String svgPath = fpu.getSvgFullPath(sc_id, image.resName);
                         copyFile(path, svgPath);
-                        String colorHex = (String) colorMap.get(index).get("colorHex");
-                        colorHex = (colorHex != null) ? colorHex : "#FFFFFF";
-                        svgUtils.convert(svgPath, projectImagesDirectory, colorHex);
+                        svgUtils.convert(svgPath, projectImagesDirectory, readColorHex(index));
+                    } else if (image.resFullName.endsWith(".xml")) {
+                        // Vector drawable produced from a previously saved SVG.
+                        // Regenerate it from the source SVG (covers renames and
+                        // color-filter changes); the raster re-encoding below
+                        // cannot read vector files.
+                        String svgPath = fpu.getSvgFullPath(sc_id, image.resName);
+                        if (new File(svgPath).exists()) {
+                            svgUtils.convert(svgPath, projectImagesDirectory, readColorHex(index));
+                        }
                     } else {
                         iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
                     }
@@ -259,6 +266,20 @@ public class ProjectImagesFragment extends qA {
         // jC.a(sc_id).b(jC.d(sc_id));
 
         jC.a(sc_id).k();
+    }
+
+    /**
+     * Color-filter hex for a list position, or {@code null} when the item has
+     * no filter (no recoloring). {@code colorMap} only holds entries for
+     * icon-imported items, so a missing entry must not crash the save.
+     */
+    private String readColorHex(int index) {
+        Map<String, Object> colorItem = colorMap.get(index);
+        if (colorItem == null) {
+            return null;
+        }
+        String colorHex = (String) colorItem.get("colorHex");
+        return colorHex != null ? colorHex : "#FFFFFF";
     }
 
     private void updateGuideVisibility() {
@@ -580,10 +601,10 @@ public class ProjectImagesFragment extends qA {
 
                 binding.img.setOnClickListener(v -> {
                     if (!isSelecting) {
-                        if (!(images.get(getLayoutPosition()).resFullName.endsWith(".svg") ||
-                                images.get(getLayoutPosition()).resFullName.endsWith(".xml"))) {
-                            showImageDetailsDialog(images.get(getLayoutPosition()));
-                        }
+                        // Vector items are editable too: the dialog previews
+                        // the source SVG and saveImages() regenerates the
+                        // converted vector.
+                        showImageDetailsDialog(images.get(getLayoutPosition()));
                     } else {
                         binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
                         images.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();

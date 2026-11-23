@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
+import com.besome.sketch.beans.CollectionBean;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.common.preview.FontPreviewController;
 import com.besome.sketch.editor.manage.common.preview.ImagePreviewController;
@@ -50,6 +51,7 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.ManageResourceAddBinding;
 import pro.sketchware.lib.validator.FontNameValidator;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
 /**
@@ -180,6 +182,16 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
                     : (editingImageBean.savedPos == 0
                         ? dirPath + File.separator + editingImageBean.resFullName
                         : editingImageBean.resFullName);
+
+            if (!isCollectionMode && targetPath.endsWith(".xml")) {
+                // A previously saved SVG resource is stored as a converted
+                // vector XML plus its source SVG. Preview the source, which
+                // the bitmap pipeline cannot read on its own.
+                String svgSource = new FilePathUtil().getSvgFullPath(sc_id, editingImageBean.resName);
+                if (new File(svgSource).exists()) {
+                    targetPath = svgSource;
+                }
+            }
 
             imagePreviewController.loadEditableImage(targetPath);
             if (isCollectionMode) {
@@ -431,7 +443,7 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
     }
 
     private void setSingleImageFromUri(Uri uri) {
-        String path;
+        String path = null;
         if (uri != null && (path = HB.a(this, uri)) != null) {
             imagePreviewController.loadEditableImage(path);
             if (binding.edInput.getText() == null || binding.edInput.getText().length() == 0) {
@@ -444,6 +456,11 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
                 }
             }
         }
+    }
+
+    /** True when the given local path points at an SVG file. */
+    private static boolean isSvgName(String name) {
+        return name != null && name.toLowerCase(Locale.ROOT).endsWith(".svg");
     }
 
     private void handleSoundPickedResult(Uri uri, boolean isLocalFile) {
@@ -671,6 +688,70 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
     // Helpers & Async Image Saving Task
     // ---------------------------------------------------------------------
 
+    /**
+     * Adds the given images to the image collection. SVG files are copied
+     * verbatim and registered directly, because the legacy
+     * {@code a.a.a.Op} path re-encodes new images to PNG through a bitmap
+     * transform that cannot read vector files. Rasters keep the legacy path.
+     */
+    private void addImagesToCollection(ProjectResourceBean image) throws By {
+        ArrayList<ProjectResourceBean> items = new ArrayList<>();
+        items.add(image);
+        addImagesToCollection(items);
+    }
+
+    private void addImagesToCollection(ArrayList<ProjectResourceBean> items) throws By {
+        ArrayList<ProjectResourceBean> svgItems = new ArrayList<>();
+        ArrayList<ProjectResourceBean> rasterItems = new ArrayList<>();
+        for (ProjectResourceBean item : items) {
+            if (isSvgName(item.resFullName)) {
+                svgItems.add(item);
+            } else {
+                rasterItems.add(item);
+            }
+        }
+        if (!svgItems.isEmpty()) {
+            Op op = Op.g();
+            if (op.e == null) {
+                op.a();
+            }
+            // Validate everything before writing anything, mirroring the
+            // raster batch's all-or-nothing semantics. SVGs are registered
+            // first so their names are visible to the raster batch's
+            // duplicate check.
+            for (ProjectResourceBean item : svgItems) {
+                for (CollectionBean existing : op.e) {
+                    if (existing.name.equals(item.resName)) {
+                        throw new By(getString(R.string.collection_duplicated_name) + "[" + item.resName + "]");
+                    }
+                }
+                if (!new File(item.resFullName).exists()) {
+                    throw new By(getString(R.string.collection_no_exist_file));
+                }
+            }
+            op.c.f(op.b);
+            for (ProjectResourceBean item : svgItems) {
+                String dataName = item.resName + ".svg";
+                op.c.a(item.resFullName, op.b + File.separator + dataName);
+                op.e.add(new CollectionBean(item.resName, dataName));
+            }
+            op.e();
+        }
+        if (!rasterItems.isEmpty()) {
+            Op.g().a(sc_id, rasterItems, true);
+        }
+    }
+
+    private static int safeExifOrientation(String filePath) {
+        try {
+            return iB.a(filePath);
+        } catch (Exception e) {
+            // Vector files (SVG) and other formats without EXIF must not
+            // abort the save task.
+            return 0;
+        }
+    }
+
     private ArrayList<String> getReservedImageNames() {
         ArrayList<String> names = new ArrayList<>();
         if (isCollectionMode) {
@@ -766,7 +847,7 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
                         image.rotate = rotation;
                         image.flipVertical = flipVertical;
                         image.flipHorizontal = flipHorizontal;
-                        Op.g().a(activity.sc_id, image);
+                        activity.addImagesToCollection(image);
                     } else {
                         ArrayList<ProjectResourceBean> toAdd = new ArrayList<>();
                         int i = 0;
@@ -781,12 +862,12 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
                                     ProjectResourceBean.PROJECT_RES_TYPE_FILE, itemImageName, filePath);
                             image.savedPos = 1;
                             image.isNew = true;
-                            image.rotate = iB.a(filePath);
+                            image.rotate = safeExifOrientation(filePath);
                             image.flipVertical = 1;
                             image.flipHorizontal = 1;
                             toAdd.add(image);
                         }
-                        Op.g().a(activity.sc_id, toAdd, true);
+                        activity.addImagesToCollection(toAdd);
                     }
                     return;
                 }
@@ -803,7 +884,7 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
                         image.flipVertical = flipVertical;
                         image.flipHorizontal = flipHorizontal;
                         if (activity.binding.chkCollection.isChecked()) {
-                            Op.g().a(activity.sc_id, image);
+                            activity.addImagesToCollection(image);
                         }
                         activity.savedImagesResult.add(image);
                     } else if (!activity.newImagePicked) {
@@ -835,13 +916,13 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
                                 ProjectResourceBean.PROJECT_RES_TYPE_FILE, itemImageName, filePath);
                         image.savedPos = 1;
                         image.isNew = true;
-                        image.rotate = iB.a(filePath);
+                        image.rotate = safeExifOrientation(filePath);
                         image.flipVertical = 1;
                         image.flipHorizontal = 1;
                         toAdd.add(image);
                     }
                     if (activity.binding.chkCollection.isChecked()) {
-                        Op.g().a(activity.sc_id, toAdd, true);
+                        activity.addImagesToCollection(toAdd);
                     }
                     activity.multipleImagesPicked = false;
                     activity.savedImagesResult.addAll(toAdd);

@@ -1,6 +1,8 @@
 package com.besome.sketch.editor.manage.common.preview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +11,13 @@ import android.view.animation.AnimationUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
+import java.io.File;
+import java.util.Locale;
+
 import a.a.a.iB;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageImagePreviewBinding;
+import pro.sketchware.utility.SvgUtils;
 
 /**
  * Reusable controller for displaying image previews, handling Exif orientation,
@@ -28,6 +34,9 @@ public class ImagePreviewController {
     private int exifOrientation = 0;
     private int scaleX = 1;
     private int scaleY = 1;
+    /** True when the selected file is a vector (SVG) and previews must avoid bitmap decoding. */
+    private boolean svgMode = false;
+    private SvgUtils svgUtils;
 
     public ImagePreviewController(Context context, LayoutInflater inflater, ViewGroup container, boolean isImportMode) {
         this.context = context;
@@ -54,10 +63,16 @@ public class ImagePreviewController {
     }
 
     /**
-     * Loads a preview image inside ManageCollectionImportActivity using Glide.
+     * Loads a preview image inside CollectionImportActivity. Rasters use
+     * Glide; SVG files use the Coil/SvgDecoder loader.
      */
     public void loadCollectionPreview(String filePath) {
         this.imageFilePath = filePath;
+        this.svgMode = isSvg(filePath);
+        if (svgMode) {
+            loadSvgIntoSelected(filePath);
+            return;
+        }
         Glide.with(context.getApplicationContext())
                 .asBitmap()
                 .load(filePath)
@@ -71,10 +86,23 @@ public class ImagePreviewController {
      */
     public void loadEditableImage(String filePath) {
         this.imageFilePath = filePath;
+        boolean isSvgFile = isSvg(filePath);
+        this.svgMode = isSvgFile;
         binding.tvAddPhoto.setVisibility(View.GONE);
         binding.tvDesc.setVisibility(View.INVISIBLE);
         binding.layoutImgInform.setVisibility(View.GONE);
         binding.tvImgcnt.setVisibility(View.GONE);
+
+        if (isSvgFile) {
+            // Vector files have no bitmap to transform: hide the rotate/flip
+            // controls and preview the SVG through the Coil/SvgDecoder loader.
+            exifOrientation = 0;
+            resetTransformations();
+            binding.layoutImgModify.setVisibility(View.GONE);
+            loadSvgIntoSelected(filePath);
+            return;
+        }
+
         binding.layoutImgModify.setVisibility(View.VISIBLE);
 
         try {
@@ -110,40 +138,78 @@ public class ImagePreviewController {
     }
 
     public void rotate90Degrees() {
-        if (imageFilePath != null && !imageFilePath.isEmpty()) {
-            rotationDegrees = (rotationDegrees + 90) % 360;
-            refreshTransformedPreview();
+        if (svgMode || imageFilePath == null || imageFilePath.isEmpty()) {
+            return;
         }
+        rotationDegrees = (rotationDegrees + 90) % 360;
+        refreshTransformedPreview();
     }
 
     public void flipHorizontally() {
-        if (imageFilePath != null && !imageFilePath.isEmpty()) {
-            if (rotationDegrees != 90 && rotationDegrees != 270) {
-                scaleX *= -1;
-            } else {
-                scaleY *= -1;
-            }
-            refreshTransformedPreview();
+        if (svgMode || imageFilePath == null || imageFilePath.isEmpty()) {
+            return;
         }
+        if (rotationDegrees != 90 && rotationDegrees != 270) {
+            scaleX *= -1;
+        } else {
+            scaleY *= -1;
+        }
+        refreshTransformedPreview();
     }
 
     public void flipVertically() {
-        if (imageFilePath != null && !imageFilePath.isEmpty()) {
-            if (rotationDegrees != 90 && rotationDegrees != 270) {
-                scaleY *= -1;
-            } else {
-                scaleX *= -1;
-            }
-            refreshTransformedPreview();
+        if (svgMode || imageFilePath == null || imageFilePath.isEmpty()) {
+            return;
         }
+        if (rotationDegrees != 90 && rotationDegrees != 270) {
+            scaleY *= -1;
+        } else {
+            scaleX *= -1;
+        }
+        refreshTransformedPreview();
     }
 
     private void refreshTransformedPreview() {
         if (imageFilePath == null) return;
-        binding.imgSelected.setImageBitmap(
-                iB.a(iB.a(iB.a(imageFilePath, 1024, 1024), exifOrientation),
-                        rotationDegrees, scaleX, scaleY)
-        );
+        if (svgMode) {
+            loadSvgIntoSelected(imageFilePath);
+            return;
+        }
+        Bitmap base = iB.a(imageFilePath, 1024, 1024);
+        if (base == null) {
+            // Undecodable raster file (corrupt or unknown format): never let a
+            // null bitmap crash the transform step below.
+            Log.w("ImagePreviewController", "Could not decode image: " + imageFilePath);
+            showErrorPlaceholder();
+            return;
+        }
+        Bitmap transformed = iB.a(iB.a(base, exifOrientation), rotationDegrees, scaleX, scaleY);
+        binding.imgSelected.setImageBitmap(transformed != null ? transformed : base);
+    }
+
+    /**
+     * Renders an SVG file into the selected-image box using the shared
+     * Coil/SvgDecoder pipeline (see {@link SvgUtils}).
+     */
+    private void loadSvgIntoSelected(String filePath) {
+        binding.imgSelected.setImageDrawable(null);
+        if (filePath == null || !new File(filePath).exists()) {
+            showErrorPlaceholder();
+            return;
+        }
+        if (svgUtils == null) {
+            svgUtils = new SvgUtils(context.getApplicationContext());
+        }
+        svgUtils.loadImage(binding.imgSelected, filePath);
+    }
+
+    private void showErrorPlaceholder() {
+        binding.imgSelected.setImageResource(R.drawable.ic_remove_grey600_24dp);
+    }
+
+    /** True when the given path points at an SVG file (case-insensitive). */
+    private static boolean isSvg(String path) {
+        return path != null && path.toLowerCase(Locale.ROOT).endsWith(".svg");
     }
 
     public void playEmptySelectionAnimation() {

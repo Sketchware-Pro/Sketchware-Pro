@@ -69,9 +69,11 @@ import pro.sketchware.databinding.ManageCollectionWidgetListItemBinding;
 import pro.sketchware.databinding.ManageFontListItemBinding;
 import pro.sketchware.databinding.ManageImageListItemBinding;
 import pro.sketchware.databinding.ManageSoundListItemBinding;
+import pro.sketchware.utility.SvgUtils;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public ManageCollectionBinding binding;
+    private SvgUtils svgUtils;
     private static final int REQUEST_CODE_ADD_IMAGE_DIALOG = 267;
     private static final int REQUEST_CODE_SHOW_IMAGE_DETAILS = 268;
     private static final int REQUEST_CODE_ADD_SOUND_DIALOG = 269;
@@ -687,12 +689,26 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            Glide.with(getApplicationContext())
-                    .asBitmap()
-                    .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + bean.resFullName)
-                    .centerCrop()
-                    .error(R.drawable.ic_remove_grey600_24dp)
-                    .into(new BitmapImageViewTarget(holder.image).getView());
+            String dataPath = wq.a() + File.separator + "image" + File.separator + "data" + File.separator + bean.resFullName;
+            if (bean.isSvg()) {
+                // Vector collection items need the Coil/SvgDecoder loader.
+                holder.image.setImageDrawable(null);
+                if (new File(dataPath).exists()) {
+                    if (svgUtils == null) {
+                        svgUtils = new SvgUtils(getApplicationContext());
+                    }
+                    svgUtils.loadImage(holder.image, dataPath);
+                } else {
+                    holder.image.setImageResource(R.drawable.ic_remove_grey600_24dp);
+                }
+            } else {
+                Glide.with(getApplicationContext())
+                        .asBitmap()
+                        .load(dataPath)
+                        .centerCrop()
+                        .error(R.drawable.ic_remove_grey600_24dp)
+                        .into(new BitmapImageViewTarget(holder.image).getView());
+            }
 
             holder.name.setText(bean.resName);
             holder.checkBox.setChecked(bean.isSelected);

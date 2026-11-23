@@ -37,6 +37,7 @@ import a.a.a.wq;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FrManageImageListBinding;
 import pro.sketchware.databinding.ManageImageListItemBinding;
+import pro.sketchware.utility.SvgUtils;
 
 public class CollectionImagesFragment extends qA implements View.OnClickListener {
 
@@ -63,6 +64,7 @@ public class CollectionImagesFragment extends qA implements View.OnClickListener
     private FrManageImageListBinding binding;
     private ArrayList<ProjectResourceBean> collectionImages;
     private Adapter adapter;
+    private SvgUtils svgUtils;
     private String sc_id;
 
     private Button btnImport;
@@ -191,12 +193,24 @@ public class CollectionImagesFragment extends qA implements View.OnClickListener
             ProjectResourceBean image = collectionImages.get(position);
             holder.binding.chkSelect.setVisibility(View.VISIBLE);
             holder.binding.imgNinePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
-            Glide.with(requireActivity())
-                    .asBitmap()
-                    .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + image.resFullName)
-                    .centerCrop()
-                    .error(R.drawable.ic_remove_grey600_24dp)
-                    .into(new BitmapImageViewTarget(holder.binding.img).getView());
+            String dataPath = wq.a() + File.separator + "image" + File.separator + "data" + File.separator + image.resFullName;
+            if (image.isSvg()) {
+                // SVG thumbnails need the Coil/SvgDecoder loader; Glide's bitmap
+                // pipeline can't render vector files.
+                holder.binding.img.setImageDrawable(null);
+                if (svgUtils == null) {
+                    svgUtils = new SvgUtils(requireContext());
+                    svgUtils.initImageLoader();
+                }
+                svgUtils.loadImage(holder.binding.img, dataPath);
+            } else {
+                Glide.with(requireActivity())
+                        .asBitmap()
+                        .load(dataPath)
+                        .centerCrop()
+                        .error(R.drawable.ic_remove_grey600_24dp)
+                        .into(new BitmapImageViewTarget(holder.binding.img).getView());
+            }
             holder.binding.tvImageName.setText(image.resName);
             holder.binding.chkSelect.setChecked(image.isSelected);
         }

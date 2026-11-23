@@ -36,6 +36,7 @@ import a.a.a.uq;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageCollectionImportBinding;
 import pro.sketchware.databinding.ManageImportListItemBinding;
+import pro.sketchware.utility.SvgUtils;
 
 /**
  * Unified activity for importing resources (images, sounds, fonts) from the user's collection.
@@ -91,6 +92,7 @@ public class CollectionImportActivity extends BaseAppCompatActivity {
     private ImagePreviewController imagePreviewController;
     private SoundPreviewController soundPreviewController;
     private FontPreviewController fontPreviewController;
+    private SvgUtils svgUtils;
 
     // ---------------------------------------------------------------------
     // Lifecycle
@@ -613,11 +615,27 @@ public class CollectionImportActivity extends BaseAppCompatActivity {
             }
 
             switch (resourceType) {
-                case IMAGE -> Glide.with(getApplicationContext())
-                        .load(item.resFullName)
-                        .centerCrop()
-                        .error(R.drawable.ic_remove_grey600_24dp)
-                        .into(new BitmapImageViewTarget(holder.binding.img).getView());
+                case IMAGE -> {
+                    if (item.isSvg()) {
+                        // SVG thumbnails need the Coil/SvgDecoder loader; Glide's
+                        // bitmap pipeline can't render vector files.
+                        holder.binding.img.setImageDrawable(null);
+                        if (new File(item.resFullName).exists()) {
+                            if (svgUtils == null) {
+                                svgUtils = new SvgUtils(getApplicationContext());
+                            }
+                            svgUtils.loadImage(holder.binding.img, item.resFullName);
+                        } else {
+                            holder.binding.img.setImageResource(R.drawable.ic_remove_grey600_24dp);
+                        }
+                    } else {
+                        Glide.with(getApplicationContext())
+                                .load(item.resFullName)
+                                .centerCrop()
+                                .error(R.drawable.ic_remove_grey600_24dp)
+                                .into(new BitmapImageViewTarget(holder.binding.img).getView());
+                    }
+                }
                 case SOUND -> SoundPreviewController.loadEmbeddedAlbumArt(
                         CollectionImportActivity.this, item.resFullName, holder.binding.img);
                 case FONT -> holder.binding.img.setImageResource(R.drawable.ic_mtrl_font);
