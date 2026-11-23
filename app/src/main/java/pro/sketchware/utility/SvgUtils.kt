@@ -1,6 +1,7 @@
 package pro.sketchware.utility
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.ImageView
 import androidx.core.graphics.drawable.toBitmap
@@ -9,6 +10,7 @@ import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.load
 import coil.request.ImageRequest
+import coil.target.Target
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import org.xmlpull.v1.XmlSerializer
@@ -41,9 +43,33 @@ class SvgUtils(private val context: Context) {
     fun loadImage(imageView: ImageView, filePath: String) {
         val file = File(filePath)
         if (file.exists()) {
+            // Guard against recycled RecyclerView views: tag the view with
+            // the file it currently shows and only apply results that still
+            // belong to it. A stale async result for a previous item must
+            // not land on a reused view ("image in the wrong position" on
+            // refresh).
+            imageView.tag = filePath
             val request: ImageRequest = ImageRequest.Builder(context)
                 .data(file)
-                .target(imageView)
+                .target(object : Target {
+                    override fun onStart(placeHolder: Drawable?) {
+                        if (filePath == imageView.tag) {
+                            imageView.setImageDrawable(null)
+                        }
+                    }
+
+                    override fun onSuccess(result: Drawable) {
+                        if (filePath == imageView.tag) {
+                            imageView.setImageDrawable(result)
+                        }
+                    }
+
+                    override fun onError(error: Drawable?) {
+                        if (filePath == imageView.tag) {
+                            imageView.setImageDrawable(error)
+                        }
+                    }
+                })
                 .build()
 
             imageLoader!!.enqueue(request)
