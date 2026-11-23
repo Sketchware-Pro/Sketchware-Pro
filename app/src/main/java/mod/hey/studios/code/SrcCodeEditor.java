@@ -328,7 +328,12 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         loadToolbar();
 
         UI.addSystemWindowInsetToPadding(binding.appBarLayout, true, true, true, false);
-        UI.addSystemWindowInsetToMargin(binding.editor, true, false, true, true);
+        // This activity is edge-to-edge, so its window is not resized when the soft keyboard
+        // appears. Apply the IME inset to the editor's bottom margin so the editor shrinks
+        // above the keyboard; otherwise Sora's auto-completion popup, which is clamped to
+        // the editor's bounds, would render over the keyboard (the ASd editor dialog avoids
+        // this because its window resizes with the keyboard).
+        UI.addSystemWindowInsetToMargin(binding.editor, true, false, true, true, true);
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override

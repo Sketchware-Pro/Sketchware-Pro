@@ -77,6 +77,17 @@ public class UI {
     }
 
     public static void addSystemWindowInsetToMargin(View view, boolean left, boolean top, boolean right, boolean bottom) {
+        addSystemWindowInsetToMargin(view, left, top, right, bottom, false);
+    }
+
+    /**
+     * Same as {@link #addSystemWindowInsetToMargin(View, boolean, boolean, boolean, boolean)},
+     * but when {@code ime} is true the bottom margin also accounts for the IME (keyboard) inset.
+     * Needed in edge-to-edge windows, which are not resized when the soft keyboard appears:
+     * without this, content behind the keyboard keeps its full height and popups anchored
+     * inside it (e.g. Sora's auto-completion) render over the keyboard.
+     */
+    public static void addSystemWindowInsetToMargin(View view, boolean left, boolean top, boolean right, boolean bottom, boolean ime) {
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         int initialLeft = params.leftMargin;
         int initialTop = params.topMargin;
@@ -84,12 +95,16 @@ public class UI {
         int initialBottom = params.bottomMargin;
 
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+            Insets systemInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+            Insets imeInsets = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+            // When the keyboard is shown the IME inset covers (and exceeds) the nav bar
+            // inset, so take the max instead of summing.
+            int bottomInset = ime ? Math.max(systemInsets.bottom, imeInsets.bottom) : systemInsets.bottom;
             params.setMargins(
-                    initialLeft + (left ? insets.left : 0),
-                    initialTop + (top ? insets.top : 0),
-                    initialRight + (right ? insets.right : 0),
-                    initialBottom + (bottom ? insets.bottom : 0)
+                    initialLeft + (left ? systemInsets.left : 0),
+                    initialTop + (top ? systemInsets.top : 0),
+                    initialRight + (right ? systemInsets.right : 0),
+                    initialBottom + (bottom ? bottomInset : 0)
             );
             view.requestLayout();
             return windowInsets;
