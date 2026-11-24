@@ -146,7 +146,7 @@ public class OldResourceIdMapper {
             case 2131165345 -> R.drawable.bg_outline;
             case 2131165346 -> R.drawable.bg_outline_album;
             case 2131165347 -> R.drawable.bg_outline_bottom_corner;
-            case 2131165348 -> R.drawable.bg_outline_dark_yellow;
+            case 2131165348 -> R.drawable.bg_outline_primary;
             case 2131165349 -> R.drawable.bg_outline_edittext;
             case 2131165350 -> R.drawable.bg_outline_green;
             case 2131165351 -> R.drawable.bg_outline_orange;

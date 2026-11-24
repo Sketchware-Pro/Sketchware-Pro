@@ -607,7 +607,7 @@ public class CollectionImportActivity extends BaseAppCompatActivity {
                             : R.drawable.ic_ok_48dp);
 
             if (position == selectedIndex) {
-                holder.binding.img.setBackgroundResource(R.drawable.bg_outline_dark_yellow);
+                holder.binding.img.setBackgroundResource(R.drawable.bg_outline_primary);
             } else if (resourceType == ResourceType.FONT) {
                 holder.binding.img.setBackgroundResource(R.drawable.bg_outline);
             } else {

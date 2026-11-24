@@ -15,7 +15,7 @@
             android:id="@+id/img"
             android:layout_width="52dp"
             android:layout_height="52dp"
-            tools:background="@drawable/bg_outline_dark_yellow"
+            tools:background="@drawable/bg_outline_primary"
             tools:src="@tools:sample/avatars" />
 
         <ImageView
