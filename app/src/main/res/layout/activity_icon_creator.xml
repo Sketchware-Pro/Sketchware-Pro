@@ -763,7 +763,7 @@
                         <LinearLayout
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:background="@drawable/ic_mtrl_arrow_left"
+                            android:background="@drawable/ic_mtrl_arrow_left2"
                             android:backgroundTint="?attr/colorPrimary" />
 
                         <com.google.android.material.slider.Slider
@@ -940,7 +940,7 @@
                         <LinearLayout
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:background="@drawable/ic_mtrl_arrow_left"
+                            android:background="@drawable/ic_mtrl_arrow_left2"
                             android:backgroundTint="?attr/colorPrimary" />
 
                         <com.google.android.material.slider.Slider

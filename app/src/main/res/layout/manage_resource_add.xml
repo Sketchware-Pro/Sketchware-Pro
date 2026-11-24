@@ -19,6 +19,64 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp" />
 
+        <!-- Multiple images picked at once: count on top, prev/next arrows
+             flanking the image, naming happens in the field below. -->
+        <LinearLayout
+            android:id="@+id/layout_multi_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_multi_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="1 / 5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/btn_prev_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_mtrl_arrow_left"
+                    app:tint="?attr/colorControlNormal" />
+
+                <!-- Dynamic image preview (import mode) is inflated into this container -->
+                <FrameLayout
+                    android:id="@+id/multi_preview_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/btn_next_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_mtrl_arrow_right"
+                    app:tint="?attr/colorControlNormal" />
+            </LinearLayout>
+        </LinearLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ti_input"
             android:layout_width="match_parent"
@@ -34,6 +92,14 @@
                 android:lines="1"
                 android:privateImeOptions="defaultInputmode=english;" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/chk_samename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/chk_collection"

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +26,14 @@ import com.besome.sketch.editor.manage.common.preview.ImagePreviewController;
 import com.besome.sketch.editor.manage.common.preview.SoundPreviewController;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import a.a.a.By;
 import a.a.a.HB;
@@ -85,6 +90,16 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
     private boolean multipleImagesPicked = false;
     private boolean newImagePicked = false;
     private ProjectResourceBean editingImageBean = null;
+
+    // Multi-image state: one editable draft name per picked image, plus the
+    // optional common base name applied to all of them.
+    private static final Pattern MULTI_NAME_PATTERN = Pattern.compile("^[a-z][a-z0-9_]*");
+    private ArrayList<String> multiDraftNames;
+    private ArrayList<String> multiNames;
+    private String multiCommonBaseName = null;
+    private boolean multiUsingCommonBaseName = false;
+    private int multiSelectedIndex = 0;
+    private ImagePreviewController multiPreviewController;
 
     // Sound state
     private Uri soundUri = null;
@@ -247,6 +262,65 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
             new oB().f(dirPath);
         }
         savedImagesResult = new ArrayList<>();
+
+        // Multi-image selection: navigate the picked images and rename them
+        // individually, or apply one common base name to all of them.
+        binding.btnPrevImage.setOnClickListener(v -> navigateMultiImage(-1));
+        binding.btnNextImage.setOnClickListener(v -> navigateMultiImage(1));
+        binding.chkSamename.setText(R.string.design_manager_image_title_apply_same_naming);
+        binding.chkSamename.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!multipleImagesPicked) {
+                return;
+            }
+            if (isChecked) {
+                showMultiCommonNameDialog();
+                multiUsingCommonBaseName = true;
+                // Restore the cached base name; the very first use starts
+                // out empty. The value is kept across navigation and
+                // check/uncheck, mirroring CollectionImportActivity.
+                String cached = multiCommonBaseName != null ? multiCommonBaseName : "";
+                binding.edInput.setText(cached);
+                if (imageValidator != null) {
+                    // Re-validate as a base name (base_1..base_N check).
+                    imageValidator.b(cached);
+                }
+            } else {
+                multiUsingCommonBaseName = false;
+                // Keep the cached base name so re-checking restores it.
+                binding.edInput.setText(
+                        multiDraftNames != null ? multiDraftNames.get(multiSelectedIndex) : "");
+                applyMultiNameError();
+            }
+        });
+
+        // Per-item names are validated in-house; the watcher is registered
+        // after the PB validator so its verdict overrides the validator's
+        // single-base-name check.
+        binding.edInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!multipleImagesPicked) {
+                    return;
+                }
+                String text = s.toString().trim();
+                if (multiUsingCommonBaseName) {
+                    // The shared base name is validated by the PB validator's
+                    // base_1..base_N check; keep its error state.
+                    multiCommonBaseName = text;
+                    return;
+                }
+                multiDraftNames.set(multiSelectedIndex, text);
+                applyMultiNameError();
+            }
+        });
     }
 
     private void initSoundMode(Intent intent, LayoutInflater inflater) {
@@ -427,17 +501,19 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
             } else {
                 pickedImageUris = new ArrayList<>();
                 for (int i = 0; i < clipData.getItemCount(); i++) {
-                    Uri itemUri = clipData.getItemAt(i).getUri();
-                    if (i == 0) {
-                        setSingleImageFromUri(itemUri);
-                    }
-                    pickedImageUris.add(itemUri);
+                    pickedImageUris.add(clipData.getItemAt(i).getUri());
                 }
                 multipleImagesPicked = true;
-                imagePreviewController.showMultipleImagesOverlay(clipData.getItemCount());
+                multiSelectedIndex = 0;
+                multiUsingCommonBaseName = false;
+                multiCommonBaseName = null;
+                multiNames = null;
+                multiDraftNames = buildMultiDraftNames();
+                setSingleImageFromUri(pickedImageUris.get(0));
                 if (imageValidator != null) {
                     imageValidator.a(clipData.getItemCount());
                 }
+                showMultiImageMode();
             }
         }
     }
@@ -461,6 +537,268 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
     /** True when the given local path points at an SVG file. */
     private static boolean isSvgName(String name) {
         return name != null && name.toLowerCase(Locale.ROOT).endsWith(".svg");
+    }
+
+    // ---------------------------------------------------------------------
+    // Multi-image naming
+    // ---------------------------------------------------------------------
+
+    /** Seeds one editable draft name per picked image from its file name. */
+    private ArrayList<String> buildMultiDraftNames() {
+        ArrayList<String> names = new ArrayList<>(pickedImageUris.size());
+        for (Uri uri : pickedImageUris) {
+            String path = HB.a(this, uri);
+            String raw = path != null ? FileUtil.getFileNameNoExtension(path) : null;
+            if (raw == null || raw.isEmpty()) {
+                raw = "image";
+            }
+            String cleaned = raw.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9_]", "_");
+            if (cleaned.isEmpty() || !Character.isLetter(cleaned.charAt(0))) {
+                cleaned = "image" + cleaned;
+            }
+            // Keep the drafts unique so the user is not forced to fix
+            // collisions up front.
+            String unique = cleaned;
+            int suffix = 2;
+            while (names.contains(unique)) {
+                unique = cleaned + "_" + suffix++;
+            }
+            names.add(unique);
+        }
+        return names;
+    }
+
+    /** Swaps the single-image preview for the multi-image section. */
+    private void showMultiImageMode() {
+        binding.previewContainer.setVisibility(View.GONE);
+        binding.layoutMultiImage.setVisibility(View.VISIBLE);
+        binding.chkSamename.setVisibility(View.VISIBLE);
+        if (multiPreviewController == null) {
+            multiPreviewController = new ImagePreviewController(
+                    this, getLayoutInflater(), binding.multiPreviewContainer, true);
+        }
+        updateMultiImageUI();
+    }
+
+    private void navigateMultiImage(int delta) {
+        if (!multipleImagesPicked) {
+            return;
+        }
+        int next = multiSelectedIndex + delta;
+        if (next < 0 || next >= pickedImageUris.size()) {
+            return;
+        }
+        multiSelectedIndex = next;
+        updateMultiImageUI();
+    }
+
+    private void updateMultiImageUI() {
+        int count = pickedImageUris.size();
+        binding.tvMultiCount.setText((multiSelectedIndex + 1) + " / " + count);
+
+        boolean canPrev = multiSelectedIndex > 0;
+        boolean canNext = multiSelectedIndex < count - 1;
+        binding.btnPrevImage.setEnabled(canPrev);
+        binding.btnPrevImage.setAlpha(canPrev ? 1f : 0.3f);
+        binding.btnNextImage.setEnabled(canNext);
+        binding.btnNextImage.setAlpha(canNext ? 1f : 0.3f);
+
+        if (multiPreviewController != null) {
+            String path = HB.a(this, pickedImageUris.get(multiSelectedIndex));
+            if (path != null) {
+                multiPreviewController.resetTransformations();
+                multiPreviewController.loadEditableImage(path);
+                // The multi flow ignores per-image transforms, so the
+                // rotate/flip controls are not offered.
+                multiPreviewController.hideTransformControls();
+            }
+        }
+
+        String text = multiUsingCommonBaseName
+                ? (multiCommonBaseName != null ? multiCommonBaseName : "")
+                : multiDraftNames.get(multiSelectedIndex);
+        if (!text.equals(Helper.getText(binding.edInput))) {
+            binding.edInput.setText(text);
+        }
+        binding.edInput.requestFocus();
+        Editable editable = binding.edInput.getText();
+        if (editable != null) {
+            binding.edInput.setSelection(editable.length());
+        }
+        applyMultiNameError();
+    }
+
+    /**
+     * Shows or clears the name error for the currently shown multi item.
+     * Common-base mode keeps the PB validator's base_1..base_N verdict;
+     * per-item mode validates the individual draft name in-house, because
+     * the PB validator only knows a single base name.
+     */
+    private void applyMultiNameError() {
+        if (!multipleImagesPicked || multiUsingCommonBaseName) {
+            return;
+        }
+        String error = getMultiNameError(Helper.getText(binding.edInput), multiSelectedIndex, false);
+        if (error != null) {
+            binding.tiInput.setErrorEnabled(true);
+            binding.tiInput.setError(error);
+        } else {
+            binding.tiInput.setErrorEnabled(false);
+            binding.tiInput.setError(null);
+        }
+    }
+
+    /**
+     * Shape-only checks (length, character set, reserved keywords). A common
+     * base name only needs these: the numbered names {@code base_1..N} are
+     * checked against existing resources separately.
+     *
+     * @return a localized error message, or {@code null} when the shape is
+     * valid.
+     */
+    private String getMultiNameShapeError(String name) {
+        if (name == null) {
+            return getString(R.string.common_message_name_unavailable);
+        }
+        String trimmed = name.trim();
+        if (trimmed.isEmpty()) {
+            return getString(R.string.common_message_name_unavailable);
+        }
+        if (trimmed.length() < 3) {
+            return getString(R.string.invalid_value_min_lenth, 3);
+        }
+        if (trimmed.length() > 70) {
+            return getString(R.string.invalid_value_max_lenth, 70);
+        }
+        if ("default_image".equals(trimmed) || "NONE".equalsIgnoreCase(trimmed)) {
+            return getString(R.string.common_message_name_unavailable);
+        }
+        if (!Character.isLetter(trimmed.charAt(0))) {
+            return getString(R.string.logic_editor_message_variable_name_must_start_letter);
+        }
+        if (!MULTI_NAME_PATTERN.matcher(trimmed).matches()) {
+            return getString(R.string.invalid_value_rule_4);
+        }
+        if (isReservedKeyword(trimmed)) {
+            return getString(R.string.logic_editor_message_reserved_keywords);
+        }
+        return null;
+    }
+
+    /**
+     * Validates one multi-pick name with the same rules as the legacy
+     * validators: 3..70 chars, lowercase identifier, no reserved keywords,
+     * no collision with existing resources, no collision with the other
+     * draft names.
+     *
+     * @return a localized error message, or {@code null} when the name is
+     * usable.
+     */
+    private String getMultiNameError(String name, int itemIndex, boolean allowDuplicates) {
+        String shapeError = getMultiNameShapeError(name);
+        if (shapeError != null) {
+            return shapeError;
+        }
+        String trimmed = name.trim();
+        if (getReservedImageNames().contains(trimmed)) {
+            return getString(R.string.common_message_name_unavailable);
+        }
+        if (!allowDuplicates && isDuplicateInMultiDrafts(trimmed, itemIndex)) {
+            return getString(R.string.common_message_name_unavailable);
+        }
+        return null;
+    }
+
+    private boolean isReservedKeyword(String name) {
+        for (String keyword : uq.b) {
+            if (name.equals(keyword)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isDuplicateInMultiDrafts(String name, int excludeIndex) {
+        if (name == null || multiDraftNames == null) {
+            return false;
+        }
+        for (int i = 0; i < multiDraftNames.size(); i++) {
+            if (i == excludeIndex) {
+                continue;
+            }
+            if (name.equals(multiDraftNames.get(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Computes the final name of every picked image. Common-base mode
+     * numbers them {@code base_1, base_2, ...}; per-item mode uses the
+     * drafts as typed. Returns {@code null} after toasting the error and
+     * navigating to the offending item when a name is not usable yet.
+     */
+    private ArrayList<String> buildMultiFinalNames() {
+        if (multiUsingCommonBaseName) {
+            String base = multiCommonBaseName != null ? multiCommonBaseName.trim() : "";
+            String baseError = getMultiNameShapeError(base);
+            if (baseError != null) {
+                bB.b(this, baseError, bB.TOAST_WARNING).show();
+                return null;
+            }
+            ArrayList<String> names = new ArrayList<>(pickedImageUris.size());
+            for (int i = 0; i < pickedImageUris.size(); i++) {
+                String name = base + "_" + (i + 1);
+                if (getReservedImageNames().contains(name)) {
+                    bB.b(this,
+                            getString(R.string.common_message_name_unavailable) + " [" + name + "]",
+                            bB.TOAST_WARNING).show();
+                    return null;
+                }
+                names.add(name);
+            }
+            return names;
+        }
+
+        ArrayList<String> names = new ArrayList<>(pickedImageUris.size());
+        for (int i = 0; i < multiDraftNames.size(); i++) {
+            String name = multiDraftNames.get(i);
+            String error = getMultiNameError(name, i, false);
+            if (error != null) {
+                // Bring the offending item into view so it can be fixed.
+                multiSelectedIndex = i;
+                updateMultiImageUI();
+                String label = (name != null && !name.trim().isEmpty())
+                        ? name.trim()
+                        : String.valueOf(i + 1);
+                bB.b(this, error + "\n[" + label + "]", bB.TOAST_WARNING).show();
+                return null;
+            }
+            names.add(name.trim());
+        }
+        // Final gate: catch any collision that survived (e.g. drafts that
+        // only differ by whitespace).
+        java.util.Set<String> seen = new java.util.HashSet<>();
+        for (String name : names) {
+            if (!seen.add(name)) {
+                bB.b(this,
+                        getString(R.string.common_message_name_unavailable) + " [" + name + "]",
+                        bB.TOAST_WARNING).show();
+                return null;
+            }
+        }
+        return names;
+    }
+
+    private void showMultiCommonNameDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.design_manager_image_title_apply_same_naming)
+                .setMessage("All selected images will share one base name and be numbered "
+                        + "automatically (base_1, base_2, ...). Unchecking restores each "
+                        + "image's individual name.")
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     private void handleSoundPickedResult(Uri uri, boolean isLocalFile) {
@@ -532,6 +870,18 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
     }
 
     private void saveImage() {
+        if (multipleImagesPicked) {
+            multiNames = buildMultiFinalNames();
+            if (multiNames == null) {
+                return;
+            }
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                k();
+                new ImageSaveAsyncTask(this, Helper.getText(binding.edInput).trim(),
+                        0, 1, 1, multiNames).execute();
+            }, 500L);
+            return;
+        }
         if (!imageValidator.b()) {
             return;
         }
@@ -546,7 +896,8 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             k();
-            new ImageSaveAsyncTask(this, imageName, rotation, flipHorizontal, flipVertical).execute();
+            new ImageSaveAsyncTask(this, imageName, rotation, flipHorizontal, flipVertical, null)
+                    .execute();
         }, 500L);
     }
 
@@ -791,15 +1142,30 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
         private final int rotation;
         private final int flipHorizontal;
         private final int flipVertical;
+        /** User-chosen final names for a multi pick, or null for the
+         * legacy {@code base_1..base_N} behaviour. */
+        private final ArrayList<String> multiNames;
 
-        public ImageSaveAsyncTask(AddResourceActivity activity, String imageName, int rotation, int flipHorizontal, int flipVertical) {
+        public ImageSaveAsyncTask(AddResourceActivity activity, String imageName, int rotation,
+                                  int flipHorizontal, int flipVertical,
+                                  ArrayList<String> multiNames) {
             super(activity.getApplicationContext());
             this.activityRef = new WeakReference<>(activity);
             this.imageName = imageName;
             this.rotation = rotation;
             this.flipHorizontal = flipHorizontal;
             this.flipVertical = flipVertical;
+            this.multiNames = multiNames;
             activity.a(this);
+        }
+
+        /** Name of the {@code index}-th picked image: the user-chosen name,
+         * or the legacy numbered fallback. */
+        private String itemImageName(int index) {
+            if (multiNames != null && index < multiNames.size()) {
+                return multiNames.get(index);
+            }
+            return imageName + "_" + (index + 1);
         }
 
         @Override
@@ -850,10 +1216,9 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
                         activity.addImagesToCollection(image);
                     } else {
                         ArrayList<ProjectResourceBean> toAdd = new ArrayList<>();
-                        int i = 0;
-                        while (i < activity.pickedImageUris.size()) {
+                        for (int i = 0; i < activity.pickedImageUris.size(); i++) {
                             Uri uri = activity.pickedImageUris.get(i);
-                            String itemImageName = imageName + "_" + (++i);
+                            String itemImageName = itemImageName(i);
                             String filePath = HB.a(activity.getApplicationContext(), uri);
                             if (filePath == null) {
                                 throw new By("Unable to read selected image");
@@ -904,10 +1269,9 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
                     }
                 } else {
                     ArrayList<ProjectResourceBean> toAdd = new ArrayList<>();
-                    int i = 0;
-                    while (i < activity.pickedImageUris.size()) {
+                    for (int i = 0; i < activity.pickedImageUris.size(); i++) {
                         Uri uri = activity.pickedImageUris.get(i);
-                        String itemImageName = imageName + "_" + (++i);
+                        String itemImageName = itemImageName(i);
                         String filePath = HB.a(activity.getApplicationContext(), uri);
                         if (filePath == null) {
                             return;
