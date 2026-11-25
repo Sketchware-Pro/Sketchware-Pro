@@ -49,9 +49,7 @@ reviews:
     docstrings:
       mode: "off"
     title:
-      mode: warning
-      requirements: |
-        Title should follow Conventional Commits: type(scope): subject (imperative lowercase subject, max 72 characters). Allowed types: feat, fix, refactor, test, docs, chore, ci, build, perf, revert.
+      mode: "off"
     description:
       mode: "off"
   tools:
