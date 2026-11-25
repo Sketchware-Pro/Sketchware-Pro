@@ -1,7 +1,6 @@
 package pro.sketchware.activities.about.adapters;
 
 import static pro.sketchware.utility.UI.advancedCorners;
-import static pro.sketchware.utility.UI.animateLayoutChanges;
 import static pro.sketchware.utility.UI.shadAnim;
 
 import android.annotation.SuppressLint;
@@ -98,16 +97,15 @@ public class ChangeLogAdapter extends RecyclerView.Adapter<ChangeLogAdapter.View
         holder.binding.icArrow.setOnClickListener(v -> holder.binding.logBackground.performClick());
 
         holder.binding.logBackground.setOnClickListener(v -> {
-            if (showingAdditionalInfoPositions.contains(position)) {
+            int adapterPosition = holder.getAdapterPosition();
+            if (adapterPosition == RecyclerView.NO_POSITION) return;
+            if (showingAdditionalInfoPositions.remove(adapterPosition)) {
                 shadAnim(holder.binding.icArrow, "rotation", 180, 220);
-                holder.binding.viewAdditionalInfo.setVisibility(View.GONE);
-                showingAdditionalInfoPositions.remove(position);
             } else {
+                showingAdditionalInfoPositions.add(adapterPosition);
                 shadAnim(holder.binding.icArrow, "rotation", 0, 220);
-                holder.binding.viewAdditionalInfo.setVisibility(View.VISIBLE);
-                showingAdditionalInfoPositions.add(position);
             }
-            animateLayoutChanges(holder.binding.logBackground);
+            notifyItemChanged(adapterPosition);
         });
 
         if (position == 0) {
