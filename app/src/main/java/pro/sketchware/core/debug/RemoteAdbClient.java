@@ -24,6 +24,7 @@ import java.security.cert.CertificateFactory;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import java.util.Locale;
 
 import io.github.muntashirakon.adb.AbsAdbConnectionManager;
 
@@ -34,6 +35,7 @@ final class RemoteAdbClient extends AbsAdbConnectionManager {
 
     @SuppressWarnings("deprecation")
     RemoteAdbClient(Context context) throws Exception {
+    Locale.setDefault(Locale.ROOT);
         AtomicFile identity = new AtomicFile(new File(context.getNoBackupFilesDir(), "remote-adb-identity"));
         if (identity.getBaseFile().exists()) {
             try (DataInputStream input = new DataInputStream(identity.openRead())) {
