@@ -43,6 +43,8 @@ reviews:
       enabled: false
     unit_tests:
       enabled: false
+    autofix:
+      enabled: false
   pre_merge_checks:
     docstrings:
       mode: "off"
