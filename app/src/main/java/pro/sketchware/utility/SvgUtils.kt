@@ -1,7 +1,6 @@
 package pro.sketchware.utility
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.ImageView
 import androidx.core.graphics.drawable.toBitmap
@@ -25,54 +24,38 @@ import kotlin.math.roundToInt
 const val SIZE_MULTIPLIER = 2
 
 class SvgUtils(private val context: Context) {
-    private var imageLoader: ImageLoader? = null
 
-    init {
-        initImageLoader()
+    companion object {
+        @Volatile
+        private var sharedImageLoader: ImageLoader? = null
+
+        fun getImageLoader(context: Context): ImageLoader {
+            return sharedImageLoader ?: synchronized(this) {
+                sharedImageLoader ?: ImageLoader.Builder(context.applicationContext)
+                    .components {
+                        add(SvgDecoder.Factory())
+                    }
+                    .build().also { sharedImageLoader = it }
+            }
+        }
     }
+
+    private val imageLoader: ImageLoader
+        get() = getImageLoader(context)
 
     fun initImageLoader() {
-        imageLoader = ImageLoader.Builder(context)
-            .components {
-                add(SvgDecoder.Factory())
-            }
-            .build()
+        // No-op for backwards compatibility, shared loader is lazily initialized
     }
-
 
     fun loadImage(imageView: ImageView, filePath: String) {
         val file = File(filePath)
         if (file.exists()) {
-            // Guard against recycled RecyclerView views: tag the view with
-            // the file it currently shows and only apply results that still
-            // belong to it. A stale async result for a previous item must
-            // not land on a reused view ("image in the wrong position" on
-            // refresh).
-            imageView.tag = filePath
             val request: ImageRequest = ImageRequest.Builder(context)
                 .data(file)
-                .target(object : Target {
-                    override fun onStart(placeHolder: Drawable?) {
-                        if (filePath == imageView.tag) {
-                            imageView.setImageDrawable(null)
-                        }
-                    }
-
-                    override fun onSuccess(result: Drawable) {
-                        if (filePath == imageView.tag) {
-                            imageView.setImageDrawable(result)
-                        }
-                    }
-
-                    override fun onError(error: Drawable?) {
-                        if (filePath == imageView.tag) {
-                            imageView.setImageDrawable(error)
-                        }
-                    }
-                })
+                .target(imageView)
                 .build()
 
-            imageLoader!!.enqueue(request)
+            imageLoader.enqueue(request)
         }
     }
 
@@ -85,7 +68,7 @@ class SvgUtils(private val context: Context) {
                 .target(imageView)
                 .build()
 
-            imageLoader!!.enqueue(request)
+            imageLoader.enqueue(request)
         }
     }
 
