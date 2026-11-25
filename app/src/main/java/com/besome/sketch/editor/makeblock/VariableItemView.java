@@ -100,28 +100,28 @@ public class VariableItemView extends LinearLayout {
     }
 
     private void initializeComponentItems() {
-        componentsVariableList.add(new VariableItem("m", "intent", R.drawable.widget_intent));
-        componentsVariableList.add(new VariableItem("m", "file", R.drawable.widget_shared_preference));
-        componentsVariableList.add(new VariableItem("m", "calendar", R.drawable.widget_calendar));
-        componentsVariableList.add(new VariableItem("m", "vibrator", R.drawable.widget_vibrator));
-        componentsVariableList.add(new VariableItem("m", "timer", R.drawable.widget_timer));
-        componentsVariableList.add(new VariableItem("m", "dialog", R.drawable.widget_alertdialog));
-        componentsVariableList.add(new VariableItem("m", "mediaplayer", R.drawable.widget_mediaplayer));
-        componentsVariableList.add(new VariableItem("m", "soundpool", R.drawable.widget_soundpool));
-        componentsVariableList.add(new VariableItem("m", "objectanimator", R.drawable.widget_objectanimator));
-        componentsVariableList.add(new VariableItem("m", "firebase", R.drawable.widget_firebase));
-        componentsVariableList.add(new VariableItem("m", "firebaseauth", R.drawable.widget_firebase));
-        componentsVariableList.add(new VariableItem("m", "firebasestorage", R.drawable.widget_firebase));
-        componentsVariableList.add(new VariableItem("m", "camera", R.drawable.widget_camera));
-        componentsVariableList.add(new VariableItem("m", "filepicker", R.drawable.widget_file));
-        componentsVariableList.add(new VariableItem("m", "requestnetwork", R.drawable.widget_network_request));
-        componentsVariableList.add(new VariableItem("m", "texttospeech", R.drawable.widget_text_to_speech));
-        componentsVariableList.add(new VariableItem("m", "speechtotext", R.drawable.widget_speech_to_text));
-        componentsVariableList.add(new VariableItem("m", "locationmanager", R.drawable.widget_location));
-        componentsVariableList.add(new VariableItem("m", "videoad", R.drawable.widget_media_controller));
-        componentsVariableList.add(new VariableItem("m", "progressdialog", R.drawable.widget_progress_dialog));
-        componentsVariableList.add(new VariableItem("m", "timepickerdialog", R.drawable.widget_timer));
-        componentsVariableList.add(new VariableItem("m", "notification", R.drawable.widget_notification));
+        componentsVariableList.add(new VariableItem("m", "intent", R.drawable.ic_mtrl_version_control));
+        componentsVariableList.add(new VariableItem("m", "file", R.drawable.ic_mtrl_save));
+        componentsVariableList.add(new VariableItem("m", "calendar", R.drawable.ic_mtrl_calendar));
+        componentsVariableList.add(new VariableItem("m", "vibrator", R.drawable.ic_mtrl_vibration));
+        componentsVariableList.add(new VariableItem("m", "timer", R.drawable.ic_mtrl_clock));
+        componentsVariableList.add(new VariableItem("m", "dialog", R.drawable.ic_mtrl_dialog));
+        componentsVariableList.add(new VariableItem("m", "mediaplayer", R.drawable.ic_mtrl_video));
+        componentsVariableList.add(new VariableItem("m", "soundpool", R.drawable.ic_mtrl_volume));
+        componentsVariableList.add(new VariableItem("m", "objectanimator", R.drawable.ic_mtrl_animation));
+        componentsVariableList.add(new VariableItem("m", "firebase", R.drawable.ic_mtrl_firebase_rtdb));
+        componentsVariableList.add(new VariableItem("m", "firebaseauth", R.drawable.ic_mtrl_firebase_auth));
+        componentsVariableList.add(new VariableItem("m", "firebasestorage", R.drawable.ic_mtrl_firebase_storage));
+        componentsVariableList.add(new VariableItem("m", "camera", R.drawable.ic_mtrl_camera));
+        componentsVariableList.add(new VariableItem("m", "filepicker", R.drawable.ic_mtrl_file));
+        componentsVariableList.add(new VariableItem("m", "requestnetwork", R.drawable.ic_mtrl_wifi));
+        componentsVariableList.add(new VariableItem("m", "texttospeech", R.drawable.ic_mtrl_tts));
+        componentsVariableList.add(new VariableItem("m", "speechtotext", R.drawable.ic_mtrl_stt));
+        componentsVariableList.add(new VariableItem("m", "locationmanager", R.drawable.ic_mtrl_location));
+        componentsVariableList.add(new VariableItem("m", "videoad", R.drawable.ic_mtrl_ad));
+        componentsVariableList.add(new VariableItem("m", "progressdialog", R.drawable.ic_mtrl_progress));
+        componentsVariableList.add(new VariableItem("m", "timepickerdialog", R.drawable.ic_mtrl_time));
+        componentsVariableList.add(new VariableItem("m", "notification", R.drawable.ic_mtrl_notifications));
     }
 
     private void initialize(Activity activity) {
@@ -181,36 +181,36 @@ public class VariableItemView extends LinearLayout {
     }
 
     private void initializeVariableItems() {
-        variableItems.add(new VariableItem("b", "", R.drawable.ic_true_false_color_48dp));
-        variableItems.add(new VariableItem("d", "", R.drawable.numbers_48));
+        variableItems.add(new VariableItem("b", "", R.drawable.ic_mtrl_checklist));
+        variableItems.add(new VariableItem("d", "", R.drawable.ic_mtrl_numbers));
         variableItems.add(new VariableItem("s", "", R.drawable.abc_96_color));
         variableItems.add(new VariableItem("m", "varMap", R.drawable.ic_map_color_48dp));
-        variableItems.add(new VariableItem("m", "listInt", R.drawable.ic_list_color_48dp));
-        variableItems.add(new VariableItem("m", "listStr", R.drawable.ic_list_color_48dp));
-        variableItems.add(new VariableItem("m", "listMap", R.drawable.ic_list_color_48dp));
+        variableItems.add(new VariableItem("m", "listInt", R.drawable.ic_mtrl_list));
+        variableItems.add(new VariableItem("m", "listStr", R.drawable.ic_mtrl_list));
+        variableItems.add(new VariableItem("m", "listMap", R.drawable.ic_mtrl_list));
     }
 
     private void initializeViewsItems() {
-        viewsVariableList.add(new VariableItem("m", "view", R.drawable.layout_48));
-        viewsVariableList.add(new VariableItem("m", "textview", R.drawable.widget_text_view));
-        viewsVariableList.add(new VariableItem("m", "imageview", R.drawable.widget_image_view));
-        viewsVariableList.add(new VariableItem("m", "checkbox", R.drawable.widget_check_box));
-        viewsVariableList.add(new VariableItem("m", "switch", R.drawable.widget_switch));
-        viewsVariableList.add(new VariableItem("m", "listview", R.drawable.widget_list_view));
-        viewsVariableList.add(new VariableItem("m", "spinner", R.drawable.widget_spinner));
-        viewsVariableList.add(new VariableItem("m", "webview", R.drawable.widget_web_view));
-        viewsVariableList.add(new VariableItem("m", "seekbar", R.drawable.widget_seek_bar));
-        viewsVariableList.add(new VariableItem("m", "progressbar", R.drawable.widget_progress_bar));
-        viewsVariableList.add(new VariableItem("m", "calendarview", R.drawable.widget_calendar));
-        viewsVariableList.add(new VariableItem("m", "radiobutton", R.drawable.widget_radio_button));
-        viewsVariableList.add(new VariableItem("m", "ratingbar", R.drawable.star_filled));
-        viewsVariableList.add(new VariableItem("m", "videoview", R.drawable.widget_mediaplayer));
-        viewsVariableList.add(new VariableItem("m", "searchview", R.drawable.ic_search_color_96dp));
-        viewsVariableList.add(new VariableItem("m", "gridview", R.drawable.grid_3_48));
-        viewsVariableList.add(new VariableItem("m", "actv", R.drawable.widget_edit_text));
-        viewsVariableList.add(new VariableItem("m", "mactv", R.drawable.widget_edit_text));
-        viewsVariableList.add(new VariableItem("m", "viewpager", R.drawable.widget_relative_layout));
-        viewsVariableList.add(new VariableItem("m", "badgeview", R.drawable.pro_account_100dp_primary));
+        viewsVariableList.add(new VariableItem("m", "view", R.drawable.ic_mtrl_interface));
+        viewsVariableList.add(new VariableItem("m", "textview", R.drawable.ic_mtrl_formattext));
+        viewsVariableList.add(new VariableItem("m", "imageview", R.drawable.ic_mtrl_image));
+        viewsVariableList.add(new VariableItem("m", "checkbox", R.drawable.ic_mtrl_checkbox));
+        viewsVariableList.add(new VariableItem("m", "switch", R.drawable.ic_mtrl_toggle));
+        viewsVariableList.add(new VariableItem("m", "listview", R.drawable.ic_mtrl_list));
+        viewsVariableList.add(new VariableItem("m", "spinner", R.drawable.ic_mtrl_spinner));
+        viewsVariableList.add(new VariableItem("m", "webview", R.drawable.ic_mtrl_web));
+        viewsVariableList.add(new VariableItem("m", "seekbar", R.drawable.ic_mtrl_seekbar));
+        viewsVariableList.add(new VariableItem("m", "progressbar", R.drawable.ic_mtrl_progress_bar));
+        viewsVariableList.add(new VariableItem("m", "calendarview", R.drawable.ic_mtrl_calendar));
+        viewsVariableList.add(new VariableItem("m", "radiobutton", R.drawable.ic_mtrl_radio_btn));
+        viewsVariableList.add(new VariableItem("m", "ratingbar", R.drawable.ic_mtrl_star));
+        viewsVariableList.add(new VariableItem("m", "videoview", R.drawable.ic_mtrl_video));
+        viewsVariableList.add(new VariableItem("m", "searchview", R.drawable.ic_mtrl_search));
+        viewsVariableList.add(new VariableItem("m", "gridview", R.drawable.ic_mtrl_grid));
+        viewsVariableList.add(new VariableItem("m", "actv", R.drawable.ic_mtrl_edittext));
+        viewsVariableList.add(new VariableItem("m", "mactv", R.drawable.ic_mtrl_edittext));
+        viewsVariableList.add(new VariableItem("m", "viewpager", R.drawable.ic_mtrl_viewpager));
+        viewsVariableList.add(new VariableItem("m", "badgeview", R.drawable.ic_mtrl_badge));
     }
 
     public Pair<String, String> getSelectedItem() {
