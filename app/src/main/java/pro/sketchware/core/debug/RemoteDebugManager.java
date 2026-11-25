@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Locale;
 
 import io.github.muntashirakon.adb.AdbStream;
 import pro.sketchware.R;
@@ -233,6 +234,8 @@ public final class RemoteDebugManager {
         failed = false;
         notifyChanged();
         worker.execute(() -> {
+        Locale _prev = Locale.getDefault();
+        Locale.setDefault(Locale.ROOT);
             var timeout = timer.schedule(() -> {
                 timedOut = true;
                 AdbSocketBridge active = bridge;
@@ -252,10 +255,11 @@ public final class RemoteDebugManager {
                 setStatus(context.getString(R.string.remote_debug_error, reason));
                 append(status);
             } finally {
+            Locale.setDefault(_prev);
                 timeout.cancel(false);
                 busy.set(false);
                 notifyChanged();
-                main.post(this::maybeReconnect);
+                main.post(this::maybeReconnect);          
             }
         });
         return true;
