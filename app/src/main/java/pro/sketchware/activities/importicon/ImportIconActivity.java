@@ -145,6 +145,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
 
         binding.imageList.setLayoutManager(new SafeGridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
+        binding.imageList.setHasFixedSize(true);
+        binding.imageList.setItemViewCacheSize(20);
+        binding.imageList.getRecycledViewPool().setMaxRecycledViews(0, 30);
         adapter = new IconAdapter(this, selected_icon_type, selected_color, this);
         binding.imageList.setAdapter(adapter);
         k();
@@ -235,7 +238,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         icons = new ArrayList<>();
         currentPage = 0; // Reset currentPage to zero
         isLastPage = false;
-        Log.d("icons", allIconPaths.toString());
+        Log.d("icons", "Found " + allIconPaths.size() + " icons");
         runOnUiThread(this::loadMoreItems);
     }
 
