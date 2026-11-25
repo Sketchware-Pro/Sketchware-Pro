@@ -40,6 +40,8 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigationrail.NavigationRailView;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,8 +70,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     private TextView noEvents;
     private MaterialButton importMoreBlockFromCollection;
     private String sc_id;
-    private EditText searchInput;
-    private ImageView sortMenuIcon;
+    private TextInputEditText searchInput;
+    private TextInputLayout searchEventsBox;
     private View searchContainer;
     private final ActivityResultLauncher<Intent> addEventLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> refreshEvents());
@@ -239,9 +241,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     private void initialize(ViewGroup parent) {
         noEvents = parent.findViewById(R.id.tv_no_events);
         RecyclerView eventList = parent.findViewById(R.id.event_list);
+        searchEventsBox = parent.findViewById(R.id.search_container);
+        searchContainer = searchEventsBox;
         searchInput = parent.findViewById(R.id.search_events);
-        sortMenuIcon = parent.findViewById(R.id.sort_menu);
-        searchContainer = parent.findViewById(R.id.search_container);
         paletteView = parent.findViewById(R.id.palette);
         paletteView.setOnItemSelectedListener(
                 item -> {
@@ -295,8 +297,8 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             public void afterTextChanged(Editable s) {}
         });
 
-        sortMenuIcon.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(requireContext(), sortMenuIcon);
+        searchEventsBox.setEndIconOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(requireContext(), v);
             popup.getMenuInflater().inflate(R.menu.logic_sort_menu, popup.getMenu());
             popup.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
@@ -311,6 +313,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             });
             popup.show();
         });
+    }
+
+    public boolean isSearchBarVisible() {
+        return searchContainer != null && searchContainer.getVisibility() == View.VISIBLE;
     }
 
     public void toggleSearchBar() {
@@ -331,6 +337,19 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             if (imm != null) {
                 imm.showSoftInput(searchInput, InputMethodManager.SHOW_IMPLICIT);
             }
+        }
+    }
+
+    public void hideSearchKeyboard() {
+        if (searchInput == null || getView() == null) {
+            return;
+        }
+        if (searchInput.hasFocus()) {
+            searchInput.clearFocus();
+        }
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         }
     }
 

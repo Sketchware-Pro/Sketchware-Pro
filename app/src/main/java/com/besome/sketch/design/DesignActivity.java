@@ -633,6 +633,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 }
                 refresh();
                 currentTabNumber = position;
+                if (position != 1 && eventTabAdapter != null) {
+                    eventTabAdapter.hideSearchKeyboard();
+                }
                 invalidateOptionsMenu();
             }
         });
@@ -701,6 +704,22 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem searchItem = menu.findItem(R.id.design_option_menu_search);
+        if (searchItem != null) {
+            searchItem.setVisible(currentTabNumber == 1);
+            updateSearchMenuItem(searchItem);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void updateSearchMenuItem(MenuItem item) {
+        boolean expanded = eventTabAdapter != null && eventTabAdapter.isSearchBarVisible();
+        item.setIcon(expanded ? R.drawable.ic_mtrl_close : R.drawable.ic_mtrl_search);
+        item.setTitle(expanded ? R.string.common_word_close : R.string.logic_search_events);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.design_actionbar_titleopen_drawer) {
@@ -712,6 +731,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         } else if (itemId == R.id.design_option_menu_search) {
             if (eventTabAdapter != null) {
                 eventTabAdapter.toggleSearchBar();
+                updateSearchMenuItem(item);
+                invalidateOptionsMenu();
             }
             return true;
         }
