@@ -24,6 +24,7 @@ import java.security.cert.CertificateFactory;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import java.util.Locale;
 
 import io.github.muntashirakon.adb.AbsAdbConnectionManager;
 
@@ -33,7 +34,10 @@ final class RemoteAdbClient extends AbsAdbConnectionManager {
     private final Certificate certificate;
 
     @SuppressWarnings("deprecation")
-    RemoteAdbClient(Context context) throws Exception {
+RemoteAdbClient(Context context) throws Exception {
+    Locale _prev = Locale.getDefault();
+    Locale.setDefault(Locale.ROOT);
+    try {
         AtomicFile identity = new AtomicFile(new File(context.getNoBackupFilesDir(), "remote-adb-identity"));
         if (identity.getBaseFile().exists()) {
             try (DataInputStream input = new DataInputStream(identity.openRead())) {
@@ -73,7 +77,10 @@ final class RemoteAdbClient extends AbsAdbConnectionManager {
         setApi(30);
         setTimeout(15, TimeUnit.SECONDS);
         setThrowOnUnauthorised(true);
+    } finally {
+        Locale.setDefault(_prev);
     }
+}
 
     private static byte[] readBytes(DataInputStream input) throws java.io.IOException {
         int size = input.readInt();
