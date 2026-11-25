@@ -12,6 +12,8 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Locale;
+
 import a.a.a.RB;
 import a.a.a.SB;
 import a.a.a.VB;
@@ -141,10 +143,10 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         if (!super.isStoragePermissionGranted()) {
             finish();
         }
-
         binding = KeystoreNewBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
+        setContentView(binding.getRoot());     
+        Locale.setDefault(Locale.ROOT);
+        
         Toolbar toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
