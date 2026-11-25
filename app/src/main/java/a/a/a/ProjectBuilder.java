@@ -81,6 +81,7 @@ import pro.sketchware.util.library.BuiltInLibraryManager;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.StringFogRuntime;
 import proguard.Configuration;
 import proguard.ConfigurationParser;
 import proguard.ParseException;
@@ -452,6 +453,14 @@ public class ProjectBuilder {
      */
     public void compileJavaCode() throws zy, IOException {
         long savedTimeMillis = System.currentTimeMillis();
+
+        if (new StringfogHandler(yq.sc_id).isStringfogEnabled()) {
+            try {
+                StringFogRuntime.writeToJavaSourceDir(new File(yq.javaFilesPath));
+            } catch (IOException e) {
+                throw new IOException("Failed to generate the StringFog runtime", e);
+            }
+        }
 
         class EclipseOutOutputStream extends OutputStream {
 
@@ -1069,7 +1078,12 @@ public class ProjectBuilder {
             File mappingFile = new File(yq.binDirectoryPath, "stringFogMapping.txt");
             File compiledClassesDir = new File(yq.compiledClassesPath);
             StringFogInjector.processDirectory(compiledClassesDir, mappingFile);
-            KB.a(context, "stringfog/stringfog.zip", yq.compiledClassesPath);
+            /*
+             * Do not extract stringfog.zip here: it contains a legacy runtime whose
+             * decrypt(String, String) uses the key argument as a plain string, while
+             * StringFog core 5.2.0 passes a Base64-encoded key. The matching runtime is
+             * generated into the project's sources by StringFogRuntime before compiling.
+             */
         } catch (Exception e) {
             LogUtil.e("StringFog", "Failed to run StringFog", e);
         }
