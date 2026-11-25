@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://www.coderabbit.ai/integrations/schema.v2.json
+language: en-US
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_in_walkthrough: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: true
+  sequence_diagrams: false
+  changed_files_summary: true
+  suggested_labels: false
+  suggested_reviewers: false
+  auto_apply_labels: false
+  path_filters:
+    - "!**/build/**"
+    - "!.gradle/**"
+    - "!gradle/wrapper/**"
+    - "!app/src/main/assets/**"
+    - "!app/libs/**"
+    - "!testkey.keystore"
+  path_instructions:
+    - path: "app/src/main/java/**"
+      instructions: |
+        This is an Android Java/Kotlin codebase targeting minSdk 26 and targetSdk 28 with compileSdk 37 and Java 17.
+        Flag potential memory leaks (static Activity/View/Context references), main-thread blocking I/O, unclosed streams/cursors (prefer try-with-resources), and null-pointer hazards.
+        Respect existing legacy decompiled/mod package boundaries under `com.besome`, `a.a`, and `mod.*` without suggesting sweeping rewrites unrelated to the PR.
+    - path: "app/src/main/res/**"
+      instructions: |
+        Check Android XML resources for hardcoded user-facing strings, missing contentDescription on ImageView/ImageButton, and night-mode (`values-night`) theme consistency.
+    - path: "{build.gradle,app/build.gradle,settings.gradle,gradle/libs.versions.toml,app/proguard-rules.pro}"
+      instructions: |
+        Verify Gradle/AGP 9.x and Java 17 compatibility, dependency catalog alignment in `libs.versions.toml`, and R8/ProGuard keep rules when release minification is enabled.
+    - path: ".github/workflows/**"
+      instructions: |
+        Check GitHub Actions workflows for least-privilege permissions, safe handling of secrets/env vars, and reliable build/artifact steps.
+  auto_review:
+    enabled: true
+    drafts: false
+  finishing_touches:
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
+  pre_merge_checks:
+    docstrings:
+      mode: "off"
+    title:
+      mode: warning
+      requirements: |
+        Title should follow Conventional Commits: type(scope): subject (imperative lowercase subject, max 72 characters). Allowed types: feat, fix, refactor, test, docs, chore, ci, build, perf, revert.
+    description:
+      mode: "off"
+  tools:
+    gitleaks:
+      enabled: true
+    yamllint:
+      enabled: true
+    actionlint:
+      enabled: true
+    markdownlint:
+      enabled: false
+chat:
+  art: false
+  auto_reply: true
+knowledge_base:
+  opt_out: false
+  learnings:
+    scope: local
+  pull_requests:
+    scope: local
