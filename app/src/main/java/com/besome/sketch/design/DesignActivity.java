@@ -104,9 +104,8 @@ import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.custom_blocks.CustomBlocksDialog;
-import mod.hey.studios.project.proguard.ManageProguardActivity;
+import pro.sketchware.activities.settings.CodeShrinkingActivity;
 import mod.hey.studios.project.proguard.ProguardHandler;
-import mod.hey.studios.project.stringfog.ManageStringFogFragment;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.SystemLogPrinter;
@@ -404,7 +403,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                             }
                         } else {
                             String sharedErrorMessage = "Failed to install package, result code: " + result.getCode() + ". ";
-                            SketchwareUtil.toastError(sharedErrorMessage + "Logs are available in /Internal storage/.sketchware/debug.txt", Toast.LENGTH_LONG);
+                            if (new ProguardHandler(sc_id).isDebugModeEnabled()) {
+                                sharedErrorMessage += "Logs: /Internal storage/.sketchware/debug.txt";
+                            }
+                            SketchwareUtil.toastError(sharedErrorMessage, Toast.LENGTH_LONG);
                             LogUtil.e("DesignActivity", sharedErrorMessage + "stdout: " + stdout + ", stderr: " + stderr);
                         }
                     });
@@ -1044,10 +1046,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     /**
-     * Opens {@link ManageProguardActivity}.
+     * Opens the unified code shrinking and obfuscation screen.
      */
-    void toProguardManager() {
-        launchActivity(ManageProguardActivity.class, null);
+    void toCodeShrinkingManager() {
+        launchActivity(CodeShrinkingActivity.class, null);
     }
 
     /**
@@ -1062,17 +1064,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      */
     void toResourceEditor() {
         launchActivity(ResourcesEditorActivity.class, openResourcesManager);
-    }
-
-    /**
-     * Opens {@link ManageStringFogFragment}.
-     */
-    void toStringFogManager() {
-        var fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.findFragmentByTag("stringFogFragment") == null) {
-            var bottomSheet = new ManageStringFogFragment();
-            bottomSheet.show(fragmentManager, "stringFogFragment");
-        }
     }
 
     /**

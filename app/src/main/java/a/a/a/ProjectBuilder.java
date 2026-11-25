@@ -117,7 +117,12 @@ public class ProjectBuilder {
                 .build()
         );
 
-        SystemLogPrinter.start();
+        proguard = new ProguardHandler(yqVar.sc_id);
+        boolean debugMode = proguard.isDebugModeEnabled();
+        LogUtil.setLoggingEnabled(debugMode);
+        if (debugMode) {
+            SystemLogPrinter.start();
+        }
 
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -141,7 +146,6 @@ public class ProjectBuilder {
         builtInLibraryManager = new BuiltInLibraryManager(yqVar.sc_id);
         File defaultAndroidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
         androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
-        proguard = new ProguardHandler(yqVar.sc_id);
         settings = new ProjectSettings(yqVar.sc_id);
     }
 
@@ -1041,14 +1045,6 @@ public class ProjectBuilder {
         args.add(getProguardClasspath());
         args.add("-outjars");
         args.add(yq.proguardClassesPath);
-        if (proguard.isDebugFilesEnabled()) {
-            args.add("-printseeds");
-            args.add(yq.proguardSeedsPath);
-            args.add("-printusage");
-            args.add(yq.proguardUsagePath);
-            args.add("-printmapping");
-            args.add(yq.proguardMappingPath);
-        }
         LogUtil.d(TAG, "About to run ProGuard with these arguments: " + args);
 
         Configuration configuration = new Configuration();

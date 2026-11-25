@@ -1,5 +1,8 @@
 package mod.hey.studios.project.proguard;
 
+import android.app.ActivityManager;
+import android.content.Context;
+
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -11,6 +14,7 @@ import java.util.Set;
 import a.a.a.ProjectBuilder;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
+import pro.sketchware.SketchApplication;
 import pro.sketchware.utility.FileUtil;
 
 public class ProguardHandler {
@@ -182,6 +186,47 @@ public class ProguardHandler {
             FileUtil.writeFile(path, existing + separator + missing);
         }
     }
+    /**
+     * Global build logging switch. Replaces the old ProGuard-only "generate debug files" option.
+     */
+    public boolean isDebugModeEnabled() {
+        return isDebugFilesEnabled();
+    }
+
+    public void setDebugModeEnabled(boolean enabled) {
+        setDebugEnabled(enabled);
+    }
+
+    public void setOptimizeEnabled(boolean enabled) {
+        HashMap<String, String> config = readConfigOrEmpty();
+        config.put("optimize", String.valueOf(enabled));
+        FileUtil.writeFile(config_path, new Gson().toJson(config));
+    }
+
+    /**
+     * "auto" until the user picks a fixed worker count; the numeric value lives in "r8_threads".
+     */
+    public String getR8ThreadMode() {
+        return readConfigOrEmpty().containsKey("r8_threads") ? "manual" : "auto";
+    }
+
+    public void setR8ThreadMode(String mode) {
+        HashMap<String, String> config = readConfigOrEmpty();
+        if ("auto".equals(mode)) {
+            config.remove("r8_threads");
+        } else if (!config.containsKey("r8_threads")) {
+            config.put("r8_threads", "1");
+        }
+        FileUtil.writeFile(config_path, new Gson().toJson(config));
+    }
+
+    public void setR8Threads(int threads) {
+        int cores = Math.max(1, Runtime.getRuntime().availableProcessors());
+        HashMap<String, String> config = readConfigOrEmpty();
+        config.put("r8_threads", String.valueOf(Math.max(1, Math.min(threads, cores))));
+        FileUtil.writeFile(config_path, new Gson().toJson(config));
+    }
+
     public boolean isDebugFilesEnabled() {
         boolean debugFiles = true;
         if (FileUtil.isExistFile(config_path)) {
@@ -203,10 +248,9 @@ public class ProguardHandler {
         return debugFiles;
     }
 
-    //TODO: IDK why "Android Ye" added this, anyway just keeping it for now
     /**
-     * Number of threads R8 may use. Fewer threads mean less heat and less peak memory use, but a slower build.
-     * Defaults to a quarter to half of the CPU cores (at most 2), can be raised with "r8_threads" in the project's config.
+     * Number of R8 worker threads. Manual values come from "r8_threads"; automatic mode derives a safe
+     * count from the device's per-app heap class and CPU count because R8 runs inside this app's process.
      */
     public int getR8Threads() {
         int cores = Math.max(1, Runtime.getRuntime().availableProcessors());
@@ -221,10 +265,11 @@ public class ProguardHandler {
             }
         }
 
-        /* Half the cores by default is a good speed/heat balance; always leave at least 2 cores free for the UI */
-        int half = cores / 2;
-        int leaveFree = Math.max(1, cores - 2);
-        return Math.max(2, Math.min(half, leaveFree));
+        ActivityManager am = (ActivityManager) SketchApplication.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        // The app declares android:largeHeap="true", so the effective cap is the large memory class.
+        int memoryClass = am == null ? 256 : am.getLargeMemoryClass();
+        int automatic = memoryClass >= 512 ? 2 : 1;
+        return Math.min(automatic, cores);
     }
 
     public boolean isShrinkingEnabled() {
