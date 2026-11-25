@@ -81,24 +81,44 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
 
       - name: Build Release APK
+        if: github.event_name != 'pull_request'
         env:
           SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
         run: gradle assembleRelease
+
+      - name: Build Debug APK
+        if: github.event_name == 'pull_request'
+        run: gradle assembleDebug
 
       - name: Set short SHA
         id: set_sha
         run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
 
-      - name: Rename APK with commit hash
+      - name: Rename Release APK with commit hash
+        if: github.event_name != 'pull_request'
         run: |
           mv app/build/outputs/apk/release/app-release.apk \
              app/build/outputs/apk/release/app-release-${{ steps.set_sha.outputs.short_sha }}.apk
 
+      - name: Rename Debug APK with commit hash
+        if: github.event_name == 'pull_request'
+        run: |
+          mv app/build/outputs/apk/debug/app-debug.apk \
+             app/build/outputs/apk/debug/app-debug-${{ steps.set_sha.outputs.short_sha }}.apk
+
       - name: Upload Release APK
+        if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v7
         with:
           name: apk-release-${{ steps.set_sha.outputs.short_sha }}
           path: app/build/outputs/apk/release/app-release-${{ steps.set_sha.outputs.short_sha }}.apk
+
+      - name: Upload Debug APK
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v7
+        with:
+          name: apk-debug-${{ steps.set_sha.outputs.short_sha }}
+          path: app/build/outputs/apk/debug/app-debug-${{ steps.set_sha.outputs.short_sha }}.apk
 
   aggregateAndSend:
     if: github.event_name == 'push'
