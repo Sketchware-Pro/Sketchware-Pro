@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import pro.sketchware.R;
 
-public class WB extends MB {
+public class ResNameValidator extends MB {
     private static final Pattern VALID_NAME_PATTERN = Pattern.compile("^[a-z][a-z0-9_]*");
 
     public String[] f;
@@ -17,11 +17,11 @@ public class WB extends MB {
     public String h;
     public Pattern i = VALID_NAME_PATTERN;
 
-    public WB(Context context, TextInputLayout textInputLayout, String[] reservedKeywords, ArrayList<String> existingNames) {
+    public ResNameValidator(Context context, TextInputLayout textInputLayout, String[] reservedKeywords, ArrayList<String> existingNames) {
         this(context, textInputLayout, reservedKeywords, existingNames, null);
     }
 
-    public WB(Context context, TextInputLayout textInputLayout, String[] reservedKeywords, ArrayList<String> existingNames, String originalName) {
+    public ResNameValidator(Context context, TextInputLayout textInputLayout, String[] reservedKeywords, ArrayList<String> existingNames, String originalName) {
         super(context, textInputLayout);
         f = reservedKeywords;
         g = existingNames;

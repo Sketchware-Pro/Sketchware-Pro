@@ -44,7 +44,7 @@ import java.util.stream.Stream;
 
 import a.a.a.KB;
 import a.a.a.MA;
-import a.a.a.WB;
+import a.a.a.ResNameValidator;
 import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.uq;
@@ -67,7 +67,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     private static final String ICON_TYPE_ROUND = "round";
     private static final String ICON_TYPE_BASELINE = "baseline";
     private String iconName;
-    private WB iconNameValidator;
+    private ResNameValidator iconNameValidator;
     private MenuItem search;
     private SearchView searchView;
     private final OnBackPressedCallback searchViewCloser = new OnBackPressedCallback(true) {
@@ -442,7 +442,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
 
         svgUtils.loadImage(dialogBinding.icon, adapter.getCurrentList().get(iconPosition).second + File.separator + selected_icon_type + ".svg");
         dialogBinding.icon.setColorFilter(selected_color, PorterDuff.Mode.SRC_IN);
-        iconNameValidator = new WB(getApplicationContext(), dialogBinding.textInputLayout, uq.b, alreadyAddedImageNames);
+        iconNameValidator = new ResNameValidator(getApplicationContext(), dialogBinding.textInputLayout, uq.b, alreadyAddedImageNames);
         dialogBinding.licenceInfo.setOnClickListener(v -> {
             Uri webpage = Uri.parse("https://www.apache.org/licenses/LICENSE-2.0.txt");
             Intent intent = new Intent(Intent.ACTION_VIEW, webpage);

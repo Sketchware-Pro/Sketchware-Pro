@@ -42,7 +42,7 @@ import a.a.a.Np;
 import a.a.a.Op;
 import a.a.a.PB;
 import a.a.a.Qp;
-import a.a.a.WB;
+import a.a.a.ResNameValidator;
 import a.a.a.bB;
 import a.a.a.iB;
 import a.a.a.mB;
@@ -80,7 +80,7 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
 
     // Validators per type
     private PB imageValidator;
-    private WB soundValidator;
+    private ResNameValidator soundValidator;
     private FontNameValidator fontValidator;
 
     // Image state
@@ -354,8 +354,8 @@ public class AddResourceActivity extends BaseDialogActivity implements View.OnCl
 
         editing = editingSoundBean != null;
         soundValidator = isCollectionMode && editing
-                ? new WB(this, binding.tiInput, uq.b, existingSoundNames, editingSoundBean.resName)
-                : new WB(this, binding.tiInput, uq.b, existingSoundNames);
+                ? new ResNameValidator(this, binding.tiInput, uq.b, existingSoundNames, editingSoundBean.resName)
+                : new ResNameValidator(this, binding.tiInput, uq.b, existingSoundNames);
 
         if (editing) {
             e(getString(R.string.design_manager_sound_title_edit_sound));
