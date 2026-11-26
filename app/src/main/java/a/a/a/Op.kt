@@ -47,12 +47,10 @@ class Op : Lp() {
         }
     }
 
-    @Throws(yy::class)
     fun a(str: String, projectResourceBean: ProjectResourceBean) {
         a(str, projectResourceBean, true)
     }
 
-    @Throws(yy::class)
     fun a(str: String, projectResourceBean: ProjectResourceBean, z: Boolean) {
         if (e == null) {
             a()
@@ -73,7 +71,7 @@ class Op : Lp() {
                 throw yy("file_no_exist")
             }
             try {
-                fileUtil.f(b)
+                fileUtil.f(b!!)
                 iB.a(srcPath, destPath, projectResourceBean.rotate, projectResourceBean.flipHorizontal, projectResourceBean.flipVertical)
             } catch (_: IOException) {
                 throw yy("fail_to_copy")
@@ -84,7 +82,7 @@ class Op : Lp() {
                 throw yy("file_no_exist")
             }
             try {
-                fileUtil.f(b)
+                fileUtil.f(b!!)
                 fileUtil.a(srcPath, destPath)
             } catch (_: IOException) {
                 throw yy("fail_to_copy")
@@ -96,7 +94,6 @@ class Op : Lp() {
         }
     }
 
-    @Throws(yy::class)
     fun a(str: String, arrayList: ArrayList<ProjectResourceBean>, z: Boolean) {
         if (e == null) {
             a()
@@ -144,7 +141,7 @@ class Op : Lp() {
             }
             val destPath = "$b${File.separator}$targetName"
             try {
-                fileUtil.f(b)
+                fileUtil.f(b!!)
                 iB.a(srcPath, destPath, req.rotate, req.flipHorizontal, req.flipVertical)
                 list.add(CollectionBean(req.resName, targetName))
                 copied.add(destPath)
