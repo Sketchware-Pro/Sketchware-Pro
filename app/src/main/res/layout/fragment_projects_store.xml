@@ -38,9 +38,9 @@
                     android:scrollHorizontally="true"
                     android:text="@string/msg_this_is_still_a_basic"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?attr/colorOnErrorContainer"
+                    android:textColor="?attr/colorOnTertiaryContainer"
                     app:drawableStartCompat="@drawable/ic_mtrl_info"
-                    app:drawableTint="?attr/colorOnErrorContainer" />
+                    app:drawableTint="?attr/colorOnTertiaryContainer" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
