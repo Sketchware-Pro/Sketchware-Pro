@@ -45,7 +45,9 @@ object iB {
     @JvmStatic
     fun a(bitmap: Bitmap, i: Int, i2: Int, i3: Int): Bitmap {
         val matrix = Matrix()
-        matrix.setScale(i2.toFloat(), i3.toFloat())
+        val sx = if (i2 == 0) 1f else i2.toFloat()
+        val sy = if (i3 == 0) 1f else i3.toFloat()
+        matrix.setScale(sx, sy)
         matrix.postRotate(i.toFloat())
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, false)
     }
