@@ -131,6 +131,7 @@ class Op : Lp() {
         }
         val failed = ArrayList<String>()
         val copied = ArrayList<String>()
+        val pendingBeans = ArrayList<CollectionBean>()
         for (req in arrayList) {
             val baseName = req.resName
             val targetName = if (req.isNinePatch) "$baseName.9.png" else "$baseName.png"
@@ -143,13 +144,14 @@ class Op : Lp() {
             try {
                 fileUtil.f(b!!)
                 iB.a(srcPath, destPath, req.rotate, req.flipHorizontal, req.flipVertical)
-                list.add(CollectionBean(req.resName, targetName))
+                pendingBeans.add(CollectionBean(req.resName, targetName))
                 copied.add(destPath)
             } catch (_: IOException) {
                 failed.add(req.resName)
             }
         }
         if (failed.isEmpty()) {
+            list.addAll(pendingBeans)
             if (z) {
                 e()
             }
