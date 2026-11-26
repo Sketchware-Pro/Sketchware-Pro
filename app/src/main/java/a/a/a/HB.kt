@@ -9,7 +9,6 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
-import java.net.URLDecoder
 
 object HB {
     @JvmStatic
@@ -27,11 +26,12 @@ object HB {
                 if (!TextUtils.isEmpty(documentId) && documentId.startsWith("raw:")) {
                     return documentId.replaceFirst("raw:", "")
                 }
+                val id = documentId.toLongOrNull() ?: return null
                 a(
                     context,
                     ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"),
-                        documentId.toLong()
+                        id
                     ),
                     null,
                     null
@@ -56,14 +56,7 @@ object HB {
         } else {
             null
         }
-        if (path == null) {
-            return null
-        }
-        return try {
-            URLDecoder.decode(path, "UTF-8")
-        } catch (_: Exception) {
-            null
-        }
+        return path
     }
 
     @JvmStatic
