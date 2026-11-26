@@ -12,22 +12,16 @@ import android.os.Environment
 import android.os.StatFs
 import android.util.DisplayMetrics
 import com.google.android.gms.common.GoogleApiAvailability
-import java.util.ArrayList
 import java.util.Locale
 
+@Suppress("DEPRECATION")
 object GB {
     @JvmStatic
     fun a(context: Context): Int = wB.a(context, 48.0f).toInt()
 
     @JvmStatic
-    @Suppress("DEPRECATION")
     fun a(): String? {
-        return if (Build.VERSION.SDK_INT >= 21) {
-            val abis = Build.SUPPORTED_ABIS
-            abis?.getOrNull(0)
-        } else {
-            Build.CPU_ABI
-        }
+        return Build.SUPPORTED_ABIS.getOrNull(0)
     }
 
     @JvmStatic
@@ -78,7 +72,6 @@ object GB {
     }
 
     @JvmStatic
-    @Suppress("DEPRECATION")
     fun b(activity: Activity): FloatArray {
         val metrics = DisplayMetrics()
         activity.windowManager.defaultDisplay.getMetrics(metrics)
@@ -86,7 +79,6 @@ object GB {
     }
 
     @JvmStatic
-    @Suppress("DEPRECATION")
     fun c(): Long {
         return try {
             StatFs(Environment.getExternalStorageDirectory().path).freeBytes / 1048576L
@@ -108,7 +100,6 @@ object GB {
     }
 
     @JvmStatic
-    @Suppress("DEPRECATION")
     fun c(activity: Activity): IntArray {
         val metrics = DisplayMetrics()
         activity.windowManager.defaultDisplay.getMetrics(metrics)
@@ -116,7 +107,6 @@ object GB {
     }
 
     @JvmStatic
-    @Suppress("DEPRECATION")
     fun d(context: Context): Int {
         var versionCode = 0
         try {
@@ -144,17 +134,11 @@ object GB {
     }
 
     @JvmStatic
-    @Suppress("DEPRECATION")
     fun g(context: Context): Locale {
-        return if (Build.VERSION.SDK_INT >= 24) {
-            context.resources.configuration.locales[0]
-        } else {
-            context.resources.configuration.locale
-        }
+        return context.resources.configuration.locales[0]
     }
 
     @JvmStatic
-    @Suppress("DEPRECATION")
     fun h(context: Context): Boolean {
         val types = intArrayOf(0, 1)
         return try {
