@@ -79,7 +79,6 @@ abstract class Lp {
         }
         try {
             val path = a ?: return
-            c?.b(path)
             c?.b(path, sb.toString())
         } catch (e: IOException) {
             e.printStackTrace()
