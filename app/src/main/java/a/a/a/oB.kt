@@ -122,6 +122,9 @@ class oB @JvmOverloads constructor(@JvmField var a: Boolean = false) {
     }
 
     fun a(str: String, str2: String) {
+        if (File(str).canonicalPath == File(str2).canonicalPath) {
+            return
+        }
         var fis: FileInputStream? = null
         var fos: FileOutputStream? = null
         try {
