@@ -40,7 +40,7 @@ class cC(@JvmField var d: String) {
         }
     }
 
-    private fun a(str: String) {
+    fun a(str: String) {
         val indexMap = b ?: return
         if (indexMap.containsKey(str)) {
             val list = c?.get(str) ?: return
@@ -51,7 +51,7 @@ class cC(@JvmField var d: String) {
         }
     }
 
-    private fun a(str: String, historyViewBean: HistoryViewBean) {
+    fun a(str: String, historyViewBean: HistoryViewBean) {
         val historyMap = c ?: return
         if (!historyMap.containsKey(str)) {
             e(str)
