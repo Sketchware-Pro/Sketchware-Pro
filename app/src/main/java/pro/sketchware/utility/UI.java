@@ -59,18 +59,28 @@ public class UI {
     }
 
     public static void addSystemWindowInsetToPadding(View view, boolean left, boolean top, boolean right, boolean bottom) {
+        addSystemWindowInsetToPadding(view, left, top, right, bottom, false);
+    }
+
+    /**
+     * Same as {@link #addSystemWindowInsetToPadding(View, boolean, boolean, boolean, boolean)},
+     * but when {@code ime} is true the bottom padding also accounts for the IME (keyboard) inset.
+     */
+    public static void addSystemWindowInsetToPadding(View view, boolean left, boolean top, boolean right, boolean bottom, boolean ime) {
         int initialLeft = view.getPaddingLeft();
         int initialTop = view.getPaddingTop();
         int initialRight = view.getPaddingRight();
         int initialBottom = view.getPaddingBottom();
 
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+            Insets systemInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+            Insets imeInsets = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+            int bottomInset = ime ? Math.max(systemInsets.bottom, imeInsets.bottom) : systemInsets.bottom;
             view.setPadding(
-                    initialLeft + (left ? insets.left : 0),
-                    initialTop + (top ? insets.top : 0),
-                    initialRight + (right ? insets.right : 0),
-                    initialBottom + (bottom ? insets.bottom : 0)
+                    initialLeft + (left ? systemInsets.left : 0),
+                    initialTop + (top ? systemInsets.top : 0),
+                    initialRight + (right ? systemInsets.right : 0),
+                    initialBottom + (bottom ? bottomInset : 0)
             );
             return windowInsets;
         });

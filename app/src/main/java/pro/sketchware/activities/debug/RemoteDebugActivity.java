@@ -48,7 +48,7 @@ public class RemoteDebugActivity extends BaseAppCompatActivity {
         binding = ActivityRemoteDebugBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         UI.addSystemWindowInsetToPadding(binding.remoteToolbar, false, true, false, false);
-        UI.addSystemWindowInsetToPadding(binding.remoteContent, true, false, true, true);
+        UI.addSystemWindowInsetToPadding(binding.remoteContent, true, false, true, true, true);
         binding.remoteToolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         projectId = getIntent().getStringExtra("sc_id");
         packageName = getIntent().getStringExtra("package_name");
