@@ -28,10 +28,9 @@ object zB {
     @JvmStatic
     @Throws(Exception::class)
     fun a(str: String): Bitmap {
-        val fis = FileInputStream(str)
-        val bitmap = a(fis)
-        fis.close()
-        return bitmap
+        FileInputStream(str).use { fis ->
+            return a(fis)
+        }
     }
 
     @JvmStatic
@@ -46,12 +45,12 @@ object zB {
         }
         for (i in xPixels.size - 1 downTo 0) {
             if (-16777216 == xPixels[i]) {
-                a(bArr, 16, xPixels.size - i - 2)
+                a(bArr, 16, xPixels.size - i - 1)
                 break
             }
         }
         val yPixels = IntArray(bitmap.height - 2)
-        bitmap.getPixels(yPixels, 0, 1, bitmap.width - 1, 0, 1, yPixels.size)
+        bitmap.getPixels(yPixels, 0, 1, bitmap.width - 1, 1, 1, yPixels.size)
         for (i in yPixels.indices) {
             if (-16777216 == yPixels[i]) {
                 a(bArr, 20, i)
@@ -60,7 +59,7 @@ object zB {
         }
         for (i in yPixels.size - 1 downTo 0) {
             if (-16777216 == yPixels[i]) {
-                a(bArr, 24, yPixels.size - i - 2)
+                a(bArr, 24, yPixels.size - i - 1)
                 return
             }
         }
@@ -95,13 +94,14 @@ object zB {
         bitmap.getPixels(xPixels, 0, width, 1, 0, xLen, 1)
         val xStartBlack = xPixels[0] == -16777216
         val xEndBlack = xPixels[xPixels.size - 1] == -16777216
-        var prevX = 0
+        var prevX = false
         var numXDivs = 0
         for (i in xPixels.indices) {
-            if (prevX != xPixels[i]) {
+            val isBlack = xPixels[i] == -16777216
+            if (prevX != isBlack) {
                 numXDivs++
                 a(baos, i)
-                prevX = xPixels[i]
+                prevX = isBlack
             }
         }
         if (xEndBlack) {
@@ -120,13 +120,14 @@ object zB {
         bitmap.getPixels(yPixels, 0, 1, 0, 1, 1, yLen)
         val yStartBlack = yPixels[0] == -16777216
         val yEndBlack = yPixels[yPixels.size - 1] == -16777216
-        var prevY = 0
+        var prevY = false
         var numYDivs = 0
         for (i in yPixels.indices) {
-            if (prevY != yPixels[i]) {
+            val isBlack = yPixels[i] == -16777216
+            if (prevY != isBlack) {
                 numYDivs++
                 a(baos, i)
-                prevY = yPixels[i]
+                prevY = isBlack
             }
         }
         if (yEndBlack) {
@@ -141,6 +142,9 @@ object zB {
             numYColors--
         }
         val numColors = numXColors * numYColors
+        require(numXDivs <= 255 && numYDivs <= 255 && numColors <= 255) {
+            "NinePatch chunk counts exceed unsigned byte limit"
+        }
         for (i in 0 until numColors) {
             a(baos, 1)
         }
