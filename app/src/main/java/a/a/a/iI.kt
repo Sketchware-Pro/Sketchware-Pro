@@ -123,10 +123,17 @@ class iI {
         val zipSigner = ZipSigner()
         zipSigner.issueLoadingCertAndKeysProgressEvent()
         val alias = a()
+        if (alias.isEmpty()) {
+            throw IllegalStateException("No key alias found in keystore")
+        }
+        val cert = a.getCertificate(alias) as? X509Certificate
+            ?: throw IllegalStateException("Missing X509Certificate for alias $alias")
+        val key = a.getKey(alias, str.toCharArray()) as? PrivateKey
+            ?: throw IllegalStateException("Missing PrivateKey for alias $alias")
         zipSigner.setKeys(
             "custom",
-            a.getCertificate(alias) as X509Certificate,
-            a.getKey(alias, str.toCharArray()) as PrivateKey,
+            cert,
+            key,
             "SHA1WITHRSA",
             null
         )
