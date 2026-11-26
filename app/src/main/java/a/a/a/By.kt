@@ -1,3 +1,3 @@
 package a.a.a
 
-class By(str: String?) : Exception(str)
+class By(str: String) : Exception(str)
