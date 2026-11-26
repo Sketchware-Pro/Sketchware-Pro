@@ -58,7 +58,6 @@ class Rp : Lp() {
         }
     }
 
-    @Throws(yy::class)
     fun a(str: String, arrayList: ArrayList<ViewBean>, z: Boolean) {
         if (e == null) {
             a()
