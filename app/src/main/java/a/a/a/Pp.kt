@@ -45,7 +45,6 @@ class Pp : Lp() {
         return null
     }
 
-    @Throws(yy::class)
     fun a(str: String, str2: String, arrayList: ArrayList<BlockBean>, z: Boolean) {
         if (e == null) {
             a()
