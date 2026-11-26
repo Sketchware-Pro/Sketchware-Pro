@@ -898,6 +898,7 @@ public class ExtraPaletteBlock {
                     if (youtubePlayerViewUsed) {
                         logicEditor.a(" ", "YTPVLifecycle");
                         logicEditor.a("c", "YTPVSetListener");
+                        logicEditor.a("c", "YTPVSetListenerAutoplay");
                     }
 
                     if (adMobUsed) {

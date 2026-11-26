@@ -14,6 +14,24 @@ import pro.sketchware.utility.ThemeUtils;
 
 public class BlocksHandler {
 
+    /**
+     * Generated-code snippet that reduces a pasted YouTube URL ("watch?v=", "youtu.be/",
+     * "/shorts/", "/embed/") to the bare video ID the player API expects - cueVideo/
+     * loadVideo fail silently on full URLs.
+     */
+    public static final String YOUTUBE_ID_NORMALIZER =
+            "    if (videoId != null && videoId.contains(\"://\")) {\r\n"
+                    + "      if (videoId.contains(\"v=\")) {\r\n"
+                    + "        videoId = videoId.split(\"v=\")[1].split(\"&\")[0];\r\n"
+                    + "      } else if (videoId.contains(\"youtu.be/\")) {\r\n"
+                    + "        videoId = videoId.substring(videoId.indexOf(\"youtu.be/\") + 9).split(\"[?&]\")[0];\r\n"
+                    + "      } else if (videoId.contains(\"/shorts/\")) {\r\n"
+                    + "        videoId = videoId.substring(videoId.indexOf(\"/shorts/\") + 8).split(\"[?&]\")[0];\r\n"
+                    + "      } else if (videoId.contains(\"/embed/\")) {\r\n"
+                    + "        videoId = videoId.substring(videoId.indexOf(\"/embed/\") + 7).split(\"[?&]\")[0];\r\n"
+                    + "      }\r\n"
+                    + "    }\r\n";
+
     public static void builtInBlocks(ArrayList<HashMap<String, Object>> arrayList) {
         ExtraBlocks.extraBlocks(arrayList);
 
@@ -2036,6 +2054,7 @@ public class BlocksHandler {
                         + "  @Override\r\n"
                         + "  public void onReady(@NonNull YouTubePlayer youTubePlayer) {\r\n"
                         + "    String videoId = %2$s;\r\n"
+                        + YOUTUBE_ID_NORMALIZER
                         + "    youTubePlayer.cueVideo(videoId, 0);\r\n"
                         + "    %3$s\r\n"
                         + "  }\r\n"
@@ -2043,6 +2062,25 @@ public class BlocksHandler {
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.youtubeview addYouTubePlayerListener VideoID %s");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "YTPVSetListenerAutoplay");
+        hashMap.put("type", "c");
+        hashMap.put(
+                "code",
+                "%1$s.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {\r\n"
+                        + "  @Override\r\n"
+                        + "  public void onReady(@NonNull YouTubePlayer youTubePlayer) {\r\n"
+                        + "    String videoId = %2$s;\r\n"
+                        + YOUTUBE_ID_NORMALIZER
+                        + "    youTubePlayer.loadVideo(videoId, 0);\r\n"
+                        + "    %3$s\r\n"
+                        + "  }\r\n"
+                        + "});");
+        hashMap.put("color", "#4A6CD4");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%m.youtubeview addYouTubePlayerListener VideoID %s autoplay");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
