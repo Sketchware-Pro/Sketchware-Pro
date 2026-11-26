@@ -8,7 +8,7 @@ import java.util.ArrayList
 import java.util.Random
 
 object FB {
-    class a(@JvmField var a: String) {
+    private class Tokenizer(@JvmField var a: String) {
         @JvmField
         var b: Int = 0
 
@@ -155,7 +155,7 @@ object FB {
     @JvmStatic
     fun c(str: String): ArrayList<String> {
         val result = ArrayList<String>()
-        val tokenizer = a(str)
+        val tokenizer = Tokenizer(str)
         while (!tokenizer.a()) {
             val token = tokenizer.b()
             if (token.isNotEmpty()) {
