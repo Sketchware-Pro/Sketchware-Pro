@@ -58,7 +58,6 @@ class Mp : Lp() {
         }
     }
 
-    @Throws(yy::class)
     fun a(str: String, arrayList: ArrayList<BlockBean>, z: Boolean) {
         if (e == null) {
             a()
