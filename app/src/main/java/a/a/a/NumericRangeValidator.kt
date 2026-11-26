@@ -34,7 +34,7 @@ class OB(
         val str = charSequence?.toString() ?: ""
         if (str.isEmpty()) {
             b.isErrorEnabled = true
-            b.error = String.format("%d ~ %d", f, g)
+            b.error = "$f ~ $g"
             d = false
             return
         }
@@ -42,7 +42,7 @@ class OB(
             val value = str.toFloat()
             if (value < f || value > g) {
                 b.isErrorEnabled = true
-                b.error = String.format("%d ~ %d", f, g)
+                b.error = "$f ~ $g"
                 d = false
             } else {
                 b.isErrorEnabled = false
@@ -50,7 +50,7 @@ class OB(
             }
         } catch (_: NumberFormatException) {
             b.isErrorEnabled = true
-            b.error = String.format("%d ~ %d", f, g)
+            b.error = "$f ~ $g"
             d = false
         }
     }
