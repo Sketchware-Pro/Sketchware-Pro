@@ -82,16 +82,15 @@ object iB {
         }
         val transformed = a(bitmap, i, i2, i3)
         val file = File(str2)
-        var fos: FileOutputStream? = null
         try {
-            fos = FileOutputStream(file)
-            transformed.compress(Bitmap.CompressFormat.PNG, 100, fos)
-            fos.flush()
-            transformed.recycle()
-        } catch (e: Exception) {
-            e.printStackTrace()
+            FileOutputStream(file).use { fos ->
+                if (!transformed.compress(Bitmap.CompressFormat.PNG, 100, fos)) {
+                    throw IOException("Failed to compress bitmap to $str2")
+                }
+                fos.flush()
+            }
         } finally {
-            fos?.close()
+            transformed.recycle()
         }
     }
 }
