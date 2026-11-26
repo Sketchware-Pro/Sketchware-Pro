@@ -50,12 +50,10 @@ class Qp : Lp() {
         }
     }
 
-    @Throws(yy::class)
     fun a(str: String, projectResourceBean: ProjectResourceBean) {
         a(str, projectResourceBean, true)
     }
 
-    @Throws(yy::class)
     fun a(str: String, projectResourceBean: ProjectResourceBean, z: Boolean) {
         if (e == null) {
             a()
@@ -79,7 +77,7 @@ class Qp : Lp() {
                 throw yy("file_no_exist")
             }
             try {
-                fileUtil.f(b)
+                fileUtil.f(b!!)
                 fileUtil.a(srcPath, destPath)
             } catch (_: IOException) {
                 throw yy("fail_to_copy")
@@ -90,7 +88,7 @@ class Qp : Lp() {
                 throw yy("file_no_exist")
             }
             try {
-                fileUtil.f(b)
+                fileUtil.f(b!!)
                 fileUtil.a(srcPath, destPath)
             } catch (_: IOException) {
                 throw yy("fail_to_copy")
