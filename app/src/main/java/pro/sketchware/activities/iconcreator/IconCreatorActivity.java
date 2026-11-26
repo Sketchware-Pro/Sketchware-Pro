@@ -83,6 +83,10 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
                 Uri uri = data.getData();
                 if (result.getResultCode() == RESULT_OK && uri != null) {
                     iconFilePath = HB.a(getApplicationContext(), uri);
+                    if (iconFilePath == null) {
+                        SketchwareUtil.toastError("Failed to resolve selected image");
+                        return;
+                    }
                     appIconBitmap = null;
                     Bitmap bitmap = iB.a(iconFilePath, 96, 96);
                     try {
