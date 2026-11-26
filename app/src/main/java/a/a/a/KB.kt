@@ -25,6 +25,7 @@ class KB {
             if (!dir.exists() && !dir.mkdirs()) {
                 dir.mkdir()
             }
+            val canonicalDir = dir.canonicalPath + File.separator
             var bis: BufferedInputStream? = null
             var zis: ZipInputStream? = null
             try {
@@ -32,14 +33,16 @@ class KB {
                 zis = ZipInputStream(bis)
                 while (true) {
                     val entry = zis.nextEntry ?: break
-                    val outFile = File("$targetDir${entry.name}")
+                    val outFile = File(dir, entry.name)
+                    if (!outFile.canonicalPath.startsWith(canonicalDir)) {
+                        throw SecurityException("Invalid zip entry: ${entry.name}")
+                    }
                     if (!entry.isDirectory) {
                         val parent = outFile.parentFile
                         if (parent != null && !parent.isDirectory) {
                             parent.mkdirs()
                         }
-                        val fos = FileOutputStream(outFile, false)
-                        try {
+                        FileOutputStream(outFile, false).use { fos ->
                             while (true) {
                                 val read = zis.read(buf, 0, buf.size)
                                 if (read <= 0) {
@@ -47,11 +50,7 @@ class KB {
                                 }
                                 fos.write(buf, 0, read)
                             }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        } finally {
                             fos.flush()
-                            fos.close()
                         }
                         zis.closeEntry()
                     } else if (!outFile.isDirectory) {
@@ -112,6 +111,7 @@ class KB {
         if (!dir.exists()) {
             dir.mkdirs()
         }
+        val canonicalDir = dir.canonicalPath + File.separator
         var bis: BufferedInputStream? = null
         var zis: ZipInputStream? = null
         try {
@@ -119,14 +119,16 @@ class KB {
             zis = ZipInputStream(bis)
             while (true) {
                 val entry = zis.nextEntry ?: break
-                val outFile = File("$targetDir${entry.name}")
+                val outFile = File(dir, entry.name)
+                if (!outFile.canonicalPath.startsWith(canonicalDir)) {
+                    throw SecurityException("Invalid zip entry: ${entry.name}")
+                }
                 if (!entry.isDirectory) {
                     val parent = outFile.parentFile
                     if (parent != null && !parent.isDirectory) {
                         parent.mkdirs()
                     }
-                    val fos = FileOutputStream(outFile, false)
-                    try {
+                    FileOutputStream(outFile, false).use { fos ->
                         while (true) {
                             val read = zis.read(buf, 0, buf.size)
                             if (read <= 0) {
@@ -134,11 +136,7 @@ class KB {
                             }
                             fos.write(buf, 0, read)
                         }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    } finally {
                         fos.flush()
-                        fos.close()
                     }
                     zis.closeEntry()
                 } else if (!outFile.isDirectory) {
@@ -169,27 +167,11 @@ class KB {
 
     @Throws(Exception::class)
     fun a(str: String, arrayList: ArrayList<String>, arrayList2: ArrayList<String>) {
-        var fos: FileOutputStream? = null
-        var zos: ZipOutputStream? = null
-        try {
-            fos = FileOutputStream(str)
-            zos = ZipOutputStream(fos)
-            for (path in arrayList) {
-                a(path, File(path), zos, arrayList2)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw e
-        } finally {
-            try {
-                zos?.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            try {
-                fos?.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
+        FileOutputStream(str).use { fos ->
+            ZipOutputStream(fos).use { zos ->
+                for (path in arrayList) {
+                    a(path, File(path), zos, arrayList2)
+                }
             }
         }
     }
@@ -241,19 +223,10 @@ class KB {
 
     @Throws(IOException::class)
     fun a(str: String): ByteArray {
-        var baos: ByteArrayOutputStream? = null
-        try {
-            baos = ByteArrayOutputStream()
-            val zos = ZipOutputStream(baos)
-            if (a(str, File(str), zos, ArrayList()) > 0) {
-                zos.close()
-            }
-            return baos.toByteArray()
-        } finally {
-            try {
-                baos?.close()
-            } catch (_: Exception) {
-            }
+        val baos = ByteArrayOutputStream()
+        ZipOutputStream(baos).use { zos ->
+            a(str, File(str), zos, ArrayList())
         }
+        return baos.toByteArray()
     }
 }
