@@ -3,6 +3,7 @@ package pro.sketchware.activities.settings;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
 
@@ -51,13 +52,18 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         binding.shrinkerGroup.addOnButtonCheckedListener(this::onShrinkerChecked);
+        binding.shrinkSwitch.setOnCheckedChangeListener(this);
+        binding.obfuscateSwitch.setOnCheckedChangeListener(this);
         binding.optimizeSwitch.setOnCheckedChangeListener(this);
-        binding.smartThreadsGroup.addOnButtonCheckedListener(this::onSmartThreadsChecked);
+        binding.threadSwitch.setOnCheckedChangeListener(this);
         binding.stringfogSwitch.setOnCheckedChangeListener(this);
         binding.debugSwitch.setOnCheckedChangeListener(this);
         binding.rulesRow.setOnClickListener(this);
         binding.fullModeRow.setOnClickListener(this);
+        binding.shrinkRow.setOnClickListener(this);
+        binding.obfuscateRow.setOnClickListener(this);
         binding.optimizeRow.setOnClickListener(this);
+        binding.threadRow.setOnClickListener(this);
         binding.stringfogRow.setOnClickListener(this);
         binding.debugRow.setOnClickListener(this);
 
@@ -93,20 +99,24 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         int selectedMode = r8 ? R.id.btn_r8 : enabled ? R.id.btn_proguard : R.id.btn_disabled;
         binding.shrinkerGroup.check(selectedMode);
         updateSegments(selectedMode);
+        binding.modeHint.setText(selectedMode == R.id.btn_r8 ? R.string.code_shrinking_mode_hint_r8
+                : selectedMode == R.id.btn_proguard ? R.string.code_shrinking_mode_hint_proguard
+                : R.string.code_shrinking_mode_hint_disabled);
 
-        binding.rulesRow.setVisibility(enabled ? View.VISIBLE : View.GONE);
-        binding.fullModeRow.setVisibility(enabled && !r8 && hasLocalLibraries() ? View.VISIBLE : View.GONE);
+        binding.rulesRow.setVisibility(pg.isShrinkEnabled() ? View.VISIBLE : View.GONE);
+        ArrayList<String> conflicts = pg.getConflictingDontRules();
+        binding.rulesWarning.setVisibility(conflicts.isEmpty() ? View.GONE : View.VISIBLE);
+        binding.rulesWarning.setText(getString(R.string.code_shrinking_rules_conflict,
+                TextUtils.join(", ", conflicts)));
 
-        binding.sectionR8Header.setVisibility(r8 ? View.VISIBLE : View.GONE);
-        binding.optimizeRow.setVisibility(r8 ? View.VISIBLE : View.GONE);
+        binding.optionsSection.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        binding.fullModeRow.setVisibility(enabled && hasLocalLibraries() ? View.VISIBLE : View.GONE);
+        binding.shrinkSwitch.setChecked(pg.isShrinkEnabled());
+        binding.obfuscateSwitch.setChecked(pg.isObfuscateEnabled());
         binding.optimizeSwitch.setChecked(pg.isOptimizeEnabled());
 
-        binding.threadRow.setVisibility(r8 ? View.VISIBLE : View.GONE);
         boolean smart = "auto".equals(pg.getR8ThreadMode());
-        int smartSelection = smart ? R.id.smart_threads_auto : R.id.smart_threads_off;
-        binding.smartThreadsGroup.check(smartSelection);
-        applyThreadSegment(binding.smartThreadsOff, smartSelection == R.id.smart_threads_off);
-        applyThreadSegment(binding.smartThreadsAuto, smart);
+        binding.threadSwitch.setChecked(smart);
         binding.threadHint.setText(getString(smart
                 ? R.string.code_shrinking_threads_hint_auto
                 : R.string.code_shrinking_threads_hint_off, pg.getR8Threads()));
@@ -114,24 +124,6 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         binding.stringfogSwitch.setChecked(stringfog.isStringfogEnabled());
         binding.debugSwitch.setChecked(pg.isDebugModeEnabled());
         updatingUi = false;
-    }
-
-    private void applyThreadSegment(MaterialButton button, boolean selected) {
-        button.setBackgroundTintList(ColorStateList.valueOf(ThemeUtils.getColor(this,
-                selected ? R.attr.colorSecondaryContainer : R.attr.colorSurface)));
-        button.setTextColor(ThemeUtils.getColor(this,
-                selected ? R.attr.colorOnSecondaryContainer : R.attr.colorOnSurface));
-    }
-
-    private void onSmartThreadsChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-        if (!isChecked || updatingUi) return;
-        if (checkedId == R.id.smart_threads_auto) {
-            pg.setR8ThreadMode("auto");
-        } else {
-            pg.setR8ThreadMode("manual");
-            pg.setR8Threads(1);
-        }
-        updateUi();
     }
 
     private boolean hasLocalLibraries() {
@@ -147,8 +139,14 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
             startActivity(intent);
         } else if (v == binding.fullModeRow) {
             showFullModeDialog();
+        } else if (v == binding.shrinkRow) {
+            binding.shrinkSwitch.toggle();
+        } else if (v == binding.obfuscateRow) {
+            binding.obfuscateSwitch.toggle();
         } else if (v == binding.optimizeRow) {
             binding.optimizeSwitch.toggle();
+        } else if (v == binding.threadRow) {
+            binding.threadSwitch.toggle();
         } else if (v == binding.stringfogRow) {
             binding.stringfogSwitch.toggle();
         } else if (v == binding.debugRow) {
@@ -189,8 +187,21 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
     @Override
     public void onCheckedChanged(CompoundButton button, boolean isChecked) {
         if (updatingUi) return;
-        if (button == binding.optimizeSwitch) {
+        if (button == binding.shrinkSwitch) {
+            pg.setShrinkEnabled(isChecked);
+            updateUi();
+        } else if (button == binding.obfuscateSwitch) {
+            pg.setObfuscateEnabled(isChecked);
+        } else if (button == binding.optimizeSwitch) {
             pg.setOptimizeEnabled(isChecked);
+        } else if (button == binding.threadSwitch) {
+            if (isChecked) {
+                pg.setR8ThreadMode("auto");
+            } else {
+                pg.setR8ThreadMode("manual");
+                pg.setR8Threads(1);
+            }
+            updateUi();
         } else if (button == binding.stringfogSwitch) {
             stringfog.setStringfogEnabled(isChecked);
         } else if (button == binding.debugSwitch) {

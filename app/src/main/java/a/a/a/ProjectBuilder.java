@@ -54,6 +54,10 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -925,17 +929,27 @@ public class ProjectBuilder {
         return false;
     }
 
-    private String writeExtraProguardRules() throws IOException {
+    private String writeInjectedRules() throws IOException {
         StringBuilder rules = new StringBuilder();
-        rules.append("# Added automatically by Sketchware Pro on every R8 run\n");
+        rules.append("# Added automatically by Sketchware Pro on every build\n");
         rules.append("-keepattributes Signature,InnerClasses,EnclosingMethod,Exceptions,*Annotation*\n");
         rules.append("-keepattributes SourceFile,LineNumberTable\n");
         rules.append("-renamesourcefileattribute SourceFile\n");
         rules.append("-keepclassmembers class * {\n    @com.google.gson.annotations.SerializedName <fields>;\n}\n");
 
         if (new StringfogHandler(yq.sc_id).isStringfogEnabled()) {
-            /* StringFog's runtime is called from rewritten bytecode of the app, R8 must not rename or merge it */
+            /* StringFog's runtime is called from rewritten bytecode, the shrinker must not merge or rename it */
             rules.append("-keep class com.github.megatronking.stringfog.** { *; }\n");
+        }
+
+        if (!proguard.isShrinkEnabled()) {
+            /* Without shrinking, the shrinker keeps every class and member */
+            rules.append("-dontshrink\n");
+        }
+
+        if (!proguard.isObfuscateEnabled()) {
+            /* Names stay readable, so the mapping file is only a 1:1 reflection of the source */
+            rules.append("-dontobfuscate\n");
         }
 
         if (!proguard.isOptimizeEnabled()) {
@@ -967,7 +981,7 @@ public class ProjectBuilder {
         config.add(ProguardHandler.ANDROID_PROGUARD_RULES_PATH);
         config.add(yq.proguardAaptRules);
         config.add(proguard.getCustomProguardRules());
-        config.add(writeExtraProguardRules());
+        config.add(writeInjectedRules());
         var rules = new ArrayList<>(Arrays.asList(getRJavaRules().split("\n")));
         for (Jp library : builtInLibraryManager.getLibraries()) {
             File f = BuiltInLibraries.getLibraryProguardConfiguration(library.getName());
@@ -1021,6 +1035,10 @@ public class ProjectBuilder {
         args.add("-include");
         args.add(proguard.getCustomProguardRules());
 
+        /* Include generated rules: switch overrides, keep rules and local library services */
+        args.add("-include");
+        args.add(writeInjectedRules());
+
         proguardAddLibConfigs(args);
         proguardAddRjavaRules(args);
 
@@ -1060,10 +1078,27 @@ public class ProjectBuilder {
             throw new IOException(e);
         }
 
+        /* ProGuard itself is sequential, but give it the same bounded, low-priority worker pool
+         * as R8 so the shared smart-threading setting governs both shrink engines. */
+        int threads = proguard.getR8Threads();
+        ExecutorService executor = Executors.newFixedThreadPool(threads, runnable -> {
+            Thread thread = new Thread(runnable);
+            thread.setPriority(Thread.NORM_PRIORITY - 1);
+            return thread;
+        });
         try {
-            new ProGuard(configuration).execute();
-        } catch (Exception e) {
+            Future<?> shrink = executor.submit(() -> {
+                new ProGuard(configuration).execute();
+                return null;
+            });
+            shrink.get();
+        } catch (ExecutionException e) {
+            throw new IOException(e.getCause());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new IOException(e);
+        } finally {
+            executor.shutdown();
         }
 
         LogUtil.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");

@@ -144,6 +144,8 @@ public class ProguardHandler {
 
         defaultConfig.put("enabled", "false");
         defaultConfig.put("r8", "false");
+        defaultConfig.put("shrink", "true");
+        defaultConfig.put("obfuscate", "true");
         defaultConfig.put("optimize", "false");
         defaultConfig.put("debug", "false");
 
@@ -198,8 +200,40 @@ public class ProguardHandler {
     }
 
     public void setOptimizeEnabled(boolean enabled) {
+        writeConfigBoolean("optimize", enabled);
+    }
+
+    /**
+     * Removes classes, methods and fields the app never uses. Projects without the key keep shrinking,
+     * which is what every project did before the option existed.
+     */
+    public boolean isShrinkEnabled() {
+        return readConfigBoolean("shrink", true);
+    }
+
+    public void setShrinkEnabled(boolean enabled) {
+        writeConfigBoolean("shrink", enabled);
+    }
+
+    /**
+     * Renames classes and members. Like shrinking, it stays on for projects that predate the key.
+     */
+    public boolean isObfuscateEnabled() {
+        return readConfigBoolean("obfuscate", true);
+    }
+
+    public void setObfuscateEnabled(boolean enabled) {
+        writeConfigBoolean("obfuscate", enabled);
+    }
+
+    private boolean readConfigBoolean(String key, boolean defaultValue) {
+        String value = readConfigOrEmpty().get(key);
+        return value == null ? defaultValue : "true".equals(value);
+    }
+
+    private void writeConfigBoolean(String key, boolean enabled) {
         HashMap<String, String> config = readConfigOrEmpty();
-        config.put("optimize", String.valueOf(enabled));
+        config.put(key, String.valueOf(enabled));
         FileUtil.writeFile(config_path, new Gson().toJson(config));
     }
 
@@ -349,22 +383,12 @@ public class ProguardHandler {
     }
 
 
-    //TODO: add UI for this option
     /**
      * Whether R8 may optimize the code (inlining, class merging, ...). Off by default, because it raises the risk of
      * runtime problems in existing apps. Enable per project by setting "optimize":"true" in the project's proguard config.
      */
     public boolean isOptimizeEnabled() {
-        if (FileUtil.isExistFile(config_path)) {
-            try {
-                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
-                return "true".equals(config.get("optimize"));
-            } catch (Exception e) {
-                return false;
-            }
-        }
-
-        return false;
+        return readConfigBoolean("optimize", false);
     }
 
     public boolean libIsProguardFMEnabled(String library) {
@@ -396,6 +420,28 @@ public class ProguardHandler {
 
     public void setProguardFMLibs(ArrayList<String> fullModeLibs) {
         FileUtil.writeFile(fm_config_path, new Gson().toJson(fullModeLibs));
+    }
+
+    /**
+     * A -dont* rule in the project's rules file cannot be undone by a later config, so it wins over
+     * the equivalent switch. Report the flags that contradict a switch that is currently on.
+     */
+    public ArrayList<String> getConflictingDontRules() {
+        ArrayList<String> conflicts = new ArrayList<>();
+        if (!FileUtil.isExistFile(DEFAULT_PROGUARD_RULES_PATH)) return conflicts;
+
+        for (String line : FileUtil.readFile(DEFAULT_PROGUARD_RULES_PATH).split("\n")) {
+            int comment = line.indexOf('#');
+            String rule = (comment < 0 ? line : line.substring(0, comment)).trim();
+            if (rule.equalsIgnoreCase("-dontshrink") && isShrinkEnabled()) {
+                conflicts.add("-dontshrink");
+            } else if (rule.equalsIgnoreCase("-dontobfuscate") && isObfuscateEnabled()) {
+                conflicts.add("-dontobfuscate");
+            } else if (rule.equalsIgnoreCase("-dontoptimize") && isOptimizeEnabled()) {
+                conflicts.add("-dontoptimize");
+            }
+        }
+        return conflicts;
     }
 
     public void start(BuildProgressReceiver progressReceiver, ProjectBuilder builder) throws IOException {
