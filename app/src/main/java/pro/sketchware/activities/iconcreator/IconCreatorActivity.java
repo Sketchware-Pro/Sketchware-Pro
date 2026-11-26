@@ -128,7 +128,12 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
                 }
                 Uri uri = data.getData();
                 if (result.getResultCode() == RESULT_OK && uri != null) {
-                    setAppIcoTexture(HB.a(getApplicationContext(), uri));
+                    String resolvedPath = HB.a(getApplicationContext(), uri);
+                    if (resolvedPath == null) {
+                        SketchwareUtil.toastError("Failed to resolve selected image");
+                        return;
+                    }
+                    setAppIcoTexture(resolvedPath);
                 }
             });
 
