@@ -62,7 +62,7 @@ public class ViewBeanParser {
         // (ScrollView) and HScrollView (HorizontalScrollView).
         //noinspection ConstantValue
         if (type != ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW
-                || type != ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW) {
+                && type != ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW) {
             // If the prefix is "linear" and the name is different from the className,
             // update the prefix to the lowercase version of className.
             if (prefix.equals("linear")

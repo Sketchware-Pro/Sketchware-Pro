@@ -199,9 +199,9 @@ public class SketchwareUtil {
                     int _count1 = Integer.valueOf(_compareMap1.get(key).toString());
                     int _count2 = Integer.valueOf(_compareMap2.get(key).toString());
                     if (ascending) {
-                        return _count1 < _count2 ? -1 : _count1 < _count2 ? 1 : 0;
+                        return _count1 < _count2 ? -1 : _count1 > _count2 ? 1 : 0;
                     } else {
-                        return _count1 > _count2 ? -1 : _count1 > _count2 ? 1 : 0;
+                        return _count1 > _count2 ? -1 : _count1 < _count2 ? 1 : 0;
                     }
                 } else {
                     if (ascending) {

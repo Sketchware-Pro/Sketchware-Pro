@@ -49,7 +49,18 @@ public class ZB extends MB {
             d = true;
             return;
         }
-        if (excludedNames.contains(s.toString())) {
+        // Compare case-insensitively: component names collide in generated code
+        // (REQ_CD_<NAME> fields and case labels are uppercased), so "cam" and
+        // "Cam" must not both pass validation.
+        String input = s.toString();
+        boolean nameTaken = false;
+        for (String excluded : excludedNames) {
+            if (excluded != null && excluded.equalsIgnoreCase(input)) {
+                nameTaken = true;
+                break;
+            }
+        }
+        if (nameTaken) {
             b.setErrorEnabled(true);
             b.setError(a.getString(R.string.common_message_name_unavailable));
             d = false;

@@ -435,6 +435,12 @@ public class Ix {
             if (c.hasPermission(jq.PERMISSION_BLUETOOTH_ADMIN)) {
                 writePermission(a, Manifest.permission.BLUETOOTH_ADMIN);
             }
+            if (c.hasPermission(jq.PERMISSION_BLUETOOTH_CONNECT)) {
+                writePermission(a, Manifest.permission.BLUETOOTH_CONNECT);
+            }
+            if (c.hasPermission(jq.PERMISSION_BLUETOOTH_SCAN)) {
+                writePermission(a, Manifest.permission.BLUETOOTH_SCAN);
+            }
             if (c.hasPermission(jq.PERMISSION_ACCESS_FINE_LOCATION)) {
                 writePermission(a, Manifest.permission.ACCESS_FINE_LOCATION);
             }

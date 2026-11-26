@@ -99,7 +99,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private String b;
     private int screenType;
     private boolean da = true;
-    private int[] countItems = new int[20];
+    private int[] countItems = new int[99];
     private float dip = 0;
     private int displayWidth;
     private int displayHeight;

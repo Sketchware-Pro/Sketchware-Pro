@@ -1336,7 +1336,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                         dialog.setMessage(Helper.getResString(R.string.design_missing_file_message, e.getMissingFile().getAbsolutePath()));
                     }
                     dialog.setPositiveButton(R.string.common_word_dismiss, null);
-                    dialog.show();
+                    if (!activity.isFinishing() && !activity.isDestroyed()) dialog.show();
                 });
             } catch (zy zy) {
                 activity.runOnUiThread(() -> AnalyticsHelper.logExportProject(activity, "debug_apk", activity.sc_id, false));

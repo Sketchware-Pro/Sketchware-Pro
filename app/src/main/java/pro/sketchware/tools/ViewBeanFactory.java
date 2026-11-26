@@ -69,7 +69,12 @@ public class ViewBeanFactory {
             } else {
                 var size = resolveDimenSize(width);
                 if (size != null) {
-                    layoutBean.width = Integer.parseInt(size);
+                    try {
+                        layoutBean.width = Integer.parseInt(size);
+                    } catch (NumberFormatException ignored) {
+                        // Fractional dp/px (e.g. "1.5dp") - keep the raw value instead of crashing.
+                        injectAttributes.put("android:layout_width", width);
+                    }
                 } else {
                     injectAttributes.put("android:layout_width", width);
                 }
@@ -84,7 +89,12 @@ public class ViewBeanFactory {
             } else {
                 var size = resolveDimenSize(height);
                 if (size != null) {
-                    layoutBean.height = Integer.parseInt(size);
+                    try {
+                        layoutBean.height = Integer.parseInt(size);
+                    } catch (NumberFormatException ignored) {
+                        // Fractional dp/px - keep the raw value instead of crashing.
+                        injectAttributes.put("android:layout_height", height);
+                    }
                 } else {
                     injectAttributes.put("android:layout_height", height);
                 }
@@ -338,7 +348,8 @@ public class ViewBeanFactory {
             case ViewBean.VIEW_TYPE_WIDGET_LISTVIEW -> {
                 var dividerHeight =
                         getDimen("android:dividerHeight", attributes, injectAttributes);
-                if (dividerHeight > 1) {
+                if (dividerHeight >= 0) {
+                    // 0 is a legal value ("@null" divider) - don't reject it back to the default.
                     bean.dividerHeight = dividerHeight;
                 }
 
