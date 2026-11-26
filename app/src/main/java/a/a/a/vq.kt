@@ -1,5 +1,7 @@
 package a.a.a
 
+import com.besome.sketch.beans.ProjectFileBean
+
 object vq {
     @JvmField
     val a: Array<String> = arrayOf("Default", "NoActionBar", "FullScreen")
@@ -8,11 +10,11 @@ object vq {
     val b: Array<String> = arrayOf("Portrait", "Landscape", "Both")
 
     @JvmStatic
-    fun a(i: Int): String {
-        val masked = i and 15
+    fun a(state: Int): String {
+        val masked = state and ProjectFileBean.OPTION_ACTIVITY_MASK
         return when (masked) {
-            1 -> "stateVisible"
-            2 -> "stateHidden"
+            ProjectFileBean.KEYBOARD_STATE_VISIBLE -> "stateVisible"
+            ProjectFileBean.KEYBOARD_STATE_HIDDEN -> "stateHidden"
             else -> ""
         }
     }
