@@ -9,6 +9,7 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import androidx.core.net.toUri
 
 object HB {
     @JvmStatic
@@ -30,7 +31,7 @@ object HB {
                 a(
                     context,
                     ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"),
+                        "content://downloads/public_downloads".toUri(),
                         id
                     ),
                     null,
