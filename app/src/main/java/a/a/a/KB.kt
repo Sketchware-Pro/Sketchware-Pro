@@ -18,7 +18,6 @@ import java.util.zip.ZipOutputStream
 class KB {
     companion object {
         @JvmStatic
-        @Throws(Exception::class)
         fun a(context: Context, str: String, str2: String) {
             val buf = ByteArray(1024)
             val targetDir = if (str2.endsWith(File.separator)) str2 else "$str2${File.separator}"
@@ -164,7 +163,6 @@ class KB {
         }
     }
 
-    @Throws(FileNotFoundException::class)
     fun a(str: String, str2: String) {
         a(FileInputStream(str), str2)
     }
