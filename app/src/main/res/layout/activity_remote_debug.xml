@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="?attr/colorSurfaceContainer"
-                    app:cardCornerRadius="24dp">
+                    app:cardCornerRadius="20dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -79,22 +79,22 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/remote_debug_current_device"
-                                    android:textAppearance="?attr/textAppearanceLabelLarge"
+                                    android:textAppearance="?attr/textAppearanceLabelMedium"
                                     android:textColor="?attr/colorOnSurfaceVariant" />
 
                                 <TextView
                                     android:id="@+id/selected_device"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                                    android:layout_marginTop="2dp"
+                                    android:textAppearance="?attr/textAppearanceTitleLarge"
                                     android:textColor="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/selected_address"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
+                                    android:layout_marginTop="2dp"
                                     android:textAppearance="?attr/textAppearanceBodySmall"
                                     android:textColor="?attr/colorOnSurfaceVariant"
                                     android:textIsSelectable="true" />
@@ -105,7 +105,7 @@
                             android:id="@+id/status"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="14dp"
                             android:accessibilityLiveRegion="polite"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?attr/colorOnSurfaceVariant"
@@ -123,7 +123,7 @@
                             android:id="@+id/connection_actions"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="14dp"
                             android:orientation="horizontal">
 
                             <com.google.android.material.button.MaterialButton
@@ -147,7 +147,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:layout_marginBottom="8dp" />
+                            android:layout_marginBottom="10dp" />
 
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/remote_target"
@@ -161,6 +161,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
                             android:text="@string/remote_debug_target_help"
                             android:textAppearance="?attr/textAppearanceBodySmall"
                             android:textColor="?attr/colorOnSurfaceVariant" />
@@ -170,7 +171,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="24dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -201,34 +202,34 @@
                 </LinearLayout>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/remote_debug_help"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?attr/colorOnSurfaceVariant" />
-
-                <TextView
                     android:id="@+id/discovery_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
                     android:accessibilityLiveRegion="polite"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
                 <LinearLayout
                     android:id="@+id/devices"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="vertical" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/remote_debug_help"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
 
                 <com.google.android.material.card.MaterialCardView
                     style="?attr/materialCardViewOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     app:cardCornerRadius="20dp">
 
                     <LinearLayout
@@ -241,11 +242,12 @@
                             style="?attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="start|center_vertical"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
                             android:minHeight="56dp"
+                            android:paddingHorizontal="20dp"
                             android:text="@string/remote_debug_advanced"
-                            android:textAlignment="viewStart"
                             app:icon="@drawable/selector_ic_expand_more_24"
                             app:iconGravity="end"
                             app:iconTint="?attr/colorOnSurfaceVariant" />
@@ -255,8 +257,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:paddingHorizontal="16dp"
-                            android:paddingBottom="12dp"
+                            android:paddingHorizontal="20dp"
+                            android:paddingBottom="16dp"
                             android:visibility="gone">
 
                             <TextView
@@ -269,7 +271,6 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/host_layout"
-                                style="?attr/textInputOutlinedStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/remote_debug_host">
@@ -285,7 +286,6 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/port_layout"
-                                style="?attr/textInputOutlinedStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
@@ -305,7 +305,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
+                                android:layout_marginTop="16dp"
                                 android:orientation="horizontal">
 
                                 <com.google.android.material.button.MaterialButton
@@ -313,7 +313,12 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="@string/remote_debug_connect" />
+                                    android:maxLines="1"
+                                    android:paddingHorizontal="12dp"
+                                    android:text="@string/remote_debug_connect"
+                                    app:autoSizeMaxTextSize="14sp"
+                                    app:autoSizeMinTextSize="11sp"
+                                    app:autoSizeTextType="uniform" />
 
                                 <com.google.android.material.button.MaterialButton
                                     android:id="@+id/pair"
@@ -322,7 +327,12 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
                                     android:layout_weight="1"
-                                    android:text="@string/remote_debug_pair" />
+                                    android:maxLines="1"
+                                    android:paddingHorizontal="12dp"
+                                    android:text="@string/remote_debug_pair"
+                                    app:autoSizeMaxTextSize="14sp"
+                                    app:autoSizeMinTextSize="11sp"
+                                    app:autoSizeTextType="uniform" />
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -330,13 +340,14 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/open_logs"
-                    style="?attr/materialButtonOutlinedStyle"
+                    style="?attr/materialButtonTonalStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:minHeight="56dp"
+                    android:minHeight="52dp"
                     android:text="@string/remote_debug_open_logcat"
-                    app:icon="@drawable/ic_mtrl_terminal" />
+                    app:icon="@drawable/ic_mtrl_terminal"
+                    app:iconGravity="textStart" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
