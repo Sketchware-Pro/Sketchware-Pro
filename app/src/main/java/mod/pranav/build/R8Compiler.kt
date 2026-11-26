@@ -44,6 +44,25 @@ class R8Compiler(
          * Use a few low priority threads instead, it's slower but much cooler and more stable.
          */
         val threads = ProguardHandler(yq.sc_id).getR8Threads()
+        fun telemetry(stage: String) {
+            try {
+                val runtime = Runtime.getRuntime()
+                val usedMb = (runtime.totalMemory() - runtime.freeMemory()) / (1024L * 1024L)
+                val maxMb = runtime.maxMemory() / (1024L * 1024L)
+                val active = Thread.activeCount()
+                println("R8Compiler $stage: activeThreads=$active workerThreads=$threads heapUsed=${usedMb}MB/${maxMb}MB")
+                FirebaseCrashlytics.getInstance().apply {
+                    setCustomKey("telemetry_stage", stage)
+                    setCustomKey("active_threads", active)
+                    setCustomKey("shrinker_worker_threads", threads)
+                    setCustomKey("heap_used_mb", usedMb)
+                    setCustomKey("heap_max_mb", maxMb)
+                }
+            } catch (_: Throwable) {
+            }
+        }
+        System.gc()
+        telemetry("r8_run_start")
         val executor = Executors.newFixedThreadPool(threads) { runnable ->
             Thread {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_DEFAULT)
@@ -53,7 +72,9 @@ class R8Compiler(
 
         try {
             R8.run(command, executor)
+            telemetry("r8_run_success")
         } catch (t: Throwable) {
+            telemetry("r8_run_failure")
             try {
                 val crashlytics = FirebaseCrashlytics.getInstance()
                 crashlytics.setCustomKey("compiler_phase", "R8.run")

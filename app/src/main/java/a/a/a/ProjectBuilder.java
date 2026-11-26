@@ -27,6 +27,9 @@ import com.android.tools.r8.D8Command;
 import com.android.tools.r8.OutputMode;
 import com.github.megatronking.stringfog.plugin.StringFogInjector;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.iyxan23.zipalignjava.InvalidZipException;
 import com.iyxan23.zipalignjava.ZipAlign;
 
@@ -54,10 +57,6 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -82,6 +81,7 @@ import mod.pranav.build.R8Compiler;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.SketchApplication;
 import pro.sketchware.util.library.BuiltInLibraryManager;
+import pro.sketchware.util.library.BuiltInLibraryUtils;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -112,6 +112,8 @@ public class ProjectBuilder {
      * Timestamp keeping track of when compiling the project's resources started, needed for stats of how long compiling took.
      */
     private long timestampResourceCompilationStarted;
+    /** Set when the shrinker could not run, so D8 and local-library DEX files take over. */
+    public boolean shrinkerSkipped;
 
     public ProjectBuilder(Context context, yq yqVar) {
         /* Detect some bad behaviour of the app */
@@ -247,8 +249,13 @@ public class ProjectBuilder {
      * @throws Exception Thrown if the compiler had any problems compiling
      */
     public void createDexFilesFromClasses() throws Exception {
+        if (shrinkerSkipped) {
+            /* R8 may have left partial dex files and a half-written mapping behind. */
+            FileUtil.deleteFile(yq.binDirectoryPath + File.separator + "dex");
+            FileUtil.deleteFile(yq.proguardMappingPath);
+        }
         FileUtil.makeDir(yq.binDirectoryPath + File.separator + "dex");
-        if (proguard.isShrinkingEnabled() && proguard.isR8Enabled()) return;
+        if (!shrinkerSkipped && proguard.isShrinkingEnabled() && proguard.isR8Enabled()) return;
 
         long savedTimeMillis = System.currentTimeMillis();
         try {
@@ -652,7 +659,11 @@ public class ProjectBuilder {
                 Object localLibraryDexPath = localLibrary.get("dexPath");
 
                 if (localLibraryDexPath instanceof String) {
-                    if (!proguard.libIsProguardFMEnabled((String) localLibraryName)) {
+                    if (proguard.libIsProguardFMEnabled((String) localLibraryName) && !shrinkerSkipped) {
+                        LogUtil.d(TAG, "Full Mode: skipping prebuilt DEX of " + localLibraryName
+                                + ", its classes must come from the shrinker output");
+                    }
+                    if (!proguard.libIsProguardFMEnabled((String) localLibraryName) || shrinkerSkipped) {
                         dexes.add(new File((String) localLibraryDexPath));
                         /* Add library's extra DEX files */
                         File localLibraryDirectory = new File((String) localLibraryDexPath).getParentFile();
@@ -907,6 +918,61 @@ public class ProjectBuilder {
         }
     }
 
+    /**
+     * Full Mode libraries replacing an excluded built-in are the only copy of those classes, so
+     * they are kept intact. Other Full Mode libraries remain free to shrink.
+     */
+    private void appendFullModeKeepRules(StringBuilder rules) {
+        LinkedHashSet<String> excludedPackages = new LinkedHashSet<>();
+        String configPath = FileUtil.getExternalStorageDir() + "/.sketchware/data/"
+                + yq.sc_id + "/excluded_library";
+        if (FileUtil.isExistFile(configPath)) {
+            try {
+                JsonObject config = JsonParser.parseString(FileUtil.readFile(configPath)).getAsJsonObject();
+                if (config.has("first") && config.get("first").getAsBoolean() && config.has("second")) {
+                    for (JsonElement element : config.getAsJsonArray("second")) {
+                        String packageName = BuiltInLibraryUtils.getPackageName(element.getAsString());
+                        if (packageName != null && !packageName.isEmpty()) {
+                            excludedPackages.add(packageName);
+                        }
+                    }
+                }
+            } catch (RuntimeException e) {
+                LogUtil.e(TAG, "Could not read excluded built-in libraries", e);
+            }
+        }
+
+        LinkedHashSet<String> kept = new LinkedHashSet<>();
+        for (HashMap<String, Object> library : mll.list) {
+            Object name = library.get("name");
+            if (name == null || !proguard.libIsProguardFMEnabled(name.toString())) continue;
+            Object packageName = library.get("packageName");
+            if (packageName instanceof String pkg && !pkg.isEmpty()) {
+                if (excludedPackages.contains(pkg)) kept.add(pkg + ".**");
+                continue;
+            }
+            /* No package information: keep that library's classes individually. */
+            Object jarPath = library.get("jarPath");
+            if (!(jarPath instanceof String path)) continue;
+            try (ZipFile jar = new ZipFile(path)) {
+                Enumeration<? extends ZipEntry> entries = jar.entries();
+                while (entries.hasMoreElements()) {
+                    String entry = entries.nextElement().getName();
+                    if (entry.endsWith(".class")) {
+                        kept.add(entry.substring(0, entry.length() - 6).replace('/', '.'));
+                    }
+                }
+            } catch (IOException | RuntimeException e) {
+                LogUtil.e(TAG, "Could not scan " + path + " for Full Mode classes", e);
+            }
+        }
+
+        LogUtil.d(TAG, "Full Mode: keeping " + kept.size() + " excluded built-in package(s)");
+        for (String className : kept) {
+            rules.append("-keep class ").append(className).append(" { *; }\n");
+        }
+    }
+
     private boolean usesGoogleAds() {
         try {
             File manifest = new File(yq.androidManifestPath);
@@ -968,10 +1034,33 @@ public class ProjectBuilder {
         }
 
         appendServiceKeepRules(rules);
+        appendFullModeKeepRules(rules);
 
         File rulesFile = new File(yq.binDirectoryPath, "sketchware_extra_rules.pro");
         Files.writeString(rulesFile.toPath(), rules.toString());
         return rulesFile.getAbsolutePath();
+    }
+
+    /** Records thread and heap state around shrinker stages so device failures can be diagnosed. */
+    public void logShrinkerTelemetry(String stage) {
+        try {
+            Runtime runtime = Runtime.getRuntime();
+            long usedMb = (runtime.totalMemory() - runtime.freeMemory()) / (1024L * 1024L);
+            long maxMb = runtime.maxMemory() / (1024L * 1024L);
+            int threads = Thread.activeCount();
+            int workers = proguard == null ? -1 : proguard.getR8Threads();
+            LogUtil.d(TAG, stage + " telemetry: activeThreads=" + threads
+                    + ", workerThreads=" + workers
+                    + ", heapUsed=" + usedMb + "MB/" + maxMb + "MB");
+
+            FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+            crashlytics.setCustomKey("telemetry_stage", stage);
+            crashlytics.setCustomKey("active_threads", threads);
+            crashlytics.setCustomKey("shrinker_worker_threads", workers);
+            crashlytics.setCustomKey("heap_used_mb", usedMb);
+            crashlytics.setCustomKey("heap_max_mb", maxMb);
+        } catch (Throwable ignored) {
+        }
     }
 
     public void runR8() throws IOException {
@@ -992,17 +1081,27 @@ public class ProjectBuilder {
         config.addAll(mll.getPgRules());
         ArrayList<String> jars = new ArrayList<>();
         jars.add(yq.compiledClassesPath + ".jar");
+        ArrayList<String> fullModeLibs = new ArrayList<>();
 
         for (HashMap<String, Object> hashMap : mll.list) {
             String obj = hashMap.get("name").toString();
             if (hashMap.containsKey("jarPath") && proguard.libIsProguardFMEnabled(obj)) {
                 jars.add(hashMap.get("jarPath").toString());
+                fullModeLibs.add(obj);
             }
         }
+        logShrinkerTelemetry("r8_start");
+        LogUtil.d(TAG, "Running R8: " + jars.size() + " program jars, " + config.size()
+                + " config files, threads=" + proguard.getR8Threads()
+                + ", shrink=" + proguard.isShrinkEnabled()
+                + ", obfuscate=" + proguard.isObfuscateEnabled()
+                + ", optimize=" + proguard.isOptimizeEnabled()
+                + ", fullModeLibs=" + fullModeLibs);
         try {
             JarBuilder.INSTANCE.generateJar(new File(yq.compiledClassesPath));
             new R8Compiler(new ArrayList<>(rules), config.toArray(new String[0]), getProguardClasspath().split(":"), jars.toArray(new String[0]), settings.getMinSdkVersion(), yq).compile();
         } catch (Exception | OutOfMemoryError | StackOverflowError e) {
+            logShrinkerTelemetry("r8_failure");
             try {
                 FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
                 crashlytics.setCustomKey("compiler_stage", "runR8");
@@ -1015,7 +1114,10 @@ public class ProjectBuilder {
             }
             throw new IOException(e);
         }
-        LogUtil.d(TAG, "R8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        logShrinkerTelemetry("r8_success");
+        LogUtil.d(TAG, "R8 took " + (System.currentTimeMillis() - savedTimeMillis)
+                + " ms; produced " + FileUtil.listFiles(yq.binDirectoryPath + File.separator + "dex", "dex").size()
+                + " dex files, mapping: " + yq.proguardMappingPath);
     }
 
     public void runProguard() throws IOException {
@@ -1052,13 +1154,20 @@ public class ProjectBuilder {
         args.add("-injars");
         args.add(yq.compiledClassesPath);
 
+        ArrayList<String> fullModeLibs = new ArrayList<>();
         for (HashMap<String, Object> hashMap : mll.list) {
             String obj = hashMap.get("name").toString();
             if (hashMap.containsKey("jarPath") && proguard.libIsProguardFMEnabled(obj)) {
                 args.add("-injars");
                 args.add(hashMap.get("jarPath").toString());
+                fullModeLibs.add(obj);
             }
         }
+        logShrinkerTelemetry("proguard_start");
+        LogUtil.d(TAG, "Running ProGuard: fullModeLibs=" + fullModeLibs
+                + ", shrink=" + proguard.isShrinkEnabled()
+                + ", obfuscate=" + proguard.isObfuscateEnabled()
+                + ", optimize=" + proguard.isOptimizeEnabled());
         args.add("-libraryjars");
         args.add(getProguardClasspath());
         args.add("-outjars");
@@ -1078,29 +1187,14 @@ public class ProjectBuilder {
             throw new IOException(e);
         }
 
-        /* ProGuard itself is sequential, but give it the same bounded, low-priority worker pool
-         * as R8 so the shared smart-threading setting governs both shrink engines. */
-        int threads = proguard.getR8Threads();
-        ExecutorService executor = Executors.newFixedThreadPool(threads, runnable -> {
-            Thread thread = new Thread(runnable);
-            thread.setPriority(Thread.NORM_PRIORITY - 1);
-            return thread;
-        });
+        /* ProGuard has no thread option and runs its passes sequentially on this thread. */
         try {
-            Future<?> shrink = executor.submit(() -> {
-                new ProGuard(configuration).execute();
-                return null;
-            });
-            shrink.get();
-        } catch (ExecutionException e) {
-            throw new IOException(e.getCause());
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            new ProGuard(configuration).execute();
+        } catch (Exception e) {
             throw new IOException(e);
-        } finally {
-            executor.shutdown();
         }
 
+        logShrinkerTelemetry("proguard_success");
         LogUtil.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 

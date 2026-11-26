@@ -5,11 +5,16 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import androidx.transition.AutoTransition;
+import androidx.transition.TransitionManager;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -20,6 +25,7 @@ import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ActivityCodeShrinkingBinding;
+import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.ThemeUtils;
 
 /**
@@ -55,7 +61,6 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         binding.shrinkSwitch.setOnCheckedChangeListener(this);
         binding.obfuscateSwitch.setOnCheckedChangeListener(this);
         binding.optimizeSwitch.setOnCheckedChangeListener(this);
-        binding.threadSwitch.setOnCheckedChangeListener(this);
         binding.stringfogSwitch.setOnCheckedChangeListener(this);
         binding.debugSwitch.setOnCheckedChangeListener(this);
         binding.rulesRow.setOnClickListener(this);
@@ -63,7 +68,6 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         binding.shrinkRow.setOnClickListener(this);
         binding.obfuscateRow.setOnClickListener(this);
         binding.optimizeRow.setOnClickListener(this);
-        binding.threadRow.setOnClickListener(this);
         binding.stringfogRow.setOnClickListener(this);
         binding.debugRow.setOnClickListener(this);
 
@@ -103,31 +107,33 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
                 : selectedMode == R.id.btn_proguard ? R.string.code_shrinking_mode_hint_proguard
                 : R.string.code_shrinking_mode_hint_disabled);
 
-        binding.rulesRow.setVisibility(pg.isShrinkEnabled() ? View.VISIBLE : View.GONE);
+        setRulesExpanded(pg.isShrinkEnabled());
         ArrayList<String> conflicts = pg.getConflictingDontRules();
         binding.rulesWarning.setVisibility(conflicts.isEmpty() ? View.GONE : View.VISIBLE);
         binding.rulesWarning.setText(getString(R.string.code_shrinking_rules_conflict,
                 TextUtils.join(", ", conflicts)));
 
+        int fullModeLibs = pg.getFullModeLibs().size();
+        binding.fullModeTitle.setText(fullModeLibs == 0
+                ? getString(R.string.common_word_full_mode)
+                : getString(R.string.code_shrinking_full_mode_count, fullModeLibs));
+
         binding.optionsSection.setVisibility(enabled ? View.VISIBLE : View.GONE);
-        binding.fullModeRow.setVisibility(enabled && hasLocalLibraries() ? View.VISIBLE : View.GONE);
         binding.shrinkSwitch.setChecked(pg.isShrinkEnabled());
         binding.obfuscateSwitch.setChecked(pg.isObfuscateEnabled());
         binding.optimizeSwitch.setChecked(pg.isOptimizeEnabled());
-
-        boolean smart = "auto".equals(pg.getR8ThreadMode());
-        binding.threadSwitch.setChecked(smart);
-        binding.threadHint.setText(getString(smart
-                ? R.string.code_shrinking_threads_hint_auto
-                : R.string.code_shrinking_threads_hint_off, pg.getR8Threads()));
 
         binding.stringfogSwitch.setChecked(stringfog.isStringfogEnabled());
         binding.debugSwitch.setChecked(pg.isDebugModeEnabled());
         updatingUi = false;
     }
 
-    private boolean hasLocalLibraries() {
-        return !new ManageLocalLibrary(scId).list.isEmpty();
+    private void setRulesExpanded(boolean expanded) {
+        View panel = binding.rulesPanel;
+        int target = expanded ? View.VISIBLE : View.GONE;
+        if (panel.getVisibility() == target) return;
+        TransitionManager.beginDelayedTransition((ViewGroup) panel.getParent(), new AutoTransition());
+        panel.setVisibility(target);
     }
 
     @Override
@@ -145,8 +151,6 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
             binding.obfuscateSwitch.toggle();
         } else if (v == binding.optimizeRow) {
             binding.optimizeSwitch.toggle();
-        } else if (v == binding.threadRow) {
-            binding.threadSwitch.toggle();
         } else if (v == binding.stringfogRow) {
             binding.stringfogSwitch.toggle();
         } else if (v == binding.debugRow) {
@@ -156,6 +160,10 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
 
     private void showFullModeDialog() {
         ManageLocalLibrary mll = new ManageLocalLibrary(scId);
+        if (mll.list.isEmpty()) {
+            SketchwareUtil.toast(getString(R.string.code_shrinking_full_mode_empty), Toast.LENGTH_LONG);
+            return;
+        }
         String[] libraries = new String[mll.list.size()];
         boolean[] checked = new boolean[mll.list.size()];
 
@@ -179,6 +187,7 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
                         if (checked[i]) selected.add(libraries[i]);
                     }
                     pg.setProguardFMLibs(selected);
+                    updateUi();
                 })
                 .setNegativeButton(R.string.common_word_cancel, null)
                 .show();
@@ -194,14 +203,6 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
             pg.setObfuscateEnabled(isChecked);
         } else if (button == binding.optimizeSwitch) {
             pg.setOptimizeEnabled(isChecked);
-        } else if (button == binding.threadSwitch) {
-            if (isChecked) {
-                pg.setR8ThreadMode("auto");
-            } else {
-                pg.setR8ThreadMode("manual");
-                pg.setR8Threads(1);
-            }
-            updateUi();
         } else if (button == binding.stringfogSwitch) {
             stringfog.setStringfogEnabled(isChecked);
         } else if (button == binding.debugSwitch) {

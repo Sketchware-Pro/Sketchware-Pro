@@ -7,6 +7,7 @@ import java.util.HashMap;
 import a.a.a.ProjectBuilder;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
+import mod.jbk.util.LogUtil;
 import pro.sketchware.utility.FileUtil;
 
 public class StringfogHandler {
@@ -60,8 +61,12 @@ public class StringfogHandler {
      */
     public void start(BuildProgressReceiver progressReceiver, ProjectBuilder builder) {
         if (isStringfogEnabled()) {
+            LogUtil.d("StringFog", "Injecting encrypted strings for project " + config_path);
             progressReceiver.onProgress("Running StringFog...", 14);
             builder.runStringfog();
+            LogUtil.d("StringFog", "Injection finished");
+        } else {
+            LogUtil.d("StringFog", "Disabled for this project");
         }
     }
 }

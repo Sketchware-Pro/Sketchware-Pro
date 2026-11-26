@@ -145,104 +145,185 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:gravity="center_vertical"
-                            android:minHeight="52dp"
-                            android:orientation="horizontal">
+                                android:minHeight="52dp"
+                                android:orientation="horizontal">
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="12dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="12dp"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
 
-                                <TextView
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/code_shrinking_shrink"
+                                        android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:text="@string/code_shrinking_shrink_hint"
+                                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                                        android:textColor="?attr/colorOnSurfaceVariant" />
+                                </LinearLayout>
+
+                                <com.google.android.material.materialswitch.MaterialSwitch
+                                    android:id="@+id/shrink_switch"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/code_shrinking_shrink"
-                                    android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:text="@string/code_shrinking_shrink_hint"
-                                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                                    android:textColor="?attr/colorOnSurfaceVariant" />
+                                    android:contentDescription="@string/code_shrinking_shrink"
+                                    app:thumbIcon="@drawable/ic_switch_thumb_state"
+                                    app:thumbIconSize="18dp" />
                             </LinearLayout>
-
-                            <com.google.android.material.materialswitch.MaterialSwitch
-                                android:id="@+id/shrink_switch"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/code_shrinking_shrink"
-                                app:thumbIcon="@drawable/ic_switch_thumb_state"
-                                app:thumbIconSize="18dp" />
-                        </LinearLayout>
-                    </com.google.android.material.listitem.ListItemCardView>
-                </com.google.android.material.listitem.ListItemLayout>
-                <com.google.android.material.listitem.ListItemLayout
-                    android:id="@+id/rules_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="3dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <com.google.android.material.listitem.ListItemCardView
-                        style="?attr/listItemCardViewSegmentedStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardElevation="0dp"
-                        app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Middle"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
-                        app:cardForegroundColor="@android:color/transparent"
-                        app:rippleColor="?attr/colorPrimary">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:minHeight="52dp"
-                            android:orientation="horizontal">
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:id="@+id/rules_panel"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="12dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:visibility="gone">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/code_shrinking_rules"
-                                    android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
-
-                                <TextView
+                                <com.google.android.material.listitem.ListItemLayout
+                                    android:id="@+id/rules_row"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:text="@string/code_shrinking_rules_hint"
-                                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                                    android:textColor="?attr/colorOnSurfaceVariant" />
-                                <TextView
-                                    android:id="@+id/rules_warning"
+                                    android:clickable="true"
+                                    android:focusable="true">
+
+                                    <com.google.android.material.listitem.ListItemCardView
+                                        style="?attr/listItemCardViewSegmentedStyle"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        app:cardElevation="0dp"
+                                        app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Middle"
+                                        app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
+                                        app:cardForegroundColor="@android:color/transparent"
+                                        app:rippleColor="?attr/colorPrimary">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center_vertical"
+                                            android:minHeight="52dp"
+                                            android:orientation="horizontal">
+
+                                            <LinearLayout
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="12dp"
+                                                android:layout_weight="1"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="@string/code_shrinking_rules"
+                                                    android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
+
+                                                <TextView
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="2dp"
+                                                    android:text="@string/code_shrinking_rules_hint"
+                                                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                                                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                                                <TextView
+                                                    android:id="@+id/rules_warning"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="4dp"
+                                                    android:text="@string/code_shrinking_rules_conflict"
+                                                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                                                    android:textColor="?attr/colorError"
+                                                    android:visibility="gone" />
+                                            </LinearLayout>
+
+                                            <ImageView
+                                                android:layout_width="24dp"
+                                                android:layout_height="24dp"
+                                                android:importantForAccessibility="no"
+                                                android:src="@drawable/ic_edit_white_48dp"
+                                                app:tint="?attr/colorPrimary" />
+                                        </LinearLayout>
+                                    </com.google.android.material.listitem.ListItemCardView>
+                                </com.google.android.material.listitem.ListItemLayout>
+
+                                <com.google.android.material.listitem.ListItemLayout
+                                    android:id="@+id/full_mode_row"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/code_shrinking_rules_conflict"
-                                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                                    android:textColor="?attr/colorError"
-                                    android:visibility="gone" />
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:layout_marginTop="3dp">
+
+                                    <com.google.android.material.listitem.ListItemCardView
+                                        style="?attr/listItemCardViewSegmentedStyle"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        app:cardElevation="0dp"
+                                        app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Middle"
+                                        app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
+                                        app:cardForegroundColor="@android:color/transparent"
+                                        app:rippleColor="?attr/colorPrimary">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center_vertical"
+                                            android:minHeight="52dp"
+                                            android:orientation="horizontal">
+
+                                            <LinearLayout
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="12dp"
+                                                android:layout_weight="1"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    android:id="@+id/full_mode_title"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="@string/common_word_full_mode"
+                                                    android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
+
+                                                <TextView
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="2dp"
+                                                    android:text="@string/code_shrinker_full_mode_def"
+                                                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                                                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                                                <TextView
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="6dp"
+                                                    android:text="@string/code_shrinking_full_mode_note"
+                                                    android:textAppearance="?attr/textAppearanceBodySmall"
+                                                    android:textColor="?attr/colorError" />
+                                            </LinearLayout>
+
+                                            <ImageView
+                                                android:layout_width="24dp"
+                                                android:layout_height="24dp"
+                                                android:importantForAccessibility="no"
+                                                android:src="@drawable/ic_library_books_24"
+                                                app:tint="?attr/colorPrimary" />
+                                        </LinearLayout>
+                                    </com.google.android.material.listitem.ListItemCardView>
+                                </com.google.android.material.listitem.ListItemLayout>
                             </LinearLayout>
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:importantForAccessibility="no"
-                                android:src="@drawable/ic_edit_white_48dp"
-                                app:tint="?attr/colorPrimary" />
                         </LinearLayout>
                     </com.google.android.material.listitem.ListItemCardView>
                 </com.google.android.material.listitem.ListItemLayout>
@@ -363,120 +444,8 @@
                     </com.google.android.material.listitem.ListItemCardView>
                 </com.google.android.material.listitem.ListItemLayout>
 
-                <com.google.android.material.listitem.ListItemLayout
-                    android:id="@+id/full_mode_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="3dp"
-                    android:clickable="true"
-                    android:focusable="true">
 
-                    <com.google.android.material.listitem.ListItemCardView
-                        style="?attr/listItemCardViewSegmentedStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardElevation="0dp"
-                        app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Middle"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
-                        app:cardForegroundColor="@android:color/transparent"
-                        app:rippleColor="?attr/colorPrimary">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:minHeight="52dp"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="12dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/common_word_full_mode"
-                                    android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:text="@string/code_shrinker_full_mode_def"
-                                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                                    android:textColor="?attr/colorOnSurfaceVariant" />
-                            </LinearLayout>
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:importantForAccessibility="no"
-                                android:src="@drawable/ic_edit_white_48dp"
-                                app:tint="?attr/colorPrimary" />
-                        </LinearLayout>
-                    </com.google.android.material.listitem.ListItemCardView>
-                </com.google.android.material.listitem.ListItemLayout>
-                <com.google.android.material.listitem.ListItemLayout
-                    android:id="@+id/thread_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="3dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <com.google.android.material.listitem.ListItemCardView
-                        style="?attr/listItemCardViewSegmentedStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardElevation="0dp"
-                        app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Last"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
-                        app:cardForegroundColor="@android:color/transparent"
-                        app:rippleColor="?attr/colorPrimary">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                            android:minHeight="52dp"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="12dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/code_shrinking_smart_threads"
-                                    android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
-
-                                <TextView
-                                    android:id="@+id/thread_hint"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:text="@string/code_shrinking_threads_hint_auto"
-                                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                                    android:textColor="?attr/colorOnSurfaceVariant" />
-                            </LinearLayout>
-
-                            <com.google.android.material.materialswitch.MaterialSwitch
-                                android:id="@+id/thread_switch"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/code_shrinking_smart_threads"
-                                app:thumbIcon="@drawable/ic_switch_thumb_state"
-                                app:thumbIconSize="18dp" />
-                        </LinearLayout>
-                    </com.google.android.material.listitem.ListItemCardView>
-                </com.google.android.material.listitem.ListItemLayout>
             </LinearLayout>
 
 
