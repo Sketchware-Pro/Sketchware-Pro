@@ -25,7 +25,8 @@ class KB {
             if (!dir.exists() && !dir.mkdirs()) {
                 dir.mkdir()
             }
-            val canonicalDir = dir.canonicalPath + File.separator
+            val dirPath = dir.canonicalPath
+            val canonicalDir = dirPath + File.separator
             var bis: BufferedInputStream? = null
             var zis: ZipInputStream? = null
             try {
@@ -34,7 +35,8 @@ class KB {
                 while (true) {
                     val entry = zis.nextEntry ?: break
                     val outFile = File(dir, entry.name)
-                    if (!outFile.canonicalPath.startsWith(canonicalDir)) {
+                    val outPath = outFile.canonicalPath
+                    if (outPath != dirPath && !outPath.startsWith(canonicalDir)) {
                         throw SecurityException("Invalid zip entry: ${entry.name}")
                     }
                     if (!entry.isDirectory) {
@@ -111,7 +113,8 @@ class KB {
         if (!dir.exists()) {
             dir.mkdirs()
         }
-        val canonicalDir = dir.canonicalPath + File.separator
+        val dirPath = dir.canonicalPath
+        val canonicalDir = dirPath + File.separator
         var bis: BufferedInputStream? = null
         var zis: ZipInputStream? = null
         try {
@@ -120,7 +123,8 @@ class KB {
             while (true) {
                 val entry = zis.nextEntry ?: break
                 val outFile = File(dir, entry.name)
-                if (!outFile.canonicalPath.startsWith(canonicalDir)) {
+                val outPath = outFile.canonicalPath
+                if (outPath != dirPath && !outPath.startsWith(canonicalDir)) {
                     throw SecurityException("Invalid zip entry: ${entry.name}")
                 }
                 if (!entry.isDirectory) {
