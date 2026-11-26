@@ -36,7 +36,6 @@ class oB @JvmOverloads constructor(@JvmField var a: Boolean = false) {
     @Throws(Exception::class)
     fun a(bArr: ByteArray): String = String(b(bArr), Charset.forName("UTF-8"))
 
-    @Throws(IOException::class)
     fun a(context: Context, str: String, str2: String) {
         val assets = context.assets
         var inputStream: InputStream? = null
@@ -122,7 +121,6 @@ class oB @JvmOverloads constructor(@JvmField var a: Boolean = false) {
         f(str)
     }
 
-    @Throws(IOException::class)
     fun a(str: String, str2: String) {
         var fis: FileInputStream? = null
         var fos: FileOutputStream? = null
@@ -211,7 +209,6 @@ class oB @JvmOverloads constructor(@JvmField var a: Boolean = false) {
         a(str, true)
     }
 
-    @Throws(IOException::class)
     fun b(str: String, str2: String) {
         val lastSep = str.lastIndexOf(File.separator)
         if (lastSep > 0) {
