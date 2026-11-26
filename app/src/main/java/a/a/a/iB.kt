@@ -58,7 +58,8 @@ object iB {
     }
 
     @JvmStatic
-    fun a(str: String, i: Int, i2: Int): Bitmap? {
+    fun a(str: String?, i: Int, i2: Int): Bitmap? {
+        if (str == null) return null
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeFile(str, options)
