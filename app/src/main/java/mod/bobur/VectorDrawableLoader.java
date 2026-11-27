@@ -54,17 +54,22 @@ public class VectorDrawableLoader {
         return wq.b(sc_id) + "/files/resource/drawable/" + fileName + ".xml";
     }
 
-    public void setImageVectorFromFile(ImageView imageView, String filePath) throws Exception {
-        if (filePath == null || filePath.isEmpty()) {
-            return;
+    public boolean setImageVectorFromFile(ImageView imageView, String filePath) {
+        if (imageView == null || filePath == null || filePath.isEmpty()) {
+            return false;
         }
         File file = new File(filePath);
         if (!file.exists() || file.length() == 0) {
-            return;
+            return false;
         }
         String content = FileUtil.readFile(filePath);
         if (content == null || content.trim().isEmpty()) {
-            return;
+            return false;
+        }
+        // Shape, layer-list, selector and other non-vector drawable XML cannot be
+        // rendered; report failure so the caller can fall back to a file icon.
+        if (!content.contains("<vector")) {
+            return false;
         }
         try {
             VectorDrawableParser attrs = new VectorDrawableParser(content);
@@ -73,8 +78,10 @@ public class VectorDrawableLoader {
             SVG svgObj = SVG.getFromString(svg);
             Picture picture = svgObj.renderToPicture();
             imageView.setImageDrawable(new PictureDrawable(picture));
+            return true;
         } catch (Exception e) {
             Log.w("VectorDrawableLoader", "Failed to render vector drawable: " + filePath, e);
+            return false;
         }
     }
 }

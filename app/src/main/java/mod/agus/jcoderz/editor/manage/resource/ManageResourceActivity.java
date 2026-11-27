@@ -394,7 +394,11 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                     if (FileUtil.isImageFile(path)) {
                         Glide.with(ManageResourceActivity.this).load(new File(path)).into(binding.icon);
                     } else if (path.endsWith(".xml") && "drawable".equals(getLastDirectory(path))) {
-                        new VectorDrawableLoader().setImageVectorFromFile(binding.icon, path);
+                        if (!new VectorDrawableLoader().setImageVectorFromFile(binding.icon, path)) {
+                            // Not a renderable vector (shape, layer-list, ...): show the
+                            // file icon instead of keeping the recycled view's old icon.
+                            binding.icon.setImageResource(R.drawable.ic_mtrl_file);
+                        }
                     } else {
                         binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                     }
