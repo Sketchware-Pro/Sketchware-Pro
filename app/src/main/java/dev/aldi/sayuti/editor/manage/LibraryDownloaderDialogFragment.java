@@ -49,6 +49,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
 
     private final Gson gson = new Gson();
     private BuildSettings buildSettings;
+    private int minSdk = 21;
 
     private boolean notAssociatedWithProject;
     private String dependencyName;
@@ -90,6 +91,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
         notAssociatedWithProject = getArguments().getBoolean("notAssociatedWithProject", false);
         buildSettings = (BuildSettings) getArguments().getSerializable("buildSettings");
         localLibFile = getArguments().getString("localLibFile");
+        minSdk = getArguments().getInt("minSdk", 21);
 
         binding.btnDownload.setOnClickListener(v -> initDownloadFlow());
 
@@ -176,7 +178,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
         setDownloadState(true);
 
         var resolver = new DependencyResolver(group, artifact, version,
-                binding.cbSkipSubdependencies.isChecked(), buildSettings);
+                binding.cbSkipSubdependencies.isChecked(), buildSettings, minSdk);
         var handler = new Handler(Looper.getMainLooper());
 
         downloadExecutor.execute(() -> {

@@ -75,6 +75,10 @@ public class ProjectSettings {
         if (FileUtil.isExistFile(path)) {
             try {
                 hashmap = new Gson().fromJson(FileUtil.readFile(path).trim(), Helper.TYPE_STRING_MAP);
+                // Gson returns null (without throwing) when decoding an empty file; an empty
+                // config must read as "no settings", not crash later readers like
+                // getMinSdkVersion() with a NullPointerException.
+                if (hashmap == null) hashmap = new HashMap<>();
             } catch (Exception e) {
                 Log.e("ProjectSettings", "Failed to read project settings for project " + sc_id + "!", e);
                 hashmap = new HashMap<>();

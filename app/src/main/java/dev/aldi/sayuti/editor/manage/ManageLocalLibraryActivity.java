@@ -39,6 +39,7 @@ import java.util.concurrent.Executors;
 import a.a.a.MA;
 import a.a.a.mB;
 import mod.hey.studios.build.BuildSettings;
+import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLocallibrariesBinding;
@@ -196,6 +197,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             bundle.putBoolean("notAssociatedWithProject", notAssociatedWithProject);
             bundle.putSerializable("buildSettings", buildSettings);
             bundle.putString("localLibFile", getLocalLibFile(scId).getAbsolutePath());
+            bundle.putInt("minSdk", new ProjectSettings(scId).getMinSdkVersion());
 
             LibraryDownloaderDialogFragment fragment = new LibraryDownloaderDialogFragment();
             fragment.setArguments(bundle);
