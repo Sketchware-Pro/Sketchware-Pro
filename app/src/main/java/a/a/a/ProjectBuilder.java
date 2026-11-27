@@ -1202,6 +1202,14 @@ public class ProjectBuilder {
         args.add(getProguardClasspath());
         args.add("-outjars");
         args.add(yq.proguardClassesPath);
+        if (proguard.isDebugFilesEnabled()) {
+            args.add("-printseeds");
+            args.add(yq.proguardSeedsPath);
+            args.add("-printusage");
+            args.add(yq.proguardUsagePath);
+            args.add("-printmapping");
+            args.add(yq.proguardMappingPath);
+        }
         LogUtil.d(TAG, "About to run ProGuard with these arguments: " + args);
 
         Configuration configuration = new Configuration();
