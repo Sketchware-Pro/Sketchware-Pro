@@ -36,7 +36,7 @@ reviews:
       instructions: |
         Check GitHub Actions workflows for least-privilege permissions, safe handling of secrets/env vars, and reliable build/artifact steps.
   auto_review:
-    enabled: true
+    enabled: false
     drafts: false
   finishing_touches:
     docstrings:
