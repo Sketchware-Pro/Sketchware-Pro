@@ -115,7 +115,10 @@ public class AndroidManifestInjector {
             Object name = attribute.get("name");
 
             if (name instanceof String) {
-                if (className.equals(name)) {
+                // Honor the "_apply_for_all_activities" wildcard here too: the reader side
+                // (isActivityAttributeUsed) matches it, so without this the injection
+                // suppressed the default theme/orientation/exported yet was never emitted.
+                if (className.equals(name) || "_apply_for_all_activities".equals(name)) {
                     addToAct(nx, projectId, actName);
                     return true;
                 }
