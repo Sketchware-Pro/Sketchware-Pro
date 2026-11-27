@@ -1,0 +1,25 @@
+{
+    "name": "Eclipse",
+    "settings": [
+        {
+            "settings": {
+                "background": "#ffffff",
+                "foreground": "#000000",
+                "caret": "#000000",
+                "lineHighlight": "#0000000d",
+                "selection": "#c3def8",
+                "invisibles": "#bfbfbf"
+            }
+        },
+        { "name": "Comment", "scope": "comment", "settings": { "foreground": "#3f7f5f" } },
+        { "name": "String", "scope": "string, string.quoted, string.xml", "settings": { "foreground": "#3f7f5f" } },
+        { "name": "Keyword", "scope": "keyword, storage, storage.type, storage.modifier", "settings": { "foreground": "#7f0055" } },
+        { "name": "Tag", "scope": "entity.name.tag", "settings": { "foreground": "#7f0055" } },
+        { "name": "Attribute", "scope": "entity.other.attribute-name", "settings": { "foreground": "#007368" } },
+        { "name": "Constant", "scope": "constant, constant.numeric, constant.language, support.constant", "settings": { "foreground": "#3f008f" } },
+        { "name": "Function", "scope": "entity.name.function, support.function", "settings": { "foreground": "#0000ff" } },
+        { "name": "Type", "scope": "entity.name.type, entity.name.class, support.type, support.class", "settings": { "foreground": "#0000ff" } },
+        { "name": "Variable", "scope": "variable, variable.other, variable.parameter", "settings": { "foreground": "#000000" } },
+        { "name": "Invalid", "scope": "invalid, invalid.illegal", "settings": { "foreground": "#d40f0f" } }
+    ]
+}
