@@ -128,6 +128,8 @@ public class ProjectBuilder {
         LogUtil.setLoggingEnabled(debugMode);
         if (debugMode) {
             SystemLogPrinter.start();
+        } else {
+            SystemLogPrinter.stop();
         }
 
         try {
