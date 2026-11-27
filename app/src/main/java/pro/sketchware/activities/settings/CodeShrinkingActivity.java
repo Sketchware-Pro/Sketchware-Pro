@@ -29,6 +29,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.hey.studios.code.SrcCodeEditor;
@@ -55,6 +57,21 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
     private boolean initialUiUpdate = true;
     private final HashMap<View, ValueAnimator> heightAnimators = new HashMap<>();
     private final HashMap<View, Boolean> expandedStates = new HashMap<>();
+    private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
+    private ConfigSnapshot snapshot;
+
+    private static final class ConfigSnapshot {
+        boolean shrinkingEnabled;
+        boolean r8Enabled;
+        boolean shrinkEnabled;
+        boolean obfuscateEnabled;
+        boolean optimizeEnabled;
+        boolean stringfogEnabled;
+        boolean debugEnabled;
+        ArrayList<String> conflictingDontRules = new ArrayList<>();
+        ArrayList<String> fullModeLibs = new ArrayList<>();
+        String customRulesPath;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,8 +80,6 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         setContentView(binding.getRoot());
 
         scId = getIntent().getStringExtra("sc_id");
-        pg = new ProguardHandler(scId);
-        stringfog = new StringfogHandler(scId);
 
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
@@ -87,17 +102,36 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         binding.stringfogRow.setOnClickListener(this);
         binding.debugRow.setOnClickListener(this);
 
-        updateUi();
-        initialUiUpdate = false;
+        ioExecutor.execute(() -> {
+            pg = new ProguardHandler(scId);
+            stringfog = new StringfogHandler(scId);
+            ConfigSnapshot loaded = loadSnapshot();
+            runOnUiThread(() -> {
+                if (isFinishing() || isDestroyed()) return;
+                snapshot = loaded;
+                renderSnapshot(loaded);
+                initialUiUpdate = false;
+            });
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ioExecutor.shutdown();
     }
 
     private void onShrinkerChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-        if (!isChecked || updatingUi) return;
+        if (!isChecked || updatingUi || snapshot == null) return;
         boolean enabled = checkedId != R.id.btn_disabled;
         boolean r8 = checkedId == R.id.btn_r8;
-        pg.setProguardEnabled(enabled);
-        pg.setR8Enabled(r8);
-        updateUi();
+        snapshot.shrinkingEnabled = enabled;
+        snapshot.r8Enabled = r8;
+        renderSnapshot(snapshot);
+        ioExecutor.execute(() -> {
+            pg.setProguardEnabled(enabled);
+            pg.setR8Enabled(r8);
+        });
     }
 
     private void updateSegments(int selectedId) {
@@ -113,10 +147,25 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
                 selected ? R.attr.colorOnSecondaryContainer : R.attr.colorOnSurface));
     }
 
-    private void updateUi() {
+    private ConfigSnapshot loadSnapshot() {
+        ConfigSnapshot loaded = new ConfigSnapshot();
+        loaded.shrinkingEnabled = pg.isShrinkingEnabled();
+        loaded.r8Enabled = pg.isR8Enabled();
+        loaded.shrinkEnabled = pg.isShrinkEnabled();
+        loaded.obfuscateEnabled = pg.isObfuscateEnabled();
+        loaded.optimizeEnabled = pg.isOptimizeEnabled();
+        loaded.stringfogEnabled = stringfog.isStringfogEnabled();
+        loaded.debugEnabled = pg.isDebugModeEnabled();
+        loaded.conflictingDontRules = new ArrayList<>(pg.getConflictingDontRules());
+        loaded.fullModeLibs = new ArrayList<>(pg.getFullModeLibs());
+        loaded.customRulesPath = pg.getCustomProguardRules();
+        return loaded;
+    }
+
+    private void renderSnapshot(ConfigSnapshot state) {
         updatingUi = true;
-        boolean enabled = pg.isShrinkingEnabled();
-        boolean r8 = enabled && pg.isR8Enabled();
+        boolean enabled = state.shrinkingEnabled;
+        boolean r8 = enabled && state.r8Enabled;
         int selectedMode = r8 ? R.id.btn_r8 : enabled ? R.id.btn_proguard : R.id.btn_disabled;
         binding.shrinkerGroup.check(selectedMode);
         updateSegments(selectedMode);
@@ -124,24 +173,23 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
                 : selectedMode == R.id.btn_proguard ? R.string.code_shrinking_mode_hint_proguard
                 : R.string.code_shrinking_mode_hint_disabled);
 
-        setRulesExpanded(pg.isShrinkEnabled());
-        ArrayList<String> conflicts = pg.getConflictingDontRules();
-        binding.rulesWarning.setVisibility(conflicts.isEmpty() ? View.GONE : View.VISIBLE);
+        setRulesExpanded(state.shrinkEnabled);
+        binding.rulesWarning.setVisibility(state.conflictingDontRules.isEmpty() ? View.GONE : View.VISIBLE);
         binding.rulesWarning.setText(getString(R.string.code_shrinking_rules_conflict,
-                TextUtils.join(", ", conflicts)));
+                TextUtils.join(", ", state.conflictingDontRules)));
 
-        int fullModeLibs = pg.getFullModeLibs().size();
+        int fullModeLibs = state.fullModeLibs.size();
         binding.fullModeTitle.setText(fullModeLibs == 0
                 ? getString(R.string.code_shrinking_full_mode_none)
                 : getString(R.string.code_shrinking_full_mode_count, fullModeLibs));
 
         binding.optionsSection.setVisibility(enabled ? View.VISIBLE : View.GONE);
-        setCheckedIfChanged(binding.shrinkSwitch, pg.isShrinkEnabled());
-        setCheckedIfChanged(binding.obfuscateSwitch, pg.isObfuscateEnabled());
-        setCheckedIfChanged(binding.optimizeSwitch, pg.isOptimizeEnabled());
+        setCheckedIfChanged(binding.shrinkSwitch, state.shrinkEnabled);
+        setCheckedIfChanged(binding.obfuscateSwitch, state.obfuscateEnabled);
+        setCheckedIfChanged(binding.optimizeSwitch, state.optimizeEnabled);
 
-        setCheckedIfChanged(binding.stringfogSwitch, stringfog.isStringfogEnabled());
-        setCheckedIfChanged(binding.debugSwitch, pg.isDebugModeEnabled());
+        setCheckedIfChanged(binding.stringfogSwitch, state.stringfogEnabled);
+        setCheckedIfChanged(binding.debugSwitch, state.debugEnabled);
         updatingUi = false;
     }
 
@@ -211,10 +259,11 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
 
     @Override
     public void onClick(View v) {
+        if (snapshot == null) return;
         if (v == binding.rulesRow) {
             Intent intent = new Intent(this, SrcCodeEditor.class);
             intent.putExtra("title", "proguard-rules.pro");
-            intent.putExtra("content", pg.getCustomProguardRules());
+            intent.putExtra("content", snapshot.customRulesPath);
             startActivity(intent);
         } else if (v == binding.fullModeRow) {
             showFullModeDialog();
@@ -257,7 +306,7 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
 
         DialogFullModeLibrariesBinding dialogBinding =
                 DialogFullModeLibrariesBinding.inflate(LayoutInflater.from(this));
-        FullModeAdapter adapter = new FullModeAdapter(libraries, pg.getFullModeLibs(), count -> {
+        FullModeAdapter adapter = new FullModeAdapter(libraries, snapshot.fullModeLibs, count -> {
             dialogBinding.selectionCount.setText(
                     getString(R.string.code_shrinking_full_mode_selected_count, count));
             dialogBinding.clearSelection.setEnabled(count > 0);
@@ -315,8 +364,10 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         });
         dialogBinding.sheetCancel.setOnClickListener(v -> sheet.dismiss());
         dialogBinding.sheetSave.setOnClickListener(v -> {
-            pg.setProguardFMLibs(adapter.selectedLibraries());
-            updateUi();
+            ArrayList<String> selected = adapter.selectedLibraries();
+            snapshot.fullModeLibs = new ArrayList<>(selected);
+            renderSnapshot(snapshot);
+            ioExecutor.execute(() -> pg.setProguardFMLibs(selected));
             sheet.dismiss();
         });
         sheet.show();
@@ -413,18 +464,23 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
 
     @Override
     public void onCheckedChanged(CompoundButton button, boolean isChecked) {
-        if (updatingUi) return;
+        if (updatingUi || snapshot == null) return;
         if (button == binding.shrinkSwitch) {
-            pg.setShrinkEnabled(isChecked);
-            updateUi();
+            snapshot.shrinkEnabled = isChecked;
+            renderSnapshot(snapshot);
+            ioExecutor.execute(() -> pg.setShrinkEnabled(isChecked));
         } else if (button == binding.obfuscateSwitch) {
-            pg.setObfuscateEnabled(isChecked);
+            snapshot.obfuscateEnabled = isChecked;
+            ioExecutor.execute(() -> pg.setObfuscateEnabled(isChecked));
         } else if (button == binding.optimizeSwitch) {
-            pg.setOptimizeEnabled(isChecked);
+            snapshot.optimizeEnabled = isChecked;
+            ioExecutor.execute(() -> pg.setOptimizeEnabled(isChecked));
         } else if (button == binding.stringfogSwitch) {
-            stringfog.setStringfogEnabled(isChecked);
+            snapshot.stringfogEnabled = isChecked;
+            ioExecutor.execute(() -> stringfog.setStringfogEnabled(isChecked));
         } else if (button == binding.debugSwitch) {
-            pg.setDebugModeEnabled(isChecked);
+            snapshot.debugEnabled = isChecked;
+            ioExecutor.execute(() -> pg.setDebugModeEnabled(isChecked));
         }
     }
 }
