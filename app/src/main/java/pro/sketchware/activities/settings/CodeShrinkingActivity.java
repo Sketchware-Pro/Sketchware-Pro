@@ -52,6 +52,7 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
     private StringfogHandler stringfog;
     private String scId;
     private boolean updatingUi;
+    private boolean initialUiUpdate = true;
     private final HashMap<View, ValueAnimator> heightAnimators = new HashMap<>();
 
     @Override
@@ -86,6 +87,7 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         binding.debugRow.setOnClickListener(this);
 
         updateUi();
+        initialUiUpdate = false;
     }
 
     private void onShrinkerChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
@@ -150,6 +152,15 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         View panel = binding.rulesPanel;
         boolean visible = panel.getVisibility() == View.VISIBLE;
         if (visible == expanded && panel.getLayoutParams().height != 0) return;
+
+        if (initialUiUpdate) {
+            /* Initial state is applied without animation. */
+            panel.setVisibility(expanded ? View.VISIBLE : View.GONE);
+            panel.getLayoutParams().height = expanded
+                    ? ViewGroup.LayoutParams.WRAP_CONTENT : 0;
+            panel.requestLayout();
+            return;
+        }
 
         if (expanded) {
             panel.setVisibility(View.VISIBLE);

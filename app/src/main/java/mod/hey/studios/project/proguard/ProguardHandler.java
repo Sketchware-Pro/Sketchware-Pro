@@ -194,9 +194,7 @@ public class ProguardHandler {
             FileUtil.writeFile(path, existing + separator + missing);
         }
     }
-    /**
-     * Global build logging switch. Replaces the old ProGuard-only "generate debug files" option.
-     */
+    /** Global build logging switch. */
     public boolean isDebugModeEnabled() {
         return isDebugFilesEnabled();
     }
@@ -209,10 +207,7 @@ public class ProguardHandler {
         writeConfigBoolean("optimize", enabled);
     }
 
-    /**
-     * Removes classes, methods and fields the app never uses. Projects without the key keep shrinking,
-     * which is what every project did before the option existed.
-     */
+    /** Removes classes, methods and fields the app never uses. Missing key means enabled. */
     public boolean isShrinkEnabled() {
         return readConfigBoolean("shrink", true);
     }
@@ -221,9 +216,7 @@ public class ProguardHandler {
         writeConfigBoolean("shrink", enabled);
     }
 
-    /**
-     * Renames classes and members. Like shrinking, it stays on for projects that predate the key.
-     */
+    /** Renames classes and members. Missing key means enabled. */
     public boolean isObfuscateEnabled() {
         return readConfigBoolean("obfuscate", true);
     }
@@ -264,7 +257,7 @@ public class ProguardHandler {
         return debugFiles;
     }
 
-    /** Worker count for R8: all available cores, with a legacy manual override still honoured. */
+    /** Worker count for R8: all available cores, unless r8_threads overrides it. */
     public int getR8Threads() {
         int cores = Math.max(1, Runtime.getRuntime().availableProcessors());
         String configured = readConfigOrEmpty().get("r8_threads");

@@ -81,7 +81,6 @@ import mod.pranav.build.R8Compiler;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.SketchApplication;
 import pro.sketchware.util.library.BuiltInLibraryManager;
-import pro.sketchware.util.library.BuiltInLibraryUtils;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -931,9 +930,16 @@ public class ProjectBuilder {
                 JsonObject config = JsonParser.parseString(FileUtil.readFile(configPath)).getAsJsonObject();
                 if (config.has("first") && config.get("first").getAsBoolean() && config.has("second")) {
                     for (JsonElement element : config.getAsJsonArray("second")) {
-                        String packageName = BuiltInLibraryUtils.getPackageName(element.getAsString());
-                        if (packageName != null && !packageName.isEmpty()) {
-                            excludedPackages.add(packageName);
+                        String name = element.getAsString();
+                        /* Some built-ins have no R package and cannot contribute a keep prefix. */
+                        for (BuiltInLibraries.BuiltInLibrary library
+                                : BuiltInLibraries.KNOWN_BUILT_IN_LIBRARIES) {
+                            if (library.getName().equals(name)) {
+                                library.getPackageName().ifPresent(pkg -> {
+                                    if (!pkg.isEmpty()) excludedPackages.add(pkg);
+                                });
+                                break;
+                            }
                         }
                     }
                 }
@@ -1002,6 +1008,9 @@ public class ProjectBuilder {
         rules.append("-keepattributes SourceFile,LineNumberTable\n");
         rules.append("-renamesourcefileattribute SourceFile\n");
         rules.append("-keepclassmembers class * {\n    @com.google.gson.annotations.SerializedName <fields>;\n}\n");
+        /* Android instantiates nested SavedState classes reflectively when saving view state,
+         * so the shrinker cannot see those references from XML or generated code. */
+        rules.append("-keep class **$SavedState { *; }\n");
 
         if (new StringfogHandler(yq.sc_id).isStringfogEnabled()) {
             /* StringFog's runtime is called from rewritten bytecode, the shrinker must not merge or rename it */
