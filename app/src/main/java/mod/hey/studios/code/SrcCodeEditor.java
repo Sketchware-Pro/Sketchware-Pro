@@ -78,6 +78,14 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             new Pair<>("VS2019", SchemeVS2019.class),
             new Pair<>("NotepadXX", SchemeNotepadXX.class)
     );
+    /**
+     * Display names of the available TextMate themes, in the same order as
+     * {@link mod.jbk.code.CodeEditorColorSchemes#THEMES}. These are the only
+     * themes that can color TextMate languages (Kotlin, XML); the built-in
+     * {@link #KNOWN_COLOR_SCHEMES} only recolor the editor chrome, leaving
+     * TextMate token text invisible on a mismatched background.
+     */
+    public static final List<String> KNOWN_TEXTMATE_THEMES = List.of("Dracula", "GitHub");
     public static SharedPreferences pref;
     public static int languageId;
     private String beforeContent = "";
@@ -107,18 +115,39 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
     }
 
     public static void selectTheme(CodeEditor ed, int which) {
-        if (!(ed.getColorScheme() instanceof TextMateColorScheme)) {
-            EditorColorScheme scheme = switch (which) {
-                case 1 -> new SchemeGitHub();
-                case 2 -> new SchemeEclipse();
-                case 3 -> new SchemeDarcula();
-                case 4 -> new SchemeVS2019();
-                case 5 -> new SchemeNotepadXX();
-                default -> new EditorColorScheme();
-            };
+        // Built-in Sora color schemes only recolor the editor chrome
+        // (background, line numbers, cursor, ...). They are meant for regular
+        // Sora languages such as Java. Use {@link #selectTextMateTheme} for
+        // the TextMate languages (Kotlin, XML), whose token text is colored by
+        // a TextMate theme rather than by these schemes.
+        EditorColorScheme scheme = switch (which) {
+            case 1 -> new SchemeGitHub();
+            case 2 -> new SchemeEclipse();
+            case 3 -> new SchemeDarcula();
+            case 4 -> new SchemeVS2019();
+            case 5 -> new SchemeNotepadXX();
+            default -> new EditorColorScheme();
+        };
 
-            ed.setColorScheme(scheme);
-        }
+        ed.setColorScheme(scheme);
+    }
+
+    /**
+     * Applies one of the available TextMate themes (see {@link #KNOWN_TEXTMATE_THEMES}).
+     * This is what actually recolors the token text of the Kotlin / XML
+     * editors, unlike the built-in schemes.
+     */
+    public static void selectTextMateTheme(CodeEditor ed, int which) {
+        String theme = CodeEditorColorSchemes.THEMES[which];
+        ed.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(theme));
+    }
+
+    /**
+     * Default TextMate theme index for a freshly opened file: Dracula in dark
+     * mode, GitHub in light mode.
+     */
+    public static int defaultTextMateTheme(Context c) {
+        return ThemeUtils.isDarkThemeEnabled(c) ? 0 : 1;
     }
 
     public static void selectLanguage(CodeEditor ed, int which) {
@@ -260,6 +289,23 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                 .show();
     }
 
+    public static void showSwitchTextMateThemeDialog(Activity activity, CodeEditor codeEditor, DialogInterface.OnClickListener listener) {
+        int selected;
+        if (codeEditor.getColorScheme() instanceof TextMateColorScheme) {
+            selected = (pref != null && pref.contains("act_tmtheme"))
+                    ? pref.getInt("act_tmtheme", 0)
+                    : defaultTextMateTheme(activity);
+        } else {
+            selected = 0;
+        }
+        String[] items = KNOWN_TEXTMATE_THEMES.toArray(new String[0]);
+        new MaterialAlertDialogBuilder(activity)
+                .setTitle("Select Theme")
+                .setSingleChoiceItems(items, selected, listener)
+                .setNegativeButton(R.string.common_word_cancel, null)
+                .show();
+    }
+
     public static void showSwitchLanguageDialog(Activity activity, CodeEditor codeEditor, DialogInterface.OnClickListener listener) {
         CharSequence[] languagesList = {
                 "Java",
@@ -307,24 +353,36 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             beforeContent = FileUtil.readFile(getIntent().getStringExtra("content"));
         binding.editor.setText(beforeContent);
 
+        boolean textMateLanguage = false;
         if (title.endsWith(".java")) {
             binding.editor.setEditorLanguage(new JavaLanguage());
             languageId = 0;
         } else if (title.endsWith(".kt")) {
             binding.editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_KOTLIN));
-            binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
             languageId = 1;
+            textMateLanguage = true;
         } else if (title.endsWith(".xml")) {
             binding.editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
-            if (ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
-                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
-            } else {
-                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
-            }
             languageId = 2;
+            textMateLanguage = true;
         }
 
-        loadCESettings(this, binding.editor, "act", true);
+        // Load the non-theme editor settings, then apply the theme that matches
+        // the active language. Java uses the saved built-in scheme; the
+        // TextMate languages (Kotlin, XML) use a saved TextMate theme, falling
+        // back to an auto-picked default on first open so a light-mode app does
+        // not suddenly open with a dark editor. Files that are not one of
+        // these (e.g. the AndroidManifest "Components" view) keep the built-in
+        // scheme.
+        SharedPreferences hsce = getSharedPreferences("hsce", Activity.MODE_PRIVATE);
+        loadCESettings(this, binding.editor, "act");
+        if (textMateLanguage) {
+            int tmDefault = languageId == 2 ? defaultTextMateTheme(getApplicationContext()) : 0;
+            int tmTheme = hsce.contains("act_tmtheme") ? hsce.getInt("act_tmtheme", 0) : tmDefault;
+            selectTextMateTheme(binding.editor, tmTheme);
+        } else {
+            selectTheme(binding.editor, hsce.getInt("act_theme", 3));
+        }
         loadToolbar();
 
         UI.addSystemWindowInsetToPadding(binding.appBarLayout, true, true, true, false);
@@ -467,6 +525,17 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                     case "Select language":
                         showSwitchLanguageDialog(this, binding.editor, (dialog, which) -> {
                             selectLanguage(binding.editor, which);
+                            // Keep the color scheme in sync with the new language:
+                            // TextMate languages need a TextMate theme, Java a
+                            // built-in scheme (otherwise the token text and the
+                            // background mismatch and become unreadable).
+                            if (which == 0) {
+                                selectTheme(binding.editor, pref.getInt("act_theme", 3));
+                            } else {
+                                int tmDefault = which == 2 ? defaultTextMateTheme(getApplicationContext()) : 0;
+                                int tmTheme = pref.contains("act_tmtheme") ? pref.getInt("act_tmtheme", 0) : tmDefault;
+                                selectTextMateTheme(binding.editor, tmTheme);
+                            }
                             dialog.dismiss();
                         });
                         break;
@@ -497,11 +566,19 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                         break;
 
                     case "Select theme":
-                        showSwitchThemeDialog(this, binding.editor, (dialog, which) -> {
-                            selectTheme(binding.editor, which);
-                            pref.edit().putInt("act_theme", which).apply();
-                            dialog.dismiss();
-                        });
+                        if (binding.editor.getColorScheme() instanceof TextMateColorScheme) {
+                            showSwitchTextMateThemeDialog(this, binding.editor, (dialog, which) -> {
+                                selectTextMateTheme(binding.editor, which);
+                                pref.edit().putInt("act_tmtheme", which).apply();
+                                dialog.dismiss();
+                            });
+                        } else {
+                            showSwitchThemeDialog(this, binding.editor, (dialog, which) -> {
+                                selectTheme(binding.editor, which);
+                                pref.edit().putInt("act_theme", which).apply();
+                                dialog.dismiss();
+                            });
+                        }
                         break;
 
                     case "Word wrap":
