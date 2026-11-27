@@ -926,27 +926,61 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             }
 
             if (e.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
-                for (EventBean eventBean : jC.a(sc_id).g(e.getJavaName())) {
-                    if (eventBean.targetId.equals(bean.preId)) {
-                        eventBean.targetId = bean.id;
+                // Remap logic keys by owning event, not by text prefix: view ids may contain
+                // underscores, so a naive "startsWith(preId + "_")" would also move keys of
+                // OTHER views (e.g. renaming "button" would hijack "button_extra_onClick").
+                // Rule: a key that is currently owned by another EventBean is never touched;
+                // any other <preId>_<...> key of this view (including events its converted
+                // widget class no longer offers, and legacy drawer raw-id keys) moves with it.
+                HashMap<String, ArrayList<BlockBean>> beanMap = jC.a(sc_id).b(e.getJavaName());
+                ArrayList<EventBean> eventBeans = jC.a(sc_id).g(e.getJavaName());
+
+                // Snapshot orphan candidates BEFORE the event pass moves keys: after the pass,
+                // a moved key (e.g. button_onClick -> button_new_onClick) would still start with
+                // the old prefix and get moved a second time (button_new_new_onClick).
+                java.util.ArrayList<String> orphanCandidates = new java.util.ArrayList<>(beanMap.keySet());
+
+                java.util.HashSet<String> foreignKeys = new java.util.HashSet<>();
+                for (EventBean eventBean : eventBeans) {
+                    if (!eventBean.targetId.equals(bean.preId)
+                            && !eventBean.targetId.equals("_drawer_" + bean.preId)) {
+                        foreignKeys.add(eventBean.targetId + "_" + eventBean.eventName);
                     }
                 }
 
-                HashMap<String, ArrayList<BlockBean>> beanMap = jC.a(sc_id).b(e.getJavaName());
+                for (EventBean eventBean : eventBeans) {
+                    boolean isMain = eventBean.targetId.equals(bean.preId);
+                    boolean isDrawer = eventBean.targetId.equals("_drawer_" + bean.preId);
+                    if (isMain || isDrawer) {
+                        String newTargetId = isDrawer ? "_drawer_" + bean.id : bean.id;
+                        String oldKey = eventBean.targetId + "_" + eventBean.eventName;
+                        eventBean.targetId = newTargetId;
+                        String newKey = newTargetId + "_" + eventBean.eventName;
+                        if (!newKey.equals(oldKey) && beanMap.containsKey(oldKey)) {
+                            beanMap.put(newKey, beanMap.remove(oldKey));
+                        }
+                    }
+                }
 
-                for (String events : oq.getEventsForClass(bean.getClassInfo())) {
-                    StringBuilder eventBodyBuilder = new StringBuilder();
-                    eventBodyBuilder.append(bean.preId);
-                    eventBodyBuilder.append("_");
-                    eventBodyBuilder.append(events);
-                    String body = eventBodyBuilder.toString();
-                    if (beanMap.containsKey(body)) {
-                        eventBodyBuilder = new StringBuilder();
-                        eventBodyBuilder.append(bean.id);
-                        eventBodyBuilder.append("_");
-                        eventBodyBuilder.append(events);
-                        beanMap.put(eventBodyBuilder.toString(), beanMap.get(body));
-                        beanMap.remove(body);
+                // Orphan sweep: logic stored under this view's old id whose owning EventBean
+                // no longer exists (events offered before a widget "convert", legacy drawer
+                // keys). Owned-by-others keys and activity-level keys are left alone.
+                String drawerPrefix = "_drawer_" + bean.preId + "_";
+                String plainPrefix = bean.preId + "_";
+                for (String key : orphanCandidates) {
+                    // Skip keys the event pass already moved (no longer present) and keys it
+                    // just created under the new id.
+                    if (!beanMap.containsKey(key)) continue;
+                    String remapped = null;
+                    if (!key.equals("onCreate_initializeLogic") && !foreignKeys.contains(key)) {
+                        if (key.startsWith(plainPrefix)) {
+                            remapped = bean.id + key.substring(plainPrefix.length() - 1);
+                        } else if (key.startsWith(drawerPrefix)) {
+                            remapped = "_drawer_" + bean.id + key.substring(drawerPrefix.length() - 1);
+                        }
+                    }
+                    if (remapped != null && !beanMap.containsKey(remapped)) {
+                        beanMap.put(remapped, beanMap.remove(key));
                     }
                 }
 
