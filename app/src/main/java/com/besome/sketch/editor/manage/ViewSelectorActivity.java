@@ -165,7 +165,13 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         ArrayList<ProjectFileBean> customViews = jC.b(sc_id).c();
         if (customViews != null) {
             for (ProjectFileBean projectFileBean : customViews) {
-                screenNames.add(projectFileBean.fileName);
+                if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
+                    // Drawers are stored as "_drawer_<activity>" but shown (and must be reserved)
+                    // under their display name, e.g. "drawer_main".
+                    screenNames.add(projectFileBean.fileName.substring(1));
+                } else {
+                    screenNames.add(projectFileBean.fileName);
+                }
             }
         }
         return screenNames;
