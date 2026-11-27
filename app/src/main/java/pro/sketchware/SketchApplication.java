@@ -58,9 +58,13 @@ public class SketchApplication extends Application {
                         String path = FileUtil.getExternalStorageDir() + "/.sketchware/shrinker_crash.log";
                         FileUtil.writeFile(path, activeShrinker
                                 + " failed on this device (OutOfMemoryError)\n" + throwable.getMessage());
-                        getSharedPreferences(SHRINKER_PREFS, MODE_PRIVATE).edit()
+                        boolean saved = getSharedPreferences(SHRINKER_PREFS, MODE_PRIVATE).edit()
                                 .putString(PREF_ENGINE, activeShrinker)
-                                .putString(PREF_PATH, path).apply();
+                                .putString(PREF_PATH, path)
+                                .commit();
+                        if (!saved) {
+                            Log.w("SketchApplication", "Failed to persist shrinker OOM notification");
+                        }
                     } catch (Throwable ignored) {
                     }
                 } else {
