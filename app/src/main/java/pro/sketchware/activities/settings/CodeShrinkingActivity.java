@@ -116,9 +116,33 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (snapshot != null) {
+            refreshConflictingDontRules();
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         ioExecutor.shutdown();
+    }
+
+    private void refreshConflictingDontRules() {
+        writeAndRefreshConflicts(() -> {});
+    }
+
+    private void writeAndRefreshConflicts(Runnable write) {
+        ioExecutor.execute(() -> {
+            write.run();
+            ArrayList<String> conflicts = new ArrayList<>(pg.getConflictingDontRules());
+            runOnUiThread(() -> {
+                if (snapshot == null || isFinishing() || isDestroyed()) return;
+                snapshot.conflictingDontRules = conflicts;
+                renderSnapshot(snapshot);
+            });
+        });
     }
 
     private void onShrinkerChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
@@ -473,13 +497,13 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         if (button == binding.shrinkSwitch) {
             snapshot.shrinkEnabled = isChecked;
             renderSnapshot(snapshot);
-            ioExecutor.execute(() -> pg.setShrinkEnabled(isChecked));
+            writeAndRefreshConflicts(() -> pg.setShrinkEnabled(isChecked));
         } else if (button == binding.obfuscateSwitch) {
             snapshot.obfuscateEnabled = isChecked;
-            ioExecutor.execute(() -> pg.setObfuscateEnabled(isChecked));
+            writeAndRefreshConflicts(() -> pg.setObfuscateEnabled(isChecked));
         } else if (button == binding.optimizeSwitch) {
             snapshot.optimizeEnabled = isChecked;
-            ioExecutor.execute(() -> pg.setOptimizeEnabled(isChecked));
+            writeAndRefreshConflicts(() -> pg.setOptimizeEnabled(isChecked));
         } else if (button == binding.stringfogSwitch) {
             snapshot.stringfogEnabled = isChecked;
             ioExecutor.execute(() -> stringfog.setStringfogEnabled(isChecked));
