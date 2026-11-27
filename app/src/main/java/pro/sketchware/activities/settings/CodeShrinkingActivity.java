@@ -370,6 +370,11 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
             ioExecutor.execute(() -> pg.setProguardFMLibs(selected));
             sheet.dismiss();
         });
+        sheet.setOnDismissListener(d -> {
+            ValueAnimator animator = heightAnimators.remove(dialogBinding.searchField);
+            if (animator != null) animator.cancel();
+            expandedStates.remove(dialogBinding.searchField);
+        });
         sheet.show();
     }
 
