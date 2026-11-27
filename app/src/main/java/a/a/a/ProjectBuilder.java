@@ -48,6 +48,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -948,6 +949,8 @@ public class ProjectBuilder {
             }
         }
 
+        if (excludedPackages.isEmpty()) return;
+
         LinkedHashSet<String> kept = new LinkedHashSet<>();
         for (HashMap<String, Object> library : mll.list) {
             Object name = library.get("name");
@@ -957,19 +960,28 @@ public class ProjectBuilder {
                 if (excludedPackages.contains(pkg)) kept.add(pkg + ".**");
                 continue;
             }
-            /* No package information: keep that library's classes individually. */
+            /* No package metadata: keep its classes only if it replaces an excluded built-in. */
             Object jarPath = library.get("jarPath");
             if (!(jarPath instanceof String path)) continue;
+            ArrayList<String> jarClasses = new ArrayList<>();
+            boolean replacesExcluded = false;
             try (ZipFile jar = new ZipFile(path)) {
                 Enumeration<? extends ZipEntry> entries = jar.entries();
                 while (entries.hasMoreElements()) {
                     String entry = entries.nextElement().getName();
                     if (entry.endsWith(".class")) {
-                        kept.add(entry.substring(0, entry.length() - 6).replace('/', '.'));
+                        String className = entry.substring(0, entry.length() - 6).replace('/', '.');
+                        jarClasses.add(className);
+                        if (!replacesExcluded && matchesExcludedPackage(className, excludedPackages)) {
+                            replacesExcluded = true;
+                        }
                     }
                 }
             } catch (IOException | RuntimeException e) {
                 LogUtil.e(TAG, "Could not scan " + path + " for Full Mode classes", e);
+            }
+            if (replacesExcluded) {
+                kept.addAll(jarClasses);
             }
         }
 
@@ -977,6 +989,15 @@ public class ProjectBuilder {
         for (String className : kept) {
             rules.append("-keep class ").append(className).append(" { *; }\n");
         }
+    }
+
+    private static boolean matchesExcludedPackage(String className, Set<String> excludedPackages) {
+        for (String pkg : excludedPackages) {
+            if (className.startsWith(pkg + ".")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean usesGoogleAds() {
