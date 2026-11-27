@@ -16,9 +16,11 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import a.a.a.oq;
 import a.a.a.qA;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.IconSelectorDialog;
+import mod.hilal.saif.events.EventsHandler;
 import mod.jbk.util.OldResourceIdMapper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentEventsManagerCreatorBinding;
@@ -195,6 +197,8 @@ public class EventsManagerCreatorFragment extends qA {
             arrayList.add(hashMap);
         }
         FileUtil.writeFile(concat, getGson().toJson(arrayList));
+        EventsHandler.refreshCachedCustomEvents();
+        oq.refreshActivityEvents();
         SketchwareUtil.toast("Saved");
         getParentFragmentManager().popBackStack();
     }

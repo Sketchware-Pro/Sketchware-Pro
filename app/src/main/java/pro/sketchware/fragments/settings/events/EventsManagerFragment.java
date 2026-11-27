@@ -24,11 +24,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import a.a.a.oq;
 import a.a.a.qA;
 import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
 import dev.pranav.filepicker.FilePickerOptions;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.events.EventsHandler;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogAddNewListenerBinding;
 import pro.sketchware.databinding.FragmentEventsManagerBinding;
@@ -229,6 +231,9 @@ public class EventsManagerFragment extends qA {
         FileUtil.writeFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath(), new Gson().toJson(events));
         listMap.addAll(data);
         FileUtil.writeFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
+        EventsHandler.refreshCachedCustomEvents();
+        EventsHandler.refreshCachedCustomListeners();
+        oq.refreshActivityEvents();
         refreshList();
         SketchwareUtil.toast("Successfully imported events");
     }
@@ -265,12 +270,14 @@ public class EventsManagerFragment extends qA {
 
     private void addListenerItem() {
         FileUtil.writeFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
+        EventsHandler.refreshCachedCustomListeners();
         refreshList();
     }
 
     private void deleteItem(int position) {
         listMap.remove(position);
         FileUtil.writeFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
+        EventsHandler.refreshCachedCustomListeners();
         refreshList();
     }
 
@@ -286,6 +293,8 @@ public class EventsManagerFragment extends qA {
             }
         }
         FileUtil.writeFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath(), new Gson().toJson(events));
+        EventsHandler.refreshCachedCustomEvents();
+        oq.refreshActivityEvents();
     }
 
     public class ListenersAdapter extends RecyclerView.Adapter<ListenersAdapter.ViewHolder> {

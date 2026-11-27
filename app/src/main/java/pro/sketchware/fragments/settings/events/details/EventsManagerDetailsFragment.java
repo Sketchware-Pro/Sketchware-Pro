@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import a.a.a.oq;
 import a.a.a.qA;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.events.EventsHandler;
 import mod.jbk.util.OldResourceIdMapper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentEventsManagerDetailsBinding;
@@ -156,6 +158,8 @@ public class EventsManagerDetailsFragment extends qA {
             }
             events.addAll(listMap);
             FileUtil.writeFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath(), getGson().toJson(events));
+            EventsHandler.refreshCachedCustomEvents();
+            oq.refreshActivityEvents();
             refreshList();
         }
     }

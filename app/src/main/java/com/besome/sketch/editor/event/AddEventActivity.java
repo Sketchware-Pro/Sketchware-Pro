@@ -40,6 +40,7 @@ import a.a.a.oq;
 import a.a.a.rs;
 import a.a.a.wB;
 import dev.chrisbanes.insetter.Insetter;
+import mod.hilal.saif.events.EventsHandler;
 import pro.sketchware.databinding.FrLogicListCategoryIconItemBinding;
 import pro.sketchware.databinding.FrLogicListItemAddeventBinding;
 import pro.sketchware.databinding.FrLogicListPreviewWithEventItemBinding;
@@ -99,6 +100,12 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     private void initialize() {
+        // Re-read the custom Events / Listeners so that Events created in the
+        // Event Manager are available without restarting the app
+        EventsHandler.refreshCachedCustomEvents();
+        EventsHandler.refreshCachedCustomListeners();
+        oq.refreshActivityEvents();
+
         addableEtcEvents.clear();
         addableActivityEvents.clear();
         addableComponentEvents.clear();
