@@ -1,23 +1,34 @@
 package pro.sketchware.activities.settings;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import androidx.transition.AutoTransition;
-import androidx.transition.TransitionManager;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
 
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.hey.studios.code.SrcCodeEditor;
@@ -25,6 +36,8 @@ import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ActivityCodeShrinkingBinding;
+import pro.sketchware.databinding.DialogFullModeLibrariesBinding;
+import pro.sketchware.databinding.ItemFullModeLibraryBinding;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.ThemeUtils;
 
@@ -39,6 +52,7 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
     private StringfogHandler stringfog;
     private String scId;
     private boolean updatingUi;
+    private final HashMap<View, ValueAnimator> heightAnimators = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,25 +129,64 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
 
         int fullModeLibs = pg.getFullModeLibs().size();
         binding.fullModeTitle.setText(fullModeLibs == 0
-                ? getString(R.string.common_word_full_mode)
+                ? getString(R.string.code_shrinking_full_mode_none)
                 : getString(R.string.code_shrinking_full_mode_count, fullModeLibs));
 
         binding.optionsSection.setVisibility(enabled ? View.VISIBLE : View.GONE);
-        binding.shrinkSwitch.setChecked(pg.isShrinkEnabled());
-        binding.obfuscateSwitch.setChecked(pg.isObfuscateEnabled());
-        binding.optimizeSwitch.setChecked(pg.isOptimizeEnabled());
+        setCheckedIfChanged(binding.shrinkSwitch, pg.isShrinkEnabled());
+        setCheckedIfChanged(binding.obfuscateSwitch, pg.isObfuscateEnabled());
+        setCheckedIfChanged(binding.optimizeSwitch, pg.isOptimizeEnabled());
 
-        binding.stringfogSwitch.setChecked(stringfog.isStringfogEnabled());
-        binding.debugSwitch.setChecked(pg.isDebugModeEnabled());
+        setCheckedIfChanged(binding.stringfogSwitch, stringfog.isStringfogEnabled());
+        setCheckedIfChanged(binding.debugSwitch, pg.isDebugModeEnabled());
         updatingUi = false;
+    }
+
+    private static void setCheckedIfChanged(CompoundButton button, boolean checked) {
+        if (button.isChecked() != checked) button.setChecked(checked);
     }
 
     private void setRulesExpanded(boolean expanded) {
         View panel = binding.rulesPanel;
-        int target = expanded ? View.VISIBLE : View.GONE;
-        if (panel.getVisibility() == target) return;
-        TransitionManager.beginDelayedTransition((ViewGroup) panel.getParent(), new AutoTransition());
-        panel.setVisibility(target);
+        boolean visible = panel.getVisibility() == View.VISIBLE;
+        if (visible == expanded && panel.getLayoutParams().height != 0) return;
+
+        if (expanded) {
+            panel.setVisibility(View.VISIBLE);
+            panel.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            int target = panel.getMeasuredHeight();
+            panel.getLayoutParams().height = 0;
+            panel.requestLayout();
+            animateHeight(panel, 0, target, true);
+        } else {
+            animateHeight(panel, panel.getHeight(), 0, false);
+        }
+    }
+
+    private void animateHeight(View view, int from, int to, boolean expand) {
+        ValueAnimator previous = heightAnimators.get(view);
+        if (previous != null) previous.cancel();
+        ValueAnimator animator = ValueAnimator.ofInt(from, to);
+        heightAnimators.put(view, animator);
+        animator.setDuration(260);
+        animator.setInterpolator(new FastOutSlowInInterpolator());
+        animator.addUpdateListener(animation -> {
+            view.getLayoutParams().height = (int) animation.getAnimatedValue();
+            view.requestLayout();
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (heightAnimators.get(view) != animation) return;
+                heightAnimators.remove(view);
+                view.getLayoutParams().height = expand
+                        ? ViewGroup.LayoutParams.WRAP_CONTENT : 0;
+                if (!expand) view.setVisibility(View.GONE);
+                view.requestLayout();
+            }
+        });
+        animator.start();
     }
 
     @Override
@@ -158,39 +211,189 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         }
     }
 
+    private void updateFullModeListHeight(RecyclerView recycler, int itemCount) {
+        float density = getResources().getDisplayMetrics().density;
+        int rowHeight = Math.round(63 * density);
+        int maxHeight = Math.min(Math.round(420 * density),
+                getResources().getDisplayMetrics().heightPixels * 55 / 100);
+        recycler.getLayoutParams().height = Math.min(
+                Math.max(1, itemCount) * rowHeight, maxHeight);
+        recycler.requestLayout();
+    }
+
     private void showFullModeDialog() {
         ManageLocalLibrary mll = new ManageLocalLibrary(scId);
         if (mll.list.isEmpty()) {
             SketchwareUtil.toast(getString(R.string.code_shrinking_full_mode_empty), Toast.LENGTH_LONG);
             return;
         }
-        String[] libraries = new String[mll.list.size()];
-        boolean[] checked = new boolean[mll.list.size()];
 
+        ArrayList<String> libraries = new ArrayList<>();
         for (int i = 0; i < mll.list.size(); i++) {
             Object name = mll.list.get(i).get("name");
-            if (name instanceof String stringName) {
-                libraries[i] = stringName;
-                checked[i] = pg.libIsProguardFMEnabled(stringName);
-            } else {
-                libraries[i] = "(broken library configuration)";
-            }
+            libraries.add(name instanceof String stringName
+                    ? stringName : "(broken library configuration)");
         }
 
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.title_select_local_libraries)
-                .setMultiChoiceItems(libraries, checked,
-                        (dialog, which, isChecked) -> checked[which] = isChecked)
-                .setPositiveButton(R.string.common_word_save, (dialog, which) -> {
-                    ArrayList<String> selected = new ArrayList<>();
-                    for (int i = 0; i < libraries.length; i++) {
-                        if (checked[i]) selected.add(libraries[i]);
-                    }
-                    pg.setProguardFMLibs(selected);
-                    updateUi();
-                })
-                .setNegativeButton(R.string.common_word_cancel, null)
-                .show();
+        DialogFullModeLibrariesBinding dialogBinding =
+                DialogFullModeLibrariesBinding.inflate(LayoutInflater.from(this));
+        FullModeAdapter adapter = new FullModeAdapter(libraries, pg.getFullModeLibs(), count -> {
+            dialogBinding.selectionCount.setText(
+                    getString(R.string.code_shrinking_full_mode_selected_count, count));
+            dialogBinding.clearSelection.setEnabled(count > 0);
+        });
+        dialogBinding.librariesRecycler.setLayoutManager(new LinearLayoutManager(this));
+        dialogBinding.librariesRecycler.setAdapter(adapter);
+        updateFullModeListHeight(dialogBinding.librariesRecycler, adapter.getItemCount());
+        dialogBinding.searchButton.setOnClickListener(v -> {
+            View field = dialogBinding.searchField;
+            boolean show = field.getVisibility() == View.GONE;
+            if (show) {
+                field.setVisibility(View.VISIBLE);
+                field.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                field.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                int target = field.getMeasuredHeight();
+                field.getLayoutParams().height = 0;
+                field.requestLayout();
+                animateHeight(field, 0, target, true);
+                dialogBinding.searchInput.requestFocus();
+            } else {
+                animateHeight(field, field.getHeight(), 0, false);
+                dialogBinding.searchInput.setText("");
+                adapter.filter("");
+                updateFullModeListHeight(dialogBinding.librariesRecycler, adapter.getItemCount());
+            }
+        });
+        dialogBinding.searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filter(s.toString());
+                updateFullModeListHeight(dialogBinding.librariesRecycler, adapter.getItemCount());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        dialogBinding.selectAll.setOnClickListener(v -> adapter.selectAll());
+        dialogBinding.clearSelection.setOnClickListener(v -> adapter.clear());
+
+        BottomSheetDialog sheet = new BottomSheetDialog(this);
+        sheet.setContentView(dialogBinding.getRoot());
+        if (sheet.getWindow() != null) {
+            sheet.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            sheet.getWindow().setNavigationBarColor(
+                    ThemeUtils.getColor(this, R.attr.colorSurface));
+
+        }
+        sheet.setOnShowListener(d -> {
+            View sheetView = sheet.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (sheetView != null) {
+                BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(sheetView);
+                behavior.setSkipCollapsed(true);
+                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        dialogBinding.sheetCancel.setOnClickListener(v -> sheet.dismiss());
+        dialogBinding.sheetSave.setOnClickListener(v -> {
+            pg.setProguardFMLibs(adapter.selectedLibraries());
+            updateUi();
+            sheet.dismiss();
+        });
+        sheet.show();
+    }
+
+    private interface CountListener {
+        void onCountChanged(int count);
+    }
+
+    private static class FullModeAdapter extends RecyclerView.Adapter<FullModeAdapter.ViewHolder> {
+        private final ArrayList<String> libraries = new ArrayList<>();
+        private final ArrayList<String> visible = new ArrayList<>();
+        private final HashMap<String, Boolean> checked = new HashMap<>();
+        private final CountListener countListener;
+
+        FullModeAdapter(ArrayList<String> names, ArrayList<String> selected,
+                CountListener countListener) {
+            libraries.addAll(names);
+            visible.addAll(names);
+            for (String name : selected) checked.put(name, true);
+            this.countListener = countListener;
+            countListener.onCountChanged(selectedCount());
+        }
+
+        void filter(String query) {
+            String filter = query.trim().toLowerCase(Locale.getDefault());
+            visible.clear();
+            for (String name : libraries) {
+                if (name.toLowerCase(Locale.getDefault()).contains(filter)) visible.add(name);
+            }
+            notifyDataSetChanged();
+        }
+
+        void selectAll() {
+            for (String name : libraries) checked.put(name, true);
+            notifyDataSetChanged();
+            countListener.onCountChanged(selectedCount());
+        }
+
+        void clear() {
+            checked.clear();
+            notifyDataSetChanged();
+            countListener.onCountChanged(0);
+        }
+
+        ArrayList<String> selectedLibraries() {
+            ArrayList<String> result = new ArrayList<>();
+            for (String name : libraries) {
+                if (Boolean.TRUE.equals(checked.get(name))) result.add(name);
+            }
+            return result;
+        }
+
+        private int selectedCount() {
+            return selectedLibraries().size();
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            ItemFullModeLibraryBinding binding = ItemFullModeLibraryBinding.inflate(
+                    LayoutInflater.from(parent.getContext()), parent, false);
+            return new ViewHolder(binding);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            String name = visible.get(position);
+            holder.binding.libraryName.setText(name);
+            holder.binding.libraryName.setSelected(true);
+            holder.binding.libraryCheck.setChecked(Boolean.TRUE.equals(checked.get(name)));
+            holder.itemView.setOnClickListener(v -> {
+                boolean selected = !Boolean.TRUE.equals(checked.get(name));
+                if (selected) checked.put(name, true);
+                else checked.remove(name);
+                holder.binding.libraryCheck.setChecked(selected);
+                countListener.onCountChanged(selectedCount());
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return visible.size();
+        }
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            final ItemFullModeLibraryBinding binding;
+
+            ViewHolder(ItemFullModeLibraryBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+            }
+        }
     }
 
     @Override

@@ -12,8 +12,10 @@
         android:gravity="center_vertical" />
 
     <ScrollView
+        android:id="@+id/content_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,9 +46,8 @@
                     android:layout_height="wrap_content"
                     app:cardElevation="0dp"
                     app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Single"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
-                    app:cardForegroundColor="@android:color/transparent"
-                    app:rippleColor="?attr/colorPrimary">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                    app:cardForegroundColor="@android:color/transparent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -138,9 +139,8 @@
                         android:layout_height="wrap_content"
                         app:cardElevation="0dp"
                         app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.First"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
-                        app:cardForegroundColor="@android:color/transparent"
-                        app:rippleColor="?attr/colorPrimary">
+                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                        app:cardForegroundColor="@android:color/transparent">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -205,9 +205,8 @@
                                         android:layout_height="wrap_content"
                                         app:cardElevation="0dp"
                                         app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Middle"
-                                        app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
-                                        app:cardForegroundColor="@android:color/transparent"
-                                        app:rippleColor="?attr/colorPrimary">
+                                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                                        app:cardForegroundColor="@android:color/transparent">
 
                                         <LinearLayout
                                             android:layout_width="match_parent"
@@ -272,9 +271,8 @@
                                         android:layout_height="wrap_content"
                                         app:cardElevation="0dp"
                                         app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Middle"
-                                        app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
-                                        app:cardForegroundColor="@android:color/transparent"
-                                        app:rippleColor="?attr/colorPrimary">
+                                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                                        app:cardForegroundColor="@android:color/transparent">
 
                                         <LinearLayout
                                             android:layout_width="match_parent"
@@ -342,9 +340,8 @@
                         android:layout_height="wrap_content"
                         app:cardElevation="0dp"
                         app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Middle"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
-                        app:cardForegroundColor="@android:color/transparent"
-                        app:rippleColor="?attr/colorPrimary">
+                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                        app:cardForegroundColor="@android:color/transparent">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -399,10 +396,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardElevation="0dp"
-                        app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Middle"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
-                        app:cardForegroundColor="@android:color/transparent"
-                        app:rippleColor="?attr/colorPrimary">
+                        app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Last"
+                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                        app:cardForegroundColor="@android:color/transparent">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -474,9 +470,8 @@
                     android:layout_height="wrap_content"
                     app:cardElevation="0dp"
                     app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Single"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
-                    app:cardForegroundColor="@android:color/transparent"
-                    app:rippleColor="?attr/colorPrimary">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                    app:cardForegroundColor="@android:color/transparent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -542,9 +537,8 @@
                     android:layout_height="wrap_content"
                     app:cardElevation="0dp"
                     app:shapeAppearance="@style/ShapeAppearance.CodeShrinking.Single"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
-                    app:cardForegroundColor="@android:color/transparent"
-                    app:rippleColor="?attr/colorPrimary">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                    app:cardForegroundColor="@android:color/transparent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -573,6 +567,14 @@
                                 android:text="@string/code_shrinking_debug_hint"
                                 android:textAppearance="?attr/textAppearanceBodyMedium"
                                 android:textColor="?attr/colorOnSurfaceVariant" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:text="@string/code_shrinking_debug_note"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textColor="?attr/colorError" />
                         </LinearLayout>
 
                         <com.google.android.material.materialswitch.MaterialSwitch
