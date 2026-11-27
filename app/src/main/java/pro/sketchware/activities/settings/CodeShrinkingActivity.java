@@ -54,6 +54,7 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
     private boolean updatingUi;
     private boolean initialUiUpdate = true;
     private final HashMap<View, ValueAnimator> heightAnimators = new HashMap<>();
+    private final HashMap<View, Boolean> expandedStates = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -150,11 +151,13 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
 
     private void setRulesExpanded(boolean expanded) {
         View panel = binding.rulesPanel;
-        boolean visible = panel.getVisibility() == View.VISIBLE;
-        if (visible == expanded && panel.getLayoutParams().height != 0) return;
+        if (Boolean.valueOf(expanded).equals(expandedStates.get(panel))) return;
+        expandedStates.put(panel, expanded);
 
         if (initialUiUpdate) {
             /* Initial state is applied without animation. */
+            ValueAnimator previous = heightAnimators.remove(panel);
+            if (previous != null) previous.cancel();
             panel.setVisibility(expanded ? View.VISIBLE : View.GONE);
             panel.getLayoutParams().height = expanded
                     ? ViewGroup.LayoutParams.WRAP_CONTENT : 0;
@@ -162,21 +165,27 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
             return;
         }
 
+        setViewExpanded(panel, expanded);
+    }
+
+    private void setViewExpanded(View view, boolean expanded) {
         if (expanded) {
-            panel.setVisibility(View.VISIBLE);
-            panel.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-            int target = panel.getMeasuredHeight();
-            panel.getLayoutParams().height = 0;
-            panel.requestLayout();
-            animateHeight(panel, 0, target, true);
+            int startHeight = view.getVisibility() == View.VISIBLE ? view.getHeight() : 0;
+            view.setVisibility(View.VISIBLE);
+            view.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            int target = view.getMeasuredHeight();
+            view.getLayoutParams().height = startHeight;
+            view.requestLayout();
+            animateHeight(view, startHeight, target, true);
         } else {
-            animateHeight(panel, panel.getHeight(), 0, false);
+            animateHeight(view, view.getHeight(), 0, false);
         }
     }
 
     private void animateHeight(View view, int from, int to, boolean expand) {
-        ValueAnimator previous = heightAnimators.get(view);
+        // Remove before cancelling so the old animator's synchronous onAnimationEnd sees it is invalidated.
+        ValueAnimator previous = heightAnimators.remove(view);
         if (previous != null) previous.cancel();
         ValueAnimator animator = ValueAnimator.ofInt(from, to);
         heightAnimators.put(view, animator);
@@ -258,18 +267,13 @@ public class CodeShrinkingActivity extends BaseAppCompatActivity
         updateFullModeListHeight(dialogBinding.librariesRecycler, adapter.getItemCount());
         dialogBinding.searchButton.setOnClickListener(v -> {
             View field = dialogBinding.searchField;
-            boolean show = field.getVisibility() == View.GONE;
+            Boolean current = expandedStates.get(field);
+            boolean show = current != null ? !current : field.getVisibility() == View.GONE;
+            expandedStates.put(field, show);
+            setViewExpanded(field, show);
             if (show) {
-                field.setVisibility(View.VISIBLE);
-                field.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                field.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                int target = field.getMeasuredHeight();
-                field.getLayoutParams().height = 0;
-                field.requestLayout();
-                animateHeight(field, 0, target, true);
                 dialogBinding.searchInput.requestFocus();
             } else {
-                animateHeight(field, field.getHeight(), 0, false);
                 dialogBinding.searchInput.setText("");
                 adapter.filter("");
                 updateFullModeListHeight(dialogBinding.librariesRecycler, adapter.getItemCount());
