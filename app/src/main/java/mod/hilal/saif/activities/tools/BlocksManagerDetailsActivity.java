@@ -199,7 +199,12 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         } else if (title.equals(getString(R.string.common_word_export))) {
                 Object paletteName = pallet_list.get(palette - 9).get("name");
                 if (paletteName instanceof String) {
-                    String exportTo = new File(BLOCK_EXPORT_PATH, paletteName + ".json").getAbsolutePath();
+                    String paletteString = (String) paletteName;
+                    // Palette names are only checked for non-emptiness at creation. Encode
+                    // reversibly: distinct names stay distinct files, while separators can't
+                    // enable path traversal ("\\s" is the escaped form of "/", "\\" of "\").
+                    String safeName = paletteString.replace("\\", "\\\\").replace("/", "\\s");
+                    String exportTo = new File(BLOCK_EXPORT_PATH, safeName + ".json").getAbsolutePath();
                     FileUtil.writeFile(exportTo, getGson().toJson(filtered_list));
                     SketchwareUtil.toast(getString(R.string.blocks_manager_exported_blocks_to, exportTo), Toast.LENGTH_LONG);
                 } else {
@@ -433,6 +438,48 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         builder.show();
     }
 
+    /** @return import toast text: duplicate skips are counted only among selected blocks. */
+    private static String importResultMessage(int[] result) {
+        int added = result[0];
+        int skipped = result[1];
+        return skipped == 0 ? "Imported successfully"
+                : added + " imported, " + skipped + " skipped (name already exists)";
+    }
+
+    /**
+     * Appends the selected imported blocks to {@link #all_blocks_list}, skipping any whose
+     * name already exists - block lookup is first-match-by-name, so duplicates silently
+     * shadowed the user's own definition. @return {{added, duplicateSkipped}}.
+     */
+    private int[] appendNonDuplicateBlocks(ArrayList<HashMap<String, Object>> blocks, java.util.function.IntPredicate selector) {
+        java.util.HashSet<String> existingNames = new java.util.HashSet<>();
+        for (HashMap<String, Object> block : all_blocks_list) {
+            Object name = block.get("name");
+            if (name instanceof String) {
+                existingNames.add((String) name);
+            }
+        }
+        int added = 0;
+        int duplicateSkipped = 0;
+        for (int i = 0; i < blocks.size(); i++) {
+            if (selector.test(i)) {
+                HashMap<String, Object> map = blocks.get(i);
+                Object name = map.get("name");
+                if (name instanceof String && existingNames.contains(name)) {
+                    duplicateSkipped++;
+                    continue;
+                }
+                map.put("palette", String.valueOf(palette));
+                all_blocks_list.add(map);
+                if (name instanceof String) {
+                    existingNames.add((String) name);
+                }
+                added++;
+            }
+        }
+        return new int[]{added, duplicateSkipped};
+    }
+
     private void _importBlocks(ArrayList<HashMap<String, Object>> blocks) {
         try {
             ArrayList<String> names = new ArrayList<>();
@@ -456,38 +503,22 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                         }
                     })
                     .setPositiveButton(R.string.common_word_import, (dialog, which) -> {
-                        for (int i = 0; i < blocks.size(); i++) {
-                            if (toAdd.contains(i)) {
-                                HashMap<String, Object> map = blocks.get(i);
-                                map.put("palette", String.valueOf(palette));
-                                all_blocks_list.add(map);
-                            }
-                        }
+                        int[] result = appendNonDuplicateBlocks(blocks, toAdd::contains);
                         FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
                         _refreshLists();
-                        SketchwareUtil.toast(getString(R.string.common_word_imported_successfully));
+                        SketchwareUtil.toast(importResultMessage(result));
                     })
                     .setNegativeButton(R.string.blocks_manager_reverse, (dialog, which) -> {
-                        for (int i = 0; i < blocks.size(); i++) {
-                            if (!toAdd.contains(i)) {
-                                HashMap<String, Object> map = blocks.get(i);
-                                map.put("palette", String.valueOf(palette));
-                                all_blocks_list.add(map);
-                            }
-                        }
+                        int[] result = appendNonDuplicateBlocks(blocks, i -> !toAdd.contains(i));
                         FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
                         _refreshLists();
-                        SketchwareUtil.toast(getString(R.string.common_word_imported_successfully));
+                        SketchwareUtil.toast(importResultMessage(result));
                     })
                     .setNeutralButton(R.string.blocks_manager_all, (dialog, which) -> {
-                        for (int i = 0; i < blocks.size(); i++) {
-                            HashMap<String, Object> map = blocks.get(i);
-                            map.put("palette", String.valueOf(palette));
-                            all_blocks_list.add(map);
-                        }
+                        int[] result = appendNonDuplicateBlocks(blocks, i -> true);
                         FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
                         _refreshLists();
-                        SketchwareUtil.toast(getString(R.string.common_word_imported_successfully));
+                        SketchwareUtil.toast(importResultMessage(result));
                     })
                     .show();
         } catch (Exception e) {

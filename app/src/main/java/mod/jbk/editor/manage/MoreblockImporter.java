@@ -208,8 +208,12 @@ public class MoreblockImporter {
         dialog.setView(customView);
         dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (validator.b()) {
-                String moreBlockName = ReturnMoreblockManager.getMbName(ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec));
-                moreBlock.spec = Helper.getText(newName) + moreBlock.spec.substring(moreBlockName.length());
+                // Cut at the bare name only: getMbNameWithTypeFromSpec includes the [Type]
+                // suffix, so cutting at its length would strip the return type and turn a
+                // returning moreblock into a void one. getMbName strips the suffix.
+                String nameWithType = ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec);
+                moreBlock.spec = Helper.getText(newName)
+                        + moreBlock.spec.substring(ReturnMoreblockManager.getMbName(nameWithType).length());
 
                 handleVariables(moreBlock);
                 mB.a(activity, newName);
