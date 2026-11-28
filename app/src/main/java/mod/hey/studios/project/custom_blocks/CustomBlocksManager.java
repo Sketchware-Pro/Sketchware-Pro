@@ -116,7 +116,7 @@ public class CustomBlocksManager {
                         new TypeToken<ArrayList<ExtraBlockInfo>>() {
                         }.getType());
             } catch (Exception e) {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_failed_to_get_custom_blocks, e.getMessage()));
+                SketchwareUtil.toastError(Helper.getResString(R.string.custom_blocks_failed_to_get_custom_blocks, e.getMessage()));
             }
         }
 

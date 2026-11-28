@@ -294,9 +294,9 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                             binding.tiInput.setError(null);
                         } else {
                             if (key.equals("property_scale_x") || key.equals("property_scale_y")) {
-                                binding.tiInput.setError(Helper.getResString(R.string.ui_g1_value_min_0_1));
+                                binding.tiInput.setError(Helper.getResString(R.string.property_value_min_0_1));
                             } else {
-                                binding.tiInput.setError(Helper.getResString(R.string.ui_g1_value_min_0));
+                                binding.tiInput.setError(Helper.getResString(R.string.property_value_min_0));
                             }
                         }
                     } else if (key.equals("property_progress") && bean != null) {
@@ -305,18 +305,18 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                             binding.slider.setValue(inputValue);
                             binding.tiInput.setError(null);
                         } else {
-                            binding.tiInput.setError(Helper.getResString(R.string.ui_g1_value_between_0_and, maxLimit));
+                            binding.tiInput.setError(Helper.getResString(R.string.property_value_between_0_and, maxLimit));
                         }
                     } else {
                         if (inputValue >= minValue && inputValue <= maxValue) {
                             binding.slider.setValue(inputValue);
                             binding.tiInput.setError(null);
                         } else {
-                            binding.tiInput.setError(Helper.getResString(R.string.ui_g1_value_between, minValue, maxValue));
+                            binding.tiInput.setError(Helper.getResString(R.string.property_value_between, minValue, maxValue));
                         }
                     }
                 } catch (NumberFormatException e) {
-                    binding.tiInput.setError(Helper.getResString(R.string.ui_g1_invalid_value));
+                    binding.tiInput.setError(Helper.getResString(R.string.property_invalid_value));
                 }
             }
         });
@@ -584,7 +584,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
                 if (inputText.equals(stringsStart)) {
 
-                    String errorMessage = Helper.getResString(R.string.ui_g1_select_string_or_remove, stringsStart);
+                    String errorMessage = Helper.getResString(R.string.property_select_string_or_remove, stringsStart);
                     textAutoCompleteInput.setError(errorMessage);
                 } else {
                     valueChangeListener.a(key, value);
@@ -627,7 +627,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                 }
 
                 boolean isExactMatch = keysList.contains(text);
-                textAutoCompleteInput.setError(isExactMatch ? null : Helper.getResString(R.string.ui_g1_not_found_in_strings_xml));
+                textAutoCompleteInput.setError(isExactMatch ? null : Helper.getResString(R.string.property_not_found_in_strings_xml));
             }
         });
     }
@@ -951,7 +951,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                         var builder =
                                 new MaterialAlertDialogBuilder(getContext())
                                         .setTitle(R.string.common_word_delete)
-                                        .setMessage(Helper.getResString(R.string.ui_g1_confirm_delete_attr, attr))
+                                        .setMessage(Helper.getResString(R.string.property_confirm_delete_attr, attr))
                                         .setPositiveButton(
                                                 R.string.common_word_yes,
                                                 (d, w) -> {
@@ -1022,7 +1022,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             public void onItemLongClick(LinkedHashMap<String, String> attributes, String attr) {
                 new MaterialAlertDialogBuilder(getContext())
                         .setTitle(R.string.common_word_delete_shortcut)
-                        .setMessage(Helper.getResString(R.string.ui_g1_delete_item_question, attr))
+                        .setMessage(Helper.getResString(R.string.property_delete_item_question, attr))
                         .setPositiveButton(R.string.common_word_delete, (d, w) -> {
                             manager.removeShortcut(attr);
                             attributes.remove(attr);
@@ -1079,7 +1079,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         var input = binding.edTiAutoCompleteInput;
         binding.tiInput.setVisibility(View.GONE);
         binding.tiAutoCompleteInput.setVisibility(View.VISIBLE);
-        binding.tiAutoCompleteInput.setHint(R.string.ui_g1_enter_new_attribute);
+        binding.tiAutoCompleteInput.setHint(R.string.property_enter_new_attribute);
         input.setAdapter(
                 new ArrayAdapter<>(
                         getContext(),

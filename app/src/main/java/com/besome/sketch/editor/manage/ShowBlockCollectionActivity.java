@@ -164,7 +164,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
             addBlocks(block.blocks);
             resizeBottomViews();
         } else {
-            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_cant_open_corrupt_block));
+            SketchwareUtil.toastError(Helper.getResString(R.string.show_block_collection_cant_open_corrupt_block));
             finish();
         }
     }
@@ -175,7 +175,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem saveImageItem = menu.add(0, 12, 0, R.string.ui_g1_save_image);
+        MenuItem saveImageItem = menu.add(0, 12, 0, R.string.show_block_collection_save_image);
         saveImageItem.setIcon(R.drawable.full_image_48);
         saveImageItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
@@ -186,9 +186,9 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == 12) {
             if (ImageFactory.saveBitmap(binding.editor.getChildAt(0), blockName).exists()) {
-                SketchwareUtil.toast(Helper.getResString(R.string.ui_g1_saved_block_image_to, blockName));
+                SketchwareUtil.toast(Helper.getResString(R.string.show_block_collection_saved_block_image_to, blockName));
             } else {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_couldnt_save_image));
+                SketchwareUtil.toastError(Helper.getResString(R.string.show_block_collection_couldnt_save_image));
             }
         }
 

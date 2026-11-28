@@ -25,10 +25,10 @@ public class VersionNamePostfixValidator extends MB {
             b.setError(null);
             d = true;
         } else if (se.contains(" ")) {
-            b.setError(Helper.getResString(R.string.ui_g5_no_spaces_postfix));
+            b.setError(Helper.getResString(R.string.version_name_postfix_validator_no_spaces_postfix));
             d = false;
         } else {
-            b.setError(Helper.getResString(R.string.ui_g5_postfix_allowed_chars));
+            b.setError(Helper.getResString(R.string.version_name_postfix_validator_postfix_allowed_chars));
             d = false;
         }
     }

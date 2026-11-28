@@ -278,7 +278,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                 .map(pair -> pair.first)
                 .toArray(String[]::new);
         new MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.ui_g2_select_theme_title)
+                .setTitle(R.string.common_word_select_theme)
                 .setSingleChoiceItems(themeItems, selectedThemeIndex, listener)
                 .setNegativeButton(R.string.common_word_cancel, null)
                 .show();
@@ -309,7 +309,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         };
 
         new MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.ui_g2_select_language_title)
+                .setTitle(R.string.common_word_select_language)
                 .setSingleChoiceItems(languagesList, languageId, listener)
                 .setNegativeButton(R.string.common_word_cancel, null)
                 .show();
@@ -451,15 +451,15 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             toolbarMenu.add(Menu.NONE, 2, Menu.NONE, R.string.common_word_redo).setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_redo)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             toolbarMenu.add(Menu.NONE, 3, Menu.NONE, R.string.common_word_save).setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_save)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             if (isFileInLayoutFolder() && getIntent().hasExtra("sc_id")) {
-                toolbarMenu.add(Menu.NONE, 4, Menu.NONE, R.string.ui_g2_layout_preview);
+                toolbarMenu.add(Menu.NONE, 4, Menu.NONE, R.string.common_word_layout_preview);
             }
-            toolbarMenu.add(Menu.NONE, 5, Menu.NONE, R.string.ui_g2_find_and_replace);
+            toolbarMenu.add(Menu.NONE, 5, Menu.NONE, R.string.msg_find_amp_replace);
             toolbarMenu.add(Menu.NONE, 6, Menu.NONE, R.string.common_word_word_wrap).setCheckable(true).setChecked(local_pref.getBoolean("act_ww", false));
             toolbarMenu.add(Menu.NONE, 7, Menu.NONE, R.string.common_word_pretty_print);
-            toolbarMenu.add(Menu.NONE, 8, Menu.NONE, R.string.ui_g2_select_language);
-            toolbarMenu.add(Menu.NONE, 9, Menu.NONE, R.string.ui_g2_select_theme);
-            toolbarMenu.add(Menu.NONE, 10, Menu.NONE, R.string.ui_g2_auto_complete).setCheckable(true).setChecked(local_pref.getBoolean("act_ac", true));
-            toolbarMenu.add(Menu.NONE, 11, Menu.NONE, R.string.ui_g2_auto_complete_symbol_pair).setCheckable(true).setChecked(local_pref.getBoolean("act_acsp", true));
+            toolbarMenu.add(Menu.NONE, 8, Menu.NONE, R.string.code_editor_select_language);
+            toolbarMenu.add(Menu.NONE, 9, Menu.NONE, R.string.code_editor_select_theme);
+            toolbarMenu.add(Menu.NONE, 10, Menu.NONE, R.string.common_word_auto_complete).setCheckable(true).setChecked(local_pref.getBoolean("act_ac", true));
+            toolbarMenu.add(Menu.NONE, 11, Menu.NONE, R.string.msg_auto_complete_symbol_pair).setCheckable(true).setChecked(local_pref.getBoolean("act_acsp", true));
 
             binding.toolbar.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
@@ -494,7 +494,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                                 ss = Lx.j(ss, true);
                             } catch (Exception e) {
                                 err = true;
-                                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_incorrectly_nested_parentheses));
+                                SketchwareUtil.toastError(Helper.getResString(R.string.code_editor_incorrectly_nested_parentheses));
                             }
 
                             if (!err) binding.editor.setText(ss);
@@ -505,10 +505,10 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                             if (format != null) {
                                 binding.editor.setText(format);
                             } else {
-                                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_failed_to_format_xml), Toast.LENGTH_LONG);
+                                SketchwareUtil.toastError(Helper.getResString(R.string.code_editor_failed_to_format_xml), Toast.LENGTH_LONG);
                             }
                         } else {
-                            SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_only_java_xml_formattable));
+                            SketchwareUtil.toast(Helper.getResString(R.string.code_editor_only_java_xml_formattable));
                         }
                         break;
 

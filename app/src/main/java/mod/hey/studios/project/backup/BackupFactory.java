@@ -301,7 +301,7 @@ public class BackupFactory {
                 finalFileName = finalFileName.replaceFirst(Pattern.quote(Objects.requireNonNull(matcher.group(0))), getFormattedDateFrom(matcher.group(1)));
             }
         } catch (Exception ignored) {
-            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_backup_filename_parse_failed));
+            SketchwareUtil.toastError(Helper.getResString(R.string.backup_factory_backup_filename_parse_failed));
             // Example name: InternalDemo v1.0 (com.jbk.internal.demo, 1) 2021-12-31T125827
             finalFileName = projectNameOnly + " v" + versionName + " (" + pkgName + ", " + versionCode + ") " + getFormattedDateFrom("yyyy-M-dd'T'HHmmss");
         }
@@ -475,7 +475,7 @@ public class BackupFactory {
 
         // Unzip
         if (!unzip(swbPath, outFolder)) {
-            error = Helper.getResString(R.string.ui_g2_backup_unzip_failed);
+            error = Helper.getResString(R.string.backup_factory_backup_unzip_failed);
             restoreSuccess = false;
             return;
         }
@@ -488,7 +488,7 @@ public class BackupFactory {
         HashMap<String, Object> map = getProject(project);
 
         if (map == null) {
-            error = Helper.getResString(R.string.ui_g2_backup_read_project_failed);
+            error = Helper.getResString(R.string.backup_factory_backup_read_project_failed);
             restoreSuccess = false;
             return;
         }
@@ -498,7 +498,7 @@ public class BackupFactory {
 
         // Write new file
         if (!writeEncrypted(project, new Gson().toJson(map))) {
-            error = Helper.getResString(R.string.ui_g2_backup_write_project_failed);
+            error = Helper.getResString(R.string.backup_factory_backup_write_project_failed);
             restoreSuccess = false;
             return;
         }

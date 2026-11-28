@@ -52,7 +52,7 @@ public class CompileLogActivity extends BaseAppCompatActivity {
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         if (getIntent().getBooleanExtra("showingLastError", false)) {
-            binding.topAppBar.setTitle(R.string.ui_g1_last_compile_log);
+            binding.topAppBar.setTitle(R.string.compile_log_last_compile_log);
         } else {
             binding.topAppBar.setTitle(R.string.common_word_compile_log);
         }
@@ -69,9 +69,9 @@ public class CompileLogActivity extends BaseAppCompatActivity {
             binding.clearButton.setOnClickListener(v -> {
                 if (compileErrorSaver.logFileExists()) {
                     compileErrorSaver.deleteSavedLogs();
-                    SketchwareUtil.toast(Helper.getResString(R.string.ui_g1_compile_logs_cleared));
+                    SketchwareUtil.toast(Helper.getResString(R.string.compile_log_compile_logs_cleared));
                 } else {
-                    SketchwareUtil.toast(Helper.getResString(R.string.ui_g1_no_compile_logs_found));
+                    SketchwareUtil.toast(Helper.getResString(R.string.compile_log_no_compile_logs_found));
                 }
 
                 setErrorText();
@@ -190,7 +190,7 @@ public class CompileLogActivity extends BaseAppCompatActivity {
                 Gravity.CENTER));
 
         new MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.ui_g1_select_font_size)
+                .setTitle(R.string.compile_log_select_font_size)
                 .setView(layout)
                 .setPositiveButton(R.string.common_word_save, (dialog, which) -> {
                     logViewerPreferences.edit().putInt(PREFERENCE_FONT_SIZE, picker.getValue()).apply();

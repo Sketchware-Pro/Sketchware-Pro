@@ -126,7 +126,7 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
         PopupMenu popup = new PopupMenu(context, v);
         Menu menu = popup.getMenu();
 
-        menu.add(Menu.NONE, 1, Menu.NONE, R.string.ui_g2_font_size)
+        menu.add(Menu.NONE, 1, Menu.NONE, R.string.code_editor_layout_font_size)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         menu.add(Menu.NONE, 2, Menu.NONE, R.string.common_word_word_wrap)
@@ -134,7 +134,7 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
                 .setChecked(word_wrap)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        menu.add(Menu.NONE, 3, Menu.NONE, R.string.ui_g2_complete_brackets)
+        menu.add(Menu.NONE, 3, Menu.NONE, R.string.code_editor_layout_complete_brackets)
                 .setCheckable(true)
                 .setChecked(complete_brackets)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
@@ -147,7 +147,7 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
         menu.add(Menu.NONE, 5, Menu.NONE, R.string.common_word_pretty_print)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        menu.add(Menu.NONE, 6, Menu.NONE, R.string.ui_g2_exit_confirmation)
+        menu.add(Menu.NONE, 6, Menu.NONE, R.string.code_editor_layout_exit_confirmation)
                 .setCheckable(true)
                 .setChecked(exit_confirmation_dialog)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
@@ -164,7 +164,7 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
                     numPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
                     builder.setView(numPicker)
-                            .setTitle(R.string.ui_g2_select_font_size)
+                            .setTitle(R.string.code_editor_layout_select_font_size)
                             .setPositiveButton(R.string.common_word_save, (dialog, which) -> {
                                 setTextSize(numPicker.getValue());
                                 dialog.dismiss();
@@ -207,7 +207,7 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
                     try {
                         prettifiedString = Lx.j(Lx.j(prettifiedString, false), false);
                     } catch (Exception e) {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_error_incorrectly_nested_parentheses));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.code_editor_layout_error_incorrectly_nested_parentheses));
                         break;
                     }
 

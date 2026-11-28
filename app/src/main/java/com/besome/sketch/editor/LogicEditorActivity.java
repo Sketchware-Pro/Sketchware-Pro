@@ -1394,11 +1394,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     typeface = Typeface.createFromFile(fontFile);
                 } catch (Exception e) {
                     typeface = Typeface.DEFAULT;
-                    preview.setText(R.string.ui_g1_couldnt_load_font);
+                    preview.setText(R.string.logic_editor_couldnt_load_font);
                 }
             } else {
                 typeface = Typeface.DEFAULT;
-                preview.setText(R.string.ui_g1_couldnt_load_font);
+                preview.setText(R.string.logic_editor_couldnt_load_font);
             }
         }
 

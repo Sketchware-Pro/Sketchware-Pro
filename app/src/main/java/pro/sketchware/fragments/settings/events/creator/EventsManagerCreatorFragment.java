@@ -162,11 +162,11 @@ public class EventsManagerCreatorFragment extends qA {
 
     private void save() {
         if (!filledIn()) {
-            SketchwareUtil.toast(Helper.getResString(R.string.ui_g5_required_fields_empty));
+            SketchwareUtil.toast(Helper.getResString(R.string.events_manager_required_fields_empty));
             return;
         }
         if (!OldResourceIdMapper.isValidIconId(Helper.getText(binding.eventsCreatorIcon))) {
-            binding.eventsCreatorIconTil.setError(Helper.getResString(R.string.ui_g5_invalid_icon_id));
+            binding.eventsCreatorIconTil.setError(Helper.getResString(R.string.invalid_icon_id));
             binding.eventsCreatorIcon.requestFocus();
             return;
         }
@@ -220,12 +220,12 @@ public class EventsManagerCreatorFragment extends qA {
         configureToolbar(binding.toolbar);
 
         if (isEdit) {
-            binding.toolbar.setTitle(R.string.ui_g5_event_properties);
+            binding.toolbar.setTitle(R.string.common_word_event_properties);
             binding.toolbar.setSubtitle(event_name);
         } else if (isActivityEvent) {
-            binding.toolbar.setTitle(R.string.ui_g5_new_activity_event);
+            binding.toolbar.setTitle(R.string.events_manager_new_activity_event);
         } else {
-            binding.toolbar.setTitle(R.string.ui_g5_new_event);
+            binding.toolbar.setTitle(R.string.common_word_new_event);
             binding.toolbar.setSubtitle(lisName);
         }
     }

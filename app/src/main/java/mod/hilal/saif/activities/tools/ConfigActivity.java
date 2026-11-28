@@ -120,7 +120,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 // fall-through to shared error handler
             }
 
-            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_couldnt_parse_app_settings));
+            SketchwareUtil.toastError(Helper.getResString(R.string.config_couldnt_parse_app_settings));
             LogUtil.e("ConfigActivity", "Failed to parse App Settings.", toLog);
         }
         settings = new HashMap<>();
@@ -229,7 +229,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                         .setView(binding.getRoot())
                         .setTitle(R.string.common_word_backup_directory)
-                        .setMessage(R.string.ui_g3_backup_directory_message)
+                        .setMessage(R.string.config_backup_directory_message)
                         .setNegativeButton(R.string.common_word_cancel, null)
                         .setPositiveButton(R.string.common_word_save, null)
                         .create();
@@ -256,7 +256,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 if (installWithRoot.isChecked()) {
                     Shell.getShell(shell -> {
                         if (!shell.isRoot()) {
-                            Snackbar.make(snackbarView, R.string.ui_g3_couldnt_acquire_root, BaseTransientBottomBar.LENGTH_SHORT).show();
+                            Snackbar.make(snackbarView, R.string.config_couldnt_acquire_root, BaseTransientBottomBar.LENGTH_SHORT).show();
                             installWithRoot.setChecked(false);
                         }
                     });
@@ -270,8 +270,8 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 boolean enabled = Boolean.TRUE.equals(newValue);
                 if (enabled && !Settings.canDrawOverlays(requireContext())) {
                     new MaterialAlertDialogBuilder(requireContext())
-                            .setTitle(R.string.ui_g3_overlay_permission_title)
-                            .setMessage(R.string.ui_g3_overlay_permission_message)
+                            .setTitle(R.string.config_overlay_permission_title)
+                            .setMessage(R.string.config_overlay_permission_message)
                             .setPositiveButton(R.string.common_word_settings, (dialog, which) -> {
                                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                                         Uri.parse("package:" + requireContext().getPackageName()));
@@ -300,13 +300,13 @@ public class ConfigActivity extends BaseAppCompatActivity {
 
                 AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                         .setView(binding.getRoot())
-                        .setTitle(R.string.ui_g3_backup_filename_format)
-                        .setMessage(R.string.ui_g3_backup_filename_format_message)
+                        .setTitle(R.string.pref_backup_filename_format)
+                        .setMessage(R.string.config_backup_filename_format_message)
                         .setNegativeButton(R.string.common_word_cancel, null)
                         .setPositiveButton(R.string.common_word_save, null)
                         .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
                             getDataStore().putString(SETTING_BACKUP_FILENAME, null);
-                            Snackbar.make(snackbarView, R.string.ui_g3_reset_to_default_complete, BaseTransientBottomBar.LENGTH_SHORT).show();
+                            Snackbar.make(snackbarView, R.string.config_reset_to_default_complete, BaseTransientBottomBar.LENGTH_SHORT).show();
                         })
                         .create();
 

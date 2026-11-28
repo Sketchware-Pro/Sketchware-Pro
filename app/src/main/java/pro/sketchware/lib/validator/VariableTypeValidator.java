@@ -28,33 +28,33 @@ public class VariableTypeValidator extends MB {
         String reconsInput = String.join(" ", words);
 
         if (!variableType.equals(reconsInput)) {
-            b.setError(Helper.getResString(R.string.ui_g5_extra_spaces));
+            b.setError(Helper.getResString(R.string.variable_type_validator_extra_spaces));
             d = false;
             return;
         }
 
         if (!TextUtils.isEmpty(charSequence)) {
             if (!Character.isLetter(charSequence.charAt(0))) {
-                b.setError(Helper.getResString(R.string.ui_g5_type_must_start_letter));
+                b.setError(Helper.getResString(R.string.variable_type_validator_type_must_start_letter));
                 d = false;
                 return;
             }
         }
 
         if (!isValidAngleBracket(variableType)) {
-            b.setError(Helper.getResString(R.string.ui_g5_angle_bracket_mismatch));
+            b.setError(Helper.getResString(R.string.variable_type_validator_angle_bracket_mismatch));
             d = false;
             return;
         }
 
         if (!isValidBoxBracket(variableType)) {
-            b.setError(Helper.getResString(R.string.ui_g5_box_bracket_mismatch));
+            b.setError(Helper.getResString(R.string.variable_type_validator_box_bracket_mismatch));
             d = false;
             return;
         }
 
         if (!PATTERN_TYPE.matcher(variableType).matches()) {
-            b.setError(Helper.getResString(R.string.ui_g5_invalid_variable_type));
+            b.setError(Helper.getResString(R.string.variable_type_validator_invalid_variable_type));
             d = false;
             return;
         }

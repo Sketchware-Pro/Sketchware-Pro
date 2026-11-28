@@ -76,7 +76,7 @@ public class GetKeyStoreCredentialsDialog {
                     ));
                 }
             } else {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g4_keystore_not_found));
+                SketchwareUtil.toastError(Helper.getResString(R.string.get_key_store_credentials_keystore_not_found));
             }
         } else if (mode == SigningMode.TESTKEY) {
             dialogInterface.dismiss();
@@ -91,21 +91,21 @@ public class GetKeyStoreCredentialsDialog {
         boolean isValid = true;
 
         if (TextUtils.isEmpty(binding.etAlias.getText())) {
-            binding.tilAlias.setError(Helper.getResString(R.string.ui_g4_alias_empty));
+            binding.tilAlias.setError(Helper.getResString(R.string.get_key_store_credentials_alias_empty));
             isValid = false;
         } else {
             binding.tilAlias.setError(null);
         }
 
         if (TextUtils.isEmpty(binding.etPassword.getText())) {
-            binding.tilPassword.setError(Helper.getResString(R.string.ui_g4_password_empty));
+            binding.tilPassword.setError(Helper.getResString(R.string.get_key_store_credentials_password_empty));
             isValid = false;
         } else {
             binding.tilPassword.setError(null);
         }
 
         if (TextUtils.isEmpty(binding.etSigningAlgorithm.getText())) {
-            binding.tilSigningAlgorithm.setError(Helper.getResString(R.string.ui_g4_algorithm_empty));
+            binding.tilSigningAlgorithm.setError(Helper.getResString(R.string.get_key_store_credentials_algorithm_empty));
             isValid = false;
         } else {
             binding.tilSigningAlgorithm.setError(null);
@@ -124,9 +124,9 @@ public class GetKeyStoreCredentialsDialog {
     }
 
     private enum SigningMode {
-        OWN_KEY_STORE(R.string.ui_g4_sign_using_keystore),
-        TESTKEY(R.string.ui_g4_sign_using_test_key),
-        DONT_SIGN(R.string.ui_g4_dont_sign);
+        OWN_KEY_STORE(R.string.get_key_store_credentials_sign_using_keystore),
+        TESTKEY(R.string.get_key_store_credentials_sign_using_test_key),
+        DONT_SIGN(R.string.get_key_store_credentials_dont_sign);
 
         private final int label;
 

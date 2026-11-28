@@ -116,7 +116,7 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
         EditorUtils.loadXmlConfig(editor);
         if (projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY
                 && projectLibrary.isEnabled()) {
-            setNote(getString(R.string.ui_g4_use_appcompat_manager_note));
+            setNote(getString(R.string.view_code_editor_use_appcompat_manager_note));
         }
         binding.close.setOnClickListener(v -> {
             prefs.edit().putInt("note_" + sc_id, 1).apply();
@@ -144,9 +144,9 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         if (projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY
                 && projectLibrary.isEnabled()) {
-            menu.add(Menu.NONE, 3, Menu.NONE, R.string.ui_g4_edit_appcompat);
+            menu.add(Menu.NONE, 3, Menu.NONE, R.string.view_code_editor_edit_appcompat);
         }
-        menu.add(Menu.NONE, 4, Menu.NONE, R.string.ui_g4_reload_color_schemes);
+        menu.add(Menu.NONE, 4, Menu.NONE, R.string.view_code_editor_reload_color_schemes);
         menu.add(Menu.NONE, 5, Menu.NONE, R.string.common_word_layout_preview);
         return true;
     }
@@ -223,7 +223,7 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
                     for (String attr : viewBean.parentAttributes.keySet()) {
                         String targetId = viewBean.parentAttributes.get(attr);
                         if (!detector.isLegalAttribute(targetId, attr)) {
-                            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g4_circular_dependency_found, viewBean.name));
+                            SketchwareUtil.toastError(Helper.getResString(R.string.view_code_editor_circular_dependency_found, viewBean.name));
                             return;
                         }
                     }
@@ -236,7 +236,7 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
                 }
                 SketchwareUtil.toast(Helper.getResString(R.string.common_word_saved));
             } else {
-                SketchwareUtil.toast(Helper.getResString(R.string.ui_g4_no_changes_to_save));
+                SketchwareUtil.toast(Helper.getResString(R.string.view_code_editor_no_changes_to_save));
             }
         } catch (Exception e) {
             SketchwareUtil.toastError(e.toString());

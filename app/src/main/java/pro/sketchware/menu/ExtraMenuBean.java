@@ -148,7 +148,7 @@ public class ExtraMenuBean {
                         return;
 
                     case "import":
-                        asdDialog(ss, Helper.getResString(R.string.ui_g5_enter_import_path));
+                        asdDialog(ss, Helper.getResString(R.string.extra_menu_enter_import_path));
                         return;
 
                     default:
@@ -521,22 +521,22 @@ public class ExtraMenuBean {
                 break;
 
             case "fragmentAdapter":
-                title = Helper.getResString(R.string.ui_g5_select_fragment_adapter);
+                title = Helper.getResString(R.string.extra_menu_select_fragment_adapter);
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER);
                 break;
 
             case "phoneauth":
-                title = Helper.getResString(R.string.ui_g5_select_firebase_phone);
+                title = Helper.getResString(R.string.extra_menu_select_firebase_phone);
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE);
                 break;
 
             case "cloudmessage":
-                title = Helper.getResString(R.string.ui_g5_select_cloud_message);
+                title = Helper.getResString(R.string.extra_menu_select_cloud_message);
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE);
                 break;
 
             case "googlelogin":
-                title = Helper.getResString(R.string.ui_g5_select_firebase_google);
+                title = Helper.getResString(R.string.extra_menu_select_firebase_google);
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN);
                 break;
 
@@ -556,14 +556,14 @@ public class ExtraMenuBean {
                 break;
 
             case "service":
-                title = Helper.getResString(R.string.ui_g5_select_background_service);
+                title = Helper.getResString(R.string.extra_menu_select_background_service);
                 if (FileUtil.isExistFile(fpu.getManifestService(sc_id))) {
                     menus = frc.getServiceManifestList();
                 }
                 break;
 
             case "broadcast":
-                title = Helper.getResString(R.string.ui_g5_select_broadcast_receiver);
+                title = Helper.getResString(R.string.extra_menu_select_broadcast_receiver);
                 if (FileUtil.isExistFile(fpu.getManifestBroadcast(sc_id))) {
                     menus = frc.getBroadcastManifestList();
                 }
@@ -587,7 +587,7 @@ public class ExtraMenuBean {
                     }
                     if (!activityMenu.isEmpty()) {
                         TextView txt = new TextView(logicEditor);
-                        txt.setText(R.string.ui_g5_custom_activities);
+                        txt.setText(R.string.common_word_custom_activities);
                         txt.setPadding((int) getDip(2), (int) getDip(4), (int) getDip(4), (int) getDip(4));
                         txt.setTextSize(14f);
                         viewGroup.addView(txt);
@@ -600,28 +600,28 @@ public class ExtraMenuBean {
                 break;
 
             case "customViews":
-                title = Helper.getResString(R.string.ui_g5_select_custom_view);
+                title = Helper.getResString(R.string.extra_menu_select_custom_view);
                 for (ProjectFileBean projectFileBean : jC.b(sc_id).c()) {
                     menus.add(projectFileBean.fileName);
                 }
                 break;
 
             case "SignButtonColor":
-                title = Helper.getResString(R.string.ui_g5_select_signin_button_color);
+                title = Helper.getResString(R.string.extra_menu_select_signin_button_color);
                 menus.add("COLOR_AUTO");
                 menus.add("COLOR_DARK");
                 menus.add("COLOR_LIGHT");
                 break;
 
             case "SignButtonSize":
-                title = Helper.getResString(R.string.ui_g5_select_signin_button_size);
+                title = Helper.getResString(R.string.extra_menu_select_signin_button_size);
                 menus.add("SIZE_ICON_ONLY");
                 menus.add("SIZE_STANDARD");
                 menus.add("SIZE_WIDE");
                 break;
 
             case "ResString":
-                title = Helper.getResString(R.string.ui_g5_select_res_string);
+                title = Helper.getResString(R.string.extra_menu_select_res_string);
 
                 String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
                 ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
@@ -644,13 +644,13 @@ public class ExtraMenuBean {
             case "ResInteger":
             case "ResAttr":
             case "ResXml":
-                title = Helper.getResString(R.string.ui_g5_deprecated);
+                title = Helper.getResString(R.string.extra_menu_deprecated);
                 dialog.setMessage(R.string.msg_this_block_menu_was_initially);
                 break;
 
             case "AdUnit":
                 dialog.setIcon(R.drawable.unit_96);
-                title = Helper.getResString(R.string.ui_g5_select_ad_unit);
+                title = Helper.getResString(R.string.extra_menu_select_ad_unit);
                 for (AdUnitBean bean : jC.c(sc_id).e.adUnits) {
                     menus.add(bean.id);
                 }
@@ -658,39 +658,39 @@ public class ExtraMenuBean {
 
             case "TestDevice":
                 dialog.setIcon(R.drawable.ic_test_device_48dp);
-                title = Helper.getResString(R.string.ui_g5_select_test_device);
+                title = Helper.getResString(R.string.extra_menu_select_test_device);
                 for (AdTestDeviceBean testDevice : jC.c(sc_id).e.testDevices) {
                     menus.add(testDevice.deviceId);
                 }
                 break;
 
             case "IntentKey":
-                title = Helper.getResString(R.string.ui_g5_select_intent_key);
+                title = Helper.getResString(R.string.extra_menu_select_intent_key);
                 menus.addAll(new ArrayList<>(Arrays.asList(intentKey)));
                 break;
 
             case "PatternFlag":
-                title = Helper.getResString(R.string.ui_g5_select_pattern_flags);
+                title = Helper.getResString(R.string.extra_menu_select_pattern_flags);
                 menus.addAll(new ArrayList<>(Arrays.asList(patternFlags)));
                 break;
 
             case "Permission":
-                title = Helper.getResString(R.string.ui_g5_select_permission);
+                title = Helper.getResString(R.string.extra_menu_select_permission);
                 menus.addAll(new ArrayList<>(Arrays.asList(permission)));
                 break;
 
             case "AdSize":
-                title = Helper.getResString(R.string.ui_g5_select_ad_size);
+                title = Helper.getResString(R.string.extra_menu_select_ad_size);
                 menus.addAll(new ArrayList<>(Arrays.asList(adSize)));
                 break;
 
             case "PixelFormat":
-                title = Helper.getResString(R.string.ui_g5_select_pixel_format);
+                title = Helper.getResString(R.string.extra_menu_select_pixel_format);
                 menus.addAll(new ArrayList<>(Arrays.asList(pixelFormat)));
                 break;
 
             case "Variable":
-                title = Helper.getResString(R.string.ui_g5_select_variable);
+                title = Helper.getResString(R.string.extra_menu_select_variable);
                 for (Pair<Integer, String> integerStringPair : projectDataManager.k(javaName)) {
                     String variable = integerStringPair.second;
                     String variableName = CustomVariableUtil.getVariableName(variable);
@@ -699,14 +699,14 @@ public class ExtraMenuBean {
                 break;
 
             case "Component":
-                title = Helper.getResString(R.string.ui_g5_select_component);
+                title = Helper.getResString(R.string.extra_menu_select_component);
                 for (ComponentBean componentBean : projectDataManager.e(javaName)) {
                     menus.add(componentBean.componentId);
                 }
                 break;
 
             case "CustomVar":
-                title = Helper.getResString(R.string.ui_g5_select_custom_variable);
+                title = Helper.getResString(R.string.extra_menu_select_custom_variable);
                 for (String s : projectDataManager.e(javaName, 5)) {
                     Matcher matcher = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(s);
                     while (matcher.find()) {
@@ -831,11 +831,11 @@ public class ExtraMenuBean {
         mOptions.setSelectionMode(SelectionMode.BOTH);
         String path = null;
         if (menuName.equals("Assets")) {
-            mOptions.setTitle(Helper.getResString(R.string.ui_g5_select_asset));
+            mOptions.setTitle(Helper.getResString(R.string.extra_menu_select_asset));
             path = String.format(ASSETS_PATH, sc_id);
             markedPath.add(0, path + ss.getArgValue().toString());
         } else if (menuName.equals("NativeLib")) {
-            mOptions.setTitle(Helper.getResString(R.string.ui_g5_select_native_library));
+            mOptions.setTitle(Helper.getResString(R.string.extra_menu_select_native_library));
             path = String.format(NATIVE_PATH, sc_id);
             markedPath.add(0, path + ss.getArgValue().toString());
         }

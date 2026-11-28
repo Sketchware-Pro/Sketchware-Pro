@@ -244,7 +244,7 @@ public class ProjectBuilder {
         }
     }
     public String getDxRunningText() {
-        return Helper.getResString(R.string.ui_g1_progress_d8_running);
+        return Helper.getResString(R.string.build_progress_d8_running);
     }
 
     /**
@@ -688,10 +688,10 @@ public class ProjectBuilder {
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_invalid_local_lib_dex_file_path, i1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.build_invalid_local_lib_dex_file_path, i1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_invalid_local_lib_name, i1), Toast.LENGTH_LONG);
+                SketchwareUtil.toastError(Helper.getResString(R.string.build_invalid_local_lib_name, i1), Toast.LENGTH_LONG);
             }
         }
 

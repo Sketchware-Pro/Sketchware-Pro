@@ -72,7 +72,7 @@ public class EventsManagerDetailsFragment extends qA {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureToolbar(binding.toolbar);
-        binding.toolbar.setTitle(R.string.ui_g5_event_details);
+        binding.toolbar.setTitle(R.string.common_word_event_details);
         binding.toolbar.setSubtitle(listName);
         binding.fabNewEvent.setOnClickListener(v -> {
             Bundle args = new Bundle();
@@ -194,7 +194,7 @@ public class EventsManagerDetailsFragment extends qA {
 
             holder.binding.eventTitle.setText((String) item.get("name"));
             if ("".equals(dataArray.get(position).get("var"))) {
-                holder.binding.eventSubtitle.setText(R.string.ui_g5_activity_event);
+                holder.binding.eventSubtitle.setText(R.string.common_word_activity_event);
             } else {
                 holder.binding.eventSubtitle.setText((String) dataArray.get(position).get("var"));
             }
@@ -218,7 +218,7 @@ public class EventsManagerDetailsFragment extends qA {
             holder.itemView.setOnLongClickListener(v -> {
                 new MaterialAlertDialogBuilder(requireContext())
                         .setTitle((String) dataArray.get(position).get("name"))
-                        .setMessage(R.string.ui_g5_delete_this_event)
+                        .setMessage(R.string.events_manager_delete_this_event)
                         .setPositiveButton(R.string.common_word_delete, (dialog, i) -> deleteItem(position))
                         .setNeutralButton(R.string.common_word_edit, (dialog, i) -> {
                             Bundle args = new Bundle();

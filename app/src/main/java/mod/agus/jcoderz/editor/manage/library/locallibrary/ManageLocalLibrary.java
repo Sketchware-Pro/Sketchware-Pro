@@ -50,7 +50,7 @@ public class ManageLocalLibrary {
                 // fall-through to shared error handler
             }
 
-            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_invalid_local_lib_config));
+            SketchwareUtil.toastError(Helper.getResString(R.string.manage_local_library_invalid_local_lib_config));
         }
         list = new ArrayList<>();
     }
@@ -67,7 +67,7 @@ public class ManageLocalLibrary {
                 if (assetsPath instanceof String) {
                     assets.add((String) assetsPath);
                 } else {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_invalid_local_lib_assets_path, i), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_local_library_invalid_local_lib_assets_path, i), Toast.LENGTH_LONG);
                 }
             }
         }
@@ -85,7 +85,7 @@ public class ManageLocalLibrary {
             if (dexPath instanceof String) {
                 dexes.add((String) dexPath);
             } else {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_invalid_local_lib_dex_path, i), Toast.LENGTH_LONG);
+                SketchwareUtil.toastError(Helper.getResString(R.string.manage_local_library_invalid_local_lib_dex_path, i), Toast.LENGTH_LONG);
             }
         }
 
@@ -204,7 +204,7 @@ public class ManageLocalLibrary {
                 if (packageName instanceof String) {
                     packageNames.add((String) packageName);
                 } else {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_invalid_local_lib_package_name, i), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_local_library_invalid_local_lib_package_name, i), Toast.LENGTH_LONG);
                 }
             }
         }
@@ -236,7 +236,7 @@ public class ManageLocalLibrary {
                 if (proguardRulesPath instanceof String) {
                     proguardRules.add((String) proguardRulesPath);
                 } else {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_invalid_local_lib_proguard_path, i), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_local_library_invalid_local_lib_proguard_path, i), Toast.LENGTH_LONG);
                 }
             }
         }
@@ -255,7 +255,7 @@ public class ManageLocalLibrary {
                 if (resPath instanceof String) {
                     localLibraryRes.add((String) resPath);
                 } else {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_invalid_local_lib_res_path, i), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_local_library_invalid_local_lib_res_path, i), Toast.LENGTH_LONG);
                 }
             }
         }

@@ -298,7 +298,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                 .setView(dialogBinding.getRoot())
                 .setTitle(R.string.common_word_filter_icons)
                 .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                .setPositiveButton(R.string.ui_g4_apply, null)
+                .setPositiveButton(R.string.import_icon_apply, null)
                 .create();
         dialog.setView(dialogBinding.getRoot());
 

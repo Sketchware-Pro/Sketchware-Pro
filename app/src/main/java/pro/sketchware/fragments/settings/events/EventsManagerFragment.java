@@ -56,7 +56,7 @@ public class EventsManagerFragment extends qA {
                 }
             }
         }
-        return Helper.getResString(R.string.ui_g5_events_count, eventAmount);
+        return Helper.getResString(R.string.events_manager_events_count, eventAmount);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class EventsManagerFragment extends qA {
         }
 
         var dialog = new MaterialAlertDialogBuilder(requireContext())
-                .setTitle(existingListener == null ? R.string.ui_g5_new_listener : R.string.ui_g5_edit_listener)
+                .setTitle(existingListener == null ? R.string.common_word_new_listener : R.string.events_manager_edit_listener)
                 .setView(listenerBinding.getRoot())
                 .setPositiveButton(R.string.common_word_save, (di, i) -> {
                     String listenerName = Helper.getText(listenerBinding.listenerName);
@@ -176,7 +176,7 @@ public class EventsManagerFragment extends qA {
                         addListenerItem();
                         di.dismiss();
                     } else {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g5_invalid_name_excl));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.events_manager_invalid_name_excl));
                     }
                 })
                 .setNegativeButton(R.string.common_word_cancel, (di, i) -> di.dismiss()).create();
@@ -195,23 +195,23 @@ public class EventsManagerFragment extends qA {
 
     private void showImportEventsDialog() {
         FilePickerOptions options = new FilePickerOptions();
-        options.setTitle(Helper.getResString(R.string.ui_g5_select_txt_file));
+        options.setTitle(Helper.getResString(R.string.events_manager_select_txt_file));
         options.setExtensions(new String[]{"txt"});
 
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
             public void onFileSelected(File file) {
                 if (FileUtil.readFile(file.getAbsolutePath()).isEmpty()) {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g5_selected_file_empty));
+                    SketchwareUtil.toastError(Helper.getResString(R.string.events_manager_selected_file_empty));
                 } else if (FileUtil.readFile(file.getAbsolutePath()).equals("[]")) {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g5_selected_file_empty));
+                    SketchwareUtil.toastError(Helper.getResString(R.string.events_manager_selected_file_empty));
                 } else {
                     try {
                         String[] split = FileUtil.readFile(file.getAbsolutePath()).split("\n");
                         importEvents(new Gson().fromJson(split[0], Helper.TYPE_MAP_LIST),
                                 new Gson().fromJson(split[1], Helper.TYPE_MAP_LIST));
                     } catch (Exception e) {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g5_invalid_file));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.events_manager_invalid_file));
                     }
                 }
             }
@@ -235,7 +235,7 @@ public class EventsManagerFragment extends qA {
         EventsHandler.refreshCachedCustomListeners();
         oq.refreshActivityEvents();
         refreshList();
-        SketchwareUtil.toast(Helper.getResString(R.string.ui_g5_events_imported));
+        SketchwareUtil.toast(Helper.getResString(R.string.events_manager_events_imported));
     }
 
     private void exportListener(int p) {
@@ -253,7 +253,7 @@ public class EventsManagerFragment extends qA {
             }
         }
         FileUtil.writeFile(concat + ex.get(0).get("name").toString() + ".txt", new Gson().toJson(ex) + "\n" + new Gson().toJson(ex2));
-        SketchwareUtil.toast(Helper.getResString(R.string.ui_g5_event_exported_to), Toast.LENGTH_LONG);
+        SketchwareUtil.toast(Helper.getResString(R.string.events_manager_event_exported_to), Toast.LENGTH_LONG);
     }
 
     private void exportAllEvents() {
@@ -263,7 +263,7 @@ public class EventsManagerFragment extends qA {
         }
         FileUtil.writeFile(new File(EventsManagerConstants.EVENT_EXPORT_LOCATION, "All_Events.txt").getAbsolutePath(),
                 new Gson().toJson(listMap) + "\n" + new Gson().toJson(events));
-        SketchwareUtil.toast(Helper.getResString(R.string.ui_g5_events_exported_to), Toast.LENGTH_LONG);
+        SketchwareUtil.toast(Helper.getResString(R.string.events_manager_events_exported_to), Toast.LENGTH_LONG);
     }
 
     private void addListenerItem() {
@@ -339,8 +339,8 @@ public class EventsManagerFragment extends qA {
                                     break;
                                 case 2:
                                     new MaterialAlertDialogBuilder(context)
-                                            .setTitle(R.string.ui_g5_delete_listener)
-                                            .setMessage(R.string.ui_g5_confirm_delete_item)
+                                            .setTitle(R.string.common_word_delete_listener)
+                                            .setMessage(R.string.events_manager_confirm_delete_item)
                                             .setPositiveButton(R.string.common_word_yes, (di, i) -> {
                                                 deleteRelatedEvents(name);
                                                 deleteItem(position);

@@ -159,7 +159,7 @@ public abstract class SoundPlayingAdapter<VH extends SoundPlayingAdapter.ViewHol
                     nowPlayingPosition = -1;
 
                     LogUtil.e("SoundPlayer", "Failed to play Sound " + audio, e);
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g4_failed_to_play_sound, e));
+                    SketchwareUtil.toastError(Helper.getResString(R.string.sound_playing_failed_to_play_sound, e));
                 }
             }
         }

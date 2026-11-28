@@ -212,7 +212,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                                         .setTitle(R.string.common_word_warning)
                                         .setMessage(BackupRestoreManager.getRestoreIntegratedLocalLibrariesMessage(false, -1, -1, null))
                                         .setPositiveButton(R.string.common_word_copy, (dialog, which) -> manager.doRestore(path, true))
-                                        .setNegativeButton(R.string.ui_g4_dont_copy, (dialog, which) -> manager.doRestore(path, false))
+                                        .setNegativeButton(R.string.main_dont_copy, (dialog, which) -> manager.doRestore(path, false))
                                         .setNeutralButton(R.string.common_word_cancel, null)
                                         .show();
                             } else {
@@ -222,7 +222,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                             // Clear intent so it doesn't duplicate
                             getIntent().setData(null);
                         } else {
-                            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g4_failed_copy_backup_temp, reason), Toast.LENGTH_LONG);
+                            SketchwareUtil.toastError(Helper.getResString(R.string.main_failed_copy_backup_temp, reason), Toast.LENGTH_LONG);
                         }
                     }
                 }).copyFile(data);
@@ -320,10 +320,10 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     @NonNull
     private BottomSheetDialogView getBottomSheetDialogView() {
         BottomSheetDialogView bottomSheetDialog = new BottomSheetDialogView(this);
-        bottomSheetDialog.setTitle(Helper.getResString(R.string.ui_g4_major_changes_title));
-        bottomSheetDialog.setDescription(Helper.getResString(R.string.ui_g4_major_changes_description));
+        bottomSheetDialog.setTitle(Helper.getResString(R.string.main_major_changes_title));
+        bottomSheetDialog.setDescription(Helper.getResString(R.string.main_major_changes_description));
 
-        bottomSheetDialog.setPositiveButton(Helper.getResString(R.string.ui_g4_view_changes), (dialog, which) -> {
+        bottomSheetDialog.setPositiveButton(Helper.getResString(R.string.main_view_changes), (dialog, which) -> {
             ConfigActivity.setSetting(ConfigActivity.SETTING_CRITICAL_UPDATE_REMINDER, true);
             Intent launcher = new Intent(this, AboutActivity.class);
             launcher.putExtra("select", "changelog");
@@ -377,7 +377,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                 MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                 dialog.setIcon(R.drawable.ic_expire_48dp);
                 dialog.setTitle(R.string.title_android_11_storage_access);
-                dialog.setMessage(R.string.ui_g4_android11_storage_permission_message);
+                dialog.setMessage(R.string.main_android11_storage_permission_message);
                 dialog.setPositiveButton(R.string.common_word_settings, (v, which) -> {
                     FileUtil.requestAllFilesAccessPermission(this);
                     v.dismiss();

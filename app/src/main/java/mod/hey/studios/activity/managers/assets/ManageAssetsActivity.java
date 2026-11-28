@@ -125,7 +125,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
                 .setTitle(R.string.assets_manager_add_new)
-                .setMessage(R.string.ui_g2_create_file_add_extension)
+                .setMessage(R.string.manage_assets_create_file_add_extension)
                 .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(R.string.common_word_create, null)
                 .create();
@@ -136,7 +136,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
                 String editable = Helper.getText(inputText).trim();
 
                 if (editable.isEmpty()) {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_invalid_name));
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_assets_invalid_name));
                     return;
                 }
 
@@ -146,12 +146,12 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
                 } else if (checkedChipId == R.id.chip_folder) {
                     FileUtil.makeDir(new File(current_path, editable).getAbsolutePath());
                 } else {
-                    SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_select_file_type));
+                    SketchwareUtil.toast(Helper.getResString(R.string.manage_assets_select_file_type));
                     return;
                 }
 
                 refresh();
-                SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_file_created_successfully));
+                SketchwareUtil.toast(Helper.getResString(R.string.manage_assets_file_created_successfully));
                 dialogInterface.dismiss();
             });
         });
@@ -170,7 +170,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         FilePickerOptions options = new FilePickerOptions();
         options.setSelectionMode(SelectionMode.BOTH);
         options.setMultipleSelection(true);
-        options.setTitle(Helper.getResString(R.string.ui_g2_select_asset_file));
+        options.setTitle(Helper.getResString(R.string.manage_assets_select_asset_file));
 
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
@@ -181,7 +181,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
                         try {
                             FileUtil.copyDirectory(file, new File(current_path, file.getName()));
                         } catch (IOException e) {
-                            runOnUiThread(() -> SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_import_file_failed, e.getMessage())));
+                            runOnUiThread(() -> SketchwareUtil.toastError(Helper.getResString(R.string.manage_assets_import_file_failed, e.getMessage())));
                         }
                     }
                     runOnUiThread(ManageAssetsActivity.this::refresh);
@@ -199,7 +199,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         var inputText = dialogBinding.inputText;
 
         var dialog = new MaterialAlertDialogBuilder(this)
-                .setTitle(Helper.getResString(R.string.ui_g2_rename_item_title, assetsAdapter.getFileName(position)))
+                .setTitle(Helper.getResString(R.string.manage_assets_rename_item_title, assetsAdapter.getFileName(position)))
                 .setView(dialogBinding.getRoot())
                 .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(R.string.assets_manager_rename, (dialogInterface, i) -> {
@@ -222,8 +222,8 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
 
     private void showDeleteDialog(int position) {
         new MaterialAlertDialogBuilder(this)
-                .setTitle(Helper.getResString(R.string.ui_g2_delete_item_title, assetsAdapter.getFileName(position)))
-                .setMessage((Helper.getResString(assetsAdapter.isFolder(position) ? R.string.ui_g2_delete_folder_question : R.string.ui_g2_delete_file_question) + " " + Helper.getResString(R.string.ui_g2_action_cannot_be_undone)))
+                .setTitle(Helper.getResString(R.string.common_delete_item_title, assetsAdapter.getFileName(position)))
+                .setMessage((Helper.getResString(assetsAdapter.isFolder(position) ? R.string.common_delete_folder_question : R.string.common_delete_file_question) + " " + Helper.getResString(R.string.common_action_cannot_be_undone)))
                 .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
                     FileUtil.deleteFile(assetsAdapter.getItem(position));
                     refresh();

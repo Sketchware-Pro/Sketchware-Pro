@@ -72,12 +72,12 @@ public class CustomBlocksDialog {
 
                 context.runOnUiThread(() -> {
 
-                    String subtitle = Helper.getResString(R.string.ui_g2_custom_blocks_used_count, customBlocks.size());
+                    String subtitle = Helper.getResString(R.string.custom_blocks_used_count, customBlocks.size());
 
                     if (missingBlocks > 0) {
                         String errorMsg = (missingBlocks == 1)
-                                ? Helper.getResString(R.string.ui_g2_one_missing_block)
-                                : Helper.getResString(R.string.ui_g2_missing_blocks_count, missingBlocks);
+                                ? Helper.getResString(R.string.custom_blocks_one_missing_block)
+                                : Helper.getResString(R.string.custom_blocks_missing_blocks_count, missingBlocks);
                         SketchwareUtil.toastError(errorMsg);
                     }
 
@@ -95,7 +95,7 @@ public class CustomBlocksDialog {
                         }
 
                         if (selectedBeans.isEmpty()) {
-                            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_select_at_least_one_block));
+                            SketchwareUtil.toastError(Helper.getResString(R.string.custom_blocks_select_at_least_one_block));
                             return;
                         }
 
@@ -106,7 +106,7 @@ public class CustomBlocksDialog {
 
             } else {
                 context.runOnUiThread(() -> {
-                    dialogBinding.subtitle.setText(R.string.ui_g2_no_custom_blocks_used);
+                    dialogBinding.subtitle.setText(R.string.custom_blocks_no_custom_blocks_used);
                     dialogBinding.progressIndicator.setVisibility(View.GONE);
                 });
             }
@@ -137,9 +137,9 @@ public class CustomBlocksDialog {
         AtomicInteger selectedPalette = new AtomicInteger(paletteList.size() - 1);
 
         new MaterialAlertDialogBuilder(context)
-                .setTitle(R.string.ui_g2_import_custom_blocks_to)
+                .setTitle(R.string.custom_blocks_import_custom_blocks_to)
                 .setSingleChoiceItems(paletteNames.toArray(new String[0]), selectedPalette.get(), (dialog, which) -> selectedPalette.set(which))
-                .setNegativeButton(R.string.ui_g2_create_new_palette, (dialog, which) -> {
+                .setNegativeButton(R.string.custom_blocks_create_new_palette, (dialog, which) -> {
                     showCreatePaletteDialog(context, paletteList, paletteDir, customBlocksManager, list, blocksList, allBlocksList, blocksDir);
                     dialog.dismiss();
                 })
@@ -148,7 +148,7 @@ public class CustomBlocksDialog {
                     allBlocksList.addAll(blocksList);
                     FileUtil.writeFile(blocksDir, new Gson().toJson(allBlocksList));
                     BlockLoader.refresh();
-                    SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_blocks_imported));
+                    SketchwareUtil.toast(Helper.getResString(R.string.custom_blocks_blocks_imported));
                 })
                 .show();
     }
@@ -219,7 +219,7 @@ public class CustomBlocksDialog {
             allBlocksList.addAll(blocksList);
             FileUtil.writeFile(blocksDir, new Gson().toJson(allBlocksList));
             BlockLoader.refresh();
-            SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_blocks_imported));
+            SketchwareUtil.toast(Helper.getResString(R.string.custom_blocks_blocks_imported));
             dialogInterface.dismiss();
         });
         dialog.setNegativeButton(R.string.common_word_cancel, null);
@@ -233,19 +233,19 @@ public class CustomBlocksDialog {
 
     private boolean validateInput(DialogPaletteBinding binding, String name, String color) {
         if (name.isEmpty()) {
-            binding.name.setError(Helper.getResString(R.string.ui_g2_name_cannot_be_empty));
+            binding.name.setError(Helper.getResString(R.string.custom_blocks_name_cannot_be_empty));
             binding.name.requestFocus();
             return false;
         }
         if (color.isEmpty()) {
-            binding.color.setError(Helper.getResString(R.string.ui_g2_color_cannot_be_empty));
+            binding.color.setError(Helper.getResString(R.string.custom_blocks_color_cannot_be_empty));
             binding.color.requestFocus();
             return false;
         }
         try {
             Color.parseColor(color);
         } catch (IllegalArgumentException e) {
-            binding.color.setError(Helper.getResString(R.string.ui_g2_invalid_hex_color));
+            binding.color.setError(Helper.getResString(R.string.custom_blocks_invalid_hex_color));
             binding.color.requestFocus();
             return false;
         }
@@ -372,9 +372,9 @@ public class CustomBlocksDialog {
                         binding.checkBox.setChecked(reversedState);
                         block.isSelected = reversedState;
                     } else if (blockInfo.equals("Missing")) {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_block_is_missing));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.custom_blocks_block_is_missing));
                     } else {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_block_already_in_collection));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.custom_blocks_block_already_in_collection));
                     }
                 });
             }

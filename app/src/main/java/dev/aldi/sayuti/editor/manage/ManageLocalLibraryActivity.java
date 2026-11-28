@@ -421,7 +421,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             if (library.isSelected() && isUsedLibrary(library.getName())) {
                 new MaterialAlertDialogBuilder(ManageLocalLibraryActivity.this)
                         .setTitle(R.string.common_word_warning)
-                        .setMessage(Helper.getResString(R.string.ui_g1_library_in_use_warning, library.getName()))
+                        .setMessage(Helper.getResString(R.string.local_library_library_in_use_warning, library.getName()))
                         .setPositiveButton(R.string.common_word_yes, (dialog, which) -> dialog.dismiss())
                         .setNegativeButton(R.string.common_word_cancel, (dialog, which) -> {
                             toggleLocalLibrary(card, library, onLocalLibrarySelectedStateChangedListener);

@@ -158,7 +158,7 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                     appCompats.add("NavigationDrawer");
                 }
                 if (appCompats.isEmpty()) {
-                    setNote(getString(R.string.ui_g4_no_options_found), getString(R.string.ui_g4_no_appcompat_options_available));
+                    setNote(getString(R.string.manage_app_compat_no_options_found), getString(R.string.manage_app_compat_no_appcompat_options_available));
                 } else {
                     for (int i = 0; i < appCompats.size(); i++) {
                         TabLayout.Tab tab = binding.tabLayout.newTab();
@@ -172,10 +172,10 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                 }
             } else {
                 setNote(
-                        getString(R.string.ui_g4_appcompat_disabled), getString(R.string.ui_g4_enable_appcompat_in_library_manager));
+                        getString(R.string.manage_app_compat_appcompat_disabled), getString(R.string.manage_app_compat_enable_appcompat_in_library_manager));
             }
         } else {
-            setNote(getString(R.string.ui_g4_not_available), getString(R.string.ui_g4_not_in_activity_layout));
+            setNote(getString(R.string.manage_app_compat_not_available), getString(R.string.manage_app_compat_not_in_activity_layout));
         }
     }
 
@@ -201,7 +201,7 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                 MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                 dialog.setTitle(R.string.common_word_reset);
                 dialog.setMessage(
-                        Helper.getResString(R.string.ui_g4_reset_appcompat_attributes_confirm, filename));
+                        Helper.getResString(R.string.manage_app_compat_reset_appcompat_attributes_confirm, filename));
                 dialog.setPositiveButton(
                         R.string.common_word_yes,
                         (d, w) -> {
@@ -253,7 +253,7 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
 
     private void dialog(String type, int position) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(type.equals("create") ? R.string.ui_g4_add_new_attribute : R.string.ui_g4_edit_attribute);
+        dialog.setTitle(type.equals("create") ? R.string.manage_app_compat_add_new_attribute : R.string.manage_app_compat_edit_attribute);
         CustomDialogAttributeBinding attributeBinding =
                 CustomDialogAttributeBinding.inflate(getLayoutInflater());
         dialog.setView(attributeBinding.getRoot());

@@ -39,10 +39,10 @@ public class CollectErrorActivity extends BaseAppCompatActivity {
 
             var dialog = new MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.common_error_an_error_occurred)
-                    .setMessage(R.string.ui_g1_collect_error_message)
+                    .setMessage(R.string.collect_error_message)
                     .setPositiveButton(R.string.common_word_copy, null)
                     .setNegativeButton(R.string.common_word_cancel, (dialogInterface, which) -> finish())
-                    .setNeutralButton(R.string.ui_g1_show_error, null) // null to set proper onClick listeners later without dismissing the AlertDialog
+                    .setNeutralButton(R.string.collect_error_show_error, null) // null to set proper onClick listeners later without dismissing the AlertDialog
                     .setCancelable(false)
                     .show();
 
@@ -80,7 +80,7 @@ public class CollectErrorActivity extends BaseAppCompatActivity {
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("error", deviceInfo + "\n\n```\n" + error + "\n```");
                 clipboard.setPrimaryClip(clip);
-                runOnUiThread(() -> SketchwareUtil.toast(Helper.getResString(R.string.ui_g1_copied), Toast.LENGTH_LONG));
+                runOnUiThread(() -> SketchwareUtil.toast(Helper.getResString(R.string.collect_error_copied), Toast.LENGTH_LONG));
             });
         }
     }

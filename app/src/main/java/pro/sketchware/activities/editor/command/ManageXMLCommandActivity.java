@@ -125,9 +125,9 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                     var menu = popupMenu.getMenu();
                     menu.add(Menu.NONE, 0, Menu.NONE, R.string.common_word_edit);
                     menu.add(Menu.NONE, 1, Menu.NONE, R.string.common_word_delete);
-                    if (position != 0) menu.add(Menu.NONE, 2, Menu.NONE, R.string.ui_g4_move_up);
+                    if (position != 0) menu.add(Menu.NONE, 2, Menu.NONE, R.string.manage_xml_command_move_up);
                     if (position != adapter.getItemCount() - 1)
-                        menu.add(Menu.NONE, 3, Menu.NONE, R.string.ui_g4_move_down);
+                        menu.add(Menu.NONE, 3, Menu.NONE, R.string.manage_xml_command_move_down);
 
                     popupMenu.setOnMenuItemClickListener(
                             itemMenu -> {
@@ -185,7 +185,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         switch (item.getItemId()) {
             case 0 -> {
                 new MaterialAlertDialogBuilder(this)
-                        .setTitle(R.string.ui_g4_select_an_xml)
+                        .setTitle(R.string.manage_xml_command_select_an_xml)
                         .setAdapter(
                                 new ArrayAdapter<>(
                                         this, android.R.layout.simple_list_item_1, xmlFiles),
@@ -226,7 +226,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                     }
                 });
         dialog.show();
-        binding.title.setText(!edit ? R.string.ui_g4_add_new_command : R.string.ui_g4_edit_command);
+        binding.title.setText(!edit ? R.string.manage_xml_command_add_new_command : R.string.manage_xml_command_edit_command);
 
         if (edit) {
             var command = commands.get(position);
@@ -258,11 +258,11 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                     var reference = Helper.getText(binding.reference);
                     var command = Helper.getText(binding.command);
                     if (TextUtils.isEmpty(xmlName)) {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g4_xml_name_required));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.manage_xml_command_xml_name_required));
                         return;
                     }
                     if (TextUtils.isEmpty(reference)) {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g4_reference_required));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.manage_xml_command_reference_required));
                         return;
                     }
                     HashMap<String, Object> map = new HashMap<>();
@@ -299,7 +299,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(R.string.common_word_confirmation);
         dialog.setMessage(
-                R.string.ui_g4_enable_new_xml_command_message);
+                R.string.manage_xml_command_enable_new_xml_command_message);
         dialog.setPositiveButton(
                 R.string.common_word_yes,
                 (d, w) -> {
@@ -344,7 +344,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                                         editor.setText(
                                                 !source.isEmpty()
                                                         ? source
-                                                        : Helper.getResString(R.string.ui_g4_failed_to_generate_source));
+                                                        : Helper.getResString(R.string.manage_xml_command_failed_to_generate_source));
                                         editor.getComponent(Magnifier.class)
                                                 .setWithinEditorForcibly(true);
 

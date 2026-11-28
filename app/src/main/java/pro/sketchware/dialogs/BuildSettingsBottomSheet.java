@@ -61,7 +61,7 @@ public class BuildSettingsBottomSheet extends BottomSheetDialogFragment {
 
     public static void handleJavaVersionChange(String choice) {
         if (!choice.equals(SETTING_JAVA_VERSION_1_7)) {
-            SketchwareUtil.toast(Helper.getResString(R.string.ui_g5_enable_d8_hint));
+            SketchwareUtil.toast(Helper.getResString(R.string.build_enable_d8_hint));
         }
     }
 
@@ -159,7 +159,7 @@ public class BuildSettingsBottomSheet extends BottomSheetDialogFragment {
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 if (key.equals(SETTING_NO_HTTP_LEGACY)) {
-                    SketchwareUtil.toast(Helper.getResString(R.string.ui_g5_no_http_legacy_warning));
+                    SketchwareUtil.toast(Helper.getResString(R.string.build_no_http_legacy_warning));
                 }
             }
         });

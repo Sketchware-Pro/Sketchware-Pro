@@ -42,7 +42,7 @@ public class AudioMetadata {
             try {
                 mediaMetadataRetriever.release();
             } catch (IOException e) {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g4_failed_to_release_file, audio, e));
+                SketchwareUtil.toastError(Helper.getResString(R.string.audio_metadata_failed_to_release_file, audio, e));
             }
         }
     }

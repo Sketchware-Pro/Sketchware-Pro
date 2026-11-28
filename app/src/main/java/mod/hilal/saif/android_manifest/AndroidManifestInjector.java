@@ -71,7 +71,7 @@ public class AndroidManifestInjector {
             }
 
             attributes = new ArrayList<>();
-            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_manifest_injection_parse_failed, errorMessage));
+            SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_parse_failed, errorMessage));
         }
 
         return attributes;
@@ -94,10 +94,10 @@ public class AndroidManifestInjector {
                         nx.addChildNode(usesPermissionTag);
                     }
                 } else {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_manifest_injection_invalid_value, i + 1));
+                    SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_value, i + 1));
                 }
             } else {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_manifest_injection_invalid_name, i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_name, i + 1));
             }
         }
     }
@@ -120,7 +120,7 @@ public class AndroidManifestInjector {
                     return true;
                 }
             } else {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_manifest_injection_invalid_name, i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_name, i + 1));
             }
         }
 
@@ -160,11 +160,11 @@ public class AndroidManifestInjector {
                             return true;
                         }
                     } else {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_manifest_injection_invalid_value, i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_value, i + 1));
                     }
                 }
             } else {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_manifest_injection_invalid_name, i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_name, i + 1));
             }
         }
 
@@ -277,11 +277,11 @@ public class AndroidManifestInjector {
                             themeInjected = true;
                         }
                     } else {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_manifest_injection_invalid_value, i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_value, i + 1));
                     }
                 }
             } else {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_manifest_injection_invalid_name, i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_name, i + 1));
             }
         }
 
@@ -305,11 +305,11 @@ public class AndroidManifestInjector {
                     if (value instanceof String) {
                         nx.addAttributeValue((String) value);
                     } else {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_manifest_injection_invalid_value, i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_value, i + 1));
                     }
                 }
             } else {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g3_manifest_injection_invalid_name, i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_name, i + 1));
             }
         }
     }

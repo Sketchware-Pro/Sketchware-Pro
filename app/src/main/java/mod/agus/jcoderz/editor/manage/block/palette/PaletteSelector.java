@@ -32,7 +32,7 @@ public class PaletteSelector {
                     try {
                         color = Color.parseColor(item.get("color").toString());
                     } catch (IllegalArgumentException e) {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_palette_color_parse_failed, i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.palette_selector_palette_color_parse_failed, i + 1));
                         color = 0xff8a55d7;
                     }
 
@@ -40,7 +40,7 @@ public class PaletteSelector {
                     start++;
                 }
             } catch (JSONException e) {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_palette_load_error, e));
+                SketchwareUtil.toastError(Helper.getResString(R.string.palette_selector_palette_load_error, e));
             }
         }
 

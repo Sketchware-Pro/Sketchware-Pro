@@ -53,7 +53,7 @@ public class ChangeLogAdapter extends RecyclerView.Adapter<ChangeLogAdapter.View
                 holder.binding.tvTitle.setText(titleText);
                 holder.binding.tvTitle.setVisibility(View.VISIBLE);
             } else {
-                holder.binding.tvTitle.setText(R.string.ui_g4_changelog_invalid_title);
+                holder.binding.tvTitle.setText(R.string.change_log_changelog_invalid_title);
                 holder.binding.tvTitle.setVisibility(View.VISIBLE);
             }
         } else {
@@ -69,14 +69,14 @@ public class ChangeLogAdapter extends RecyclerView.Adapter<ChangeLogAdapter.View
 
         holder.binding.tvVariant.setVisibility(previousIsBetaValueDiffers ? View.VISIBLE : View.GONE);
         if (previousIsBetaValueDiffers) {
-            holder.binding.tvVariant.setText(isBetaVersion ? R.string.ui_g4_beta : R.string.ui_g4_official);
+            holder.binding.tvVariant.setText(isBetaVersion ? R.string.change_log_beta : R.string.change_log_official);
         }
 
         long releaseDate = release.getReleaseDate();
         if (releaseDate > 0) {
             holder.binding.tvReleaseNote.setVisibility(View.VISIBLE);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-            holder.binding.tvReleaseNote.setText(Helper.getResString(R.string.ui_g4_released_on, formatter.format(new Date(releaseDate))));
+            holder.binding.tvReleaseNote.setText(Helper.getResString(R.string.change_log_released_on, formatter.format(new Date(releaseDate))));
         } else {
             holder.binding.tvReleaseNote.setVisibility(View.GONE);
         }
@@ -86,7 +86,7 @@ public class ChangeLogAdapter extends RecyclerView.Adapter<ChangeLogAdapter.View
             holder.binding.tvSubTitle.setText(description);
             Linkify.addLinks(holder.binding.tvSubTitle, Linkify.WEB_URLS);
         } else {
-            holder.binding.tvSubTitle.setText(R.string.ui_g4_changelog_invalid_description);
+            holder.binding.tvSubTitle.setText(R.string.change_log_changelog_invalid_description);
         }
 
         boolean showingAdditionalInfo = showingAdditionalInfoPositions.contains(position);

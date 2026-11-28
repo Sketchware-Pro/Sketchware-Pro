@@ -98,7 +98,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                     binding.nameLayout.setErrorEnabled(false);
                     binding.save.setEnabled(true);
                 } else if (!mode.equals("edit")) {
-                    binding.nameLayout.setError(getString(R.string.ui_g3_block_name_in_use));
+                    binding.nameLayout.setError(getString(R.string.blocks_manager_block_name_in_use));
                     binding.nameLayout.setErrorEnabled(true);
                     binding.save.setEnabled(false);
                 } else {
@@ -106,7 +106,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                     Object blockNameObject = savedBlocksListBlock.get("name");
 
                     if (!string.equals(blockNameObject)) {
-                        binding.nameLayout.setError(getString(R.string.ui_g3_block_name_in_use));
+                        binding.nameLayout.setError(getString(R.string.blocks_manager_block_name_in_use));
                         binding.nameLayout.setErrorEnabled(true);
                         binding.save.setEnabled(false);
                     }
@@ -121,21 +121,21 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                     "d", "v", "a", "f", "l", "p", "h"
             );
             List<String> choices = Arrays.asList(
-                    getString(R.string.ui_g3_block_type_regular),
-                    getString(R.string.ui_g3_block_type_if),
-                    getString(R.string.ui_g3_block_type_if_else),
-                    getString(R.string.ui_g3_block_type_string),
-                    getString(R.string.ui_g3_block_type_boolean),
-                    getString(R.string.ui_g3_block_type_number),
-                    getString(R.string.ui_g3_block_type_variable),
-                    getString(R.string.ui_g3_block_type_map),
-                    getString(R.string.ui_g3_block_type_stop),
-                    getString(R.string.ui_g3_block_type_list),
-                    getString(R.string.ui_g3_block_type_component),
-                    getString(R.string.ui_g3_block_type_header)
+                    getString(R.string.blocks_manager_block_type_regular),
+                    getString(R.string.blocks_manager_block_type_if),
+                    getString(R.string.blocks_manager_block_type_if_else),
+                    getString(R.string.blocks_manager_block_type_string),
+                    getString(R.string.blocks_manager_block_type_boolean),
+                    getString(R.string.blocks_manager_block_type_number),
+                    getString(R.string.blocks_manager_block_type_variable),
+                    getString(R.string.blocks_manager_block_type_map),
+                    getString(R.string.blocks_manager_block_type_stop),
+                    getString(R.string.blocks_manager_block_type_list),
+                    getString(R.string.blocks_manager_block_type_component),
+                    getString(R.string.blocks_manager_block_type_header)
             );
             AtomicInteger choice = new AtomicInteger();
-            new MaterialAlertDialogBuilder(this).setTitle(R.string.ui_g3_block_type)
+            new MaterialAlertDialogBuilder(this).setTitle(R.string.common_word_block_type)
                     .setSingleChoiceItems(choices.toArray(new String[0]),
                             types.indexOf(Helper.getText(binding.type)), (dialog, which) -> choice.set(which))
                     .setPositiveButton(R.string.common_word_save, (dialog, which) -> binding.type.setText(types.get(choice.get())))
@@ -180,7 +180,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!PropertiesUtil.isHexColor(s.toString())) {
-                    binding.colourLayout.setError(getString(R.string.ui_g3_invalid_hex_color));
+                    binding.colourLayout.setError(getString(R.string.blocks_manager_invalid_hex_color));
                     binding.colourLayout.setErrorEnabled(true);
                 } else {
                     binding.colourLayout.setError(null);
@@ -193,12 +193,12 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         binding.cancel.setOnClickListener(Helper.getBackPressedClickListener(this));
         binding.save.setOnClickListener(v -> {
             if (!PropertiesUtil.isHexColor(Helper.getText(binding.colour))) {
-                SketchwareUtil.showMessage(getApplicationContext(), getString(R.string.ui_g3_invalid_hex_color));
+                SketchwareUtil.showMessage(getApplicationContext(), getString(R.string.blocks_manager_invalid_hex_color));
                 return;
             }
             Matcher matcher = PARAM_PATTERN.matcher(Helper.getText(binding.spec));
             if (matcher.find()) {
-                SketchwareUtil.showMessage(getApplicationContext(), getString(R.string.ui_g3_invalid_block_params));
+                SketchwareUtil.showMessage(getApplicationContext(), getString(R.string.blocks_manager_invalid_block_params));
                 return;
             }
             if (Helper.getText(binding.type).isEmpty()) {
@@ -341,14 +341,14 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         if (mode.equals("add")) {
             blockPosition = Integer.parseInt(getIntent().getStringExtra("pallet"));
             binding.colour.setText(palletColour);
-            getSupportActionBar().setTitle(R.string.ui_g3_add_new_block);
+            getSupportActionBar().setTitle(R.string.blocks_manager_add_new_block);
             return;
         }
         blockPosition = Integer.parseInt(getIntent().getStringExtra("pos"));
         binding.colour.setText(palletColour);
-        getSupportActionBar().setTitle(R.string.ui_g3_insert_block);
+        getSupportActionBar().setTitle(R.string.common_word_insert_block);
         if (mode.equals("edit")) {
-            getSupportActionBar().setTitle(R.string.ui_g3_edit_block);
+            getSupportActionBar().setTitle(R.string.common_word_edit_block);
             fillUpInputs(blockPosition);
         }
     }
@@ -360,7 +360,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         if (nameObject instanceof String) {
             binding.name.setText((String) nameObject);
         } else {
-            binding.nameLayout.setError(getString(R.string.ui_g3_invalid_name_block_data));
+            binding.nameLayout.setError(getString(R.string.blocks_manager_invalid_name_block_data));
             binding.nameLayout.setErrorEnabled(true);
         }
 
@@ -373,7 +373,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                 binding.type.setText(typeString);
             }
         } else {
-            binding.typeLayout.setError(getString(R.string.ui_g3_invalid_type_block_data));
+            binding.typeLayout.setError(getString(R.string.blocks_manager_invalid_type_block_data));
             binding.typeLayout.setErrorEnabled(true);
         }
 
@@ -382,7 +382,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
             if (typeName instanceof String) {
                 binding.typename.setText((String) typeName);
             } else {
-                binding.typenameLayout.setError(getString(R.string.ui_g3_invalid_typename_block_data));
+                binding.typenameLayout.setError(getString(R.string.blocks_manager_invalid_typename_block_data));
                 binding.typenameLayout.setErrorEnabled(true);
             }
         }
@@ -391,7 +391,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         if (specObject instanceof String) {
             binding.spec.setText((String) specObject);
         } else {
-            binding.specLayout.setError(getString(R.string.ui_g3_invalid_spec_block_data));
+            binding.specLayout.setError(getString(R.string.blocks_manager_invalid_spec_block_data));
             binding.specLayout.setErrorEnabled(true);
         }
 
@@ -400,7 +400,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
             if (spec2Object instanceof String) {
                 binding.spec2.setText((String) spec2Object);
             } else {
-                binding.spec2Layout.setError(getString(R.string.ui_g3_invalid_spec2_block_data));
+                binding.spec2Layout.setError(getString(R.string.blocks_manager_invalid_spec2_block_data));
                 binding.spec2Layout.setErrorEnabled(true);
             }
         }
@@ -410,7 +410,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
             if (importsObject instanceof String) {
                 binding.customImport.setText((String) importsObject);
             } else {
-                binding.customImportLayout.setError(getString(R.string.ui_g3_invalid_imports_block_data));
+                binding.customImportLayout.setError(getString(R.string.blocks_manager_invalid_imports_block_data));
                 binding.customImportLayout.setErrorEnabled(true);
             }
         }
@@ -420,7 +420,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
             if (colorObject instanceof String) {
                 binding.colour.setText((String) colorObject);
             } else {
-                binding.colourLayout.setError(getString(R.string.ui_g3_invalid_color_block_data));
+                binding.colourLayout.setError(getString(R.string.blocks_manager_invalid_color_block_data));
                 binding.colourLayout.setErrorEnabled(true);
             }
         } else {
@@ -431,7 +431,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         if (codeObject instanceof String) {
             binding.code.setText((String) codeObject);
         } else {
-            binding.code.setHint(R.string.ui_g3_invalid_code_block_data);
+            binding.code.setHint(R.string.blocks_manager_invalid_code_block_data);
         }
     }
 
@@ -447,7 +447,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                     if (name instanceof String) {
                         id_detector.add((String) name);
                     } else {
-                        SketchwareUtil.toastError(getString(R.string.ui_g3_custom_block_invalid_name_in_palette, i));
+                        SketchwareUtil.toastError(getString(R.string.blocks_manager_custom_block_invalid_name_in_palette, i));
                     }
                 }
                 return;
@@ -473,7 +473,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
             if (matcher.find()) {
                 int position = matcher.end();
                 //Unable to resolve this error because the Rs class still undecompiled.
-                block.setText(getString(R.string.ui_g3_block_spec_param_error, position));
+                block.setText(getString(R.string.blocks_manager_block_spec_param_error, position));
             } else {
                 block.setText(e.toString());
             }

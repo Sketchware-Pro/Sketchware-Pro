@@ -96,7 +96,7 @@ public class LogicClickListener implements View.OnClickListener {
 
         AddCustomVariableBinding binding = AddCustomVariableBinding.inflate(logicEditor.getLayoutInflater());
 
-        binding.modifierLayout.setHelperText(Helper.getResString(R.string.ui_g5_modifier_helper));
+        binding.modifierLayout.setHelperText(Helper.getResString(R.string.logic_click_listener_modifier_helper));
 
         VariableModifierValidator modifiersValidator = new VariableModifierValidator(getContext(), binding.modifierLayout);
         binding.modifier.addTextChangedListener(modifiersValidator);
@@ -128,7 +128,7 @@ public class LogicClickListener implements View.OnClickListener {
             } else {
                 binding.typeLayout.requestFocus();
                 if (variableType.isEmpty()) {
-                    binding.typeLayout.setError(Helper.getResString(R.string.ui_g5_type_cant_be_empty));
+                    binding.typeLayout.setError(Helper.getResString(R.string.logic_click_listener_type_cant_be_empty));
                     binding.typeLayout.setErrorEnabled(true);
                 }
                 return;
@@ -140,7 +140,7 @@ public class LogicClickListener implements View.OnClickListener {
             } else {
                 binding.nameLayout.requestFocus();
                 if (variableName.isEmpty()) {
-                    binding.nameLayout.setError(Helper.getResString(R.string.ui_g5_name_cant_be_empty));
+                    binding.nameLayout.setError(Helper.getResString(R.string.logic_click_listener_name_cant_be_empty));
                     binding.nameLayout.setErrorEnabled(true);
                 }
                 return;
@@ -177,10 +177,10 @@ public class LogicClickListener implements View.OnClickListener {
 
         List<Pair<List<Integer>, String>> variableTypes = List.of(
                 new Pair<>(List.of(ExtraMenuBean.VARIABLE_TYPE_BOOLEAN), "Boolean (%d)"),
-                new Pair<>(List.of(ExtraMenuBean.VARIABLE_TYPE_NUMBER), Helper.getResString(R.string.ui_g5_number_count)),
+                new Pair<>(List.of(ExtraMenuBean.VARIABLE_TYPE_NUMBER), Helper.getResString(R.string.logic_click_listener_number_count)),
                 new Pair<>(List.of(ExtraMenuBean.VARIABLE_TYPE_STRING), "String (%d)"),
                 new Pair<>(List.of(ExtraMenuBean.VARIABLE_TYPE_MAP), "Map (%d)"),
-                new Pair<>(List.of(5, 6), Helper.getResString(R.string.ui_g5_custom_variable_count))
+                new Pair<>(List.of(5, 6), Helper.getResString(R.string.logic_click_listener_custom_variable_count))
         );
 
         for (Pair<List<Integer>, String> variableType : variableTypes) {
@@ -239,18 +239,18 @@ public class LogicClickListener implements View.OnClickListener {
                 listBinding.typeLayout.setErrorEnabled(false);
             } else {
                 if (validName) listBinding.typeLayout.requestFocus();
-                listBinding.typeLayout.setError(Helper.getResString(R.string.ui_g5_type_cant_be_empty));
+                listBinding.typeLayout.setError(Helper.getResString(R.string.logic_click_listener_type_cant_be_empty));
                 listBinding.typeLayout.setErrorEnabled(true);
             }
 
             CharSequence nameError = listBinding.nameLayout.getError();
-            if (nameError == null || Helper.getResString(R.string.ui_g5_name_cant_be_empty).contentEquals(nameError)) {
+            if (nameError == null || Helper.getResString(R.string.logic_click_listener_name_cant_be_empty).contentEquals(nameError)) {
                 if (validName) {
                     listBinding.nameLayout.setError(null);
                     listBinding.nameLayout.setErrorEnabled(false);
                 } else {
                     listBinding.nameLayout.requestFocus();
-                    listBinding.nameLayout.setError(Helper.getResString(R.string.ui_g5_name_cant_be_empty));
+                    listBinding.nameLayout.setError(Helper.getResString(R.string.logic_click_listener_name_cant_be_empty));
                     listBinding.nameLayout.setErrorEnabled(true);
                 }
             }
@@ -285,7 +285,7 @@ public class LogicClickListener implements View.OnClickListener {
                 new Pair<>(ExtraMenuBean.LIST_TYPE_NUMBER, "List Integer (%d)"),
                 new Pair<>(ExtraMenuBean.LIST_TYPE_STRING, "List String (%d)"),
                 new Pair<>(ExtraMenuBean.LIST_TYPE_MAP, "List Map (%d)"),
-                new Pair<>(4, Helper.getResString(R.string.ui_g5_list_custom_count))
+                new Pair<>(4, Helper.getResString(R.string.logic_click_listener_list_custom_count))
         );
 
         for (Pair<Integer, String> listType : listTypes) {

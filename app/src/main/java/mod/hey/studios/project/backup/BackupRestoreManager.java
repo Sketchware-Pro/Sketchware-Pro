@@ -52,9 +52,9 @@ public class BackupRestoreManager {
 
     public static String getRestoreIntegratedLocalLibrariesMessage(boolean restoringMultipleBackups, int currentRestoringIndex, int totalAmountOfBackups, String filename) {
         if (!restoringMultipleBackups) {
-            return Helper.getResString(R.string.ui_g2_restore_local_libs_message);
+            return Helper.getResString(R.string.backup_restore_local_libs_message);
         } else {
-            return Helper.getResString(R.string.ui_g2_restore_local_libs_message_multiple, filename, currentRestoringIndex + 1, totalAmountOfBackups);
+            return Helper.getResString(R.string.backup_restore_local_libs_message_multiple, filename, currentRestoringIndex + 1, totalAmountOfBackups);
         }
     }
 
@@ -99,7 +99,7 @@ public class BackupRestoreManager {
 
         CheckBox includeLocalLibraries = new CheckBox(act);
         includeLocalLibraries.setTag(localLibrariesTag);
-        includeLocalLibraries.setText(R.string.ui_g2_include_used_local_libraries);
+        includeLocalLibraries.setText(R.string.backup_include_used_local_libraries);
         includeLocalLibraries.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -108,7 +108,7 @@ public class BackupRestoreManager {
 
         CheckBox includeUsedCustomBlocks = new CheckBox(act);
         includeUsedCustomBlocks.setTag(customBlocksTag);
-        includeUsedCustomBlocks.setText(R.string.ui_g2_include_used_custom_blocks);
+        includeUsedCustomBlocks.setText(R.string.backup_include_used_custom_blocks);
         includeUsedCustomBlocks.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -135,7 +135,7 @@ public class BackupRestoreManager {
         FilePickerOptions options = new FilePickerOptions();
         options.setMultipleSelection(true);
         options.setExtensions(new String[]{BackupFactory.EXTENSION});
-        options.setTitle(Helper.getResString(R.string.ui_g2_select_backups_to_restore, BackupFactory.EXTENSION));
+        options.setTitle(Helper.getResString(R.string.backup_select_backups_to_restore, BackupFactory.EXTENSION));
 
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
@@ -159,7 +159,7 @@ public class BackupRestoreManager {
                                         .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, currentIndex, files.size(),
                                                 FileUtil.getFileNameNoExtension(backupFilePath)))
                                         .setPositiveButton(R.string.common_word_copy, (dialog, which) -> doRestore(backupFilePath, true))
-                                        .setNegativeButton(R.string.ui_g2_dont_copy, (dialog, which) -> doRestore(backupFilePath, false))
+                                        .setNegativeButton(R.string.backup_dont_copy, (dialog, which) -> doRestore(backupFilePath, false))
                                         .setNeutralButton(R.string.common_word_cancel, null)
                                         .show();
                             } else {
@@ -198,7 +198,7 @@ public class BackupRestoreManager {
         @Override
         protected void onPreExecute() {
             ProgressMsgBoxBinding loadingDialogBinding = ProgressMsgBoxBinding.inflate(LayoutInflater.from(activityWeakReference.get()));
-            loadingDialogBinding.tvProgress.setText(R.string.ui_g2_creating_backup);
+            loadingDialogBinding.tvProgress.setText(R.string.backup_creating_backup);
             dlg = new MaterialAlertDialogBuilder(activityWeakReference.get())
                     .setTitle(R.string.common_word_please_wait)
                     .setCancelable(false)
@@ -223,9 +223,9 @@ public class BackupRestoreManager {
             dlg.dismiss();
 
             if (bm.getOutFile() != null) {
-                SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_backup_created_to, bm.getOutFile().getAbsolutePath()));
+                SketchwareUtil.toast(Helper.getResString(R.string.backup_created_to, bm.getOutFile().getAbsolutePath()));
             } else {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_error_with_message, bm.error), Toast.LENGTH_LONG);
+                SketchwareUtil.toastError(Helper.getResString(R.string.backup_error_with_message, bm.error), Toast.LENGTH_LONG);
             }
         }
     }
@@ -250,7 +250,7 @@ public class BackupRestoreManager {
         @Override
         protected void onPreExecute() {
             ProgressMsgBoxBinding loadingDialogBinding = ProgressMsgBoxBinding.inflate(LayoutInflater.from(activityWeakReference.get()));
-            loadingDialogBinding.tvProgress.setText(R.string.ui_g2_restoring);
+            loadingDialogBinding.tvProgress.setText(R.string.backup_restoring);
             dlg = new MaterialAlertDialogBuilder(activityWeakReference.get())
                     .setTitle(R.string.common_word_please_wait)
                     .setCancelable(false)
@@ -279,12 +279,12 @@ public class BackupRestoreManager {
             dlg.dismiss();
 
             if (!bm.isRestoreSuccess() || error) {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_restore_failed, bm.error), Toast.LENGTH_LONG);
+                SketchwareUtil.toastError(Helper.getResString(R.string.backup_restore_failed, bm.error), Toast.LENGTH_LONG);
             } else if (projectsFragment != null) {
                 projectsFragment.refreshProjectsList();
-                SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_restored_successfully));
+                SketchwareUtil.toast(Helper.getResString(R.string.common_word_restored_successfully));
             } else {
-                SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_restored_successfully_refresh), Toast.LENGTH_LONG);
+                SketchwareUtil.toast(Helper.getResString(R.string.backup_restored_successfully_refresh), Toast.LENGTH_LONG);
             }
         }
     }

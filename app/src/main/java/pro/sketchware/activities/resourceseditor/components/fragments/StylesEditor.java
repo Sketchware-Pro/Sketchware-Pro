@@ -136,12 +136,12 @@ public class StylesEditor extends Fragment {
             String header = Objects.requireNonNull(binding.styleHeaderInput.getText()).toString();
 
             if (styleName.isEmpty()) {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g5_style_name_empty));
+                SketchwareUtil.toastError(Helper.getResString(R.string.styles_editor_style_name_empty));
                 return;
             }
 
             if (stylesEditorManager.isStyleExist(stylesList, styleName)) {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g5_already_exists_quoted, styleName));
+                SketchwareUtil.toastError(Helper.getResString(R.string.common_already_exists_quoted, styleName));
                 return;
             }
 
@@ -178,7 +178,7 @@ public class StylesEditor extends Fragment {
             String header = Objects.requireNonNull(binding.styleHeaderInput.getText()).toString();
 
             if (styleName.isEmpty()) {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g5_style_name_empty));
+                SketchwareUtil.toastError(Helper.getResString(R.string.styles_editor_style_name_empty));
                 return;
             }
 
@@ -194,7 +194,7 @@ public class StylesEditor extends Fragment {
         });
         dialog.setNeutralButton(R.string.common_word_delete, (d, which) -> new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.common_word_warning)
-                .setMessage(Helper.getResString(R.string.ui_g5_confirm_delete_named, style.getStyleName()))
+                .setMessage(Helper.getResString(R.string.common_confirm_delete_named, style.getStyleName()))
                 .setPositiveButton(R.string.common_word_yes, (d2, w) -> {
                     stylesList.remove(position);
                     notesMap.remove(position);
@@ -218,7 +218,7 @@ public class StylesEditor extends Fragment {
         dialog.setContentView(binding.getRoot());
         dialog.show();
 
-        binding.title.setText(Helper.getResString(R.string.ui_g5_attributes_title, style.getStyleName()));
+        binding.title.setText(Helper.getResString(R.string.common_attributes_title, style.getStyleName()));
 
         attributesAdapter = new PropertyInputItem.AttributesAdapter();
         attributesAdapter.setOnItemClickListener(
@@ -232,7 +232,7 @@ public class StylesEditor extends Fragment {
                     public void onItemLongClick(LinkedHashMap<String, String> attributes, String attr) {
                         new MaterialAlertDialogBuilder(requireContext())
                                 .setTitle(R.string.common_word_warning)
-                                .setMessage(Helper.getResString(R.string.ui_g5_confirm_delete_named, attr))
+                                .setMessage(Helper.getResString(R.string.common_confirm_delete_named, attr))
                                 .setPositiveButton(R.string.common_word_yes, (d, w) -> {
                                     attributes.remove(attr);
                                     style.setAttributes(attributes);
@@ -269,14 +269,14 @@ public class StylesEditor extends Fragment {
             binding.attrValue.setText(style.getAttribute(attr));
         }
 
-        dialog.setTitle(isEditing ? R.string.ui_g5_edit_attribute : R.string.ui_g5_create_new_attribute);
+        dialog.setTitle(isEditing ? R.string.styles_editor_edit_attribute : R.string.styles_editor_create_new_attribute);
 
         dialog.setPositiveButton(R.string.common_word_save, (d, which) -> {
             String attribute = Objects.requireNonNull(binding.attrName.getText()).toString();
             String value = Objects.requireNonNull(binding.attrValue.getText()).toString();
 
             if (attribute.isEmpty() || value.isEmpty()) {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g5_fill_all_fields));
+                SketchwareUtil.toastError(Helper.getResString(R.string.common_fill_all_fields));
                 return;
             }
 

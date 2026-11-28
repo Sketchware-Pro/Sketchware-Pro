@@ -815,7 +815,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private void b(boolean z, boolean isCustomWidget) {
         if (isCustomWidget) {
             deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_edit));
-            deleteText.setText(R.string.ui_g1_drag_here_to_see_actions);
+            deleteText.setText(R.string.view_editor_drag_here_to_see_actions);
         } else if (z) {
             deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_delete));
             deleteText.setText(R.string.msg_drag_here_to_delete);
@@ -1082,10 +1082,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
         if (isCustomWidget) {
             deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_edit));
-            deleteText.setText(D ? R.string.ui_g1_release_to_see_actions : R.string.ui_g1_drag_here_to_see_actions);
+            deleteText.setText(D ? R.string.view_editor_release_to_see_actions : R.string.view_editor_drag_here_to_see_actions);
         } else {
             deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_delete));
-            deleteText.setText(D ? R.string.ui_g1_release_to_delete : R.string.msg_drag_here_to_delete);
+            deleteText.setText(D ? R.string.view_editor_release_to_delete : R.string.msg_drag_here_to_delete);
         }
     }
 

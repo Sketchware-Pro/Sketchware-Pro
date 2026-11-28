@@ -32,7 +32,7 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
         setContentView(binding.getRoot());
         var toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.ui_g5_layout_preview);
+        getSupportActionBar().setTitle(R.string.common_word_layout_preview);
         getSupportActionBar().setSubtitle(getIntent().getStringExtra("title"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -62,7 +62,7 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
                 SketchwareUtil.toastError(e.toString());
             }
         } else {
-            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g5_content_is_null));
+            SketchwareUtil.toastError(Helper.getResString(R.string.layout_preview_content_is_null));
         }
     }
 

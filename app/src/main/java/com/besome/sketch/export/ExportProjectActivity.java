@@ -281,7 +281,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
     private void showAabSigningDialog() {
         GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
-                R.drawable.ic_mtrl_key, Helper.getResString(R.string.ui_g1_sign_outputted_aab), Helper.getResString(R.string.ui_g1_sign_aab_notice));
+                R.drawable.ic_mtrl_key, Helper.getResString(R.string.export_project_sign_outputted_aab), Helper.getResString(R.string.export_project_sign_aab_notice));
         credentialsDialog.setListener(credentials -> {
             BuildingAsyncTask task = new BuildingAsyncTask(this, yq.ExportType.AAB);
             task.enableAppBundleBuild();
@@ -354,8 +354,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private void showApkSigningDialog() {
         GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
                 R.drawable.ic_mtrl_key,
-                Helper.getResString(R.string.ui_g1_sign_an_apk),
-                Helper.getResString(R.string.ui_g1_sign_apk_notice));
+                Helper.getResString(R.string.export_project_sign_an_apk),
+                Helper.getResString(R.string.export_project_sign_apk_notice));
         credentialsDialog.setListener(credentials -> {
             sign_apk_button.setVisibility(View.GONE);
             sign_apk_output_stage.setVisibility(View.GONE);
@@ -466,7 +466,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             String sc_id = activity.get().sc_id;
 
             try {
-                publishProgress(Helper.getResString(R.string.ui_g1_progress_deleting_temp_files));
+                publishProgress(Helper.getResString(R.string.design_progress_deleting_temp_files));
                 FileUtil.deleteFile(project_metadata.projectMyscPath);
 
                 publishProgress(Helper.getResString(R.string.design_run_title_ready_to_build));
@@ -536,7 +536,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 }
 
                 /* Check AAPT/AAPT2 */
-                publishProgress(Helper.getResString(R.string.ui_g1_progress_extracting_aapt));
+                publishProgress(Helper.getResString(R.string.export_project_progress_extracting_aapt));
                 builder.maybeExtractAapt2();
                 if (canceled) {
                     cancel(true);
@@ -544,7 +544,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 }
 
                 /* Check built-in libraries */
-                publishProgress(Helper.getResString(R.string.ui_g1_progress_extracting_builtin_libs));
+                publishProgress(Helper.getResString(R.string.design_progress_extracting_builtin_libs));
                 BuiltInLibraries.extractCompileAssets(this);
                 if (canceled) {
                     cancel(true);
@@ -553,7 +553,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 builder.buildBuiltInLibraryInformation();
 
-                publishProgress(Helper.getResString(R.string.ui_g1_progress_aapt2_running));
+                publishProgress(Helper.getResString(R.string.design_progress_aapt2_running));
                 builder.compileResources();
                 if (canceled) {
                     cancel(true);
@@ -566,7 +566,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     return;
                 }
 
-                publishProgress(Helper.getResString(R.string.ui_g1_progress_java_compiling));
+                publishProgress(Helper.getResString(R.string.design_progress_java_compiling));
                 builder.compileJavaCode();
                 if (canceled) {
                     cancel(true);
@@ -598,7 +598,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 }
 
                 /* Merge DEX file(s) with libraries' dexes */
-                publishProgress(Helper.getResString(R.string.ui_g1_progress_merging_lib_dex));
+                publishProgress(Helper.getResString(R.string.export_project_progress_merging_lib_dex));
                 builder.getDexFilesReady();
                 if (canceled) {
                     cancel(true);
@@ -607,13 +607,13 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 if (buildingAppBundle) {
                     AppBundleCompiler compiler = new AppBundleCompiler(builder);
-                    publishProgress(Helper.getResString(R.string.ui_g1_progress_creating_app_module));
+                    publishProgress(Helper.getResString(R.string.export_project_progress_creating_app_module));
                     compiler.createModuleMainArchive();
-                    publishProgress(Helper.getResString(R.string.ui_g1_progress_building_app_bundle));
+                    publishProgress(Helper.getResString(R.string.export_project_progress_building_app_bundle));
                     compiler.buildBundle();
 
                     /* Sign the generated .aab file */
-                    publishProgress(Helper.getResString(R.string.ui_g1_progress_signing_app_bundle));
+                    publishProgress(Helper.getResString(R.string.export_project_progress_signing_app_bundle));
 
                     String createdBundlePath = AppBundleCompiler.getDefaultAppBundleOutputFile(project_metadata).getAbsolutePath();
                     String signedAppBundleDirectoryPath = FileUtil.getExternalStorageDir()
@@ -643,21 +643,21 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         FileUtil.copyFile(createdBundlePath, getCorrectResultFilename(outputPath));
                     }
                 } else {
-                    publishProgress(Helper.getResString(R.string.ui_g1_progress_building_apk));
+                    publishProgress(Helper.getResString(R.string.design_progress_building_apk));
                     builder.buildApk();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
-                    publishProgress(Helper.getResString(R.string.ui_g1_progress_aligning_apk));
+                    publishProgress(Helper.getResString(R.string.export_project_progress_aligning_apk));
                     builder.runZipalign(builder.yq.unsignedUnalignedApkPath, builder.yq.unsignedAlignedApkPath);
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
-                    publishProgress(Helper.getResString(R.string.ui_g1_progress_signing_apk));
+                    publishProgress(Helper.getResString(R.string.design_progress_signing_apk));
                     String outputLocation = getCorrectResultFilename(builder.yq.releaseApkPath);
                     if (signWithTestkey) {
                         TestkeySignBridge.signWithTestkey(builder.yq.unsignedAlignedApkPath, outputLocation);
@@ -681,7 +681,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 if (throwable instanceof LoadKeystoreException &&
                         "Incorrect password, or integrity check failed.".equals(throwable.getMessage())) {
                     activity.get().runOnUiThread(() -> SketchwareUtil.showAnErrorOccurredDialog(activity.get(),
-                            Helper.getResString(R.string.ui_g1_keystore_wrong_password_or_corrupt)));
+                            Helper.getResString(R.string.export_project_keystore_wrong_password_or_corrupt)));
                 } else {
                     Log.e("AppExporter", throwable.getMessage(), throwable);
                     activity.get().runOnUiThread(() -> SketchwareUtil.showAnErrorOccurredDialog(activity.get(),
@@ -697,7 +697,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             if (!activity.get().progressDialog.isCancelable()) {
                 activity.get().progressDialog.setCancelable(true);
                 activity.get().a((DialogInterface.OnCancelListener) this);
-                publishProgress(Helper.getResString(R.string.ui_g1_progress_canceling_process));
+                publishProgress(Helper.getResString(R.string.export_project_progress_canceling_process));
                 canceled = true;
             }
         }
@@ -753,7 +753,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity.get());
                 dialog.setIcon(R.drawable.open_box_48);
                 dialog.setTitle(R.string.title_finished_exporting_aab);
-                dialog.setMessage(Helper.getResString(R.string.ui_g1_signed_aab_location, aabFilename));
+                dialog.setMessage(Helper.getResString(R.string.export_project_signed_aab_location, aabFilename));
                 dialog.setPositiveButton(R.string.common_word_ok, null);
                 dialog.show();
             }

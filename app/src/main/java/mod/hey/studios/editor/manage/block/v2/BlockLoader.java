@@ -71,7 +71,7 @@ public class BlockLoader {
                 }
 
             } catch (Exception e) {
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_failed_to_get_custom_blocks, sc_id, e.getMessage()));
+                SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_failed_to_get_custom_blocks, sc_id, e.getMessage()));
             }
         }
 
@@ -119,7 +119,7 @@ public class BlockLoader {
                 info.setName((String) name);
             } else {
                 info.setName("");
-                SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_invalid_custom_block_name, i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_invalid_custom_block_name, i + 1));
                 continue;
             }
 
@@ -156,7 +156,7 @@ public class BlockLoader {
                         int harmonizedColor = primaryColor != 0 ? MaterialColors.harmonize(parsedColor, primaryColor) : parsedColor;
                         info.setColor(harmonizedColor);
                     } catch (IllegalArgumentException e) {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_invalid_custom_block_color, i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_invalid_custom_block_color, i + 1));
                         continue;
                     }
                 }
@@ -173,15 +173,15 @@ public class BlockLoader {
                                 try {
                                     info.setPaletteColor(paletteColor);
                                 } catch (IllegalArgumentException e) {
-                                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_invalid_custom_block_palette_color, mapPaletteNumber));
+                                    SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_invalid_custom_block_palette_color, mapPaletteNumber));
                                 }
                             }
                         } catch (NumberFormatException e) {
-                            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_invalid_custom_block_palette_number, i + 1));
+                            SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_invalid_custom_block_palette_number, i + 1));
                             continue;
                         }
                     } else {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_invalid_custom_block_palette_type, i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_invalid_custom_block_palette_type, i + 1));
                         continue;
                     }
                 }

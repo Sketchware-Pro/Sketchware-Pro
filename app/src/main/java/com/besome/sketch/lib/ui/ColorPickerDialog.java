@@ -281,7 +281,7 @@ public class ColorPickerDialog extends PopupWindow {
                     return;
                 }
                 if (sc_id != null && finalJ == 2 && !material3LibraryManager.isMaterial3Enabled()) {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g1_enable_material3_first));
+                    SketchwareUtil.toastError(Helper.getResString(R.string.color_picker_enable_material3_first));
                     return;
                 }
                 if (sc_id != null && finalJ == 1) {
@@ -458,7 +458,7 @@ public class ColorPickerDialog extends PopupWindow {
         if (sc_id != null)
             colorList.add(new ColorBean("#FFF6F6F6", "colors.xml", "#212121", R.drawable.checked_grey_32));
         if (hasMaterialColors)
-            colorList.add(new ColorBean("#FFF6F6F6", Helper.getResString(R.string.ui_g1_material3_colors), "#212121", R.drawable.checked_grey_32));
+            colorList.add(new ColorBean("#FFF6F6F6", Helper.getResString(R.string.color_picker_material3_colors), "#212121", R.drawable.checked_grey_32));
         colorList.add(sq.p[0]);
         colorList.add(sq.q[0]);
         colorList.add(sq.r[0]);
@@ -682,7 +682,7 @@ public class ColorPickerDialog extends PopupWindow {
         }
 
         public String attrTitle() {
-            return Helper.getResString(R.string.ui_g1_attr_colors_title, title);
+            return Helper.getResString(R.string.color_picker_attr_colors_title, title);
         }
     }
 

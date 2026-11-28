@@ -122,7 +122,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
                 intent.putExtra("google_map", googleMapLibraryBean);
                 setResult(RESULT_OK, intent);
                 if (Helper.getText(editApiKey).isEmpty() && libSwitch.isChecked()) {
-                    bB.a(getApplicationContext(), Helper.getResString(R.string.ui_g1_api_key_cant_be_empty), Toast.LENGTH_SHORT).show();
+                    bB.a(getApplicationContext(), Helper.getResString(R.string.manage_google_map_api_key_cant_be_empty), Toast.LENGTH_SHORT).show();
                 } else {
                     finish();
                 }

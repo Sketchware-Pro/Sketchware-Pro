@@ -195,8 +195,8 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
-                .setTitle(isFolder ? R.string.ui_g2_create_new_folder : R.string.ui_g2_create_new_file)
-                .setMessage(isFolder ? R.string.ui_g2_enter_new_folder_name : R.string.ui_g2_enter_new_file_name)
+                .setTitle(isFolder ? R.string.manage_nativelibs_create_new_folder : R.string.manage_resource_create_new_file)
+                .setMessage(isFolder ? R.string.manage_resource_enter_new_folder_name : R.string.manage_resource_enter_new_file_name)
                 .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(R.string.common_word_create, null)
                 .create();
@@ -210,7 +210,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             Button positiveButton = ((androidx.appcompat.app.AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
                 if (Helper.getText(inputText).isEmpty()) {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_invalid_name));
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_assets_invalid_name));
                     return;
                 }
 
@@ -223,7 +223,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                 }
 
                 if (FileUtil.isExistFile(path)) {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_file_exists_already));
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_resource_file_exists_already));
                     return;
                 }
                 if (isFolder) {
@@ -232,7 +232,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                     FileUtil.writeFile(path, "<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                 }
                 handleAdapter(temp);
-                SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_created_file_successfully));
+                SketchwareUtil.toast(Helper.getResString(R.string.manage_resource_created_file_successfully));
                 dialog.dismiss();
             });
 
@@ -254,13 +254,13 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         FilePickerOptions options = new FilePickerOptions();
         options.setSelectionMode(SelectionMode.BOTH);
         options.setMultipleSelection(true);
-        options.setTitle(Helper.getResString(R.string.ui_g2_select_resource_files));
+        options.setTitle(Helper.getResString(R.string.manage_resource_select_resource_files));
 
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
             public void onFilesSelected(@NotNull List<? extends File> files) {
                 if (files.isEmpty()) {
-                    SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_no_files_selected));
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_resource_no_files_selected));
                     return;
                 }
                 ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -269,7 +269,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                         try {
                             FileUtil.copyDirectory(file, new File(temp + File.separator + file.getName()));
                         } catch (IOException e) {
-                            runOnUiThread(() -> SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_import_resource_failed, e.getMessage())));
+                            runOnUiThread(() -> SketchwareUtil.toastError(Helper.getResString(R.string.manage_resource_import_resource_failed, e.getMessage())));
                         }
                     }
                     runOnUiThread(() -> {
@@ -298,7 +298,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                         if (FileUtil.renameFile(path, path.substring(0, path.lastIndexOf("/")) + "/" + Helper.getText(inputText))) {
                             SketchwareUtil.toast(Helper.getResString(R.string.common_word_renamed_successfully));
                         } else {
-                            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_renaming_failed));
+                            SketchwareUtil.toastError(Helper.getResString(R.string.manage_nativelibs_renaming_failed));
                         }
                         handleAdapter(temp);
                         handleFab();
@@ -322,8 +322,8 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
 
     private void showDeleteDialog(int position) {
         new MaterialAlertDialogBuilder(this)
-                .setTitle(Helper.getResString(R.string.ui_g2_delete_item_title, Uri.fromFile(new File(adapter.getItem(position))).getLastPathSegment()))
-                .setMessage((Helper.getResString(FileUtil.isDirectory(adapter.getItem(position)) ? R.string.ui_g2_delete_folder_question : R.string.ui_g2_delete_file_question) + " " + Helper.getResString(R.string.ui_g2_action_cannot_be_undone)))
+                .setTitle(Helper.getResString(R.string.common_delete_item_title, Uri.fromFile(new File(adapter.getItem(position))).getLastPathSegment()))
+                .setMessage((Helper.getResString(FileUtil.isDirectory(adapter.getItem(position)) ? R.string.common_delete_folder_question : R.string.common_delete_file_question) + " " + Helper.getResString(R.string.common_action_cannot_be_undone)))
                 .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
                     FileUtil.deleteFile(frc.listFileResource.get(position));
                     handleAdapter(temp);
@@ -346,7 +346,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             }
             startActivity(intent);
         } else {
-            SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_only_xml_editable));
+            SketchwareUtil.toast(Helper.getResString(R.string.manage_resource_only_xml_editable));
         }
     }
 
@@ -359,7 +359,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             intent.putExtra("xml", "");
             startActivity(intent);
         } else {
-            SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_only_xml_editable));
+            SketchwareUtil.toast(Helper.getResString(R.string.manage_resource_only_xml_editable));
         }
     }
 
@@ -418,7 +418,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                             intent.setDataAndType(Uri.fromFile(new File(frc.listFileResource.get(position))), "text/plain");
                             startActivity(intent);
                         } else {
-                            SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_only_xml_editable));
+                            SketchwareUtil.toast(Helper.getResString(R.string.manage_resource_only_xml_editable));
                         }
                     } else if (title.equals(getString(R.string.common_word_edit))) {
                         goEdit2(position);

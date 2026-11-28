@@ -120,7 +120,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
         if (isInMainDirectory()) {
             binding.showOptionsButton.setText(R.string.common_word_new_folder);
         } else {
-            binding.showOptionsButton.setText(R.string.ui_g2_import_library);
+            binding.showOptionsButton.setText(R.string.common_word_import_library);
         }
     }
 
@@ -172,8 +172,8 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
-                .setTitle(R.string.ui_g2_create_new_folder)
-                .setMessage(R.string.ui_g2_enter_name_of_new_folder)
+                .setTitle(R.string.manage_nativelibs_create_new_folder)
+                .setMessage(R.string.manage_nativelibs_enter_name_of_new_folder)
                 .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(R.string.common_word_create, null)
                 .create();
@@ -203,7 +203,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
                 String name = Helper.getText(inputText);
 
                 if (name.isEmpty()) {
-                    textInputLayout.setError(Helper.getResString(R.string.ui_g2_invalid_folder_name));
+                    textInputLayout.setError(Helper.getResString(R.string.manage_nativelibs_invalid_folder_name));
                     return;
                 }
                 textInputLayout.setError(null);
@@ -211,14 +211,14 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
                 String path = fpu.getPathNativelibs(numProj) + "/" + name;
 
                 if (FileUtil.isExistFile(path)) {
-                    textInputLayout.setError(Helper.getResString(R.string.ui_g2_folder_already_exists));
+                    textInputLayout.setError(Helper.getResString(R.string.manage_java_folder_already_exists));
                     return;
                 }
                 textInputLayout.setError(null);
 
                 FileUtil.makeDir(path);
                 handleAdapter(nativeLibrariesPath);
-                SketchwareUtil.toast(Helper.getResString(R.string.ui_g2_created_folder_successfully));
+                SketchwareUtil.toast(Helper.getResString(R.string.manage_nativelibs_created_folder_successfully));
 
                 dialog.dismiss();
             });
@@ -236,7 +236,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
 
     private void setupDialog() {
         FilePickerOptions options = new FilePickerOptions();
-        options.setTitle(Helper.getResString(R.string.ui_g2_import_native_libraries));
+        options.setTitle(Helper.getResString(R.string.manage_nativelibs_import_native_libraries));
         options.setMultipleSelection(true);
         options.setExtensions(new String[]{"so"});
         FilePickerCallback callback = new FilePickerCallback() {
@@ -248,7 +248,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
                         try {
                             FileUtil.copyDirectory(file, new File(nativeLibrariesPath + File.separator + Uri.fromFile(file).getLastPathSegment()));
                         } catch (IOException e) {
-                            runOnUiThread(() -> SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_import_library_failed, e.getMessage())));
+                            runOnUiThread(() -> SketchwareUtil.toastError(Helper.getResString(R.string.manage_nativelibs_import_library_failed, e.getMessage())));
                         }
                     }
                     runOnUiThread(() -> {
@@ -277,7 +277,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
                         if (FileUtil.renameFile(path, path.substring(0, path.lastIndexOf(File.separator)) + File.separator + newName)) {
                             SketchwareUtil.toast(Helper.getResString(R.string.common_word_renamed_successfully));
                         } else {
-                            SketchwareUtil.toastError(Helper.getResString(R.string.ui_g2_renaming_failed));
+                            SketchwareUtil.toastError(Helper.getResString(R.string.manage_nativelibs_renaming_failed));
                         }
                         handleAdapter(nativeLibrariesPath);
                         handleFab();

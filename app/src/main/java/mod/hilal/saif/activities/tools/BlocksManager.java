@@ -312,7 +312,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         }
 
         binding.paletteRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
-        binding.recycleSub.setText(getString(R.string.ui_g3_blocks_count, (long) getN(-1)));
+        binding.recycleSub.setText(getString(R.string.blocks_manager_blocks_count, (long) getN(-1)));
         refreshCount();
     }
 
@@ -332,7 +332,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         if (pallet_listmap.isEmpty()) {
             binding.paletteCount.setText(R.string.common_word_no_palettes);
         } else {
-            binding.paletteCount.setText(getString(R.string.ui_g3_palettes_count, pallet_listmap.size()));
+            binding.paletteCount.setText(getString(R.string.blocks_manager_palettes_count, pallet_listmap.size()));
         }
     }
 
@@ -347,8 +347,8 @@ public class BlocksManager extends BaseAppCompatActivity {
         view.setOnLongClickListener(v -> {
             new MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.common_word_recycle_bin)
-                    .setMessage(R.string.ui_g3_empty_recycle_bin_message)
-                    .setPositiveButton(R.string.ui_g3_empty, (dialog, which) -> emptyRecyclebin())
+                    .setMessage(R.string.blocks_manager_empty_recycle_bin_message)
+                    .setPositiveButton(R.string.blocks_manager_empty, (dialog, which) -> emptyRecyclebin())
                     .setNegativeButton(R.string.common_word_cancel, null)
                     .show();
             return true;
@@ -434,7 +434,7 @@ public class BlocksManager extends BaseAppCompatActivity {
     private void showPaletteDialog(boolean isEditing, Integer oldPosition, String oldName, String oldColor, Integer insertAtPosition) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.icon_style_white_96);
-        dialog.setTitle(!isEditing ? R.string.ui_g3_create_new_palette : R.string.ui_g3_edit_palette);
+        dialog.setTitle(!isEditing ? R.string.blocks_manager_create_new_palette : R.string.blocks_manager_edit_palette);
 
         dialogBinding = DialogPaletteBinding.inflate(getLayoutInflater());
 
@@ -466,14 +466,14 @@ public class BlocksManager extends BaseAppCompatActivity {
             String colorInput = Objects.requireNonNull(dialogBinding.colorEditText.getText()).toString();
 
             if (nameInput.isEmpty()) {
-                SketchwareUtil.toast(getString(R.string.ui_g3_name_cannot_be_empty), Toast.LENGTH_SHORT);
+                SketchwareUtil.toast(getString(R.string.blocks_manager_name_cannot_be_empty), Toast.LENGTH_SHORT);
                 return;
             }
             // add hash for the color 
             colorInput = "#" + colorInput;
 
             if (!PropertiesUtil.isHexColor(colorInput)) {
-                SketchwareUtil.toast(getString(R.string.ui_g3_enter_valid_hex_color), Toast.LENGTH_SHORT);
+                SketchwareUtil.toast(getString(R.string.blocks_manager_enter_valid_hex_color), Toast.LENGTH_SHORT);
                 return;
             }
 
@@ -567,15 +567,15 @@ public class BlocksManager extends BaseAppCompatActivity {
 
             holder.itemView.setVisibility(View.VISIBLE);
             holder.itemBinding.title.setText(Objects.requireNonNull(pallet_listmap.get(position).get("name")).toString());
-            holder.itemBinding.sub.setText(getString(R.string.ui_g3_blocks_count, (long) getN(position + 9)));
+            holder.itemBinding.sub.setText(getString(R.string.blocks_manager_blocks_count, (long) getN(position + 9)));
             holder.itemBinding.color.setBackgroundColor(backgroundColor);
             holder.itemBinding.dragHandler.setVisibility(View.VISIBLE);
-            binding.recycleSub.setText(getString(R.string.ui_g3_blocks_count, (long) getN(-1)));
+            binding.recycleSub.setText(getString(R.string.blocks_manager_blocks_count, (long) getN(-1)));
 
             holder.itemBinding.backgroundCard.setOnLongClickListener(v -> {
                 final String edit = getString(R.string.common_word_edit);
                 final String delete = getString(R.string.common_word_delete);
-                final String insert = getString(R.string.ui_g3_insert);
+                final String insert = getString(R.string.blocks_manager_insert);
 
                 PopupMenu popup = new PopupMenu(BlocksManager.this, holder.itemBinding.color);
                 Menu menu = popup.getMenu();
@@ -592,8 +592,8 @@ public class BlocksManager extends BaseAppCompatActivity {
                     } else if (itemTitle.equals(delete)) {
                             new MaterialAlertDialogBuilder(BlocksManager.this)
                                     .setTitle(Objects.requireNonNull(pallet_listmap.get(pos).get("name")).toString())
-                                    .setMessage(R.string.ui_g3_remove_palette_blocks_message)
-                                    .setPositiveButton(R.string.ui_g3_remove_permanently, (dialog, which) -> {
+                                    .setMessage(R.string.blocks_manager_remove_palette_blocks_message)
+                                    .setPositiveButton(R.string.blocks_manager_remove_permanently, (dialog, which) -> {
                                         palettes.remove(pos);
                                         notifyItemRemoved(pos);
                                         FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
