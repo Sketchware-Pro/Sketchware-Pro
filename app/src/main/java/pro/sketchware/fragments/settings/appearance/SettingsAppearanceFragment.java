@@ -118,11 +118,12 @@ public class SettingsAppearanceFragment extends qA {
     }
 
     private void setupLanguageSetting() {
-        String[] languages = {LanguageManager.LANGUAGE_SYSTEM, LanguageManager.LANGUAGE_ENGLISH, LanguageManager.LANGUAGE_TURKISH};
+        String[] languages = {LanguageManager.LANGUAGE_SYSTEM, LanguageManager.LANGUAGE_ENGLISH, LanguageManager.LANGUAGE_TURKISH,LanguageManager.LANGUAGE_PERSIAN};
         String[] labels = {
                 getString(R.string.settings_language_system),
                 getString(R.string.settings_language_english),
-                getString(R.string.settings_language_turkish)
+                getString(R.string.settings_language_turkish),
+                getString(R.string.settings_language_persian)
         };
         int current = Math.max(0, Arrays.asList(languages).indexOf(LanguageManager.getLanguage(requireContext())));
         binding.languageCurrent.setText(labels[current]);
