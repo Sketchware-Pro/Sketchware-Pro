@@ -18,6 +18,7 @@ public class LanguageManager {
     public static final String LANGUAGE_SYSTEM = "";
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_TURKISH = "tr";
+    public static final String LANGUAGE_PERSIAN = "fa";
     private static final String LANGUAGE_PREF = "languagedata";
     private static final String LANGUAGE_KEY = "language";
 
