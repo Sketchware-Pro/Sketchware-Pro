@@ -182,6 +182,22 @@
 
 
 
+# ----------------------------------------------------------------------------
+# 13. TextMate engine (tm4e) & regex runtime
+# The sora-editor language-textmate AAR vendors the tm4e engine under
+# org.eclipse.tm4e.** (it is not a separate artifact). It is driven at runtime
+# via Gson deserialization (languages.json, theme files) and joni/jcodings
+# (Onigmo port) regex matching. R8 member shrinking breaks that in release
+# builds, TextMateLanguage.create() fails, and the editor silently falls back
+# to EmptyLanguage: the theme background still applies, but no token colors.
+# ----------------------------------------------------------------------------
+-keep class org.eclipse.tm4e.** { *; }
+-keep class org.joni.** { *; }
+-keep class org.jcodings.** { *; }
+-dontwarn org.eclipse.tm4e.**
+-dontwarn org.joni.**
+-dontwarn org.jcodings.**
+
 -keep class org.xml.sax.** { *; }
 -keepclassmembers class org.xml.sax.** { *; }
 -keep class org.xml.sax.helpers.** { *; }
