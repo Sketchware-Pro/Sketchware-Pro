@@ -5,4 +5,5 @@
     <!-- Language names are shown in their own language. -->
     <string name="settings_language_english" translatable="false">English</string>
     <string name="settings_language_turkish" translatable="false">Türkçe</string>
+    <string name="settings_language_persian" translatable="false">فارسی</string>
 </resources>
