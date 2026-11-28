@@ -49,6 +49,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
 
     private final Gson gson = new Gson();
     private BuildSettings buildSettings;
+    private int minSdk = 21;
 
     private boolean notAssociatedWithProject;
     private String dependencyName;
@@ -90,6 +91,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
         notAssociatedWithProject = getArguments().getBoolean("notAssociatedWithProject", false);
         buildSettings = (BuildSettings) getArguments().getSerializable("buildSettings");
         localLibFile = getArguments().getString("localLibFile");
+        minSdk = getArguments().getInt("minSdk", 21);
 
         binding.btnDownload.setOnClickListener(v -> initDownloadFlow());
 
@@ -133,14 +135,14 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
     private void initDownloadFlow() {
         dependencyName = Helper.getText(binding.dependencyInput);
         if (dependencyName.isEmpty()) {
-            binding.dependencyInputLayout.setError("Please enter a dependency");
+            binding.dependencyInputLayout.setError(Helper.getResString(R.string.library_downloader_enter_dependency));
             binding.dependencyInputLayout.setErrorEnabled(true);
             return;
         }
 
         var parts = dependencyName.split(":");
         if (parts.length != 3) {
-            binding.dependencyInputLayout.setError("Invalid dependency format");
+            binding.dependencyInputLayout.setError(Helper.getResString(R.string.library_downloader_invalid_dependency_format));
             binding.dependencyInputLayout.setErrorEnabled(true);
             return;
         }
@@ -153,16 +155,16 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
 
         String message;
         if (skipSubdependencies) {
-            message = "Are you sure you want to download " + dependencyName;
+            message = Helper.getResString(R.string.library_downloader_confirm_download_dependency, dependencyName);
         } else {
-            message = "Are you sure you want to download " + dependencyName + " and its sub-dependencies?";
+            message = Helper.getResString(R.string.library_downloader_confirm_download_dependency_with_subs, dependencyName);
         }
 
         new MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Confirm Download")
+                .setTitle(R.string.common_word_confirm_download)
                 .setMessage(message)
-                .setPositiveButton("Download", (dialog, which) -> startDownloadProcess(group, artifact, version))
-                .setNegativeButton("Cancel", null)
+                .setPositiveButton(R.string.common_word_download, (dialog, which) -> startDownloadProcess(group, artifact, version))
+                .setNegativeButton(R.string.common_word_cancel, null)
                 .show();
     }
 
@@ -176,7 +178,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
         setDownloadState(true);
 
         var resolver = new DependencyResolver(group, artifact, version,
-                binding.cbSkipSubdependencies.isChecked(), buildSettings);
+                binding.cbSkipSubdependencies.isChecked(), buildSettings, minSdk);
         var handler = new Handler(Looper.getMainLooper());
 
         downloadExecutor.execute(() -> {
@@ -203,7 +205,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                 public void onArtifactNotFound(@NonNull Artifact dep) {
                     handler.post(() -> {
                         setDownloadState(false);
-                        SketchwareUtil.showAnErrorOccurredDialog(getActivity(), "Dependency '" + dep + "' not found");
+                        SketchwareUtil.showAnErrorOccurredDialog(getActivity(), Helper.getResString(R.string.library_downloader_dependency_not_found, dep));
                     });
                 }
 
@@ -220,7 +222,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                 public void onVersionNotFound(@NonNull Artifact dep) {
                     handler.post(() -> {
                         DependencyDownloadItem item = findOrCreateDependencyItem(dep);
-                        item.setError("Version not available");
+                        item.setError(Helper.getResString(R.string.library_downloader_version_not_available));
                         dependencyAdapter.updateDependency(item);
                     });
                 }
@@ -230,8 +232,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                     handler.post(() -> {
                         setDownloadState(false);
                         SketchwareUtil.showAnErrorOccurredDialog(getActivity(),
-                                "Failed to resolve dependency '" + dependencyName + "': "
-                                        + Log.getStackTraceString(error));
+                                Helper.getResString(R.string.library_downloader_failed_to_resolve_dependency, dependencyName, Log.getStackTraceString(error)));
                     });
                 }
 
@@ -239,7 +240,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                 public void onDependenciesNotFound(@NonNull Artifact dep) {
                     handler.post(() -> {
                         DependencyDownloadItem item = findOrCreateDependencyItem(dep);
-                        item.setError("Dependencies not found");
+                        item.setError(Helper.getResString(R.string.library_downloader_dependencies_not_found));
                         dependencyAdapter.updateDependency(item);
                     });
                 }
@@ -248,7 +249,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                 public void onInvalidScope(@NonNull Artifact dep, @NonNull String scope) {
                     handler.post(() -> {
                         DependencyDownloadItem item = findOrCreateDependencyItem(dep);
-                        item.setError("Invalid scope: " + scope);
+                        item.setError(Helper.getResString(R.string.library_downloader_invalid_scope, scope));
                         dependencyAdapter.updateDependency(item);
                     });
                 }
@@ -257,7 +258,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                 public void invalidPackaging(@NonNull Artifact dep) {
                     handler.post(() -> {
                         DependencyDownloadItem item = findOrCreateDependencyItem(dep);
-                        item.setError("Invalid packaging");
+                        item.setError(Helper.getResString(R.string.library_downloader_invalid_packaging));
                         dependencyAdapter.updateDependency(item);
                     });
                 }
@@ -307,18 +308,18 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                 public void dexingFailed(@NonNull Artifact dependency, @NonNull Exception e) {
                     handler.post(() -> {
                         DependencyDownloadItem item = findOrCreateDependencyItem(dependency);
-                        item.setError("Dexing failed: " + e.getMessage());
+                        item.setError(Helper.getResString(R.string.library_downloader_dexing_failed, e.getMessage()));
                         dependencyAdapter.updateDependency(item);
                         setDownloadState(false);
                         SketchwareUtil.showAnErrorOccurredDialog(getActivity(),
-                                "Dexing dependency '" + dependency + "' failed: " + Log.getStackTraceString(e));
+                                Helper.getResString(R.string.library_downloader_dexing_dependency_failed, dependency, Log.getStackTraceString(e)));
                     });
                 }
 
                 @Override
                 public void onTaskCompleted(@NonNull List<String> dependencies) {
                     handler.post(() -> {
-                        SketchwareUtil.toast("Library downloaded successfully");
+                        SketchwareUtil.toast(Helper.getResString(R.string.library_downloader_library_downloaded));
                         if (!notAssociatedWithProject) {
                             var fileContent = FileUtil.readFile(localLibFile);
                             var enabledLibs = gson.fromJson(fileContent, Helper.TYPE_MAP_LIST);

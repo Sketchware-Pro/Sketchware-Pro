@@ -16,6 +16,7 @@ import mod.hilal.saif.blocks.CommandBlock;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ItemXmlCommandBinding;
 import pro.sketchware.listeners.ItemClickListener;
+import mod.hey.studios.util.Helper;
 
 public class XMLCommandAdapter
         extends ListAdapter<HashMap<String, Object>, XMLCommandAdapter.ViewHolder> {
@@ -73,7 +74,7 @@ public class XMLCommandAdapter
                     CommandBlock.getInputName(
                             item.get("input") != null ? item.get("input").toString() : ""));
             binding.tvName.setSingleLine(true);
-            binding.tvValue.setText("Reference: " + item.get("reference").toString());
+            binding.tvValue.setText(Helper.getResString(R.string.xmlcommand_reference_value, item.get("reference").toString()));
             binding.tvValue.setSingleLine(true);
             binding.imgLeftIcon.setImageResource(R.drawable.ic_mtrl_code);
             binding.getRoot()

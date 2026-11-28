@@ -17,6 +17,7 @@ import java.util.HashMap;
 import dev.aldi.sayuti.block.ExtraBlockFile;
 import mod.agus.jcoderz.editor.manage.block.palette.PaletteSelector;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
+import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 import pro.sketchware.R;
 import pro.sketchware.SketchApplication;
@@ -70,7 +71,7 @@ public class BlockLoader {
                 }
 
             } catch (Exception e) {
-                SketchwareUtil.toastError("Failed to get Custom Blocks for project " + sc_id + ": " + e.getMessage());
+                SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_failed_to_get_custom_blocks, sc_id, e.getMessage()));
             }
         }
 
@@ -118,7 +119,7 @@ public class BlockLoader {
                 info.setName((String) name);
             } else {
                 info.setName("");
-                SketchwareUtil.toastError("Invalid name entry in Custom Block #" + (i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_invalid_custom_block_name, i + 1));
                 continue;
             }
 
@@ -155,7 +156,7 @@ public class BlockLoader {
                         int harmonizedColor = primaryColor != 0 ? MaterialColors.harmonize(parsedColor, primaryColor) : parsedColor;
                         info.setColor(harmonizedColor);
                     } catch (IllegalArgumentException e) {
-                        SketchwareUtil.toastError("Invalid color in Custom Block #" + (i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_invalid_custom_block_color, i + 1));
                         continue;
                     }
                 }
@@ -172,15 +173,15 @@ public class BlockLoader {
                                 try {
                                     info.setPaletteColor(paletteColor);
                                 } catch (IllegalArgumentException e) {
-                                    SketchwareUtil.toastError("Invalid color in Custom Block palette #" + mapPaletteNumber);
+                                    SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_invalid_custom_block_palette_color, mapPaletteNumber));
                                 }
                             }
                         } catch (NumberFormatException e) {
-                            SketchwareUtil.toastError("Invalid palette number in Custom Block #" + (i + 1));
+                            SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_invalid_custom_block_palette_number, i + 1));
                             continue;
                         }
                     } else {
-                        SketchwareUtil.toastError("Invalid palette number value type in Custom Block #" + (i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.block_loader_invalid_custom_block_palette_type, i + 1));
                         continue;
                     }
                 }

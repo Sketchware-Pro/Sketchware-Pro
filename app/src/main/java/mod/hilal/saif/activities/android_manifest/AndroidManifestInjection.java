@@ -101,7 +101,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         basicCategoryView.setTitle(null);
         options.add(basicCategoryView);
 
-        basicCategoryView.addLibraryItem(createOption("Application", "Default properties for the app", R.drawable.ic_mtrl_settings_applications, v -> {
+        basicCategoryView.addLibraryItem(createOption(getString(R.string.common_word_application), getString(R.string.manifest_injection_manifest_application_desc), R.drawable.ic_mtrl_settings_applications, v -> {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
             intent.putExtra("sc_id", sc_id);
@@ -109,7 +109,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
             intent.putExtra("type", "application");
             startActivity(intent);
         }), true);
-        basicCategoryView.addLibraryItem(createOption("Permissions", "Add custom Permissions to the app", R.drawable.ic_mtrl_shield_check, v -> {
+        basicCategoryView.addLibraryItem(createOption(getString(R.string.manifest_injection_manifest_permissions), getString(R.string.manifest_injection_manifest_permissions_desc), R.drawable.ic_mtrl_shield_check, v -> {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
             intent.putExtra("sc_id", sc_id);
@@ -117,8 +117,8 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
             intent.putExtra("type", "permission");
             startActivity(intent);
         }), true);
-        basicCategoryView.addLibraryItem(createOption("Launcher Activity", "Change the default Launcher Activity", R.drawable.ic_mtrl_login, v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id))), true);
-        basicCategoryView.addLibraryItem(createOption("All Activities", "Add attributes for all Activities", R.drawable.ic_mtrl_frame_source, v -> {
+        basicCategoryView.addLibraryItem(createOption(getString(R.string.change_launcher_activity_dialog_title), getString(R.string.manifest_injection_manifest_launcher_activity_desc), R.drawable.ic_mtrl_login, v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id))), true);
+        basicCategoryView.addLibraryItem(createOption(getString(R.string.manifest_injection_manifest_all_activities), getString(R.string.manifest_injection_manifest_all_activities_desc), R.drawable.ic_mtrl_frame_source, v -> {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
             intent.putExtra("sc_id", sc_id);
@@ -126,7 +126,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
             intent.putExtra("type", "all");
             startActivity(intent);
         }), true);
-        basicCategoryView.addLibraryItem(createOption("App Components", "Add extra components", R.drawable.ic_mtrl_component, v -> showAppComponentDialog()), false);
+        basicCategoryView.addLibraryItem(createOption(getString(R.string.manifest_injection_manifest_app_components), getString(R.string.manifest_injection_manifest_app_components_desc), R.drawable.ic_mtrl_component, v -> showAppComponentDialog()), false);
 
         options.forEach(binding.cards::addView);
     }
@@ -147,7 +147,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         intent.putExtra("content", APP_COMPONENTS_PATH);
         intent.putExtra("xml", "");
         intent.putExtra("disableHeader", "");
-        intent.putExtra("title", "App Components");
+        intent.putExtra("title", getString(R.string.manifest_injection_manifest_app_components));
         startActivity(intent);
     }
 
@@ -165,10 +165,10 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (!Helper.getText(activity_name_input).trim().isEmpty()) {
                 AndroidManifestInjector.setLauncherActivity(sc_id, Helper.getText(activity_name_input));
-                SketchwareUtil.toast("Saved");
+                SketchwareUtil.toast(getString(R.string.common_word_saved));
                 v.dismiss();
             } else {
-                activity_name_input.setError("Enter activity name");
+                activity_name_input.setError(getString(R.string.manifest_injection_enter_activity_name));
             }
         });
         dialog.setNegativeButton(R.string.common_word_cancel, null);
@@ -189,10 +189,10 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
             if (!Helper.getText(activity_name_input).trim().isEmpty()) {
                 addNewActivity(Helper.getText(activity_name_input));
-                SketchwareUtil.toast("New Activity added");
+                SketchwareUtil.toast(getString(R.string.manifest_injection_new_activity_added));
                 v.dismiss();
             } else {
-                activity_name_input.setError("Enter activity name");
+                activity_name_input.setError(getString(R.string.manifest_injection_enter_activity_name));
             }
         });
         dialog.setNegativeButton(R.string.common_word_cancel, null);
@@ -291,7 +291,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         FileUtil.writeFile(path, getGson().toJson(data));
         refreshList();
         removeComponents(activity_name);
-        SketchwareUtil.toast("Activity removed");
+        SketchwareUtil.toast(getString(R.string.common_word_activity_removed));
     }
 
     private void removeComponents(String str) {
@@ -321,14 +321,14 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Show Manifest Source").setIcon(getDrawable(R.drawable.ic_mtrl_code)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.manifest_injection_show_manifest_source).setIcon(getDrawable(R.drawable.ic_mtrl_code)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
         String title = menuItem.getTitle().toString();
-        if (title.equals("Show Manifest Source")) {
+        if (title.equals(getString(R.string.manifest_injection_show_manifest_source))) {
             showQuickManifestSourceDialog();
         } else {
             return false;
@@ -345,7 +345,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
                 if (isFinishing()) return;
                 h();
                 var intent = new Intent(this, CodeViewerActivity.class);
-                intent.putExtra("code", !source.isEmpty() ? source : "Failed to generate source.");
+                intent.putExtra("code", !source.isEmpty() ? source : getString(R.string.manifest_injection_failed_to_generate_source));
                 intent.putExtra("sc_id", sc_id);
                 intent.putExtra("scheme", CodeViewerActivity.SCHEME_XML);
                 startActivity(intent);

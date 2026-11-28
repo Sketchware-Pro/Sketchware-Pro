@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import a.a.a.MB;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class VariableModifierValidator extends MB {
     public static final Pattern PATTERN_MODIFIER = Pattern.compile(
@@ -27,7 +29,7 @@ public class VariableModifierValidator extends MB {
         String reconsInput = String.join(" ", words);
 
         if (!input.equals(reconsInput)) {
-            b.setError("Extra spaces between words or at the end are not allowed.");
+            b.setError(Helper.getResString(R.string.variable_modifier_validator_extra_spaces_words));
             d = false;
             return;
         }
@@ -36,18 +38,18 @@ public class VariableModifierValidator extends MB {
 
         for (String word : words) {
             if (!PATTERN_MODIFIER.matcher(word).matches()) {
-                b.setError("Invalid modifier: " + word);
+                b.setError(Helper.getResString(R.string.variable_modifier_validator_invalid_modifier, word));
                 d = false;
                 return;
             }
             if (!usedModifiers.add(word)) {
-                b.setError("Duplicate modifier: " + word);
+                b.setError(Helper.getResString(R.string.variable_modifier_validator_duplicate_modifier, word));
                 d = false;
                 return;
             }
             if (isAccessModifier(word)) {
                 if (hasAccessModifier) {
-                    b.setError("Access modifier can only set one of public / protected / private");
+                    b.setError(Helper.getResString(R.string.variable_modifier_validator_single_access_modifier));
                     d = false;
                     return;
                 }

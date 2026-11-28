@@ -121,7 +121,7 @@ public class PermissionManager {
 
                 permissionCode.append("}, 1000);" + Jx.EOL +
                         "} else {" + Jx.EOL +
-                        "initializeLogic();" + Jx.EOL +
+                        "initializeLogic(_savedInstanceState);" + Jx.EOL +
                         "}" + Jx.EOL);
             }
 
@@ -169,10 +169,10 @@ public class PermissionManager {
 
                 permissionCode.append("}, 1000);" + Jx.EOL +
                         "} else {" + Jx.EOL +
-                        "initializeLogic();" + Jx.EOL +
+                        "initializeLogic(_savedInstanceState);" + Jx.EOL +
                         "}" + Jx.EOL +
                         "} else {" + Jx.EOL +
-                        "initializeLogic();" + Jx.EOL +
+                        "initializeLogic(_savedInstanceState);" + Jx.EOL +
                         "}" + Jx.EOL);
             }
         }
@@ -180,7 +180,7 @@ public class PermissionManager {
         hasPermission = !checkPerm.isEmpty() || !addPerm.isEmpty();
 
         if (permissionCode.toString().trim().isEmpty()) {
-            return "initializeLogic();" + Jx.EOL;
+            return "initializeLogic(_savedInstanceState);" + Jx.EOL;
         } else {
             return Jx.EOL + permissionCode;
         }

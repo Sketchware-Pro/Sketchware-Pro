@@ -323,7 +323,11 @@ public class FileUtil {
 
     public static void moveFile(String sourcePath, String destPath) {
         copyFile(sourcePath, destPath);
-        deleteFile(sourcePath);
+        // Only remove the source if the copy actually succeeded - copyFile
+        // swallows I/O errors, and unconditionally deleting here destroys data.
+        if (isExistFile(destPath)) {
+            deleteFile(sourcePath);
+        }
     }
 
     public static void deleteFile(String path) {
@@ -486,8 +490,15 @@ public class FileUtil {
                     }
                 }
 
-                Uri contentUri = ContentUris
-                        .withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
+                Uri contentUri;
+                try {
+                    contentUri = ContentUris
+                            .withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
+                } catch (NumberFormatException e) {
+                    // Non-numeric download doc ids (modern DownloadManager) can't be
+                    // resolved through the legacy public_downloads table.
+                    return path;
+                }
 
                 path = getDataColumn(context, contentUri, null, null);
             } else if (isMediaDocument(uri)) {
@@ -564,6 +575,8 @@ public class FileUtil {
     }
 
     private static void saveBitmap(Bitmap bitmap, String destPath) {
+        if (bitmap == null) return;
+
         FileUtil.createNewFileIfNotPresent(destPath);
 
         try (FileOutputStream out = new FileOutputStream(destPath)) {
@@ -576,6 +589,11 @@ public class FileUtil {
     public static Bitmap getScaledBitmap(String str, int i) {
         int i2;
         Bitmap decodeFile = BitmapFactory.decodeFile(str);
+        if (decodeFile == null) {
+            // Corrupt or oversized file - callers pass the result straight to
+            // saveBitmap, which would NPE on a null bitmap.
+            return null;
+        }
         int width = decodeFile.getWidth();
         int height = decodeFile.getHeight();
         if (width > height) {
@@ -725,10 +743,13 @@ public class FileUtil {
         if (!isExistFile(fromPath)) return;
 
         Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-        Bitmap createBitmap = Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth() - 1, decodeFile.getHeight() - 1);
+        if (decodeFile == null) return;
+        // Draw the SOURCE bitmap with the color filter applied - drawing the
+        // destination onto itself (the old code) applied the filter to a blank image.
+        Bitmap createBitmap = Bitmap.createBitmap(decodeFile.getWidth(), decodeFile.getHeight(), Bitmap.Config.ARGB_8888);
         Paint paint = new Paint();
         paint.setColorFilter(new LightingColorFilter(color, 1));
-        new Canvas(createBitmap).drawBitmap(createBitmap, 0.0f, 0.0f, paint);
+        new Canvas(createBitmap).drawBitmap(decodeFile, 0.0f, 0.0f, paint);
         saveBitmap(createBitmap, destPath);
     }
 
@@ -797,20 +818,16 @@ public class FileUtil {
     }
 
     public static byte[] readFromInputStream(InputStream stream) {
-        int available;
-
-        try {
-            available = stream.available();
-        } catch (IOException e) {
-            available = 0;
-        }
-
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[available];
+        // Fixed-size buffer: available() can be 0 (network streams, ZipInputStream
+        // entries), and read(byte[0]) returns 0 forever - an infinite loop.
+        byte[] buffer = new byte[32768];
 
         try {
             for (int len = stream.read(buffer); len != -1; len = stream.read(buffer)) {
-                outputStream.write(buffer, 0, len);
+                if (len > 0) {
+                    outputStream.write(buffer, 0, len);
+                }
             }
         } catch (IOException e) {
             return new byte[0];
@@ -846,6 +863,14 @@ public class FileUtil {
         ZipEntry entry = input.getNextEntry();
         while (entry != null) {
             String entryPathExtracted = new File(outPath, entry.getName()).getAbsolutePath();
+
+            // Zip-slip guard: reject entries whose resolved path escapes the
+            // output directory (a crafted "../" entry would write anywhere).
+            if (!entryPathExtracted.startsWith(outDir.getAbsolutePath() + File.separator)) {
+                input.closeEntry();
+                entry = input.getNextEntry();
+                continue;
+            }
 
             if (!entry.isDirectory()) {
                 new File(entryPathExtracted).getParentFile().mkdirs();

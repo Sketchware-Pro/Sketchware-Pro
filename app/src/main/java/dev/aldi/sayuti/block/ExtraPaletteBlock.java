@@ -35,6 +35,7 @@ import pro.sketchware.utility.CustomVariableUtil;
 import pro.sketchware.utility.FileResConfig;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
+import mod.hey.studios.util.Helper;
 
 public class ExtraPaletteBlock {
 
@@ -190,19 +191,19 @@ public class ExtraPaletteBlock {
 
         ArrayList<String> customVariables = jC.a(sc_id).e(javaName, 5);
         for (int i = 0; i < customVariables.size(); i++) {
-            if (i == 0) logicEditor.a("Custom Variable", getTitleBgColor());
+            if (i == 0) logicEditor.a(Helper.getResString(R.string.palette_custom_variable), getTitleBgColor());
 
             String[] split = customVariables.get(i).split(" ");
             if (split.length > 1) {
                 logicEditor.a(split[1], "v", split[0], "getVar").setTag(customVariables.get(i));
             } else {
-                SketchwareUtil.toastError("Found invalid data of Custom Variable #" + (i + 1) + ": \"" + customVariables.get(i) + "\"");
+                SketchwareUtil.toastError(Helper.getResString(R.string.palette_invalid_custom_variable_data, i + 1, customVariables.get(i)));
             }
         }
 
         ArrayList<String> customVariables2 = jC.a(sc_id).e(javaName, 6);
         for (int i = 0; i < customVariables2.size(); i++) {
-            if (i == 0) logicEditor.a("Custom Variable", getTitleBgColor());
+            if (i == 0) logicEditor.a(Helper.getResString(R.string.palette_custom_variable), getTitleBgColor());
 
             String variable = customVariables2.get(i);
             String variableType = CustomVariableUtil.getVariableType(variable);
@@ -240,7 +241,7 @@ public class ExtraPaletteBlock {
             ComponentBean component = components.get(i);
 
             if (i == 0) {
-                logicEditor.a("Components", getTitleBgColor());
+                logicEditor.a(Helper.getResString(R.string.common_word_components), getTitleBgColor());
             }
 
             if (component.type != 27) {
@@ -271,7 +272,7 @@ public class ExtraPaletteBlock {
                         ViewBean customView = customViews.get(i);
 
                         if (i == 0) {
-                            logicEditor.a("Custom Views", getTitleBgColor());
+                            logicEditor.a(Helper.getResString(R.string.palette_custom_views), getTitleBgColor());
                         }
 
                         if (!customView.convert.equals("include")) {
@@ -296,7 +297,7 @@ public class ExtraPaletteBlock {
                 Set<String> toNotAdd = new Ox(new jq(), projectFile).readAttributesToReplace(view);
 
                 if (i == 0) {
-                    logicEditor.a("Views", getTitleBgColor());
+                    logicEditor.a(Helper.getResString(R.string.common_word_views), getTitleBgColor());
                 }
 
                 if (!view.convert.equals("include")) {
@@ -317,7 +318,7 @@ public class ExtraPaletteBlock {
                     ViewBean drawerView = drawerViews.get(i);
 
                     if (i == 0) {
-                        logicEditor.a("Drawer Views", getTitleBgColor());
+                        logicEditor.a(Helper.getResString(R.string.palette_drawer_views), getTitleBgColor());
                     }
 
                     if (!drawerView.convert.equals("include")) {
@@ -400,7 +401,7 @@ public class ExtraPaletteBlock {
             if (paletteId == 3) {
                 logicEditor.a(" ", "addSourceDirectly");
             } else {
-                logicEditor.a("Enter the path without import & semicolon", getTitleBgColor());
+                logicEditor.a(Helper.getResString(R.string.palette_import_hint), getTitleBgColor());
                 logicEditor.a(" ", "customImport");
                 logicEditor.a(" ", "customImport2");
             }
@@ -414,10 +415,10 @@ public class ExtraPaletteBlock {
                 StringsEditorManager stringsEditorManager = new StringsEditorManager();
                 stringsEditorManager.convertXmlStringsToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
-                logicEditor.b("Open Resources editor", "openResourcesEditor");
+                logicEditor.b(Helper.getResString(R.string.palette_open_resources_editor), "openResourcesEditor");
 
                 logicEditor.a("s", "getResString");
-                logicEditor.a("Saved Res Strings :", getTitleBgColor());
+                logicEditor.a(Helper.getResString(R.string.palette_saved_res_strings), getTitleBgColor());
                 if (!stringsEditorManager.isXmlStringsExist(StringsListMap, "app_name")) {
                     logicEditor.a("app_name", "s", "getResStr").setTag("S98ZCSapp_name");
                 }
@@ -428,16 +429,16 @@ public class ExtraPaletteBlock {
                 }
                 return;
             case 0:
-                logicEditor.b("Add variable", "variableAdd");
-                logicEditor.b("Add custom variable", "variableAddNew", clickListener);
-                logicEditor.b("Remove variable", "variableRemove", clickListener);
+                logicEditor.b(Helper.getResString(R.string.palette_add_variable), "variableAdd");
+                logicEditor.b(Helper.getResString(R.string.palette_add_custom_variable), "variableAddNew", clickListener);
+                logicEditor.b(Helper.getResString(R.string.palette_remove_variable), "variableRemove", clickListener);
                 variables();
                 return;
 
             case 1:
-                logicEditor.b("Add list", "listAdd");
-                logicEditor.b("Add custom List", "listAddCustom", clickListener);
-                logicEditor.b("Remove list", "listRemove", clickListener);
+                logicEditor.b(Helper.getResString(R.string.palette_add_list), "listAdd");
+                logicEditor.b(Helper.getResString(R.string.palette_add_custom_list), "listAddCustom", clickListener);
+                logicEditor.b(Helper.getResString(R.string.palette_remove_list), "listRemove", clickListener);
                 list();
                 return;
 
@@ -478,7 +479,7 @@ public class ExtraPaletteBlock {
 
             case 5:
                 extraBlocks.fileBlocks();
-                logicEditor.a("FileUtil Blocks", getTitleBgColor());
+                logicEditor.a(Helper.getResString(R.string.palette_fileutil_blocks), getTitleBgColor());
                 if (!frc.getAssetsFile().isEmpty()) {
                     logicEditor.a(" ", "getAssetFile");
                     logicEditor.a("s", "copyAssetFile");
@@ -584,7 +585,7 @@ public class ExtraPaletteBlock {
                 if (textViewUsed || compoundButtonUsed || autoCompleteTextViewUsed
                         || multiAutoCompleteTextViewUsed || imageViewUsed || ratingBarUsed
                         || seekBarUsed || progressBarUsed || videoViewUsed || webViewUsed) {
-                    logicEditor.a("Widgets", getTitleBgColor());
+                    logicEditor.a(Helper.getResString(R.string.view_panel_title_widgets), getTitleBgColor());
 
                     if (textViewUsed) {
                         logicEditor.a(" ", "setText");
@@ -689,7 +690,7 @@ public class ExtraPaletteBlock {
                 boolean viewPagerUsed = isWidgetUsed("ViewPager");
 
                 if (spinnerUsed || listViewUsed || recyclerViewUsed || gridViewUsed || viewPagerUsed) {
-                    logicEditor.a("List", getTitleBgColor());
+                    logicEditor.a(Helper.getResString(R.string.palette_list), getTitleBgColor());
 
                     if (spinnerUsed) {
                         logicEditor.a(" ", "spnSetData");
@@ -757,7 +758,7 @@ public class ExtraPaletteBlock {
                 boolean textInputLayoutUsed = isWidgetUsed("TextInputLayout") || extraBlocks.isCustomVarUsed("TextInputLayout");
 
                 if (drawerUsed || fabUsed || bottomNavigationViewUsed || swipeRefreshLayoutUsed || cardViewUsed || tabLayoutUsed || textInputLayoutUsed) {
-                    logicEditor.a("AndroidX components", getTitleBgColor());
+                    logicEditor.a(Helper.getResString(R.string.palette_androidx_components), getTitleBgColor());
 
                     if (drawerUsed) {
                         logicEditor.a("b", "isDrawerOpen");
@@ -821,7 +822,7 @@ public class ExtraPaletteBlock {
                 boolean otpViewUsed = isWidgetUsed("OTPView");
 
                 if (waveSideBarUsed || badgeViewUsed || bubbleLayoutUsed || patternLockViewUsed || codeViewUsed || lottieAnimationViewUsed) {
-                    logicEditor.a("Library", getTitleBgColor());
+                    logicEditor.a(Helper.getResString(R.string.palette_library), getTitleBgColor());
 
                     if (otpViewUsed) {
                         logicEditor.a(" ", "otpViewSetFieldCount");
@@ -898,6 +899,7 @@ public class ExtraPaletteBlock {
                     if (youtubePlayerViewUsed) {
                         logicEditor.a(" ", "YTPVLifecycle");
                         logicEditor.a("c", "YTPVSetListener");
+                        logicEditor.a("c", "YTPVSetListenerAutoplay");
                     }
 
                     if (adMobUsed) {
@@ -924,7 +926,7 @@ public class ExtraPaletteBlock {
                 boolean calendarViewUsed = isWidgetUsed("CalendarView");
 
                 if (timePickerUsed || calendarViewUsed) {
-                    logicEditor.a("Date & Time", getTitleBgColor());
+                    logicEditor.a(Helper.getResString(R.string.palette_date_time), getTitleBgColor());
 
                     if (timePickerUsed) {
                         logicEditor.a(" ", "timepickerSetHour");
@@ -941,7 +943,7 @@ public class ExtraPaletteBlock {
                     }
                 }
             }
-            logicEditor.a("Function", getTitleBgColor());
+            logicEditor.a(Helper.getResString(R.string.palette_function), getTitleBgColor());
             logicEditor.a(" ", "performClick");
             logicEditor.a("c", "viewOnClick");
             logicEditor.a("c", "viewOnLongClick");
@@ -950,7 +952,7 @@ public class ExtraPaletteBlock {
             return;
 
             case 7:
-                logicEditor.b("Add component", "componentAdd");
+                logicEditor.b(Helper.getResString(R.string.component_title_add_component), "componentAdd");
                 logicEditor.a(" ", "changeStatebarColour");
                 logicEditor.a(" ", "LightStatusBar");
                 logicEditor.a(" ", "showKeyboard");
@@ -1185,21 +1187,21 @@ public class ExtraPaletteBlock {
                 return;
 
             case 8:
-                logicEditor.b("Create", "blockAdd");
-                logicEditor.b("Import From Collection", "blockImport");
+                logicEditor.b(Helper.getResString(R.string.common_word_create), "blockAdd");
+                logicEditor.b(Helper.getResString(R.string.logic_button_import_more_block), "blockImport");
                 if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_BUILT_IN_BLOCKS)) {
                     logicEditor.a(" ", "customToast");
                     logicEditor.a(" ", "customToastWithIcon");
                 }
                 moreBlocks();
                 if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_BUILT_IN_BLOCKS)) {
-                    logicEditor.a("Command Blocks", getTitleBgColor());
+                    logicEditor.a(Helper.getResString(R.string.palette_command_blocks), getTitleBgColor());
                     logicEditor.a("c", "CommandBlockJava");
                     logicEditor.addDeprecatedBlock("Deprecated: Use XML Command Manager", "c", "CommandBlockXML");
-                    logicEditor.a("Permission Command Blocks", getTitleBgColor());
+                    logicEditor.a(Helper.getResString(R.string.palette_permission_command_blocks), getTitleBgColor());
                     logicEditor.a(" ", "addPermission");
                     logicEditor.a(" ", "removePermission");
-                    logicEditor.a("Other Command Blocks", getTitleBgColor());
+                    logicEditor.a(Helper.getResString(R.string.palette_other_command_blocks), getTitleBgColor());
                     logicEditor.a(" ", "addCustomVariable");
                     logicEditor.a(" ", "addInitializer");
                     return;
@@ -1227,8 +1229,7 @@ public class ExtraPaletteBlock {
                                     if (spec instanceof String specString) {
                                         logicEditor.a(specString, getTitleBgColor());
                                     } else {
-                                        SketchwareUtil.toastError("Custom Block #" + paletteBlocks +
-                                                " of current palette has an invalid spec data type");
+                                        SketchwareUtil.toastError(Helper.getResString(R.string.palette_custom_block_invalid_spec, paletteBlocks));
                                     }
                                 } else {
                                     Object name = map.get("name");
@@ -1242,18 +1243,15 @@ public class ExtraPaletteBlock {
                                             logicEditor.a("", typeString, "", nameString);
                                         }
                                     } else {
-                                        SketchwareUtil.toastError("Custom Block #" + paletteBlocks +
-                                                " of current palette has an invalid name data type");
+                                        SketchwareUtil.toastError(Helper.getResString(R.string.palette_custom_block_invalid_name, paletteBlocks));
                                     }
                                 }
                             } else {
-                                SketchwareUtil.toastError("Custom Block #" + paletteBlocks +
-                                        " of current palette has an invalid block type data type");
+                                SketchwareUtil.toastError(Helper.getResString(R.string.palette_custom_block_invalid_type, paletteBlocks));
                             }
                         }
                     } else {
-                        SketchwareUtil.toastError("Custom Block #" + paletteBlocks +
-                                " of current palette has an invalid block palette data type");
+                        SketchwareUtil.toastError(Helper.getResString(R.string.palette_custom_block_invalid_palette, paletteBlocks));
                     }
                 }
                 break;

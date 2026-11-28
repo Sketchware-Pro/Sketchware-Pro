@@ -31,7 +31,9 @@ class DependencyResolver(
     private val artifactId: String,
     private val version: String,
     private val skipDependencies: Boolean,
-    private val buildSettings: BuildSettings
+    private val buildSettings: BuildSettings,
+    /** The consuming project's minSdkVersion; drives D8 desugaring of library bytecode. */
+    private val minApiLevel: Int = 21
 ) {
     companion object {
         private const val GOOGLE_MAVEN_URL = "https://dl.google.com/dl/android/maven2"
@@ -149,7 +151,7 @@ class DependencyResolver(
         }
 
         dependency.downloadTo(
-            File(downloadPath + "/${dependency.artifactId}-v${dependency.version}/classes.${dependency.extension}")
+            File(downloadPath + "/${dirName(dependency)}/classes.${dependency.extension}")
                 .apply {
                     parentFile?.mkdirs()
                 }
@@ -160,29 +162,29 @@ class DependencyResolver(
             unzip(
                 Paths.get(
                     downloadPath,
-                    "${dependency.artifactId}-v${dependency.version}",
+                    "${dirName(dependency)}",
                     "classes.aar"
                 )
             )
             Files.delete(
                 Paths.get(
                     downloadPath,
-                    "${dependency.artifactId}-v${dependency.version}",
+                    "${dirName(dependency)}",
                     "classes.aar"
                 )
             )
             val packageName = findPackageName(
-                Paths.get(downloadPath, "${dependency.artifactId}-v${dependency.version}")
+                Paths.get(downloadPath, "${dirName(dependency)}")
                     .toAbsolutePath().toString(),
                 dependency.groupId
             )
-            Paths.get(downloadPath, "${dependency.artifactId}-v${dependency.version}", "config")
+            Paths.get(downloadPath, "${dirName(dependency)}", "config")
                 .writeText(packageName)
         }
 
         val jar = Paths.get(
             downloadPath,
-            "${dependency.artifactId}-v${dependency.version}",
+            "${dirName(dependency)}",
             "classes.jar"
         )
 
@@ -196,7 +198,7 @@ class DependencyResolver(
 
         if (skipDependencies) {
             callback.onSkippingResolution(dependency)
-            callback.onTaskCompleted(listOf("${dependency.artifactId}-v${dependency.version}"))
+            callback.onTaskCompleted(listOf("${dirName(dependency)}"))
             return@runBlocking
         }
         dependency.resolveDependencyTree()
@@ -215,7 +217,7 @@ class DependencyResolver(
 
             val path = Paths.get(
                 downloadPath,
-                "${dep.artifactId}-v${dep.version}",
+                "${dirName(dep)}",
                 "classes.${dep.extension}"
             )
 
@@ -233,7 +235,7 @@ class DependencyResolver(
             }
 
             val jar = if (dep.extension == "jar") path else Paths.get(
-                downloadPath, "${dep.artifactId}-v${dep.version}", "classes.jar"
+                downloadPath, "${dirName(dep)}", "classes.jar"
             )
             if (Files.notExists(jar)) {
                 callback.onDependenciesNotFound(dep)
@@ -244,7 +246,7 @@ class DependencyResolver(
         }
 
         dependency.getAllDependencies().forEach { dep ->
-            val jar = Paths.get(downloadPath, "${dep.artifactId}-v${dep.version}", "classes.jar")
+            val jar = Paths.get(downloadPath, "${dirName(dep)}", "classes.jar")
 
             callback.dexing(dep)
             try {
@@ -259,7 +261,9 @@ class DependencyResolver(
         }
 
         callback.onTaskCompleted(
-            dependency.getAllDependencies().map { "${it.artifactId}-v${it.version}" })
+            // dirName, not the bare name: downloads/compilation write into -api<min> dirs
+            // since the DEX cache split; the completion callback must name the same dirs.
+            dependency.getAllDependencies().map { dirName(it) })
     }
 
     private fun findPackageName(path: String, defaultValue: String): String {
@@ -274,6 +278,15 @@ class DependencyResolver(
 
         return defaultValue
     }
+
+    /**
+     * Per-project directory name for a resolved artifact. The compiled classes.dex is
+     * desugared for [minApiLevel] (the consuming project's minSdk), so the level must be
+     * part of the cache path: otherwise a project with a higher minSdk overwrites the
+     * DEX a lower-minSdk project still builds against (stale output = runtime crashes
+     * on old devices).
+     */
+    private fun dirName(dep: Artifact) = "${dep.artifactId}-v${dep.version}-api$minApiLevel"
 
     private fun unzip(path: Path) {
         val zipFile = ZipFile(path.toFile())
@@ -298,6 +311,7 @@ class DependencyResolver(
         Files.createDirectories(jarFile.parent)
         D8.run(
             D8Command.builder().setIntermediate(true).setMode(CompilationMode.RELEASE)
+                .setMinApiLevel(minApiLevel)
                 .addProgramFiles(jarFile).addLibraryFiles(libraryJars).addClasspathFiles(jars)
                 .setOutput(jarFile.parent, OutputMode.DexIndexed).build()
         )

@@ -74,6 +74,9 @@ public class ComponentExtraCode {
                 b.append("\r\n");
                 b.append(str);
             }
+            // Don't fall through to the "///others" block below - it appends
+            // the same code a second time, duplicating every listener method.
+            return;
         }
 
 

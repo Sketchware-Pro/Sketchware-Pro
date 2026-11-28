@@ -211,10 +211,17 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     private void loadEventBlocks() {
         crashlytics.log("Loading event blocks");
+        // Worker thread only decrypts/fetches the block list; ALL BlockPane and Rs view
+        // construction and mutation (including the o.g next-id counter) runs as a single
+        // UI-thread batch. Previously Rs views were constructed and o.g updated on the
+        // worker thread, racing UI-thread copy/paste actions that also allocate ids.
         ArrayList<BlockBean> eventBlocks = jC.a(scId).a(M.getJavaName(), id + "_" + eventName);
-        if (eventBlocks != null) {
+        if (eventBlocks == null) {
+            return;
+        }
+        runOnUiThread(() -> {
             if (eventBlocks.isEmpty()) {
-                runOnUiThread(() -> e(X));
+                e(X);
             }
 
             boolean needToFindRoot = true;
@@ -226,12 +233,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 Rs b2 = b(next);
                 blockIdsAndBlocks.put((Integer) b2.getTag(), b2);
                 o.g = Math.max(o.g, (Integer) b2.getTag() + 1);
-                runOnUiThread(() -> {
-                    o.a(b2, 0, 0);
-                    b2.setOnTouchListener(this);
-                });
+                o.a(b2, 0, 0);
+                b2.setOnTouchListener(this);
                 if (needToFindRoot) {
-                    runOnUiThread(() -> o.getRoot().b(b2));
+                    o.getRoot().b(b2);
                     needToFindRoot = false;
                 }
             }
@@ -270,11 +275,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     }
                 }
             }
-            runOnUiThread(() -> {
-                o.getRoot().k();
-                o.b();
-            });
-        }
+            o.getRoot().k();
+            o.b();
+        });
     }
 
     private void redo() {
@@ -419,9 +422,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     if (!o.b(Helper.getText(radioButton))) {
                         if (!jC.a(scId).b(M.getJavaName(), Helper.getText(radioButton), id + "_" + eventName)) {
                             l(Helper.getText(radioButton));
+                            // list was not used anywhere and has been removed successfully
+                            v.dismiss();
+                            return;
                         }
+                        Toast.makeText(this, R.string.logic_editor_message_currently_used_list, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, R.string.logic_editor_message_currently_used_list, Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(this, R.string.logic_editor_message_currently_used_list, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 i++;
@@ -452,9 +460,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     if (!o.c(Helper.getText(radioButton))) {
                         if (!jC.a(scId).c(M.getJavaName(), Helper.getText(radioButton), id + "_" + eventName)) {
                             m(Helper.getText(radioButton));
+                            // variable was not used anywhere and has been removed successfully
+                            v.dismiss();
+                            return;
                         }
+                        Toast.makeText(this, R.string.logic_editor_message_currently_used_variable, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, R.string.logic_editor_message_currently_used_variable, Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(this, R.string.logic_editor_message_currently_used_variable, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 i++;
@@ -637,7 +650,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 String parameter = block.parameters.get(j);
                 if (parameter != null && !parameter.isEmpty() && parameter.charAt(0) == '@') {
                     int parameterId = Integer.parseInt(parameter.substring(1));
-                    int parameterAsBlockId = hashMap.containsKey(parameterId) ? hashMap.get(parameterId) : 0;
+                    int parameterAsBlockId = hashMap.containsKey(parameterId) ? hashMap.get(parameterId) : -1;
                     if (parameterAsBlockId >= 0) {
                         block.parameters.set(j, '@' + String.valueOf(parameterAsBlockId));
                     } else {
@@ -838,6 +851,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
             for (int i = 0; i < blockBean.parameters.size(); i++) {
                 String parameter = blockBean.parameters.get(i);
+                // V is rebuilt from the CURRENT spec; a spec edited after saving (fewer
+                // tokens than persisted parameters) must not index out of bounds.
+                if (i >= block.V.size()) break;
                 if (parameter != null) {
                     if (!parameter.isEmpty() && parameter.charAt(0) == '@') {
                         int blockId = Integer.parseInt(parameter.substring(1));
@@ -852,11 +868,19 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                             String javaName = M.getJavaName();
                             String xmlName = M.getXmlName();
                             if (eventName.equals("onBindCustomView")) {
+                                String drawerPrefix = "_drawer_";
+                                String lookupId = id.startsWith(drawerPrefix) ? id.substring(drawerPrefix.length()) : id;
                                 var eC = jC.a(scId);
-                                var view = eC.c(xmlName, id);
+                                // Drawer-view events carry a "_drawer_" prefix on the id (namespaced
+                                // logic keys); strip it for view lookups. Resolve in the layout the
+                                // event belongs to first, so a same-named main-layout widget can't
+                                // shadow the drawer widget.
+                                var view = id.startsWith(drawerPrefix)
+                                        ? eC.c("_drawer_" + xmlName, lookupId)
+                                        : eC.c(xmlName, lookupId);
                                 if (view == null) {
-                                    // Event is of a Drawer View
-                                    view = eC.c("_drawer_" + xmlName, id);
+                                    // Fall back to the other layout for legacy raw-id drawer events.
+                                    view = eC.c(id.startsWith(drawerPrefix) ? xmlName : "_drawer_" + xmlName, lookupId);
                                 }
                                 String customView = view.customView;
                                 if (customView != null) {
@@ -1394,11 +1418,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     typeface = Typeface.createFromFile(fontFile);
                 } catch (Exception e) {
                     typeface = Typeface.DEFAULT;
-                    preview.setText("Couldn't load font");
+                    preview.setText(R.string.logic_editor_couldnt_load_font);
                 }
             } else {
                 typeface = Typeface.DEFAULT;
-                preview.setText("Couldn't load font");
+                preview.setText(R.string.logic_editor_couldnt_load_font);
             }
         }
 
@@ -1555,9 +1579,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         if (eventName.equals("onBindCustomView")) {
             var eC = jC.a(scId);
-            var view = eC.c(xmlName, id);
+            // Drawer-view events carry a "_drawer_" prefix on the id (namespaced logic keys).
+            // Resolve in the layout the event belongs to first; legacy raw-id events fall back.
+            boolean isDrawerEvent = id.startsWith("_drawer_");
+            String lookupId = isDrawerEvent ? id.substring("_drawer_".length()) : id;
+            var view = isDrawerEvent
+                    ? eC.c("_drawer_" + xmlName, lookupId)
+                    : eC.c(xmlName, lookupId);
             if (view == null) {
-                view = eC.c("_drawer_" + xmlName, id);
+                view = eC.c(isDrawerEvent ? xmlName : "_drawer_" + xmlName, lookupId);
             }
             if (view != null && view.customView != null) {
                 xmlName = ProjectFileBean.getXmlName(view.customView);
@@ -1904,6 +1934,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         if (!super.isStoragePermissionGranted()) {
             finish();
+            return;
         }
         Parcelable parcelable;
         if (savedInstanceState == null) {

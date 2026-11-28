@@ -25,6 +25,7 @@ import java.util.Locale;
 import a.a.a.GB;
 import pro.sketchware.R;
 import pro.sketchware.utility.SketchwareUtil;
+import mod.hey.studios.util.Helper;
 
 public class CollectErrorActivity extends BaseAppCompatActivity {
     @SuppressLint("SetTextI18n")
@@ -38,12 +39,10 @@ public class CollectErrorActivity extends BaseAppCompatActivity {
 
             var dialog = new MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.common_error_an_error_occurred)
-                    .setMessage("An error occurred while running Sketchware Pro. " +
-                            "Do you want to report this error log so that we can fix it? " +
-                            "No personal information will be included.")
-                    .setPositiveButton("Copy", null)
-                    .setNegativeButton("Cancel", (dialogInterface, which) -> finish())
-                    .setNeutralButton("Show error", null) // null to set proper onClick listeners later without dismissing the AlertDialog
+                    .setMessage(R.string.collect_error_message)
+                    .setPositiveButton(R.string.common_word_copy, null)
+                    .setNegativeButton(R.string.common_word_cancel, (dialogInterface, which) -> finish())
+                    .setNeutralButton(R.string.collect_error_show_error, null) // null to set proper onClick listeners later without dismissing the AlertDialog
                     .setCancelable(false)
                     .show();
 
@@ -81,7 +80,7 @@ public class CollectErrorActivity extends BaseAppCompatActivity {
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("error", deviceInfo + "\n\n```\n" + error + "\n```");
                 clipboard.setPrimaryClip(clip);
-                runOnUiThread(() -> SketchwareUtil.toast("Copied", Toast.LENGTH_LONG));
+                runOnUiThread(() -> SketchwareUtil.toast(Helper.getResString(R.string.collect_error_copied), Toast.LENGTH_LONG));
             });
         }
     }

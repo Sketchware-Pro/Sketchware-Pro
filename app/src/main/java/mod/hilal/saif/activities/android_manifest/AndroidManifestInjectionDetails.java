@@ -100,21 +100,21 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
 
     private void setToolbar() {
         String str = switch (type) {
-            case "all" -> "Attributes for all activities";
-            case "application" -> "Application Attributes";
-            case "permission" -> "Application Permissions";
+            case "all" -> getString(R.string.manifest_injection_attributes_for_all_activities);
+            case "application" -> getString(R.string.manifest_injection_application_attributes);
+            case "permission" -> getString(R.string.manifest_injection_application_permissions);
             default -> activityName;
         };
         binding.toolbar.setTitle(str);
 
         binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
-        if (!str.equals("Attributes for all activities") && !str.equals("Application Attributes") && !str.equals("Application Permissions")) {
+        if (!str.equals(getString(R.string.manifest_injection_attributes_for_all_activities)) && !str.equals(getString(R.string.manifest_injection_application_attributes)) && !str.equals(getString(R.string.manifest_injection_application_permissions))) {
             binding.toolbar.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.asd_components) {
                     Intent intent = new Intent(this, SrcCodeEditor.class);
                     intent.putExtra(SrcCodeEditor.FLAG_FROM_ANDROID_MANIFEST, true);
-                    intent.putExtra("title", activityName + " Components");
+                    intent.putExtra("title", getString(R.string.manifest_injection_activity_components_title, activityName));
                     intent.putExtra("sc_id", src_id);
                     intent.putExtra("activity_name", activityName);
                     startActivity(intent);
@@ -146,13 +146,13 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
 
     private void showAddDial() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(type.equals("permission") ? "Add new permission" : "Add new attribute");
+        dialog.setTitle(type.equals("permission") ? R.string.manifest_injection_add_new_permission : R.string.manifest_injection_add_new_attribute);
         CustomDialogAttributeBinding attributeBinding = CustomDialogAttributeBinding.inflate(getLayoutInflater());
         dialog.setView(attributeBinding.getRoot());
         if (type.equals("permission")) {
             attributeBinding.inputRes.setText("android");
             attributeBinding.inputAttr.setText("name");
-            attributeBinding.inputLayoutValue.setHint("permission");
+            attributeBinding.inputLayoutValue.setHint(R.string.common_word_permission);
         }
         dialog.setPositiveButton(R.string.common_word_save, (dialog1, which) -> {
             String fstr = Helper.getText(attributeBinding.inputRes).trim() + ":" + Helper.getText(attributeBinding.inputAttr).trim() + "=\"" + Helper.getText(attributeBinding.inputValue).trim() + "\"";
@@ -239,8 +239,8 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
             attributeView.setOnClickListener(v -> showDial(position));
             attributeView.setOnLongClickListener(v -> {
                 new MaterialAlertDialogBuilder(AndroidManifestInjectionDetails.this)
-                        .setTitle("Delete this attribute?")
-                        .setMessage("This action cannot be undone.")
+                        .setTitle(R.string.manifest_injection_delete_this_attribute)
+                        .setMessage(R.string.manifest_injection_action_cannot_be_undone)
                         .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
                             listMap.remove(position);
                             applyChange();

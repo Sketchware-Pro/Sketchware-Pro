@@ -195,10 +195,10 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
-                .setTitle(isFolder ? "Create a new folder" : "Create a new file")
-                .setMessage("Enter a name for the new " + (isFolder ? "folder" : "file"))
-                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
-                .setPositiveButton("Create", null)
+                .setTitle(isFolder ? R.string.manage_nativelibs_create_new_folder : R.string.manage_resource_create_new_file)
+                .setMessage(isFolder ? R.string.manage_resource_enter_new_folder_name : R.string.manage_resource_enter_new_file_name)
+                .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(R.string.common_word_create, null)
                 .create();
 
         dialogBinding.chipGroupTypes.setVisibility(View.GONE);
@@ -210,7 +210,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             Button positiveButton = ((androidx.appcompat.app.AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
                 if (Helper.getText(inputText).isEmpty()) {
-                    SketchwareUtil.toastError("Invalid name");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_assets_invalid_name));
                     return;
                 }
 
@@ -223,7 +223,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                 }
 
                 if (FileUtil.isExistFile(path)) {
-                    SketchwareUtil.toastError("File exists already");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_resource_file_exists_already));
                     return;
                 }
                 if (isFolder) {
@@ -232,7 +232,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                     FileUtil.writeFile(path, "<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                 }
                 handleAdapter(temp);
-                SketchwareUtil.toast("Created file successfully");
+                SketchwareUtil.toast(Helper.getResString(R.string.manage_resource_created_file_successfully));
                 dialog.dismiss();
             });
 
@@ -254,13 +254,13 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         FilePickerOptions options = new FilePickerOptions();
         options.setSelectionMode(SelectionMode.BOTH);
         options.setMultipleSelection(true);
-        options.setTitle("Select resource files");
+        options.setTitle(Helper.getResString(R.string.manage_resource_select_resource_files));
 
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
             public void onFilesSelected(@NotNull List<? extends File> files) {
                 if (files.isEmpty()) {
-                    SketchwareUtil.toastError("No files selected");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_resource_no_files_selected));
                     return;
                 }
                 ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -269,7 +269,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                         try {
                             FileUtil.copyDirectory(file, new File(temp + File.separator + file.getName()));
                         } catch (IOException e) {
-                            runOnUiThread(() -> SketchwareUtil.toastError("Couldn't import resource! [" + e.getMessage() + "]"));
+                            runOnUiThread(() -> SketchwareUtil.toastError(Helper.getResString(R.string.manage_resource_import_resource_failed, e.getMessage())));
                         }
                     }
                     runOnUiThread(() -> {
@@ -292,13 +292,13 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.assets_manager_rename)
                 .setView(dialogBinding.getRoot())
-                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
-                .setPositiveButton("Rename", (dialogInterface, i) -> {
+                .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(R.string.assets_manager_rename, (dialogInterface, i) -> {
                     if (!Helper.getText(inputText).isEmpty()) {
                         if (FileUtil.renameFile(path, path.substring(0, path.lastIndexOf("/")) + "/" + Helper.getText(inputText))) {
-                            SketchwareUtil.toast("Renamed successfully");
+                            SketchwareUtil.toast(Helper.getResString(R.string.common_word_renamed_successfully));
                         } else {
-                            SketchwareUtil.toastError("Renaming failed");
+                            SketchwareUtil.toastError(Helper.getResString(R.string.manage_nativelibs_renaming_failed));
                         }
                         handleAdapter(temp);
                         handleFab();
@@ -322,13 +322,12 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
 
     private void showDeleteDialog(int position) {
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Delete " + Uri.fromFile(new File(adapter.getItem(position))).getLastPathSegment() + "?")
-                .setMessage("Are you sure you want to delete this " + (FileUtil.isDirectory(adapter.getItem(position)) ? "folder" : "file") + "? "
-                        + "This action cannot be undone.")
+                .setTitle(Helper.getResString(R.string.common_delete_item_title, Uri.fromFile(new File(adapter.getItem(position))).getLastPathSegment()))
+                .setMessage((Helper.getResString(FileUtil.isDirectory(adapter.getItem(position)) ? R.string.common_delete_folder_question : R.string.common_delete_file_question) + " " + Helper.getResString(R.string.common_action_cannot_be_undone)))
                 .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
                     FileUtil.deleteFile(frc.listFileResource.get(position));
                     handleAdapter(temp);
-                    SketchwareUtil.toast("Deleted");
+                    SketchwareUtil.toast(Helper.getResString(R.string.str_deleted));
                 })
                 .setNegativeButton(R.string.common_word_cancel, null)
                 .create()
@@ -347,7 +346,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             }
             startActivity(intent);
         } else {
-            SketchwareUtil.toast("Only XML files can be edited");
+            SketchwareUtil.toast(Helper.getResString(R.string.manage_resource_only_xml_editable));
         }
     }
 
@@ -360,7 +359,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             intent.putExtra("xml", "");
             startActivity(intent);
         } else {
-            SketchwareUtil.toast("Only XML files can be edited");
+            SketchwareUtil.toast(Helper.getResString(R.string.manage_resource_only_xml_editable));
         }
     }
 
@@ -412,22 +411,23 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                 popupMenu.inflate(R.menu.popup_menu_double);
                 popupMenu.getMenu().getItem(0).setVisible(false);
                 popupMenu.setOnMenuItemClickListener(item -> {
-                    switch (item.getTitle().toString()) {
-                        case "Edit with..." -> {
-                            if (frc.listFileResource.get(position).endsWith("xml")) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setDataAndType(Uri.fromFile(new File(frc.listFileResource.get(position))), "text/plain");
-                                startActivity(intent);
-                            } else {
-                                SketchwareUtil.toast("Only XML files can be edited");
-                            }
+                    String title = item.getTitle().toString();
+                    if (title.equals(getString(R.string.msg_edit_with))) {
+                        if (frc.listFileResource.get(position).endsWith("xml")) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.fromFile(new File(frc.listFileResource.get(position))), "text/plain");
+                            startActivity(intent);
+                        } else {
+                            SketchwareUtil.toast(Helper.getResString(R.string.manage_resource_only_xml_editable));
                         }
-                        case "Edit" -> goEdit2(position);
-                        case "Delete" -> showDeleteDialog(position);
-                        case "Rename" -> showRenameDialog(frc.listFileResource.get(position));
-                        default -> {
-                            return false;
-                        }
+                    } else if (title.equals(getString(R.string.common_word_edit))) {
+                        goEdit2(position);
+                    } else if (title.equals(getString(R.string.common_word_delete))) {
+                        showDeleteDialog(position);
+                    } else if (title.equals(getString(R.string.assets_manager_rename))) {
+                        showRenameDialog(frc.listFileResource.get(position));
+                    } else {
+                        return false;
                     }
                     return true;
                 });
@@ -437,7 +437,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             binding.getRoot().setOnLongClickListener(v -> {
                 if (FileUtil.isDirectory(frc.listFileResource.get(position))) {
                     PopupMenu popupMenu = new PopupMenu(ManageResourceActivity.this, binding.more);
-                    popupMenu.getMenu().add("Delete");
+                    popupMenu.getMenu().add(R.string.common_word_delete);
                     popupMenu.setOnMenuItemClickListener(item -> {
                         showDeleteDialog(position);
                         return true;

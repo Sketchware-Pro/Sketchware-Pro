@@ -26,6 +26,8 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import mod.hey.studios.build.BuildSettings;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 import pro.sketchware.databinding.ProjectConfigLayoutBinding;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -59,7 +61,7 @@ public class BuildSettingsBottomSheet extends BottomSheetDialogFragment {
 
     public static void handleJavaVersionChange(String choice) {
         if (!choice.equals(SETTING_JAVA_VERSION_1_7)) {
-            SketchwareUtil.toast("Don't forget to enable D8 to be able to compile Java 8+ code");
+            SketchwareUtil.toast(Helper.getResString(R.string.build_enable_d8_hint));
         }
     }
 
@@ -157,7 +159,7 @@ public class BuildSettingsBottomSheet extends BottomSheetDialogFragment {
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 if (key.equals(SETTING_NO_HTTP_LEGACY)) {
-                    SketchwareUtil.toast("Note that this option may cause issues if RequestNetwork component is used");
+                    SketchwareUtil.toast(Helper.getResString(R.string.build_no_http_legacy_warning));
                 }
             }
         });

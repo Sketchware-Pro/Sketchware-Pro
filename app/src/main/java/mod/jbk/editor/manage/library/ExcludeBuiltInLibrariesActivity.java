@@ -138,15 +138,15 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
     }
 
     public static String getItemTitle() {
-        return "Exclude built-in libraries";
+        return Helper.getResString(R.string.msg_exclude_built_in_libraries);
     }
 
     public static String getDefaultItemDescription() {
-        return "Use custom Library versions";
+        return Helper.getResString(R.string.exclude_built_in_libraries_use_custom_library_versions);
     }
 
     public static String getSelectedLibrariesItemDescription() {
-        return "%1$d/%2$d built-in libraries excluded";
+        return Helper.getResString(R.string.exclude_built_in_libraries_builtin_libraries_excluded);
     }
 
     @Override
@@ -169,7 +169,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Exclude built-in libraries");
+        getSupportActionBar().setTitle(R.string.msg_exclude_built_in_libraries);
         binding.toolbar.setNavigationOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -215,7 +215,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Reset")
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.common_word_reset)
                 .setIcon(AppCompatResources.getDrawable(this, R.drawable.history_24px))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
@@ -224,7 +224,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
         String title = menuItem.getTitle().toString();
-        if (title.equals("Reset")) {
+        if (title.equals(getString(R.string.common_word_reset))) {
             showResetDialog();
         } else {
             return false;
@@ -233,7 +233,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
     }
 
     private void onSaveError(Throwable throwable) {
-        String errorMessage = "Couldn't save configuration: " + throwable.getMessage();
+        String errorMessage = Helper.getResString(R.string.exclude_built_in_libraries_couldnt_save_configuration, throwable.getMessage());
         LogUtil.e(TAG, errorMessage, throwable);
         onSaveError(errorMessage);
     }
@@ -359,7 +359,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
 
         @Override
         public void a(String s) {
-            activity.get().onSaveError("Couldn't save configuration: " + s);
+            activity.get().onSaveError(Helper.getResString(R.string.exclude_built_in_libraries_couldnt_save_configuration, s));
         }
 
         @Override

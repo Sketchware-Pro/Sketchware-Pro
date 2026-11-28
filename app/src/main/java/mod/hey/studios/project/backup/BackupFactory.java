@@ -46,6 +46,7 @@ import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.project.custom_blocks.CustomBlocksManager;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -145,6 +146,18 @@ public class BackupFactory {
                 ZipEntry entry = zipFileEntries.nextElement();
                 String entryName = entry.getName();
                 File destFile = new File(destinationDir, entryName);
+                // Zip-slip guard: a malicious .swb can contain entries like "../mysc/list/<id>/project"
+                // that would escape the extraction folder and overwrite other projects' data.
+                try {
+                    if (!destFile.getCanonicalPath().startsWith(
+                            destinationDir.getCanonicalPath() + File.separator)) {
+                        Log.e(BackupFactory.class.getSimpleName(),
+                                "zip entry escapes destination: " + entryName);
+                        return false;
+                    }
+                } catch (IOException e) {
+                    return false;
+                }
                 File destinationParent = destFile.getParentFile();
                 if (destinationParent != null && !destinationParent.exists()) {
                     destinationParent.mkdirs();
@@ -212,18 +225,27 @@ public class BackupFactory {
     }
 
     //6.3.0 fix1
-    public static void copySafe(File source, File destination) {
+    public static boolean copySafe(File source, File destination) {
         if (!source.exists()) {
             destination.mkdirs();
             createNomediaFileIn(destination);
+            return true;
         } else {
-            copy(source, destination);
+            return copy(source, destination);
         }
     }
 
-    public static void copy(File source, File destination) {
+    /**
+     * Recursively copies a file or directory.
+     *
+     * @return true if everything was copied, false if reading or writing any file failed
+     * (in which case the destination may contain partial data).
+     */
+    public static boolean copy(File source, File destination) {
         if (source.isDirectory()) {
-            if (!destination.exists()) destination.mkdirs();
+            if (!destination.exists() && !destination.mkdirs() && !destination.exists()) {
+                return false;
+            }
 
             String[] files = source.list();
             if (files != null) {
@@ -232,12 +254,17 @@ public class BackupFactory {
                     File srcFile = new File(source, file);
                     File destFile = new File(destination, file);
 
-                    copy(srcFile, destFile);
+                    if (!copy(srcFile, destFile)) {
+                        return false;
+                    }
                 }
+                return true;
             }
+            // null = enumeration I/O error (an empty directory returns an empty array)
+            return false;
         } else {
             //skip .nomedia files
-            if (source.getName().equals(".nomedia")) return;
+            if (source.getName().equals(".nomedia")) return true;
 
             try (InputStream in = new FileInputStream(source);
                  OutputStream out = new FileOutputStream(destination)) {
@@ -246,30 +273,26 @@ public class BackupFactory {
                 while ((length = in.read(buffer)) > 0) {
                     out.write(buffer, 0, length);
                 }
+                return true;
             } catch (IOException e) {
                 e.printStackTrace();
+                return false;
             }
         }
     }
 
     public static boolean zipContainsFile(String zipPath, String fileName) {
 
-        try {
-            ZipInputStream zp = new ZipInputStream(new FileInputStream(zipPath));
-
+        try (ZipInputStream zp = new ZipInputStream(new FileInputStream(zipPath))) {
             ZipEntry en;
 
             while ((en = zp.getNextEntry()) != null) {
                 String name = en.getName();
 
                 if (name.equals(fileName) || name.startsWith(fileName + File.separator)) {
-                    zp.close();
                     return true;
                 }
             }
-
-            zp.close();
-
         } catch (Exception ignored) {
         }
 
@@ -284,7 +307,15 @@ public class BackupFactory {
         String versionName = yB.c(lC.b(sc_id), "sc_ver_name");
         String versionCode = yB.c(lC.b(sc_id), "sc_ver_code");
         String pkgName = yB.c(lC.b(sc_id), "my_sc_pkg_name");
-        String projectNameOnly = project_name.replace("_d", "").replace(File.separator, "");
+        String sanitizedProjectName = project_name.replace(File.separator, "");
+        String projectNameOnly = sanitizedProjectName;
+        while (projectNameOnly.endsWith("_d")) {
+            projectNameOnly = projectNameOnly.substring(0, projectNameOnly.length() - 2);
+        }
+        // Derive the duplicate suffix from the sanitized name too: slicing the original
+        // name at the sanitized length could leave a File.separator (and extra "_d" text)
+        // inside the suffix, producing an output path with a separator in it.
+        String duplicateSuffix = sanitizedProjectName.substring(projectNameOnly.length());
         String finalFileName;
 
         try {
@@ -300,7 +331,7 @@ public class BackupFactory {
                 finalFileName = finalFileName.replaceFirst(Pattern.quote(Objects.requireNonNull(matcher.group(0))), getFormattedDateFrom(matcher.group(1)));
             }
         } catch (Exception ignored) {
-            SketchwareUtil.toastError("Failed To Parse Custom Filename For Backup. Using default");
+            SketchwareUtil.toastError(Helper.getResString(R.string.backup_factory_backup_filename_parse_failed));
             // Example name: InternalDemo v1.0 (com.jbk.internal.demo, 1) 2021-12-31T125827
             finalFileName = projectNameOnly + " v" + versionName + " (" + pkgName + ", " + versionCode + ") " + getFormattedDateFrom("yyyy-M-dd'T'HHmmss");
         }
@@ -312,8 +343,8 @@ public class BackupFactory {
 
         // Init output zip file
         File outZip = new File(getBackupDir() + File.separator + projectNameOnly, finalFileName +
-                //Adds all the _d if exists. Otherwise its possible that there'll be an infinite loop
-                (project_name.contains("_d") ? project_name.replace(projectNameOnly, "") : "") + "." + EXTENSION);
+                //Adds the accumulated _d duplicate suffixes (if any)
+                duplicateSuffix + "." + EXTENSION);
 
         // Create a duplicate if already exists (impossible now :3)
         if (outZip.exists()) {
@@ -333,7 +364,11 @@ public class BackupFactory {
         File dataF = new File(outFolder, "data");
         FileUtil.makeDir(dataF.getAbsolutePath());
         //6.3.0 fix1
-        copySafe(getDataDir(), dataF);
+        if (!copySafe(getDataDir(), dataF)) {
+            error = "couldn't copy project data";
+            outPath = null;
+            return;
+        }
 
         // Copy res
         File resF = new File(outFolder, "resources");
@@ -344,7 +379,11 @@ public class BackupFactory {
             FileUtil.makeDir(resSubf.getAbsolutePath());
 
             //6.3.0 fix1
-            copySafe(getResDir(subfolder), resSubf);
+            if (!copySafe(getResDir(subfolder), resSubf)) {
+                error = "couldn't copy project resources (" + subfolder + ")";
+                outPath = null;
+                return;
+            }
 
             // Write an empty file inside each folder (except icons)
             if (!subfolder.equals("icons")) {
@@ -356,28 +395,53 @@ public class BackupFactory {
 
         // Copy project
         File projectF = new File(outFolder, "project");
-        copy(getProjectPath(), projectF);
+        if (!copy(getProjectPath(), projectF)) {
+            error = "couldn't copy the project file";
+            outPath = null;
+            return;
+        }
 
         // Find local libs used and include them in the backup
         if (backupLocalLibs) {
             File localLibs = getLocalLibsPath();
 
             if (localLibs.exists()) {
+                JSONArray ja;
                 try {
-                    JSONArray ja = new JSONArray(FileUtil.readFile(localLibs.getAbsolutePath()));
+                    ja = new JSONArray(FileUtil.readFile(localLibs.getAbsolutePath()));
+                } catch (Exception e) {
+                    error = "couldn't read the local library registry: " + e.getMessage();
+                    return;
+                }
 
-                    File libsF = new File(outFolder, "local_libs");
-                    libsF.mkdirs();
+                File libsF = new File(outFolder, "local_libs");
+                libsF.mkdirs();
 
-                    for (int i = 0; i < ja.length(); i++) {
+                // Resolve the lib directory by name (the registry folder name is the
+                // library's identity); deriving it from dexPath silently skipped
+                // JAR-only libraries (no classes.dex) and aborted the whole copy
+                // on the first such entry, leaving backups without their libraries.
+                for (int i = 0; i < ja.length(); i++) {
+                    try {
                         JSONObject jo = ja.getJSONObject(i);
+                        String name = jo.getString("name");
 
-                        File f = new File(jo.getString("dexPath")).getParentFile();
-                        copy(f, new File(libsF, f.getName()));
+                        if (name.isEmpty() || name.equals(".") || name.equals("..") || name.contains(File.separator)) {
+                            continue;
+                        }
 
+                        File f = new File(getAllLocalLibsDir(), name);
+                        if (f.exists()) {
+                            if (!copy(f, new File(libsF, name))) {
+                                error = "couldn't copy local library: " + name;
+                                outPath = null;
+                                return;
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.e(BackupFactory.class.getSimpleName(),
+                                "skipping local library #" + i + " during backup", e);
                     }
-
-                } catch (Exception ignored) {
                 }
             }
         }
@@ -458,7 +522,7 @@ public class BackupFactory {
         restore(swbPath, name);
     }
 
-    private void restore(File swbPath, String name) {
+    private boolean restore(File swbPath, String name) {
 
         createBackupsFolder();
 
@@ -468,15 +532,15 @@ public class BackupFactory {
 
         // Create a duplicate if already exists
         if (outFolder.exists()) {
-            restore(swbPath, name + "_d");
-            return;
+            return restore(swbPath, name + "_d");
         }
 
         // Unzip
         if (!unzip(swbPath, outFolder)) {
-            error = "couldn't unzip the backup";
+            error = Helper.getResString(R.string.backup_factory_backup_unzip_failed);
             restoreSuccess = false;
-            return;
+            FileUtil.deleteFile(outFolder.getAbsolutePath());
+            return false;
         }
 
         // Init files
@@ -487,9 +551,10 @@ public class BackupFactory {
         HashMap<String, Object> map = getProject(project);
 
         if (map == null) {
-            error = "couldn't read the project file";
+            error = Helper.getResString(R.string.backup_factory_backup_read_project_failed);
             restoreSuccess = false;
-            return;
+            FileUtil.deleteFile(outFolder.getAbsolutePath());
+            return false;
         }
 
         // Put new sc_id
@@ -497,52 +562,236 @@ public class BackupFactory {
 
         // Write new file
         if (!writeEncrypted(project, new Gson().toJson(map))) {
-            error = "couldn't write to the project file";
+            error = Helper.getResString(R.string.backup_factory_backup_write_project_failed);
             restoreSuccess = false;
-            return;
+            FileUtil.deleteFile(outFolder.getAbsolutePath());
+            return false;
         }
 
-        // Copy data
-        copy(data, getDataDir());
+        // Copy data.
+        // Snapshot pre-existing children so a failed copy can be rolled back: leaving
+        // half-copied sc_id folders in the live data dir leaks files into the next
+        // project that reuses the same id (copy never deletes destination-only files).
+        // A null snapshot means the listing itself failed - abort rather than risk
+        // rolling back pre-existing children later.
+        java.util.HashSet<String> preExistingData = listChildNames(getDataDir());
+        if (preExistingData == null) {
+            error = "couldn't list existing project data";
+            restoreSuccess = false;
+            FileUtil.deleteFile(outFolder.getAbsolutePath());
+            return false;
+        }
+        if (!copy(data, getDataDir())) {
+            error = "couldn't copy project data";
+            restoreSuccess = false;
+            rollbackNewChildren(getDataDir(), preExistingData);
+            FileUtil.deleteFile(outFolder.getAbsolutePath());
+            return false;
+        }
 
         // Copy res
+        java.util.ArrayList<Object[]> resourceRollbacks = new java.util.ArrayList<>();
         for (String subfolder : resSubfolders) {
             File subf = new File(res, subfolder);
+            File resDir = getResDir(subfolder);
+            java.util.HashSet<String> preExistingRes = listChildNames(resDir);
+            if (preExistingRes == null) {
+                error = "couldn't list existing project resources (" + subfolder + ")";
+                restoreSuccess = false;
+                rollbackRestoreArtifacts(preExistingData, resourceRollbacks);
+                FileUtil.deleteFile(outFolder.getAbsolutePath());
+                return false;
+            }
 
-            copySafe(subf, getResDir(subfolder));
+            if (!copySafe(subf, resDir)) {
+                error = "couldn't copy project resources (" + subfolder + ")";
+                restoreSuccess = false;
+                rollbackRestoreArtifacts(preExistingData, resourceRollbacks);
+                FileUtil.deleteFile(outFolder.getAbsolutePath());
+                return false;
+            }
+            resourceRollbacks.add(new Object[]{resDir, preExistingRes});
         }
 
-        // Create parent folder
-        getProjectPath().getParentFile().mkdirs();
-
-        // Copy project
-        copy(project, getProjectPath());
-
-        // Copy local libs if they do not exist
+        // Restore local libraries BEFORE publishing the project file: the project must
+        // never appear in the project list with required libraries missing. A library
+        // merge failure leaves the shared local-libs dir untouched for existing libs
+        // (mergeMissingFiles only adds missing files), so aborting here is safe.
         if (backupLocalLibs) {
             File local_libs = new File(outFolder, "local_libs");
 
             if (local_libs.exists()) {
                 File[] local_libs_content = local_libs.listFiles();
-                if (local_libs_content != null) {
+                // null = enumeration I/O error (an empty directory returns an empty array).
+                // Skipping silently would publish a project with missing libraries.
+                if (local_libs_content == null) {
+                    error = "couldn't list extracted local libraries";
+                    restoreSuccess = false;
+                    rollbackRestoreArtifacts(preExistingData, resourceRollbacks);
+                    FileUtil.deleteFile(outFolder.getAbsolutePath());
+                    return false;
+                }
 
                     for (File local_lib : local_libs_content) {
 
                         File local_lib_real_path = new File(getAllLocalLibsDir(), local_lib.getName());
 
                         if (!local_lib_real_path.exists()) {
-                            local_lib_real_path.mkdirs();
-                            copy(local_lib, local_lib_real_path);
+                            // Stage into a temp dir and publish with a rename: a failed
+                            // straight copy leaves a partial library in the live dir, and a
+                            // retry's mergeMissingFiles() would then skip the corrupt file.
+                            File staging = new File(getAllLocalLibsDir(), local_lib.getName() + ".restore_tmp");
+                            FileUtil.deleteFile(staging.getAbsolutePath());
+                            if (!copy(local_lib, staging)
+                                    || !staging.renameTo(local_lib_real_path)) {
+                                error = "couldn't restore local library: " + local_lib.getName();
+                                restoreSuccess = false;
+                                FileUtil.deleteFile(staging.getAbsolutePath());
+                                rollbackRestoreArtifacts(preExistingData, resourceRollbacks);
+                                FileUtil.deleteFile(outFolder.getAbsolutePath());
+                                return false;
+                            }
+                        } else {
+                            // The library already exists. Merge any files that are missing
+                            // from the installed copy (e.g. a partially unpacked library),
+                            // but never overwrite existing files with backup versions.
+                            if (!mergeMissingFiles(local_lib, local_lib_real_path)) {
+                                error = "failed to restore local library: " + local_lib.getName();
+                                restoreSuccess = false;
+                                rollbackRestoreArtifacts(preExistingData, resourceRollbacks);
+                                FileUtil.deleteFile(outFolder.getAbsolutePath());
+                                return false;
+                            }
                         }
                     }
-                }
             }
+        }
+
+        // Copy project (this "publishes" the restored project - it runs last on purpose).
+        // Copy through a temp file first: copy() truncates the destination up front, so a
+        // mid-copy I/O error would destroy an existing project at this sc_id.
+        getProjectPath().getParentFile().mkdirs();
+        boolean projectExisted = getProjectPath().exists();
+        File publishTemp = new File(getProjectPath().getParentFile(), getProjectPath().getName() + ".restore_tmp");
+        boolean published = false;
+        if (copy(project, publishTemp)) {
+            if (!projectExisted || getProjectPath().delete()) {
+                published = publishTemp.renameTo(getProjectPath());
+            }
+        }
+        if (!published) {
+            error = "couldn't copy the project file";
+            restoreSuccess = false;
+            FileUtil.deleteFile(publishTemp.getAbsolutePath());
+            if (!projectExisted) {
+                FileUtil.deleteFile(getProjectPath().getAbsolutePath());
+            }
+            rollbackRestoreArtifacts(preExistingData, resourceRollbacks);
+            FileUtil.deleteFile(outFolder.getAbsolutePath());
+            return false;
         }
 
         // Delete temp folder
         FileUtil.deleteFile(outFolder.getAbsolutePath());
 
         restoreSuccess = true;
+        return true;
+    }
+
+    /** Rolls back data and resource children copied by a failed restore. */
+    private void rollbackRestoreArtifacts(java.util.HashSet<String> preExistingData,
+            java.util.ArrayList<Object[]> resourceRollbacks) {
+        rollbackNewChildren(getDataDir(), preExistingData);
+        for (Object[] rollback : resourceRollbacks) {
+            rollbackNewChildren((File) rollback[0], (java.util.HashSet<String>) rollback[1]);
+        }
+    }
+
+    /**
+     * Copies {@code source} to {@code destination} if the destination does not exist, through a
+     * temporary file so that an interrupted copy never leaves a partial file at the destination.
+     *
+     * @return true if the destination exists afterwards (pre-existing or copied successfully),
+     * false if the copy failed and nothing was published.
+     */
+    private boolean copyIfMissing(File source, File destination) {
+        if (destination.exists()) {
+            return true;
+        }
+
+        File temp = new File(destination.getParentFile(),
+                destination.getName() + ".tmp_" + System.currentTimeMillis());
+        try (InputStream in = new FileInputStream(source);
+             OutputStream out = new FileOutputStream(temp)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = in.read(buffer)) > 0) {
+                out.write(buffer, 0, length);
+            }
+        } catch (IOException e) {
+            FileUtil.deleteFile(temp.getAbsolutePath());
+            return false;
+        }
+
+        // Another restore may have created the destination meanwhile; prefer the existing
+        // file. Deleting our temp copy is a success - the file the backup wanted is there.
+        if (destination.exists()) {
+            temp.delete();
+            return true;
+        }
+        return temp.renameTo(destination);
+    }
+
+    /**
+     * @return names of the direct children of {@code dir}, an empty set if it doesn't exist,
+     * or {@code null} if listing an existing directory failed (I/O error) - callers must
+     * distinguish these, otherwise a failed snapshot would look like "nothing existed" and
+     * a later rollback could delete pre-existing children.
+     */
+    private static java.util.HashSet<String> listChildNames(File dir) {
+        java.util.HashSet<String> names = new java.util.HashSet<>();
+        File[] children = dir.listFiles();
+        if (children == null) {
+            if (dir.exists()) return null;
+            return names;
+        }
+        for (File child : children) {
+            names.add(child.getName());
+        }
+        return names;
+    }
+
+    /** Best-effort rollback: deletes direct children of {@code dir} that weren't in {@code preExisting}. */
+    private static void rollbackNewChildren(File dir, java.util.HashSet<String> preExisting) {
+        File[] children = dir.listFiles();
+        if (children == null) return;
+        for (File child : children) {
+            if (!preExisting.contains(child.getName())) {
+                FileUtil.deleteFile(child.getAbsolutePath());
+            }
+        }
+    }
+
+    private boolean mergeMissingFiles(File source, File destination) {
+        File[] files = source.listFiles();
+        // null = enumeration I/O error (an empty directory returns an empty array, not null)
+        if (files == null) return false;
+
+        for (File file : files) {
+            File destFile = new File(destination, file.getName());
+
+            if (file.isDirectory()) {
+                if (!destFile.exists() && !destFile.mkdirs() && !destFile.exists()) {
+                    return false;
+                }
+                if (!mergeMissingFiles(file, destFile)) {
+                    return false;
+                }
+            } else if (!copyIfMissing(file, destFile)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public String getError() {

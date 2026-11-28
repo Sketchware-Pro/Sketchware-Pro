@@ -20,6 +20,7 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.util.OldResourceIdMapper;
 import pro.sketchware.databinding.DialogIconSelectorBinding;
 import pro.sketchware.databinding.ItemIconSelectorBinding;
+import pro.sketchware.R;
 
 public class IconSelectorDialog {
     private final Activity activity;
@@ -53,9 +54,9 @@ public class IconSelectorDialog {
         }
 
         builder = new MaterialAlertDialogBuilder(activity)
-                .setTitle("Select an icon")
+                .setTitle(R.string.icon_selector_select_an_icon)
                 .setView(dialogBinding.getRoot())
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(R.string.common_word_cancel, (dialog, which) -> dialog.dismiss())
                 .create();
         builder.show();
     }

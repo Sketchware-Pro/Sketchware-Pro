@@ -166,7 +166,7 @@ public class BlockSelectorDetailsFragment extends qA {
         dialogBinding.delete.setOnClickListener(v -> {
             dialog.dismiss();
             showConfirmationDialog(
-                    "Are you sure you want to delete this Selector Item?",
+                    Helper.getResString(R.string.block_selector_confirm_delete_selector_item),
                     confirmDialog -> {
                         selectors.get(index).getData().remove(indexA);
                         saveAll();
@@ -192,7 +192,7 @@ public class BlockSelectorDetailsFragment extends qA {
 
     private void saveAll() {
         FileUtil.writeFile(BlockSelectorConsts.BLOCK_SELECTORS_FILE.getAbsolutePath(), getGson().toJson(selectors));
-        SketchwareUtil.toast("Saved!");
+        SketchwareUtil.toast(Helper.getResString(R.string.block_selector_saved_excl));
     }
 
     @Override

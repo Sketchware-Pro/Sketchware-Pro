@@ -123,8 +123,8 @@ public class BlockSelectorManagerFragment extends qA {
 
     private void showCreateEditDialog(int index, boolean isEdit) {
         DialogBlockConfigurationBinding dialogBinding = DialogBlockConfigurationBinding.inflate(LayoutInflater.from(requireContext()));
-        dialogBinding.tilPalettesPath.setHint("Selector name");
-        dialogBinding.tilBlocksPath.setHint("Selector title (ex: Select View:)");
+        dialogBinding.tilPalettesPath.setHint(Helper.getResString(R.string.common_word_selector_name));
+        dialogBinding.tilBlocksPath.setHint(Helper.getResString(R.string.block_selector_selector_title_hint));
 
         if (isEdit) {
             dialogBinding.palettesPath.setText(selectors.get(index).getName());
@@ -133,7 +133,7 @@ public class BlockSelectorManagerFragment extends qA {
 
         addBasicTextChangedListener(dialogBinding.palettesPath, str -> {
             if (itemAlreadyExists(str)) {
-                dialogBinding.tilPalettesPath.setError("An item with this name already exists");
+                dialogBinding.tilPalettesPath.setError(Helper.getResString(R.string.block_selector_item_name_exists));
             } else {
                 dialogBinding.tilPalettesPath.setError(null);
             }
@@ -141,29 +141,29 @@ public class BlockSelectorManagerFragment extends qA {
 
         if ("typeview".equals(Objects.requireNonNull(dialogBinding.palettesPath.getText()).toString())) {
             dialogBinding.palettesPath.setEnabled(false);
-            dialogBinding.tilPalettesPath.setOnClickListener(v -> SketchwareUtil.toast("You cannot change the name of this selector"));
+            dialogBinding.tilPalettesPath.setOnClickListener(v -> SketchwareUtil.toast(Helper.getResString(R.string.block_selector_cannot_rename_selector)));
         }
 
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
-        dialog.setTitle(!isEdit ? "New selector" : "Edit selector");
+        dialog.setTitle(!isEdit ? R.string.block_selector_new_selector : R.string.block_selector_edit_selector);
         dialog.setView(dialogBinding.getRoot());
-        dialog.setPositiveButton(!isEdit ? "Create" : "Save", (v, which) -> {
+        dialog.setPositiveButton(!isEdit ? R.string.common_word_create : R.string.common_word_save, (v, which) -> {
             String selectorName = Helper.getText(dialogBinding.palettesPath);
             String selectorTitle = Objects.requireNonNull(dialogBinding.blocksPath.getText()).toString();
 
             if (selectorName.isEmpty()) {
-                SketchwareUtil.toast("Please type the selector's name");
+                SketchwareUtil.toast(Helper.getResString(R.string.block_selector_type_selector_name));
                 return;
             }
             if (selectorTitle.isEmpty()) {
-                SketchwareUtil.toast("Please type the selector's title");
+                SketchwareUtil.toast(Helper.getResString(R.string.block_selector_type_selector_title));
                 return;
             }
             if (!isEdit) {
                 if (!itemAlreadyExists(selectorName)) {
                     selectors.add(new Selector(selectorTitle, selectorName, new ArrayList<>()));
                 } else {
-                    SketchwareUtil.toast("An item with this name already exists");
+                    SketchwareUtil.toast(Helper.getResString(R.string.block_selector_item_name_exists));
                 }
             } else {
                 selectors.set(index, new Selector(selectorTitle, selectorName, selectors.get(index).getData()));
@@ -195,7 +195,7 @@ public class BlockSelectorManagerFragment extends qA {
         }
         dialogBinding.delete.setOnClickListener(v -> {
             dialog.dismiss();
-            showConfirmationDialog("Are you sure you want to delete this selector?", confirmDialog -> {
+            showConfirmationDialog(Helper.getResString(R.string.block_selector_confirm_delete_selector), confirmDialog -> {
                 selectors.remove(index);
                 saveAllSelectors();
                 adapter.notifyDataSetChanged();
@@ -223,7 +223,7 @@ public class BlockSelectorManagerFragment extends qA {
                 showImportSelectorDialog();
                 return true;
             } else if (item.getItemId() == R.id.export_all_block_selector_menus) {
-                saveAllSelectors(BlockSelectorConsts.EXPORT_FILE.getAbsolutePath(), "Exported in " + BlockSelectorConsts.EXPORT_FILE.getAbsolutePath());
+                saveAllSelectors(BlockSelectorConsts.EXPORT_FILE.getAbsolutePath(), Helper.getResString(R.string.block_selector_exported_in, BlockSelectorConsts.EXPORT_FILE.getAbsolutePath()));
                 return true;
             }
             return false;
@@ -232,7 +232,7 @@ public class BlockSelectorManagerFragment extends qA {
 
     private void showImportSelectorDialog() {
         FilePickerOptions options = new FilePickerOptions();
-        options.setTitle("Select .json selector file");
+        options.setTitle(Helper.getResString(R.string.block_selector_select_json_selector_file));
         options.setExtensions(new String[]{"json"});
 
         FilePickerCallback callback = new FilePickerCallback() {
@@ -249,7 +249,7 @@ public class BlockSelectorManagerFragment extends qA {
     }
 
     private void saveAllSelectors() {
-        saveAllSelectors(BlockSelectorConsts.BLOCK_SELECTORS_FILE.getAbsolutePath(), "Saved");
+        saveAllSelectors(BlockSelectorConsts.BLOCK_SELECTORS_FILE.getAbsolutePath(), Helper.getResString(R.string.common_word_saved));
     }
 
     private void saveAllSelectors(String path, String message) {
@@ -260,7 +260,7 @@ public class BlockSelectorManagerFragment extends qA {
     private void exportSelector(Selector selector) {
         String path = BlockSelectorConsts.EXPORT_FILE.getAbsolutePath().replace("All_Menus", selector.getName());
         FileUtil.writeFile(path, getGson().toJson(selector));
-        SketchwareUtil.toast("Exported in " + path);
+        SketchwareUtil.toast(Helper.getResString(R.string.block_selector_exported_in, path));
     }
 
     private void handleToImportFile(File file) {
@@ -273,7 +273,7 @@ public class BlockSelectorManagerFragment extends qA {
                     saveAllSelectors();
                     adapter.notifyDataSetChanged();
                 } else {
-                    SketchwareUtil.toastError("Make sure you select a file that contains selector item(s).");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.block_selector_select_file_with_selector_items));
                 }
             } else {
                 List<Selector> selectorsN = getSelectorsFromFile(file);
@@ -282,12 +282,12 @@ public class BlockSelectorManagerFragment extends qA {
                     saveAllSelectors();
                     adapter.notifyDataSetChanged();
                 } else {
-                    SketchwareUtil.toastError("Make sure you select a file that contains selector item(s).");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.block_selector_select_file_with_selector_items));
                 }
             }
         } catch (Exception e) {
             Log.e(BlockSelectorConsts.TAG, e.toString());
-            SketchwareUtil.toastError("Make sure you select a file that contains a selector item(s).");
+            SketchwareUtil.toastError(Helper.getResString(R.string.block_selector_select_file_with_selector_items));
         }
     }
 
@@ -297,7 +297,7 @@ public class BlockSelectorManagerFragment extends qA {
             return getGson().fromJson(json, Selector.class);
         } catch (Exception e) {
             Log.e(BlockSelectorConsts.TAG, e.toString());
-            SketchwareUtil.toastError("An error occurred while trying to get the selector");
+            SketchwareUtil.toastError(Helper.getResString(R.string.block_selector_error_getting_selector));
             return null;
         }
     }
@@ -310,7 +310,7 @@ public class BlockSelectorManagerFragment extends qA {
             return getGson().fromJson(json, itemListType);
         } catch (Exception e) {
             Log.e(BlockSelectorConsts.TAG, e.toString());
-            SketchwareUtil.toastError("An error occurred while trying to get the selectors");
+            SketchwareUtil.toastError(Helper.getResString(R.string.block_selector_error_getting_selectors));
             return null;
         }
     }

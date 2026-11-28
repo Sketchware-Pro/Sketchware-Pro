@@ -11,6 +11,8 @@ import java.util.HashMap;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.R;
+import mod.hey.studios.util.Helper;
 
 public class PaletteSelector {
 
@@ -30,7 +32,7 @@ public class PaletteSelector {
                     try {
                         color = Color.parseColor(item.get("color").toString());
                     } catch (IllegalArgumentException e) {
-                        SketchwareUtil.toastError("Couldn't parse color of Custom Block Palette #" + (i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.palette_selector_palette_color_parse_failed, i + 1));
                         color = 0xff8a55d7;
                     }
 
@@ -38,7 +40,7 @@ public class PaletteSelector {
                     start++;
                 }
             } catch (JSONException e) {
-                SketchwareUtil.toastError("Error occurred while loading Custom Block Palette: " + e);
+                SketchwareUtil.toastError(Helper.getResString(R.string.palette_selector_palette_load_error, e));
             }
         }
 

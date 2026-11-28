@@ -138,17 +138,17 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         dialogBinding.inputText.setText(pkgFilter);
 
         var builder = new MaterialAlertDialogBuilder(this)
-                .setTitle("Filter by package name")
-                .setMessage("For multiple package names, separate them with a comma (,).")
+                .setTitle(R.string.msg_filter_by_package_name)
+                .setMessage(R.string.log_reader_filter_by_package_name_message)
                 .setIcon(R.drawable.ic_mtrl_filter)
                 .setView(view)
-                .setPositiveButton("Apply", (dialog, which) -> {
+                .setPositiveButton(R.string.import_icon_apply, (dialog, which) -> {
                     pkgFilter = Helper.getText(dialogBinding.inputText);
                     pkgFilterList = new ArrayList<>();
                     for (String name : pkgFilter.split(",")) if (!name.trim().isEmpty()) pkgFilterList.add(name.trim());
                     applyFilters();
                 })
-                .setNeutralButton("Reset", (dialog, which) -> {
+                .setNeutralButton(R.string.common_word_reset, (dialog, which) -> {
                     pkgFilter = "";
                     pkgFilterList.clear();
                     dialogBinding.inputText.setText("");
@@ -192,7 +192,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
 
     private void exportLogcat(ArrayList<HashMap<String, Object>> logs) {
         if (logs.isEmpty()) {
-            SketchwareUtil.toastError("Nothing to Export");
+            SketchwareUtil.toastError(Helper.getResString(R.string.log_reader_nothing_to_export));
             return;
         }
         try {
@@ -230,9 +230,9 @@ public class LogReaderActivity extends BaseAppCompatActivity {
 
             }
             FileUtil.writeFile(filePath, contentBuilder.toString());
-            SketchwareUtil.toast("Logcat exported successfully: " + filePath);
+            SketchwareUtil.toast(Helper.getResString(R.string.log_reader_logcat_exported_successfully, filePath));
         } catch (Exception ex) {
-            SketchwareUtil.toastError("Something went wrong!");
+            SketchwareUtil.toastError(Helper.getResString(R.string.log_reader_something_went_wrong));
         }
     }
 
@@ -385,7 +385,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 binding.dateHeader.setVisibility(View.GONE);
             }
             binding.getRoot().setOnLongClickListener(v -> {
-                SketchwareUtil.toast("Copied to clipboard");
+                SketchwareUtil.toast(Helper.getResString(R.string.log_reader_copied_to_clipboard));
                 ((ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", safeGet(item, "logRaw")));
                 return true;
             });

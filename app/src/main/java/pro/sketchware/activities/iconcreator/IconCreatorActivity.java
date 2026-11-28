@@ -77,7 +77,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 Intent data = result.getData();
                 if (data == null) {
-                    SketchwareUtil.toastError("Received invalid data");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.icon_creator_received_invalid_data));
                     return;
                 }
                 Uri uri = data.getData();
@@ -104,7 +104,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 Intent data = result.getData();
                 if (data == null) {
-                    SketchwareUtil.toastError("Received invalid data");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.icon_creator_received_invalid_data));
                     return;
                 }
                 Bundle extras = data.getExtras();
@@ -123,7 +123,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 Intent data = result.getData();
                 if (data == null) {
-                    SketchwareUtil.toastError("Received invalid data");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.icon_creator_received_invalid_data));
                     return;
                 }
                 Uri uri = data.getData();

@@ -148,8 +148,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
                     firebaseLibraryBean.useYn = "Y";
                 }
             } else {
-                SketchwareUtil.toast("Configure Firebase settings first, either by importing google-services.json, " +
-                        "or by manually entering the project's details.", Toast.LENGTH_LONG);
+                SketchwareUtil.toast(Helper.getResString(R.string.firebase_configure_firebase_first), Toast.LENGTH_LONG);
             }
         }
     }
@@ -278,7 +277,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     private void showImportJsonDialog() {
         FilePickerOptions options = new FilePickerOptions();
         options.setExtensions(new String[]{"json"});
-        options.setTitle("Select your google-services.json");
+        options.setTitle(Helper.getResString(R.string.manage_firebase_select_google_services_json));
 
         FilePickerCallback callback = new FilePickerCallback() {
             @Override

@@ -181,7 +181,7 @@ public class ColorsEditor extends Fragment {
             public void afterTextChanged(Editable s) {
                 String value = s.toString();
                 if (value.startsWith("#") && !PropertiesUtil.isHexColor(value)) {
-                    dialogBinding.colorValueInputLayout.setError("Invalid HEX color");
+                    dialogBinding.colorValueInputLayout.setError(Helper.getResString(R.string.colors_editor_invalid_hex_color));
                     return;
                 }
                 dialogBinding.colorValueInput.setError(null);
@@ -210,13 +210,13 @@ public class ColorsEditor extends Fragment {
             String value = Objects.requireNonNull(dialogBinding.colorValueInput.getText()).toString();
 
             if (key.isEmpty() || value.isEmpty()) {
-                SketchwareUtil.toastError("Please fill in all fields", Toast.LENGTH_SHORT);
+                SketchwareUtil.toastError(Helper.getResString(R.string.common_fill_all_fields), Toast.LENGTH_SHORT);
                 return;
             }
 
             if (value.startsWith("#")) {
                 if (!PropertiesUtil.isHexColor(value)) {
-                    SketchwareUtil.toastError("Please enter a valid HEX color");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.colors_editor_enter_valid_hex_color));
                     return;
                 }
             }
@@ -278,7 +278,7 @@ public class ColorsEditor extends Fragment {
         ColorModel newItem = new ColorModel(name, value);
         for (int i = 0; i < colorList.size(); i++) {
             if (colorList.get(i).getColorName().equals(name)) {
-                SketchwareUtil.toastError("\"" + name + "\" is already exist");
+                SketchwareUtil.toastError(Helper.getResString(R.string.common_already_exists_quoted, name));
                 return;
             }
         }

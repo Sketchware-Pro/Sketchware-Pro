@@ -12,29 +12,39 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.File;
+
 import a.a.a.RB;
 import a.a.a.SB;
 import a.a.a.VB;
 import a.a.a.bB;
-import a.a.a.iI;
 import a.a.a.mB;
+import a.a.a.oB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.KeystoreNewBinding;
+import pro.sketchware.utility.StrongKeyStoreCreator;
 
 public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClickListener {
 
     public KeystoreNewBinding binding;
 
-    private final int validityInYears = 25;
+    /**
+     * Which save request currently owns the keystore destination, across activity
+     * instances (back out and reopen re-runs save() on a fresh instance). An abandoned
+     * worker whose token no longer matches must not write the keystore or report success.
+     */
+    private static final java.util.concurrent.atomic.AtomicReference<String> activeSaveToken = new java.util.concurrent.atomic.AtomicReference<>(null);
+    private String saveToken;
+
+    private final int validityInYears = StrongKeyStoreCreator.DEFAULT_VALIDITY_YEARS;
     private RB organizationValidator;
     private RB localityValidator;
     private RB stateValidator;
     private RB countryValidator;
     private RB commonNameValidator;
     private RB organizationalUnitValidator;
-    private iI E;
     private EditText alias;
     private EditText password;
     private EditText passwordConfirm;
@@ -85,7 +95,6 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
             }
 
             if (!aliasValidator.b()) return;
-
             if (!commonNameValidator.b()) return;
 
             if (!organizationalUnitValidator.b()) return;
@@ -98,23 +107,61 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
 
             if (!countryValidator.b()) return;
 
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("CN=");
-            stringBuilder.append(Helper.getText(commonName));
-            stringBuilder.append("OU=");
-            stringBuilder.append(Helper.getText(organizationalUnit));
-            stringBuilder.append("O=");
-            stringBuilder.append(Helper.getText(organization));
-            stringBuilder.append("L=");
-            stringBuilder.append(Helper.getText(locality));
-            stringBuilder.append("ST=");
-            stringBuilder.append(Helper.getText(state));
-            stringBuilder.append("C=");
-            stringBuilder.append(Helper.getText(country));
+            String dn = new StringBuilder("CN=")
+                    .append(Helper.getText(commonName))
+                    .append(", OU=").append(Helper.getText(organizationalUnit))
+                    .append(", O=").append(Helper.getText(organization))
+                    .append(", L=").append(Helper.getText(locality))
+                    .append(", ST=").append(Helper.getText(state))
+                    .append(", C=").append(Helper.getText(country))
+                    .toString();
 
             try {
-                E.a(wq.j(), stringBuilder.toString(), validityInYears, Helper.getText(alias), text);
-                showDoneDialog(true, text);
+                String keystorePath = wq.j();
+                File keystoreDir = new File(keystorePath).getParentFile();
+                if (keystoreDir != null && !keystoreDir.exists() && !keystoreDir.mkdirs()) {
+                    throw new Exception("Failed to create keystore directory: " + keystoreDir);
+                }
+
+                char[] pass = text.toCharArray();
+                String aliasText = Helper.getText(alias);
+                // Claim ownership of the destination: a stale worker from a previous
+                // instance must not overwrite this keystore (see activeSaveToken).
+                saveToken = java.util.UUID.randomUUID().toString();
+                activeSaveToken.set(saveToken);
+                // RSA key generation and filesystem writes can take seconds; keep them off
+                // the main thread and prevent duplicate submissions while running.
+                binding.btnKeystoreSave.setEnabled(false);
+                binding.btnKeystoreCancel.setEnabled(false);
+                binding.btnKeystoreSave.post(() -> new Thread(() -> {
+                    try {
+                        byte[] keystoreBytes = StrongKeyStoreCreator.createKeystore(
+                                dn, validityInYears, aliasText, pass);
+                        // Ownership check: if the user backed out and reopened the screen, a
+                        // newer save request owns this destination - an abandoned worker from
+                        // the dead instance must neither overwrite the keystore nor report
+                        // success with credentials the file doesn't match.
+                        if (!saveToken.equals(activeSaveToken.get())) return;
+                        new oB().a(keystorePath, keystoreBytes);
+                        if (!saveToken.equals(activeSaveToken.get())) return;
+                        runOnUiThread(() -> {
+                            // The user may have backed out during generation; a dead activity
+                            // can't show dialogs (BadTokenException on an invalid window token).
+                            if (isFinishing() || isDestroyed()) return;
+                            binding.btnKeystoreSave.setEnabled(true);
+                            binding.btnKeystoreCancel.setEnabled(true);
+                            showDoneDialog(true, text);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        runOnUiThread(() -> {
+                            if (isFinishing() || isDestroyed()) return;
+                            binding.btnKeystoreSave.setEnabled(true);
+                            binding.btnKeystoreCancel.setEnabled(true);
+                            showDoneDialog(false, null);
+                        });
+                    }
+                }).start());
             } catch (Exception e) {
                 e.printStackTrace();
                 showDoneDialog(false, null);
@@ -136,6 +183,14 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Invalidate this instance's save request: its worker (if still running) must not
+        // commit the keystore or report success after the user left the screen.
+        activeSaveToken.compareAndSet(saveToken, null);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!super.isStoragePermissionGranted()) {
@@ -149,11 +204,10 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         setSupportActionBar(toolbar);
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         getSupportActionBar().setTitle(R.string.myprojects_sign_apk_new_certificate_title_new_certificate);
-        getSupportActionBar().setSubtitle("Export path: " + wq.D);
+        getSupportActionBar().setSubtitle(Helper.getResString(R.string.new_key_store_export_path, wq.D));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        E = new iI();
 
         binding.btnKeystoreSave.setOnClickListener(this);
         binding.btnKeystoreCancel.setOnClickListener(this);

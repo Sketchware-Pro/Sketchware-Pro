@@ -148,12 +148,12 @@ public class StringsEditor extends Fragment {
             String value = Objects.requireNonNull(binding.stringValueInput.getText()).toString();
 
             if (key.isEmpty() || value.isEmpty()) {
-                SketchwareUtil.toastError("Please fill in all fields");
+                SketchwareUtil.toastError(Helper.getResString(R.string.common_fill_all_fields));
                 return;
             }
 
             if (stringsEditorManager.isXmlStringsExist(listmap, key)) {
-                SketchwareUtil.toastError("\"" + key + "\" is already exist");
+                SketchwareUtil.toastError(Helper.getResString(R.string.common_already_exists_quoted, key));
                 return;
             }
             addString(key, value, Objects.requireNonNull(binding.stringHeaderInput.getText()).toString().trim());

@@ -27,6 +27,9 @@ import com.android.tools.r8.D8Command;
 import com.android.tools.r8.OutputMode;
 import com.github.megatronking.stringfog.plugin.StringFogInjector;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.iyxan23.zipalignjava.InvalidZipException;
 import com.iyxan23.zipalignjava.ZipAlign;
 
@@ -45,6 +48,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -86,6 +90,8 @@ import proguard.Configuration;
 import proguard.ConfigurationParser;
 import proguard.ParseException;
 import proguard.ProGuard;
+import pro.sketchware.R;
+import mod.hey.studios.util.Helper;
 
 public class ProjectBuilder {
     public static final String TAG = "AppBuilder";
@@ -108,6 +114,8 @@ public class ProjectBuilder {
      * Timestamp keeping track of when compiling the project's resources started, needed for stats of how long compiling took.
      */
     private long timestampResourceCompilationStarted;
+    /** Set when the shrinker could not run, so D8 and local-library DEX files take over. */
+    public boolean shrinkerSkipped;
 
     public ProjectBuilder(Context context, yq yqVar) {
         /* Detect some bad behaviour of the app */
@@ -117,7 +125,14 @@ public class ProjectBuilder {
                 .build()
         );
 
-        SystemLogPrinter.start();
+        proguard = new ProguardHandler(yqVar.sc_id);
+        boolean debugMode = proguard.isDebugModeEnabled();
+        LogUtil.setLoggingEnabled(debugMode);
+        if (debugMode) {
+            SystemLogPrinter.start();
+        } else {
+            SystemLogPrinter.stop();
+        }
 
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -141,7 +156,6 @@ public class ProjectBuilder {
         builtInLibraryManager = new BuiltInLibraryManager(yqVar.sc_id);
         File defaultAndroidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
         androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
-        proguard = new ProguardHandler(yqVar.sc_id);
         settings = new ProjectSettings(yqVar.sc_id);
     }
 
@@ -230,7 +244,7 @@ public class ProjectBuilder {
         }
     }
     public String getDxRunningText() {
-        return "D8 is running...";
+        return Helper.getResString(R.string.build_progress_d8_running);
     }
 
     /**
@@ -239,8 +253,13 @@ public class ProjectBuilder {
      * @throws Exception Thrown if the compiler had any problems compiling
      */
     public void createDexFilesFromClasses() throws Exception {
+        if (shrinkerSkipped) {
+            /* R8 may have left partial dex files and a half-written mapping behind. */
+            FileUtil.deleteFile(yq.binDirectoryPath + File.separator + "dex");
+            FileUtil.deleteFile(yq.proguardMappingPath);
+        }
         FileUtil.makeDir(yq.binDirectoryPath + File.separator + "dex");
-        if (proguard.isShrinkingEnabled() && proguard.isR8Enabled()) return;
+        if (!shrinkerSkipped && proguard.isShrinkingEnabled() && proguard.isR8Enabled()) return;
 
         long savedTimeMillis = System.currentTimeMillis();
         try {
@@ -644,7 +663,11 @@ public class ProjectBuilder {
                 Object localLibraryDexPath = localLibrary.get("dexPath");
 
                 if (localLibraryDexPath instanceof String) {
-                    if (!proguard.libIsProguardFMEnabled((String) localLibraryName)) {
+                    if (proguard.libIsProguardFMEnabled((String) localLibraryName) && !shrinkerSkipped) {
+                        LogUtil.d(TAG, "Full Mode: skipping prebuilt DEX of " + localLibraryName
+                                + ", its classes must come from the shrinker output");
+                    }
+                    if (!proguard.libIsProguardFMEnabled((String) localLibraryName) || shrinkerSkipped) {
                         dexes.add(new File((String) localLibraryDexPath));
                         /* Add library's extra DEX files */
                         File localLibraryDirectory = new File((String) localLibraryDexPath).getParentFile();
@@ -665,10 +688,10 @@ public class ProjectBuilder {
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid DEX file path of enabled Local library #" + i1, Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.build_invalid_local_lib_dex_file_path, i1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid name of enabled Local library #" + i1, Toast.LENGTH_LONG);
+                SketchwareUtil.toastError(Helper.getResString(R.string.build_invalid_local_lib_name, i1), Toast.LENGTH_LONG);
             }
         }
 
@@ -899,6 +922,88 @@ public class ProjectBuilder {
         }
     }
 
+    /**
+     * Full Mode libraries replacing an excluded built-in are the only copy of those classes, so
+     * they are kept intact. Other Full Mode libraries remain free to shrink.
+     */
+    private void appendFullModeKeepRules(StringBuilder rules) {
+        LinkedHashSet<String> excludedPackages = new LinkedHashSet<>();
+        String configPath = FileUtil.getExternalStorageDir() + "/.sketchware/data/"
+                + yq.sc_id + "/excluded_library";
+        if (FileUtil.isExistFile(configPath)) {
+            try {
+                JsonObject config = JsonParser.parseString(FileUtil.readFile(configPath)).getAsJsonObject();
+                if (config.has("first") && config.get("first").getAsBoolean() && config.has("second")) {
+                    for (JsonElement element : config.getAsJsonArray("second")) {
+                        String name = element.getAsString();
+                        /* Some built-ins have no R package and cannot contribute a keep prefix. */
+                        for (BuiltInLibraries.BuiltInLibrary library
+                                : BuiltInLibraries.KNOWN_BUILT_IN_LIBRARIES) {
+                            if (library.getName().equals(name)) {
+                                library.getPackageName().ifPresent(pkg -> {
+                                    if (!pkg.isEmpty()) excludedPackages.add(pkg);
+                                });
+                                break;
+                            }
+                        }
+                    }
+                }
+            } catch (RuntimeException e) {
+                LogUtil.e(TAG, "Could not read excluded built-in libraries", e);
+            }
+        }
+
+        if (excludedPackages.isEmpty()) return;
+
+        LinkedHashSet<String> kept = new LinkedHashSet<>();
+        for (HashMap<String, Object> library : mll.list) {
+            Object name = library.get("name");
+            if (name == null || !proguard.libIsProguardFMEnabled(name.toString())) continue;
+            Object packageName = library.get("packageName");
+            if (packageName instanceof String pkg && !pkg.isEmpty()) {
+                if (excludedPackages.contains(pkg)) kept.add(pkg + ".**");
+                continue;
+            }
+            /* No package metadata: keep its classes only if it replaces an excluded built-in. */
+            Object jarPath = library.get("jarPath");
+            if (!(jarPath instanceof String path)) continue;
+            ArrayList<String> jarClasses = new ArrayList<>();
+            boolean replacesExcluded = false;
+            try (ZipFile jar = new ZipFile(path)) {
+                Enumeration<? extends ZipEntry> entries = jar.entries();
+                while (entries.hasMoreElements()) {
+                    String entry = entries.nextElement().getName();
+                    if (entry.endsWith(".class")) {
+                        String className = entry.substring(0, entry.length() - 6).replace('/', '.');
+                        jarClasses.add(className);
+                        if (!replacesExcluded && matchesExcludedPackage(className, excludedPackages)) {
+                            replacesExcluded = true;
+                        }
+                    }
+                }
+            } catch (IOException | RuntimeException e) {
+                LogUtil.e(TAG, "Could not scan " + path + " for Full Mode classes", e);
+            }
+            if (replacesExcluded) {
+                kept.addAll(jarClasses);
+            }
+        }
+
+        LogUtil.d(TAG, "Full Mode: keeping " + kept.size() + " excluded built-in package(s)");
+        for (String className : kept) {
+            rules.append("-keep class ").append(className).append(" { *; }\n");
+        }
+    }
+
+    private static boolean matchesExcludedPackage(String className, Set<String> excludedPackages) {
+        for (String pkg : excludedPackages) {
+            if (className.startsWith(pkg + ".")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean usesGoogleAds() {
         try {
             File manifest = new File(yq.androidManifestPath);
@@ -921,17 +1026,30 @@ public class ProjectBuilder {
         return false;
     }
 
-    private String writeExtraProguardRules() throws IOException {
+    private String writeInjectedRules() throws IOException {
         StringBuilder rules = new StringBuilder();
-        rules.append("# Added automatically by Sketchware Pro on every R8 run\n");
+        rules.append("# Added automatically by Sketchware Pro on every build\n");
         rules.append("-keepattributes Signature,InnerClasses,EnclosingMethod,Exceptions,*Annotation*\n");
         rules.append("-keepattributes SourceFile,LineNumberTable\n");
         rules.append("-renamesourcefileattribute SourceFile\n");
         rules.append("-keepclassmembers class * {\n    @com.google.gson.annotations.SerializedName <fields>;\n}\n");
+        /* Android instantiates nested SavedState classes reflectively when saving view state,
+         * so the shrinker cannot see those references from XML or generated code. */
+        rules.append("-keep class **$SavedState { *; }\n");
 
         if (new StringfogHandler(yq.sc_id).isStringfogEnabled()) {
-            /* StringFog's runtime is called from rewritten bytecode of the app, R8 must not rename or merge it */
+            /* StringFog's runtime is called from rewritten bytecode, the shrinker must not merge or rename it */
             rules.append("-keep class com.github.megatronking.stringfog.** { *; }\n");
+        }
+
+        if (!proguard.isShrinkEnabled()) {
+            /* Without shrinking, the shrinker keeps every class and member */
+            rules.append("-dontshrink\n");
+        }
+
+        if (!proguard.isObfuscateEnabled()) {
+            /* Names stay readable, so the mapping file is only a 1:1 reflection of the source */
+            rules.append("-dontobfuscate\n");
         }
 
         if (!proguard.isOptimizeEnabled()) {
@@ -950,10 +1068,33 @@ public class ProjectBuilder {
         }
 
         appendServiceKeepRules(rules);
+        appendFullModeKeepRules(rules);
 
         File rulesFile = new File(yq.binDirectoryPath, "sketchware_extra_rules.pro");
         Files.writeString(rulesFile.toPath(), rules.toString());
         return rulesFile.getAbsolutePath();
+    }
+
+    /** Records thread and heap state around shrinker stages so device failures can be diagnosed. */
+    public void logShrinkerTelemetry(String stage) {
+        try {
+            Runtime runtime = Runtime.getRuntime();
+            long usedMb = (runtime.totalMemory() - runtime.freeMemory()) / (1024L * 1024L);
+            long maxMb = runtime.maxMemory() / (1024L * 1024L);
+            int threads = Thread.activeCount();
+            int workers = proguard == null ? -1 : proguard.getR8Threads();
+            LogUtil.d(TAG, stage + " telemetry: activeThreads=" + threads
+                    + ", workerThreads=" + workers
+                    + ", heapUsed=" + usedMb + "MB/" + maxMb + "MB");
+
+            FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+            crashlytics.setCustomKey("telemetry_stage", stage);
+            crashlytics.setCustomKey("active_threads", threads);
+            crashlytics.setCustomKey("shrinker_worker_threads", workers);
+            crashlytics.setCustomKey("heap_used_mb", usedMb);
+            crashlytics.setCustomKey("heap_max_mb", maxMb);
+        } catch (Throwable ignored) {
+        }
     }
 
     public void runR8() throws IOException {
@@ -963,7 +1104,7 @@ public class ProjectBuilder {
         config.add(ProguardHandler.ANDROID_PROGUARD_RULES_PATH);
         config.add(yq.proguardAaptRules);
         config.add(proguard.getCustomProguardRules());
-        config.add(writeExtraProguardRules());
+        config.add(writeInjectedRules());
         var rules = new ArrayList<>(Arrays.asList(getRJavaRules().split("\n")));
         for (Jp library : builtInLibraryManager.getLibraries()) {
             File f = BuiltInLibraries.getLibraryProguardConfiguration(library.getName());
@@ -974,17 +1115,27 @@ public class ProjectBuilder {
         config.addAll(mll.getPgRules());
         ArrayList<String> jars = new ArrayList<>();
         jars.add(yq.compiledClassesPath + ".jar");
+        ArrayList<String> fullModeLibs = new ArrayList<>();
 
         for (HashMap<String, Object> hashMap : mll.list) {
             String obj = hashMap.get("name").toString();
             if (hashMap.containsKey("jarPath") && proguard.libIsProguardFMEnabled(obj)) {
                 jars.add(hashMap.get("jarPath").toString());
+                fullModeLibs.add(obj);
             }
         }
+        logShrinkerTelemetry("r8_start");
+        LogUtil.d(TAG, "Running R8: " + jars.size() + " program jars, " + config.size()
+                + " config files, threads=" + proguard.getR8Threads()
+                + ", shrink=" + proguard.isShrinkEnabled()
+                + ", obfuscate=" + proguard.isObfuscateEnabled()
+                + ", optimize=" + proguard.isOptimizeEnabled()
+                + ", fullModeLibs=" + fullModeLibs);
         try {
             JarBuilder.INSTANCE.generateJar(new File(yq.compiledClassesPath));
             new R8Compiler(new ArrayList<>(rules), config.toArray(new String[0]), getProguardClasspath().split(":"), jars.toArray(new String[0]), settings.getMinSdkVersion(), yq).compile();
         } catch (Exception | OutOfMemoryError | StackOverflowError e) {
+            logShrinkerTelemetry("r8_failure");
             try {
                 FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
                 crashlytics.setCustomKey("compiler_stage", "runR8");
@@ -997,7 +1148,10 @@ public class ProjectBuilder {
             }
             throw new IOException(e);
         }
-        LogUtil.d(TAG, "R8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        logShrinkerTelemetry("r8_success");
+        LogUtil.d(TAG, "R8 took " + (System.currentTimeMillis() - savedTimeMillis)
+                + " ms; produced " + FileUtil.listFiles(yq.binDirectoryPath + File.separator + "dex", "dex").size()
+                + " dex files, mapping: " + yq.proguardMappingPath);
     }
 
     public void runProguard() throws IOException {
@@ -1017,6 +1171,10 @@ public class ProjectBuilder {
         args.add("-include");
         args.add(proguard.getCustomProguardRules());
 
+        /* Include generated rules: switch overrides, keep rules and local library services */
+        args.add("-include");
+        args.add(writeInjectedRules());
+
         proguardAddLibConfigs(args);
         proguardAddRjavaRules(args);
 
@@ -1030,13 +1188,20 @@ public class ProjectBuilder {
         args.add("-injars");
         args.add(yq.compiledClassesPath);
 
+        ArrayList<String> fullModeLibs = new ArrayList<>();
         for (HashMap<String, Object> hashMap : mll.list) {
             String obj = hashMap.get("name").toString();
             if (hashMap.containsKey("jarPath") && proguard.libIsProguardFMEnabled(obj)) {
                 args.add("-injars");
                 args.add(hashMap.get("jarPath").toString());
+                fullModeLibs.add(obj);
             }
         }
+        logShrinkerTelemetry("proguard_start");
+        LogUtil.d(TAG, "Running ProGuard: fullModeLibs=" + fullModeLibs
+                + ", shrink=" + proguard.isShrinkEnabled()
+                + ", obfuscate=" + proguard.isObfuscateEnabled()
+                + ", optimize=" + proguard.isOptimizeEnabled());
         args.add("-libraryjars");
         args.add(getProguardClasspath());
         args.add("-outjars");
@@ -1064,12 +1229,14 @@ public class ProjectBuilder {
             throw new IOException(e);
         }
 
+        /* ProGuard has no thread option and runs its passes sequentially on this thread. */
         try {
             new ProGuard(configuration).execute();
         } catch (Exception e) {
             throw new IOException(e);
         }
 
+        logShrinkerTelemetry("proguard_success");
         LogUtil.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 

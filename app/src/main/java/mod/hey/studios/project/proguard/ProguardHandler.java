@@ -1,5 +1,8 @@
 package mod.hey.studios.project.proguard;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -7,15 +10,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.RejectedExecutionException;
 
 import a.a.a.ProjectBuilder;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
+import mod.jbk.util.LogUtil;
+import pro.sketchware.R;
+import pro.sketchware.SketchApplication;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ProguardHandler {
     public static String ANDROID_PROGUARD_RULES_PATH = createAndroidRules();
     public static String DEFAULT_PROGUARD_RULES_PATH = "";
+    private final String scId;
     private final String config_path;
     private final String fm_config_path;
 
@@ -29,6 +38,7 @@ public class ProguardHandler {
     };
 
     public ProguardHandler(String sc_id) {
+        scId = sc_id;
         DEFAULT_PROGUARD_RULES_PATH = createDefaultRules(sc_id);
         config_path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/proguard";
         fm_config_path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/proguard_fm";
@@ -140,6 +150,8 @@ public class ProguardHandler {
 
         defaultConfig.put("enabled", "false");
         defaultConfig.put("r8", "false");
+        defaultConfig.put("shrink", "true");
+        defaultConfig.put("obfuscate", "true");
         defaultConfig.put("optimize", "false");
         defaultConfig.put("debug", "false");
 
@@ -182,6 +194,48 @@ public class ProguardHandler {
             FileUtil.writeFile(path, existing + separator + missing);
         }
     }
+    /** Global build logging switch. */
+    public boolean isDebugModeEnabled() {
+        return isDebugFilesEnabled();
+    }
+
+    public void setDebugModeEnabled(boolean enabled) {
+        setDebugEnabled(enabled);
+    }
+
+    public void setOptimizeEnabled(boolean enabled) {
+        writeConfigBoolean("optimize", enabled);
+    }
+
+    /** Removes classes, methods and fields the app never uses. Missing key means enabled. */
+    public boolean isShrinkEnabled() {
+        return readConfigBoolean("shrink", true);
+    }
+
+    public void setShrinkEnabled(boolean enabled) {
+        writeConfigBoolean("shrink", enabled);
+    }
+
+    /** Renames classes and members. Missing key means enabled. */
+    public boolean isObfuscateEnabled() {
+        return readConfigBoolean("obfuscate", true);
+    }
+
+    public void setObfuscateEnabled(boolean enabled) {
+        writeConfigBoolean("obfuscate", enabled);
+    }
+
+    private boolean readConfigBoolean(String key, boolean defaultValue) {
+        String value = readConfigOrEmpty().get(key);
+        return value == null ? defaultValue : "true".equals(value);
+    }
+
+    private void writeConfigBoolean(String key, boolean enabled) {
+        HashMap<String, String> config = readConfigOrEmpty();
+        config.put(key, String.valueOf(enabled));
+        FileUtil.writeFile(config_path, new Gson().toJson(config));
+    }
+
     public boolean isDebugFilesEnabled() {
         boolean debugFiles = true;
         if (FileUtil.isExistFile(config_path)) {
@@ -203,11 +257,7 @@ public class ProguardHandler {
         return debugFiles;
     }
 
-    //TODO: IDK why "Android Ye" added this, anyway just keeping it for now
-    /**
-     * Number of threads R8 may use. Fewer threads mean less heat and less peak memory use, but a slower build.
-     * Defaults to a quarter to half of the CPU cores (at most 2), can be raised with "r8_threads" in the project's config.
-     */
+    /** Worker count for R8: all available cores, unless r8_threads overrides it. */
     public int getR8Threads() {
         int cores = Math.max(1, Runtime.getRuntime().availableProcessors());
         String configured = readConfigOrEmpty().get("r8_threads");
@@ -220,11 +270,7 @@ public class ProguardHandler {
             } catch (NumberFormatException ignored) {
             }
         }
-
-        /* Half the cores by default is a good speed/heat balance; always leave at least 2 cores free for the UI */
-        int half = cores / 2;
-        int leaveFree = Math.max(1, cores - 2);
-        return Math.max(2, Math.min(half, leaveFree));
+        return cores;
     }
 
     public boolean isShrinkingEnabled() {
@@ -304,27 +350,17 @@ public class ProguardHandler {
     }
 
 
-    //TODO: add UI for this option
     /**
      * Whether R8 may optimize the code (inlining, class merging, ...). Off by default, because it raises the risk of
      * runtime problems in existing apps. Enable per project by setting "optimize":"true" in the project's proguard config.
      */
     public boolean isOptimizeEnabled() {
-        if (FileUtil.isExistFile(config_path)) {
-            try {
-                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
-                return "true".equals(config.get("optimize"));
-            } catch (Exception e) {
-                return false;
-            }
-        }
-
-        return false;
+        return readConfigBoolean("optimize", false);
     }
 
     public boolean libIsProguardFMEnabled(String library) {
         boolean enabled;
-        if (isShrinkingEnabled() && FileUtil.isExistFile(fm_config_path)) {
+        if (isShrinkingEnabled() && isShrinkEnabled() && FileUtil.isExistFile(fm_config_path)) {
             String configContent = FileUtil.readFile(fm_config_path);
 
             if (configContent.isEmpty()) {
@@ -353,15 +389,105 @@ public class ProguardHandler {
         FileUtil.writeFile(fm_config_path, new Gson().toJson(fullModeLibs));
     }
 
+    public ArrayList<String> getFullModeLibs() {
+        if (FileUtil.isExistFile(fm_config_path)) {
+            String content = FileUtil.readFile(fm_config_path);
+            if (!content.isEmpty()) {
+                try {
+                    ArrayList<String> libs = new Gson().fromJson(content, Helper.TYPE_STRING);
+                    if (libs != null) return libs;
+                } catch (RuntimeException ignored) {
+                }
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    /**
+     * A -dont* rule in the project's rules file cannot be undone by a later config, so it wins over
+     * the equivalent switch. Report the flags that contradict a switch that is currently on.
+     */
+    public ArrayList<String> getConflictingDontRules() {
+        ArrayList<String> conflicts = new ArrayList<>();
+        if (!FileUtil.isExistFile(DEFAULT_PROGUARD_RULES_PATH)) return conflicts;
+
+        for (String line : FileUtil.readFile(DEFAULT_PROGUARD_RULES_PATH).split("\n")) {
+            int comment = line.indexOf('#');
+            String rule = (comment < 0 ? line : line.substring(0, comment)).trim();
+            if (rule.equalsIgnoreCase("-dontshrink") && isShrinkEnabled()) {
+                conflicts.add("-dontshrink");
+            } else if (rule.equalsIgnoreCase("-dontobfuscate") && isObfuscateEnabled()) {
+                conflicts.add("-dontobfuscate");
+            } else if (rule.equalsIgnoreCase("-dontoptimize") && isOptimizeEnabled()) {
+                conflicts.add("-dontoptimize");
+            }
+        }
+        return conflicts;
+    }
+
     public void start(BuildProgressReceiver progressReceiver, ProjectBuilder builder) throws IOException {
-        if (isShrinkingEnabled()) {
-            if (isR8Enabled()) {
+        if (!isShrinkingEnabled()) return;
+
+        boolean r8 = isR8Enabled();
+        String engine = r8 ? "R8" : "ProGuard";
+        LogUtil.d("Shrinker", "Starting " + engine + " for project " + scId
+                + " (shrink=" + isShrinkEnabled() + ", obfuscate=" + isObfuscateEnabled()
+                + ", optimize=" + isOptimizeEnabled() + ", threads=" + getR8Threads() + ")");
+        builder.logShrinkerTelemetry("shrinker_start");
+        SketchApplication.setRunningShrinker(engine);
+        try {
+            if (r8) {
                 progressReceiver.onProgress("Running R8 on classes...", 15);
                 builder.runR8();
             } else {
                 progressReceiver.onProgress("ProGuarding classes...", 16);
                 builder.runProguard();
             }
+            builder.logShrinkerTelemetry("shrinker_success");
+        } catch (Throwable t) {
+            builder.logShrinkerTelemetry("shrinker_failure");
+            /* Bad rules are a user error and must still fail loudly; only device/resource
+             * failures are skipped so the build can finish with plain D8 dexing. */
+            if (!isDeviceFailure(t)) {
+                if (t instanceof IOException io) throw io;
+                if (t instanceof RuntimeException runtime) throw runtime;
+                if (t instanceof Error error) throw error;
+                throw new IOException(t);
+            }
+            LogUtil.e("Shrinker", "Starting D8 fallback after a device failure");
+            builder.shrinkerSkipped = true;
+            System.gc();
+            String path = logFailure(engine, t);
+            progressReceiver.onProgress(engine + " skipped, dexing with D8...", 17);
+            SketchwareUtil.toast(SketchApplication.getContext().getString(
+                    r8 ? R.string.shrinker_skipped_r8 : R.string.shrinker_skipped_proguard, path),
+                    Toast.LENGTH_LONG);
+        } finally {
+            SketchApplication.setRunningShrinker(null);
         }
+    }
+
+    private static boolean isDeviceFailure(Throwable t) {
+        for (int i = 0; t != null && i < 6; i++) {
+            if (t instanceof VirtualMachineError || t instanceof RejectedExecutionException) return true;
+            t = t.getCause();
+        }
+        return false;
+    }
+
+    private String logFailure(String engine, Throwable t) {
+        String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + scId + "/shrinker_error.log";
+        try {
+            String detail;
+            try {
+                detail = Log.getStackTraceString(t);
+            } catch (Throwable ignored) {
+                detail = String.valueOf(t.getClass().getName());
+            }
+            FileUtil.writeFile(path, engine + " failed on this device\n" + detail);
+        } catch (Throwable ignored) {
+            path = FileUtil.getExternalStorageDir() + "/.sketchware/debug.txt";
+        }
+        return path;
     }
 }

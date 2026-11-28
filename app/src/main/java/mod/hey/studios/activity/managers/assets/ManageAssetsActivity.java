@@ -125,9 +125,9 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
                 .setTitle(R.string.assets_manager_add_new)
-                .setMessage("If you're creating a file, make sure to add an extension.")
-                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
-                .setPositiveButton("Create", null)
+                .setMessage(R.string.manage_assets_create_file_add_extension)
+                .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(R.string.common_word_create, null)
                 .create();
 
         dialog.setOnShowListener(dialogInterface -> {
@@ -136,7 +136,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
                 String editable = Helper.getText(inputText).trim();
 
                 if (editable.isEmpty()) {
-                    SketchwareUtil.toastError("Invalid name");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.manage_assets_invalid_name));
                     return;
                 }
 
@@ -146,12 +146,12 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
                 } else if (checkedChipId == R.id.chip_folder) {
                     FileUtil.makeDir(new File(current_path, editable).getAbsolutePath());
                 } else {
-                    SketchwareUtil.toast("Select a file type");
+                    SketchwareUtil.toast(Helper.getResString(R.string.manage_assets_select_file_type));
                     return;
                 }
 
                 refresh();
-                SketchwareUtil.toast("File was created successfully");
+                SketchwareUtil.toast(Helper.getResString(R.string.manage_assets_file_created_successfully));
                 dialogInterface.dismiss();
             });
         });
@@ -170,7 +170,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         FilePickerOptions options = new FilePickerOptions();
         options.setSelectionMode(SelectionMode.BOTH);
         options.setMultipleSelection(true);
-        options.setTitle("Select an asset file");
+        options.setTitle(Helper.getResString(R.string.manage_assets_select_asset_file));
 
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
@@ -181,7 +181,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
                         try {
                             FileUtil.copyDirectory(file, new File(current_path, file.getName()));
                         } catch (IOException e) {
-                            runOnUiThread(() -> SketchwareUtil.toastError("Couldn't import file! [" + e.getMessage() + "]"));
+                            runOnUiThread(() -> SketchwareUtil.toastError(Helper.getResString(R.string.manage_assets_import_file_failed, e.getMessage())));
                         }
                     }
                     runOnUiThread(ManageAssetsActivity.this::refresh);
@@ -199,14 +199,14 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         var inputText = dialogBinding.inputText;
 
         var dialog = new MaterialAlertDialogBuilder(this)
-                .setTitle("Rename " + assetsAdapter.getFileName(position))
+                .setTitle(Helper.getResString(R.string.manage_assets_rename_item_title, assetsAdapter.getFileName(position)))
                 .setView(dialogBinding.getRoot())
-                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
-                .setPositiveButton("Rename", (dialogInterface, i) -> {
+                .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(R.string.assets_manager_rename, (dialogInterface, i) -> {
                     if (!Helper.getText(inputText).isEmpty()) {
                         FileUtil.renameFile(assetsAdapter.getItem(position), new File(current_path, Helper.getText(inputText)).getAbsolutePath());
                         refresh();
-                        SketchwareUtil.toast("Renamed successfully");
+                        SketchwareUtil.toast(Helper.getResString(R.string.common_word_renamed_successfully));
                     }
                     dialogInterface.dismiss();
                 })
@@ -222,13 +222,12 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
 
     private void showDeleteDialog(int position) {
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Delete " + assetsAdapter.getFileName(position) + "?")
-                .setMessage("Are you sure you want to delete this " + (assetsAdapter.isFolder(position) ? "folder" : "file") + "? "
-                        + "This action cannot be undone.")
+                .setTitle(Helper.getResString(R.string.common_delete_item_title, assetsAdapter.getFileName(position)))
+                .setMessage((Helper.getResString(assetsAdapter.isFolder(position) ? R.string.common_delete_folder_question : R.string.common_delete_file_question) + " " + Helper.getResString(R.string.common_action_cannot_be_undone)))
                 .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
                     FileUtil.deleteFile(assetsAdapter.getItem(position));
                     refresh();
-                    SketchwareUtil.toast("Deleted successfully");
+                    SketchwareUtil.toast(Helper.getResString(R.string.common_word_deleted_successfully));
                 })
                 .setNegativeButton(R.string.common_word_cancel, null)
                 .create()
@@ -310,11 +309,11 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
                 PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(), v);
 
                 if (!isFolder(position)) {
-                    popupMenu.getMenu().add(0, 0, 0, "Edit");
+                    popupMenu.getMenu().add(0, 0, 0, R.string.common_word_edit);
                 }
 
-                popupMenu.getMenu().add(0, 1, 0, "Rename");
-                popupMenu.getMenu().add(0, 2, 0, "Delete");
+                popupMenu.getMenu().add(0, 1, 0, R.string.assets_manager_rename);
+                popupMenu.getMenu().add(0, 2, 0, R.string.common_word_delete);
 
                 popupMenu.setOnMenuItemClickListener(itemMenu -> {
                     switch (itemMenu.getItemId()) {

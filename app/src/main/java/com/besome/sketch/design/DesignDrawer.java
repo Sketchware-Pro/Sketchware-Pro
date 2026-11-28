@@ -64,9 +64,7 @@ public class DesignDrawer extends LinearLayout {
         } else if (id == R.id.item_used_custom_blocks) {
             designActivity.toCustomBlocksViewer();
         } else if (id == R.id.item_code_shrinking_manager) {
-            designActivity.toProguardManager();
-        } else if (id == R.id.item_stringfog_manager) {
-            designActivity.toStringFogManager();
+            designActivity.toCodeShrinkingManager();
         } else if (id == R.id.item_show_src) {
             designActivity.toSourceCodeViewer();
         } else if (id == R.id.item_xml_command_manager) {
@@ -130,7 +128,6 @@ public class DesignDrawer extends LinearLayout {
         addDrawerItem(R.id.item_manifest_manager, R.drawable.ic_mtrl_deployed_code, R.string.design_drawer_menu_androidmanifest, R.string.design_drawer_menu_androidmanifest_subtitle, content);
         addDrawerItem(R.id.item_used_custom_blocks, R.drawable.ic_mtrl_block, R.string.design_drawer_menu_customblocks, R.string.design_drawer_menu_customblocks_subtitle, content);
         addDrawerItem(R.id.item_code_shrinking_manager, R.drawable.ic_mtrl_shield_lock, R.string.design_drawer_menu_proguard, R.string.design_drawer_menu_proguard_subtitle, content);
-        addDrawerItem(R.id.item_stringfog_manager, R.drawable.ic_mtrl_regular_expression, R.string.design_drawer_menu_stringfog, R.string.design_drawer_menu_stringfog_subtitle, content);
         addDrawerItem(R.id.item_show_src, R.drawable.ic_mtrl_frame_source, R.string.design_drawer_menu_title_source_code, R.string.design_drawer_menu_description_source_code, content);
         addDrawerItem(R.id.item_xml_command_manager, R.drawable.ic_mtrl_code, R.string.design_drawer_menu_title_xml_command, R.string.design_drawer_menu_description_xml_command, content);
         addDrawerItem(R.id.item_logcat_reader, R.drawable.ic_mtrl_article, R.string.design_drawer_menu_title_logcat_reader, R.string.design_drawer_menu_subtitle_logcat_reader, content);

@@ -24,6 +24,7 @@ import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 import pro.sketchware.databinding.CompileLogBinding;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.R;
 
 public class CompileLogActivity extends BaseAppCompatActivity {
 
@@ -51,9 +52,9 @@ public class CompileLogActivity extends BaseAppCompatActivity {
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         if (getIntent().getBooleanExtra("showingLastError", false)) {
-            binding.topAppBar.setTitle("Last compile log");
+            binding.topAppBar.setTitle(R.string.compile_log_last_compile_log);
         } else {
-            binding.topAppBar.setTitle("Compile log");
+            binding.topAppBar.setTitle(R.string.common_word_compile_log);
         }
 
         String sc_id = getIntent().getStringExtra("sc_id");
@@ -68,9 +69,9 @@ public class CompileLogActivity extends BaseAppCompatActivity {
             binding.clearButton.setOnClickListener(v -> {
                 if (compileErrorSaver.logFileExists()) {
                     compileErrorSaver.deleteSavedLogs();
-                    SketchwareUtil.toast("Compile logs have been cleared.");
+                    SketchwareUtil.toast(Helper.getResString(R.string.compile_log_compile_logs_cleared));
                 } else {
-                    SketchwareUtil.toast("No compile logs found.");
+                    SketchwareUtil.toast(Helper.getResString(R.string.compile_log_no_compile_logs_found));
                 }
 
                 setErrorText();
@@ -189,9 +190,9 @@ public class CompileLogActivity extends BaseAppCompatActivity {
                 Gravity.CENTER));
 
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Select font size")
+                .setTitle(R.string.compile_log_select_font_size)
                 .setView(layout)
-                .setPositiveButton("Save", (dialog, which) -> {
+                .setPositiveButton(R.string.common_word_save, (dialog, which) -> {
                     logViewerPreferences.edit().putInt(PREFERENCE_FONT_SIZE, picker.getValue()).apply();
 
                     binding.tvCompileLog.setTextSize((float) picker.getValue());

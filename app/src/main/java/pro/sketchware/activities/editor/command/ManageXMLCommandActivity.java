@@ -123,11 +123,11 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                     int position = item.second;
                     PopupMenu popupMenu = new PopupMenu(this, item.first);
                     var menu = popupMenu.getMenu();
-                    menu.add(Menu.NONE, 0, Menu.NONE, "Edit");
-                    menu.add(Menu.NONE, 1, Menu.NONE, "Delete");
-                    if (position != 0) menu.add(Menu.NONE, 2, Menu.NONE, "Move up");
+                    menu.add(Menu.NONE, 0, Menu.NONE, R.string.common_word_edit);
+                    menu.add(Menu.NONE, 1, Menu.NONE, R.string.common_word_delete);
+                    if (position != 0) menu.add(Menu.NONE, 2, Menu.NONE, R.string.manage_xml_command_move_up);
                     if (position != adapter.getItemCount() - 1)
-                        menu.add(Menu.NONE, 3, Menu.NONE, "Move down");
+                        menu.add(Menu.NONE, 3, Menu.NONE, R.string.manage_xml_command_move_down);
 
                     popupMenu.setOnMenuItemClickListener(
                             itemMenu -> {
@@ -185,7 +185,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         switch (item.getItemId()) {
             case 0 -> {
                 new MaterialAlertDialogBuilder(this)
-                        .setTitle("Select an XML")
+                        .setTitle(R.string.manage_xml_command_select_an_xml)
                         .setAdapter(
                                 new ArrayAdapter<>(
                                         this, android.R.layout.simple_list_item_1, xmlFiles),
@@ -226,7 +226,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                     }
                 });
         dialog.show();
-        binding.title.setText(!edit ? "Add new command" : "Edit command");
+        binding.title.setText(!edit ? R.string.manage_xml_command_add_new_command : R.string.manage_xml_command_edit_command);
 
         if (edit) {
             var command = commands.get(position);
@@ -258,11 +258,11 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                     var reference = Helper.getText(binding.reference);
                     var command = Helper.getText(binding.command);
                     if (TextUtils.isEmpty(xmlName)) {
-                        SketchwareUtil.toastError("XML name is required");
+                        SketchwareUtil.toastError(Helper.getResString(R.string.manage_xml_command_xml_name_required));
                         return;
                     }
                     if (TextUtils.isEmpty(reference)) {
-                        SketchwareUtil.toastError("reference is required");
+                        SketchwareUtil.toastError(Helper.getResString(R.string.manage_xml_command_reference_required));
                         return;
                     }
                     HashMap<String, Object> map = new HashMap<>();
@@ -299,7 +299,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(R.string.common_word_confirmation);
         dialog.setMessage(
-                "Would you like to enable the new XML Command? It will speed up XML generation and compilation, but this change cannot be undone. Don’t worry, your previous changes with the XML Command Block will transfered here so it will remain unaffected.");
+                R.string.manage_xml_command_enable_new_xml_command_message);
         dialog.setPositiveButton(
                 R.string.common_word_yes,
                 (d, w) -> {
@@ -330,7 +330,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                                     new MaterialAlertDialogBuilder(this)
                                             .setTitle(filename)
                                             .setCancelable(false)
-                                            .setPositiveButton("Dismiss", null);
+                                            .setPositiveButton(R.string.common_word_dismiss, null);
 
                             runOnUiThread(
                                     () -> {
@@ -344,7 +344,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                                         editor.setText(
                                                 !source.isEmpty()
                                                         ? source
-                                                        : "Failed to generate source.");
+                                                        : Helper.getResString(R.string.manage_xml_command_failed_to_generate_source));
                                         editor.getComponent(Magnifier.class)
                                                 .setWithinEditorForcibly(true);
 

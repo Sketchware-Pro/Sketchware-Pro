@@ -105,7 +105,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 0, 0, "Import");
+        menu.add(0, 0, 0, R.string.common_word_import);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -213,7 +213,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
     private void showFilePickerDialog() {
         FilePickerOptions options = new FilePickerOptions();
         options.setExtensions(new String[]{"json"});
-        options.setTitle("Select json file");
+        options.setTitle(Helper.getResString(R.string.add_custom_component_select_json_file));
 
         FilePickerCallback callback = new FilePickerCallback() {
             @Override

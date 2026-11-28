@@ -958,10 +958,10 @@ public class Fx {
                 opcode = "(FirebaseAuth.getInstance().getCurrentUser() != null)";
                 break;
             case "firebaseauthGetCurrentUser":
-                opcode = "FirebaseAuth.getInstance().getCurrentUser().getEmail()";
+                opcode = "(FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : \"\")";
                 break;
             case "firebaseauthGetUid":
-                opcode = "FirebaseAuth.getInstance().getCurrentUser().getUid()";
+                opcode = "(FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getUid() : \"\")";
                 break;
             case "firebaseauthResetPassword":
                 if (!params.get(1).equals("\"\"")) {

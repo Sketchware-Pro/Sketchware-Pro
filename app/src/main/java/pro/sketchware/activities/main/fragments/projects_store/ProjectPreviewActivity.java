@@ -22,6 +22,8 @@ import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
 import pro.sketchware.databinding.FragmentStoreProjectPreviewBinding;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class ProjectPreviewActivity extends BaseAppCompatActivity {
     private static final long TITLE_CONTAINER_FADE_DURATION = 150L;
@@ -60,20 +62,20 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
         }
 
         if (project.getIsEditorChoice().equals("1")) {
-            addChip("Editor's Choice");
+            addChip(Helper.getResString(R.string.msg_editor_s_choice));
         }
 
         if (project.getIsVerified().equals("1")) {
-            addChip("Verified");
+            addChip(Helper.getResString(R.string.project_preview_verified));
         }
 
         addChip(project.getCategory());
 
-        binding.downloads.setText("Downloads: " + project.getDownloads());
-        binding.filesize.setText("Size: " + project.getProjectSize());
-        binding.timestamp.setText("Released: " + DateFormat.getDateInstance().format(new Date(Long.parseLong(project.getPublishedTimestamp()))));
+        binding.downloads.setText(Helper.getResString(R.string.project_preview_downloads_value, project.getDownloads()));
+        binding.filesize.setText(Helper.getResString(R.string.project_preview_size_value, project.getProjectSize()));
+        binding.timestamp.setText(Helper.getResString(R.string.project_preview_released_value, DateFormat.getDateInstance().format(new Date(Long.parseLong(project.getPublishedTimestamp())))));
         binding.btnComments.setOnClickListener(v -> openCommentsSheet());
-        binding.btnDownload.setOnClickListener(v -> SketchwareUtil.toastError("Downloading projects is unavailable right now!"));
+        binding.btnDownload.setOnClickListener(v -> SketchwareUtil.toastError(Helper.getResString(R.string.project_preview_downloading_projects_unavailable)));
         binding.btnOpenIn.setOnClickListener(v -> openProject());
         binding.btnBack.setOnClickListener(v -> finish());
 

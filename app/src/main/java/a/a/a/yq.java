@@ -577,6 +577,10 @@ public class yq {
                     case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT -> {
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH);
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
+                        // Android 12+ (API 31) requires the new runtime permissions;
+                        // the legacy ones are ignored there.
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH_CONNECT);
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH_SCAN);
                     }
                     case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER ->
                             N.addPermission(activity.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);

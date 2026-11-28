@@ -114,6 +114,13 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         eventsToAdd.clear();
 
         for (var activityEvent : oq.getAllActivityEvents()) {
+            // "initializeLogic" is the implicit default event (targetId "onCreate") that
+            // always exists; offering it again here would create a duplicate event whose
+            // blocks compile into initialize(Bundle) instead of initializeLogic().
+            if (activityEvent.equals("initializeLogic")) {
+                continue;
+            }
+
             boolean exists = false;
             for (var existingEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
                 if (existingEvent.eventType == EventBean.EVENT_TYPE_ACTIVITY
@@ -177,6 +184,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB) && (fab = jC.a(sc_id).h(projectFile.getXmlName())) != null) {
             for (String fabEvent : oq.getEventsForClass(fab.getClassInfo())) {
                 boolean exists = false;
+                Set<String> toNotAdd = new Ox(new jq(), projectFile).readAttributesToReplace(fab);
                 for (var existingFabEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
                     if (existingFabEvent.eventType == EventBean.EVENT_TYPE_VIEW
                             && fab.id.equals(existingFabEvent.targetId)
@@ -185,7 +193,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                         break;
                     }
                 }
-                if (!exists) {
+                if (!exists && !toNotAdd.contains("android:id")) {
                     addableViewEvents.add(new EventBean(EventBean.EVENT_TYPE_VIEW, fab.type, fab.id, fabEvent));
                 }
             }
@@ -198,15 +206,25 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                     for (String drawerViewEvent : oq.getEventsForClass(drawerView.getClassInfo())) {
                         boolean exists = false;
                         for (var existingEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
+                            // Match the namespaced target too: NEW drawer events store
+                            // "_drawer_" + id, legacy ones store the raw id - both mean
+                            // "this drawer widget already has this event".
+                            boolean sameTarget = drawerView.id.equals(existingEvent.targetId)
+                                    || ("_drawer_" + drawerView.id).equals(existingEvent.targetId);
                             if (existingEvent.eventType == EventBean.EVENT_TYPE_DRAWER_VIEW
-                                    && drawerView.id.equals(existingEvent.targetId)
+                                    && sameTarget
                                     && drawerViewEvent.equals(existingEvent.eventName)) {
                                 exists = true;
                                 break;
                             }
                         }
                         if (!exists && !toNotAdd.contains("android:id")) {
-                            addableDrawerViewEvents.add(new EventBean(EventBean.EVENT_TYPE_DRAWER_VIEW, drawerView.type, drawerView.id, drawerViewEvent));
+                            // Namespace the logic key: a main-XML view and a drawer view can
+                            // share the same id, and both used to compile into the single
+                            // <id>_<event> logic (blocks duplicated into both listeners,
+                            // editing/deleting one destroying the other). The "_drawer_" prefix
+                            // keeps the keys separate; Hx strips it when resolving the Event.
+                            addableDrawerViewEvents.add(new EventBean(EventBean.EVENT_TYPE_DRAWER_VIEW, drawerView.type, "_drawer_" + drawerView.id, drawerViewEvent));
                         }
                     }
                 }
