@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_title">زبان</string>
+    <string name="settings_language_system">زبان پیش فرض</string>
+    <!-- Language names are shown in their own language. -->
+    <string name="settings_language_english" translatable="false">انگلیسی</string>
+    <string name="settings_language_turkish" translatable="false">ترکی</string>
+    <string name="settings_language_persian" translatable="false">فارسی</string>
+</resources>
