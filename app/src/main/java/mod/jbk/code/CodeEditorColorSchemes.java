@@ -54,7 +54,11 @@ public class CodeEditorColorSchemes {
         EditorColorScheme scheme;
 
         try {
-            ThemeRegistry.getInstance().setTheme(theme);
+            if (!ThemeRegistry.getInstance().setTheme(theme)) {
+                // The theme was not registered at startup (file missing or failed to parse);
+                // without this the registry would keep the previous theme silently.
+                LogUtil.w(TAG, "Unknown theme '" + theme + "', keeping the current theme");
+            }
             scheme = TextMateColorScheme.create(ThemeRegistry.getInstance());
         } catch (Exception e) {
             LogUtil.e(TAG, "Failed to load theme '" + theme + "', using defaults", e);

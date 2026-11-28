@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.ColorUtils;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -30,7 +31,6 @@ import java.io.File;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,7 +102,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         pref = c.getSharedPreferences("hsce", Activity.MODE_PRIVATE);
 
         int text_size = pref.getInt(prefix + "_ts", 12);
-        int theme = pref.getInt(prefix + "_theme", 3);
+        int theme = pref.getInt(prefix + "_theme", 1);
         boolean word_wrap = pref.getBoolean(prefix + "_ww", false);
         boolean auto_c = pref.getBoolean(prefix + "_ac", true);
         boolean auto_complete_symbol_pairs = pref.getBoolean(prefix + "_acsp", true);
@@ -116,15 +116,17 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
 
     public static void selectTheme(CodeEditor ed, int which) {
         // Built-in schemes only recolor the editor chrome; use selectTextMateTheme for Kotlin/XML.
-        EditorColorScheme scheme = switch (which) {
-            case 1 -> new SchemeGitHub();
-            case 2 -> new SchemeEclipse();
-            case 3 -> new SchemeDarcula();
-            case 4 -> new SchemeVS2019();
-            case 5 -> new SchemeNotepadXX();
-            default -> new EditorColorScheme();
-        };
-
+        // Instantiate the scheme declared at this position in KNOWN_COLOR_SCHEMES so the
+        // dialog order and the applied scheme can never drift apart again.
+        Class<? extends EditorColorScheme> cls = (which >= 0 && which < KNOWN_COLOR_SCHEMES.size())
+                ? KNOWN_COLOR_SCHEMES.get(which).second
+                : EditorColorScheme.class;
+        EditorColorScheme scheme;
+        try {
+            scheme = cls.getDeclaredConstructor().newInstance();
+        } catch (ReflectiveOperationException e) {
+            scheme = new EditorColorScheme();
+        }
         ed.setColorScheme(scheme);
     }
 
@@ -143,6 +145,25 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         return ThemeUtils.isDarkThemeEnabled(c)
                 ? CodeEditorColorSchemes.themeIndex(CodeEditorColorSchemes.THEME_DRACULA)
                 : CodeEditorColorSchemes.themeIndex(CodeEditorColorSchemes.THEME_GITHUB);
+    }
+
+    /**
+     * One-time migration for the {@link #KNOWN_COLOR_SCHEMES} reordering, which moved
+     * "Darcula" from index 3 to index 1.
+     * Old order: Default(0) GitHub(1) Eclipse(2) Darcula(3) VS2019(4) NotepadXX(5).
+     * New order: Default(0) Darcula(1) GitHub(2) Eclipse(3) VS2019(4) NotepadXX(5).
+     * Preserves the theme the user was last seeing; the flag makes it run once.
+     */
+    private static void migrateThemePref(SharedPreferences sp) {
+        if (sp.getBoolean("act_theme_migrated", false) || !sp.contains("act_theme")) return;
+        int old = sp.getInt("act_theme", 1);
+        int remapped = switch (old) {
+            case 1 -> 2; // GitHub
+            case 2 -> 3; // Eclipse
+            case 3 -> 1; // Darcula
+            default -> old;
+        };
+        sp.edit().putInt("act_theme", remapped).putBoolean("act_theme_migrated", true).apply();
     }
 
     public static void selectLanguage(CodeEditor ed, int which) {
@@ -267,13 +288,13 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
 
     public static void showSwitchThemeDialog(Activity activity, CodeEditor codeEditor, DialogInterface.OnClickListener listener) {
         EditorColorScheme currentScheme = codeEditor.getColorScheme();
-        var knownColorSchemesProperlyOrdered = new ArrayList<>(KNOWN_COLOR_SCHEMES);
-        Collections.reverse(knownColorSchemesProperlyOrdered);
-        int selectedThemeIndex = knownColorSchemesProperlyOrdered.stream()
-                .filter(pair -> pair.second.equals(currentScheme.getClass()))
-                .map(KNOWN_COLOR_SCHEMES::indexOf)
-                .findFirst()
-                .orElse(-1);
+        int selectedThemeIndex = -1;
+        for (int i = 0; i < KNOWN_COLOR_SCHEMES.size(); i++) {
+            if (KNOWN_COLOR_SCHEMES.get(i).second.equals(currentScheme.getClass())) {
+                selectedThemeIndex = i;
+                break;
+            }
+        }
         String[] themeItems = KNOWN_COLOR_SCHEMES.stream()
                 .map(pair -> pair.first)
                 .toArray(String[]::new);
@@ -363,16 +384,17 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         }
 
         // Apply the theme matching the active language: a saved TextMate theme
-        // for Kotlin/XML (auto default on first open), else the built-in scheme.
+        // for Kotlin/XML (auto default on first open, matching the app's light/dark
+        // polarity), else the built-in scheme.
         SharedPreferences hsce = getSharedPreferences("hsce", Activity.MODE_PRIVATE);
+        migrateThemePref(hsce);
         loadCESettings(this, binding.editor, "act");
         if (textMateLanguage) {
-            int tmDefault = languageId == 2 ? defaultTextMateTheme(getApplicationContext())
-                    : CodeEditorColorSchemes.themeIndex(CodeEditorColorSchemes.THEME_DRACULA);
+            int tmDefault = defaultTextMateTheme(getApplicationContext());
             int tmTheme = hsce.contains("act_tmtheme") ? hsce.getInt("act_tmtheme", 0) : tmDefault;
-            selectTextMateTheme(binding.editor, tmTheme);
+            applyEditorTheme(true, tmTheme);
         } else {
-            selectTheme(binding.editor, hsce.getInt("act_theme", 3));
+            applyEditorTheme(false, hsce.getInt("act_theme", 1));
         }
         loadToolbar();
 
@@ -517,12 +539,11 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                             selectLanguage(binding.editor, which);
                             // Re-sync the color scheme to match the new language.
                             if (which == 0) {
-                                selectTheme(binding.editor, pref.getInt("act_theme", 3));
+                                applyEditorTheme(false, pref.getInt("act_theme", 1));
                             } else {
-                                int tmDefault = which == 2 ? defaultTextMateTheme(getApplicationContext())
-                                        : CodeEditorColorSchemes.themeIndex(CodeEditorColorSchemes.THEME_DRACULA);
+                                int tmDefault = defaultTextMateTheme(getApplicationContext());
                                 int tmTheme = pref.contains("act_tmtheme") ? pref.getInt("act_tmtheme", 0) : tmDefault;
-                                selectTextMateTheme(binding.editor, tmTheme);
+                                applyEditorTheme(true, tmTheme);
                             }
                             dialog.dismiss();
                         });
@@ -556,13 +577,13 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                     case 9: // Select theme
                         if (binding.editor.getColorScheme() instanceof TextMateColorScheme) {
                             showSwitchTextMateThemeDialog(this, binding.editor, (dialog, which) -> {
-                                selectTextMateTheme(binding.editor, which);
+                                applyEditorTheme(true, which);
                                 pref.edit().putInt("act_tmtheme", which).apply();
                                 dialog.dismiss();
                             });
                         } else {
                             showSwitchThemeDialog(this, binding.editor, (dialog, which) -> {
-                                selectTheme(binding.editor, which);
+                                applyEditorTheme(false, which);
                                 pref.edit().putInt("act_theme", which).apply();
                                 dialog.dismiss();
                             });
@@ -627,5 +648,30 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         intent.putExtras(getIntent());
         intent.putExtra("xml", binding.editor.getText().toString());
         startActivity(intent);
+    }
+
+    /**
+     * Applies a theme to the editor and recolors the editor region to match it.
+     * Sora only draws the scheme's background inside the editor's canvas; without this,
+     * the surrounding region (root view and the top/bottom inset margins around the editor,
+     * including the gap above the keyboard) keeps the app theme's color. So whenever the
+     * picked theme's light/dark polarity differs from the app theme's, the background and
+     * text look only half-changed.
+     */
+    private void applyEditorTheme(boolean textMate, int which) {
+        if (textMate) selectTextMateTheme(binding.editor, which);
+        else selectTheme(binding.editor, which);
+
+        EditorColorScheme scheme = binding.editor.getColorScheme();
+        int bg = scheme.getColor(EditorColorScheme.WHOLE_BACKGROUND);
+        binding.getRoot().setBackgroundColor(bg);
+        binding.editor.setBackgroundColor(bg);
+
+        // The TextMate path of Sora does not set the line number colors; the default
+        // gray (0xFF505050) is unreadable on dark backgrounds.
+        if (textMate) {
+            scheme.setColor(EditorColorScheme.LINE_NUMBER,
+                    ColorUtils.calculateLuminance(bg) < 0.5f ? 0xFF8A8A8A : 0xFF616161);
+        }
     }
 }
