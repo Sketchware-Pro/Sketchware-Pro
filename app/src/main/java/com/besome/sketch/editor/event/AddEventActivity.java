@@ -32,7 +32,7 @@ import java.util.Set;
 
 import a.a.a.Ox;
 import a.a.a.bB;
-import a.a.a.gB;
+import a.a.a.AnimUtil;
 import a.a.a.jC;
 import a.a.a.jq;
 import a.a.a.mB;
@@ -74,7 +74,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     private void l() {
         if (eventsToAdd.isEmpty() && !C) {
             C = true;
-            gB.a(binding.eventsPreview, 300, new Animator.AnimatorListener() {
+            AnimUtil.a(binding.eventsPreview, 300, new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(@NonNull Animator animation) {
                 }
@@ -95,7 +95,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         } else if (!eventsToAdd.isEmpty() && C) {
             C = false;
             binding.eventsPreview.setVisibility(View.VISIBLE);
-            gB.b(binding.eventsPreview, 300, null);
+            AnimUtil.b(binding.eventsPreview, 300, null);
         }
     }
 
@@ -357,7 +357,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void onResume() {
         super.onResume();
-        gB.a(binding.container, 500);
+        AnimUtil.a(binding.container, 500);
         if (projectFile != null) {
             initialize();
         }

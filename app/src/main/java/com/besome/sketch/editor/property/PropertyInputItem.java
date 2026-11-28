@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 
 import a.a.a.Jx;
 import a.a.a.Kw;
-import a.a.a.OB;
+import a.a.a.NumericRangeValidator;
 import a.a.a.SB;
 import a.a.a.jC;
 import a.a.a.lC;
@@ -646,7 +646,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
         binding.edInput.setText(value);
 
-        OB validator = new OB(context, binding.tiInput, minValue, maxValue);
+        NumericRangeValidator validator = new NumericRangeValidator(context, binding.tiInput, minValue, maxValue);
 
         dialog.setView(binding.getRoot());
         dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {

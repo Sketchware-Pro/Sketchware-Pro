@@ -9,20 +9,20 @@ import java.util.regex.Pattern;
 
 import pro.sketchware.R;
 
-public class YB extends MB {
+public class ViewNameValidator extends BaseInputValidator {
 
     private static final Pattern namePattern = Pattern.compile("^[a-z][a-z0-9_]*");
     private final String[] reservedNames;
     private final ArrayList<String> existingNames;
     private String originalName;
 
-    public YB(Context context, TextInputLayout textInputLayout, String[] reservedNames, ArrayList<String> existingNames) {
+    public ViewNameValidator(Context context, TextInputLayout textInputLayout, String[] reservedNames, ArrayList<String> existingNames) {
         super(context, textInputLayout);
         this.reservedNames = reservedNames;
         this.existingNames = existingNames;
     }
 
-    public YB(Context context, TextInputLayout textInputLayout, String[] reservedNames, ArrayList<String> existingNames, String originalName) {
+    public ViewNameValidator(Context context, TextInputLayout textInputLayout, String[] reservedNames, ArrayList<String> existingNames, String originalName) {
         super(context, textInputLayout);
         this.reservedNames = reservedNames;
         this.existingNames = existingNames;
@@ -65,7 +65,7 @@ public class YB extends MB {
             b.setErrorEnabled(true);
             b.setError(a.getString(R.string.logic_editor_message_variable_name_must_start_letter));
             d = false;
-        } else if (YB.namePattern.matcher(charSequence.toString()).matches()) {
+        } else if (ViewNameValidator.namePattern.matcher(charSequence.toString()).matches()) {
             b.setErrorEnabled(false);
             d = true;
         } else {

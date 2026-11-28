@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import pro.sketchware.R;
 
-public class NB extends MB {
+public class NB extends BaseInputValidator {
 
     private final ArrayList<String> preDefNames;
 

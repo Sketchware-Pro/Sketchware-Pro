@@ -43,6 +43,9 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
         setContentView(binding.getRoot());
 
         numProj = getIntent().getStringExtra("sc_id");
+        if (mod.hilal.saif.android_manifest.AndroidManifestInjector.hasManualManifest(numProj)) {
+            mod.hilal.saif.android_manifest.ManifestPermissionSync.syncManifestToPermissionList(numProj);
+        }
         frc = new FileResConfig(numProj);
 
         String path = new FilePathUtil().getPathPermission(numProj);
@@ -56,6 +59,9 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
             @Override
             public void handleOnBackPressed() {
                 FileUtil.writeFile(new FilePathUtil().getPathPermission(numProj), new Gson().toJson(frc.getPermissionList()));
+                if (mod.hilal.saif.android_manifest.AndroidManifestInjector.hasManualManifest(numProj)) {
+                    mod.hilal.saif.android_manifest.ManifestPermissionSync.syncPermissionListToManifest(numProj, frc.getPermissionList());
+                }
                 finish();
             }
         });
@@ -141,6 +147,9 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
                 .setMessage(R.string.manage_permission_reset_permissions_message)
                 .setPositiveButton(R.string.common_word_reset, (dialog, which) -> {
                     FileUtil.writeFile(new FilePathUtil().getPathPermission(numProj), "[]");
+                    if (mod.hilal.saif.android_manifest.AndroidManifestInjector.hasManualManifest(numProj)) {
+                        mod.hilal.saif.android_manifest.ManifestPermissionSync.syncPermissionListToManifest(numProj, new ArrayList<>());
+                    }
                     frc = new FileResConfig(numProj);
                     loadAndSortData();
                 })

@@ -8,9 +8,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Locale;
 
-import a.a.a.MB;
+import a.a.a.BaseInputValidator;
 
-public class MinMaxInputValidator extends MB {
+public class MinMaxInputValidator extends BaseInputValidator {
     public int minValue;
     public int maxValue;
 

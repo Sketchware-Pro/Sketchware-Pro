@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 
-public class gB {
+public class AnimUtil {
     public static void a(View view, float rotation, int duration, int delay, Animator.AnimatorListener listener) {
         view.animate().setListener(listener).rotation(rotation)
                 .setStartDelay(delay).setDuration(duration).start();

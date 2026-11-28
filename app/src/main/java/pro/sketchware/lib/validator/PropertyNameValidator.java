@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import a.a.a.MB;
+import a.a.a.BaseInputValidator;
 import pro.sketchware.R;
 
-public class PropertyNameValidator extends MB {
+public class PropertyNameValidator extends BaseInputValidator {
 
     private final String[] reservedNames;
     private final String[] reservedMethodNames;

@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.HashMap
 
-object vB {
+object JsonMapUtil {
     @JvmStatic
     fun a(hashMap: HashMap<String, Any?>?): String {
         return Gson().toJson(hashMap)

@@ -60,6 +60,12 @@ public class ProjectSettings {
      * Setting to use new xml command
      */
     public static final String SETTING_NEW_XML_COMMAND = "xml_command";
+
+    /**
+     * Setting for manual manifest edit toggle
+     */
+    public static final String SETTING_MANIFEST_MANUAL_EDIT_ENABLED = "manifest_manual_edit_enabled";
+    public static final String SETTING_MANIFEST_MANUAL_EDIT_ENABLED_DEFAULT = "false";
     public static final String SETTING_GENERIC_VALUE_TRUE = "true";
     public static final String SETTING_GENERIC_VALUE_FALSE = "false";
     private static final String TAG = "ProjectSettings";

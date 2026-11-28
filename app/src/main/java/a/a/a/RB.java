@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import pro.sketchware.R;
 
-public class RB extends MB {
+public class RB extends BaseInputValidator {
 
     private final Pattern NAME_PATTERN = Pattern.compile("^[a-z][a-z0-9_ ]*");
 

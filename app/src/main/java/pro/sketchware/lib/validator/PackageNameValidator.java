@@ -6,11 +6,11 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.regex.Pattern;
 
-import a.a.a.MB;
+import a.a.a.BaseInputValidator;
 import a.a.a.uq;
 import pro.sketchware.R;
 
-public class PackageNameValidator extends MB {
+public class PackageNameValidator extends BaseInputValidator {
 
     private static final Pattern packagePattern = Pattern.compile("([a-zA-Z][a-zA-Z\\d]*\\.)*[a-zA-Z][a-zA-Z\\d]*");
 

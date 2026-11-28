@@ -1,4 +1,8 @@
 <resources>
+    <string name="menu_manifest_manager_manual_enable">Enable Editor Manifest</string>
+    <string name="menu_manifest_manager_manual_enable_dec">Enable it so you can edit the manifest in full mode.</string>
+    <string name="menu_manifest_open">Open Xml Editor</string>
+    <string name="menu_manifest_manager_open_dec">Edit AndroidManifest.xml directly in the code editor</string>
     <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="collection_duplicated_name">Duplicate file name in my collection</string>
     <string name="collection_failed_to_copy">Failed to save to my collection</string>

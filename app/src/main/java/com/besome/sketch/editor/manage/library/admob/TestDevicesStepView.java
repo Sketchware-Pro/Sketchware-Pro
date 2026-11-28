@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import a.a.a.NB;
 import a.a.a.Uu;
 import a.a.a.bB;
-import a.a.a.gB;
+import a.a.a.AnimUtil;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -71,7 +71,7 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
 
     private void initialize(Context context) {
         wB.a(context, this, R.layout.manage_library_admob_test_device);
-        gB.b(this, 600, 200, null);
+        AnimUtil.b(this, 600, 200, null);
         ((TextView) findViewById(R.id.tv_set_test_device)).setText(R.string.design_library_admob_button_set_test_device);
         findViewById(R.id.layout_set_test_device).setOnClickListener(this);
         RecyclerView testDevices = findViewById(R.id.list_test_device);

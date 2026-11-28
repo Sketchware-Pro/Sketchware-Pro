@@ -14,7 +14,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
-import a.a.a.YB;
+import a.a.a.ViewNameValidator;
 import a.a.a.bB;
 import a.a.a.rq;
 import a.a.a.uq;
@@ -26,7 +26,7 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
 
     public static final int REQ_CD_PRESET_ACTIVITY = 277;
     private TextInputEditText customViewName;
-    private YB viewNameValidator;
+    private ViewNameValidator viewNameValidator;
     private String presetName;
 
     private final ActivityResultLauncher<Intent> presetSettingLauncher =
@@ -53,7 +53,7 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
         customViewName = binding.edInput;
         binding.tiInput.setHint(Helper.getResString(R.string.design_manager_view_hint_enter_view_name));
         binding.tvDesc.setText(Helper.getResString(R.string.design_manager_view_description_guide_use_custom_view));
-        viewNameValidator = new YB(this, binding.tiInput, uq.b, alreadyInUseNames);
+        viewNameValidator = new ViewNameValidator(this, binding.tiInput, uq.b, alreadyInUseNames);
         super.r.setOnClickListener(this);
         super.s.setOnClickListener(this);
     }

@@ -80,7 +80,7 @@ import a.a.a.lC;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
-import a.a.a.zB;
+import a.a.a.BitmapDecodeUtil;
 import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
 import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
 import dev.aldi.sayuti.editor.view.item.ItemCodeView;
@@ -518,7 +518,7 @@ public class ViewPane extends RelativeLayout {
                         String backgroundRes = resourcesManager.f(viewBean.layout.backgroundResource);
                         if (backgroundRes != null) {
                             if (backgroundRes.endsWith(".9.png")) {
-                                Bitmap decodedBitmap = zB.a(backgroundRes);
+                                Bitmap decodedBitmap = BitmapDecodeUtil.a(backgroundRes);
                                 if (decodedBitmap != null) {
                                     byte[] ninePatchChunk = decodedBitmap.getNinePatchChunk();
                                     if (NinePatch.isNinePatchChunk(ninePatchChunk)) {

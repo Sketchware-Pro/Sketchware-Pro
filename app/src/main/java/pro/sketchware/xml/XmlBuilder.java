@@ -51,11 +51,72 @@ public class XmlBuilder {
         nodeValue = value;
     }
 
+    public boolean hasAttribute(String attrName) {
+        if (attrName == null) return false;
+        String prefix = "";
+        String name = attrName;
+        if (attrName.contains(":")) {
+            String[] parts = attrName.split(":", 2);
+            prefix = parts[0];
+            name = parts[1];
+        }
+        for (AttributeBuilder ab : attributes) {
+            if (ab.attr != null) {
+                if (ab.attr.equalsIgnoreCase(name)) {
+                    if (prefix.isEmpty() || ab.namespace == null || ab.namespace.equalsIgnoreCase(prefix)) {
+                        return true;
+                    }
+                }
+            }
+            if (ab.value != null) {
+                if (ab.value.contains(attrName + "=") || ab.value.contains(name + "=")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void removeAttribute(String attrName) {
+        if (attrName == null) return;
+        String prefix = "";
+        String name = attrName;
+        if (attrName.contains(":")) {
+            String[] parts = attrName.split(":", 2);
+            prefix = parts[0];
+            name = parts[1];
+        }
+        for (int i = attributes.size() - 1; i >= 0; i--) {
+            AttributeBuilder ab = attributes.get(i);
+            if (ab.attr != null && ab.attr.equalsIgnoreCase(name)) {
+                if (prefix.isEmpty() || ab.namespace == null || ab.namespace.equalsIgnoreCase(prefix)) {
+                    attributes.remove(i);
+                    continue;
+                }
+            }
+            if (ab.value != null && (ab.value.contains(attrName + "=") || ab.value.contains(name + "="))) {
+                attributes.remove(i);
+            }
+        }
+    }
+
     public void addAttribute(String namespace, String attr, String value) {
+        if (attr != null) {
+            String fullKey = (namespace != null && !namespace.isEmpty()) ? (namespace + ":" + attr) : attr;
+            removeAttribute(fullKey);
+        }
         attributes.add(new AttributeBuilder(namespace, attr, value));
     }
 
     public void addAttributeValue(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return;
+        }
+        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("([a-zA-Z0-9_]+:[a-zA-Z0-9_]+|[a-zA-Z0-9_]+)\\s*=").matcher(value);
+        if (matcher.find()) {
+            String attrKey = matcher.group(1);
+            removeAttribute(attrKey);
+        }
         attributes.add(new AttributeBuilder(value));
     }
 

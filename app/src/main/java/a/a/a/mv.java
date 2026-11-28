@@ -16,7 +16,7 @@ public class mv extends LinearLayout implements nv {
         super(firebaseActivity);
         binding = ManageLibraryFirebaseStorageUrlSettingsBinding.inflate(firebaseActivity.getLayoutInflater(), this, true);
 
-        gB.b(this, 600, 200, null);
+        AnimUtil.b(this, 600, 200, null);
         binding.tvTitleStorageUrl.setText(R.string.design_library_firebase_title_storage_bucket_url);
     }
 

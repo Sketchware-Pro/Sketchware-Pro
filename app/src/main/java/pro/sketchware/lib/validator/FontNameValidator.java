@@ -7,10 +7,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import a.a.a.MB;
+import a.a.a.BaseInputValidator;
 import pro.sketchware.R;
 
-public class FontNameValidator extends MB {
+public class FontNameValidator extends BaseInputValidator {
     public String[] reservedKeywords;
     public ArrayList<String> fontNames;
     public String h;

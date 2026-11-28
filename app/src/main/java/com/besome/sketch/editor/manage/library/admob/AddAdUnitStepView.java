@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import a.a.a.SB;
 import a.a.a.Uu;
 import a.a.a.bB;
-import a.a.a.gB;
+import a.a.a.AnimUtil;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLibraryAdmobListingBinding;
@@ -99,7 +99,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
 
     private void initialize(Context context) {
         binding = ManageLibraryAdmobListingBinding.inflate(LayoutInflater.from(context), this, true);
-        gB.b(this, 600, 200, null);
+        AnimUtil.b(this, 600, 200, null);
         binding.layoutManualAddAdUnit.setOnClickListener(this);
         tvWarning = binding.tvWarning;
 

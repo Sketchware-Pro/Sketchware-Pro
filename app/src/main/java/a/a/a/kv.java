@@ -30,7 +30,7 @@ public class kv extends LinearLayout implements nv {
     }
 
     private void initialize() {
-        gB.b(this, 600, 200, null);
+        AnimUtil.b(this, 600, 200, null);
 
         binding.layoutSwitch.setOnClickListener(v -> {
             if (binding.libSwitch.isChecked() || !firebaseLibraryBean.data.isEmpty()) {

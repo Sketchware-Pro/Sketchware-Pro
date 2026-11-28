@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import a.a.a.Uu;
 import a.a.a.bB;
-import a.a.a.gB;
+import a.a.a.AnimUtil;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -89,7 +89,7 @@ public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickLis
     @SuppressLint("SetTextI18n")
     private void initialize(Context context) {
         binding = ManageLibraryAdmobSetUnitBinding.inflate(LayoutInflater.from(context), this, true);
-        gB.b(this, 600, 200, null);
+        AnimUtil.b(this, 600, 200, null);
         bannerAdName = binding.tvBannerName;
         bannerAdUnitIdView = binding.tvBannerId;
         interstitialAdName = binding.tvInterName;

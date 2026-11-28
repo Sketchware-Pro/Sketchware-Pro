@@ -32,7 +32,7 @@ class DB(context: Context, str: String) {
     }
 
     fun a(str: String, hashMap: HashMap<String, Any?>?) {
-        a(str, vB.a(hashMap) as Any?)
+        a(str, JsonMapUtil.a(hashMap) as Any?)
     }
 
     fun a(): Boolean {
@@ -70,6 +70,6 @@ class DB(context: Context, str: String) {
 
     fun g(str: String): HashMap<String, Any?>? {
         val value = f(str)
-        return if (value.isEmpty()) HashMap() else vB.a(value)
+        return if (value.isEmpty()) HashMap() else JsonMapUtil.a(value)
     }
 }

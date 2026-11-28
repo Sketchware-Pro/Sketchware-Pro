@@ -23,7 +23,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import java.util.ArrayList;
 
-import a.a.a.YB;
+import a.a.a.ViewNameValidator;
 import a.a.a.bB;
 import a.a.a.rq;
 import a.a.a.uq;
@@ -45,7 +45,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
     private static final int FEATURE_TYPE_TOOLBAR = 1;
     private static final int FEATURE_TYPE_DRAWER = 2;
     private static final int FEATURE_TYPE_FAB = 3;
-    private YB nameValidator;
+    private ViewNameValidator nameValidator;
     private boolean featureStatusBar, featureToolbar, featureFab, featureDrawer;
     private int requestCode;
     private ProjectFileBean projectFileBean;
@@ -115,7 +115,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
         }
     }
 
-    private boolean isValid(YB validator) {
+    private boolean isValid(ViewNameValidator validator) {
         return validator.b();
     }
 
@@ -291,7 +291,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
     }
 
     private void handleEditModeInitialization() {
-        nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, new ArrayList<>(), projectFileBean.fileName);
+        nameValidator = new ViewNameValidator(getApplicationContext(), binding.tiName, uq.b, new ArrayList<>(), projectFileBean.fileName);
         String displayName = projectFileBean.fileName;
         if (displayName.endsWith("_bottomdialog_fragment")) {
             displayName = displayName.substring(0, displayName.length() - "_bottomdialog_fragment".length());
@@ -322,7 +322,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
     private void handleCreateModeInitialization() {
         featureToolbar = true;
         featureStatusBar = true;
-        nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, screenNames);
+        nameValidator = new ViewNameValidator(getApplicationContext(), binding.tiName, uq.b, screenNames);
     }
 
 

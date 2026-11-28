@@ -11,7 +11,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import mod.hey.studios.util.Helper;
 
-public abstract class MB implements TextWatcher, InputFilter {
+public abstract class BaseInputValidator implements TextWatcher, InputFilter {
 
     public Context a;
     public TextInputLayout b;
@@ -19,7 +19,7 @@ public abstract class MB implements TextWatcher, InputFilter {
     public boolean d;
     public int e;
 
-    public MB(Context context, TextInputLayout textInputLayout) {
+    public BaseInputValidator(Context context, TextInputLayout textInputLayout) {
         a = context;
         b = textInputLayout;
         c = textInputLayout.getEditText();

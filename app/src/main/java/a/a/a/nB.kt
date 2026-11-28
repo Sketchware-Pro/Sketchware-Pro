@@ -6,7 +6,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
-class nB {
+class DateFormatUtil {
     fun a(): Long = Date().time
 
     fun a(j: Long, str: String): String = SimpleDateFormat(str, Locale.ENGLISH).format(Date(j))

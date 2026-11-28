@@ -6,12 +6,12 @@ import android.text.InputFilter
 import android.text.Spanned
 import com.google.android.material.textfield.TextInputLayout
 
-class OB(
+class NumericRangeValidator(
     context: Context,
     textInputLayout: TextInputLayout,
     @JvmField var f: Int,
     @JvmField var g: Int
-) : MB(context, textInputLayout) {
+) : BaseInputValidator(context, textInputLayout) {
     init {
         c = textInputLayout.editText
         c.filters = arrayOf<InputFilter>(this)

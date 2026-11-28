@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Collections;
 import java.util.Set;
 
-import a.a.a.gB;
+import a.a.a.AnimUtil;
 
 public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
     private final int animationDurationInMs;
@@ -80,10 +80,10 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
         setIsCollapsed(true);
         for (var v : getOnClickCollapseTriggerViews()) {
             if (config == null || config.shouldRotateView(v)) {
-                gB.a(v, 0, null);
+                AnimUtil.a(v, 0, null);
             }
         }
-        gB.a(getOptionsLayout(), animationDurationInMs, new AnimatorListenerAdapter() {
+        AnimUtil.a(getOptionsLayout(), animationDurationInMs, new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 getOptionsLayout().setVisibility(View.GONE);
@@ -96,10 +96,10 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
         getOptionsLayout().setVisibility(View.VISIBLE);
         for (var v : getOnClickCollapseTriggerViews()) {
             if (config == null || config.shouldRotateView(v)) {
-                gB.a(v, -180, null);
+                AnimUtil.a(v, -180, null);
             }
         }
-        gB.b(getOptionsLayout(), animationDurationInMs, null);
+        AnimUtil.b(getOptionsLayout(), animationDurationInMs, null);
     }
 
     public final boolean shouldAnimateNextTransformation() {

@@ -42,7 +42,7 @@ import a.a.a.MA;
 import a.a.a.VB;
 import a.a.a.lC;
 import a.a.a.mB;
-import a.a.a.nB;
+import a.a.a.DateFormatUtil;
 import a.a.a.oB;
 import a.a.a.wB;
 import a.a.a.wq;
@@ -555,7 +555,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 lC.b(activity.sc_id, data);
                 updateProjectResourcesContents(activity, data);
             } else {
-                data.put("my_sc_reg_dt", new nB().a("yyyyMMddHHmmss"));
+                data.put("my_sc_reg_dt", new DateFormatUtil().a("yyyyMMddHHmmss"));
                 data.put("custom_icon", activity.projectHasCustomIcon);
                 data.put("isIconAdaptive", activity.isIconAdaptive);
                 data.put("sc_ver_code", Helper.getText(activity.binding.verCode));

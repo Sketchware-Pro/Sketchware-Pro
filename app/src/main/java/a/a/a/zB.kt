@@ -8,7 +8,7 @@ import java.io.FileInputStream
 import java.io.InputStream
 import java.io.OutputStream
 
-object zB {
+object BitmapDecodeUtil {
     @JvmStatic
     @Throws(Exception::class)
     fun a(inputStream: InputStream): Bitmap {

@@ -54,4 +54,5 @@
     <dimen name="recycler_view_item_spacing">6dp</dimen>
     
     <dimen name="dialog_action_size">100dp</dimen>
+    <dimen name="size_card_radius">20dp</dimen>
 </resources>

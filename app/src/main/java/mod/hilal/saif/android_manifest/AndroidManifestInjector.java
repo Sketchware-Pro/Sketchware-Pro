@@ -3,6 +3,7 @@ package mod.hilal.saif.android_manifest;
 import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.google.gson.JsonParseException;
 
@@ -11,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import a.a.a.lC;
+import a.a.a.yB;
+import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -18,6 +22,56 @@ import pro.sketchware.xml.XmlBuilder;
 import pro.sketchware.R;
 
 public class AndroidManifestInjector {
+
+    private static final String TAG = "AndroidManifestInjector";
+
+    private static boolean isManualEditEnabled(String scId) {
+        try {
+            return ProjectSettings.SETTING_GENERIC_VALUE_TRUE.equals(
+                    new ProjectSettings(scId).getValue(
+                            ProjectSettings.SETTING_MANIFEST_MANUAL_EDIT_ENABLED,
+                            ProjectSettings.SETTING_MANIFEST_MANUAL_EDIT_ENABLED_DEFAULT
+                    )
+            );
+        } catch (Exception e) {
+            Log.e(TAG, "Error checking manual edit setting", e);
+            return false;
+        }
+    }
+
+    public static File getPathManualManifest(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(),
+                ".sketchware" + File.separator + "data" + File.separator + sc_id + File.separator +
+                        "Injection" + File.separator + "androidmanifest" + File.separator + "manual_manifest.xml");
+    }
+
+    public static boolean hasManualManifest(String sc_id) {
+        File file = getPathManualManifest(sc_id);
+        if (!file.exists() || file.length() == 0L) return false;
+        return isManualEditEnabled(sc_id);
+    }
+
+    public static String getManualManifest(String sc_id) {
+        File file = getPathManualManifest(sc_id);
+        if (!file.exists() || file.length() == 0L) return null;
+        if (!isManualEditEnabled(sc_id)) return null;
+
+        try {
+            String content = FileUtil.readFile(file.getAbsolutePath());
+            if (content != null
+                    && (content.trim().startsWith("<?xml") || content.trim().startsWith("<manifest"))
+                    && content.contains("<manifest")
+                    && content.contains("</manifest>")) {
+                return content;
+            } else {
+                Log.e(TAG, "Manual manifest is invalid or empty for project: " + sc_id);
+                return null;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error reading manual manifest for project: " + sc_id, e);
+            return null;
+        }
+    }
 
     public static File getPathAndroidManifestAttributeInjection(String sc_id) {
         return new File(Environment.getExternalStorageDirectory(),
@@ -107,8 +161,9 @@ public class AndroidManifestInjector {
     }
 
     public static boolean getActivityAttrs(XmlBuilder nx, String projectId, String actName) {
+        if (actName == null || actName.isEmpty()) return false;
         ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
-        String className = actName.substring(0, actName.indexOf(".java"));
+        String className = actName.contains(".java") ? actName.substring(0, actName.indexOf(".java")) : actName;
 
         for (int i = 0; i < attributes.size(); i++) {
             HashMap<String, Object> attribute = attributes.get(i);
@@ -147,8 +202,9 @@ public class AndroidManifestInjector {
     }
 
     public static boolean isActivityAttributeUsed(String attribute, String sc_id, String activityName) {
+        if (activityName == null || activityName.isEmpty()) return false;
         ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(sc_id);
-        String className = activityName.substring(0, activityName.indexOf(".java"));
+        String className = activityName.contains(".java") ? activityName.substring(0, activityName.indexOf(".java")) : activityName;
 
         for (int i = 0; i < attributes.size(); i++) {
             HashMap<String, Object> attributeMap = attributes.get(i);
@@ -194,6 +250,27 @@ public class AndroidManifestInjector {
     }
 
     public static String mHolder(String m, String projectId) {
+        String manual = getManualManifest(projectId);
+        if (manual != null) {
+            String finalManifest = manual;
+            if (!finalManifest.contains("package=")) {
+                String pkgName = null;
+                try {
+                    HashMap<String, Object> metadata = lC.b(projectId);
+                    pkgName = yB.c(metadata, "my_sc_pkg_name");
+                } catch (Exception ignored) {}
+                if (pkgName == null || pkgName.isEmpty()) {
+                    pkgName = "com.my.project";
+                }
+                finalManifest = finalManifest.replaceFirst("<manifest(\\s*)", "<manifest package=\"" + pkgName + "\"$1");
+            }
+            if (!finalManifest.contains("xmlns:android=")) {
+                finalManifest = finalManifest.replaceFirst("<manifest(\\s*)", "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"$1");
+            }
+            finalManifest = ManifestPermissionSync.injectMissingPermissions(projectId, finalManifest);
+            return finalManifest;
+        }
+
         ArrayList<String> manifestLines = new ArrayList<>(Arrays.asList(m.split("\n")));
 
         String path = getPathAndroidManifestActivitiesComponents(projectId).getAbsolutePath();
@@ -247,9 +324,20 @@ public class AndroidManifestInjector {
         if (appComponents.exists()) {
             String appComponentsContent;
             if (!(appComponentsContent = FileUtil.readFile(appComponents.getAbsolutePath())).trim().isEmpty()) {
-                String str2 = manifestLines.get(manifestLines.size() - 3);
-                String str3 = str2 + "\r\n" + appComponentsContent;
-                manifestLines.set(manifestLines.size() - 3, str3);
+                int closingIndex = -1;
+                for (int i = manifestLines.size() - 1; i >= 0; i--) {
+                    if (manifestLines.get(i).contains("</application>")) {
+                        closingIndex = i;
+                        break;
+                    }
+                }
+                if (closingIndex != -1) {
+                    manifestLines.set(closingIndex, appComponentsContent + "\r\n" + manifestLines.get(closingIndex));
+                } else {
+                    String str2 = manifestLines.get(manifestLines.size() - 3);
+                    String str3 = str2 + "\r\n" + appComponentsContent;
+                    manifestLines.set(manifestLines.size() - 3, str3);
+                }
             }
         }
 
@@ -264,7 +352,7 @@ public class AndroidManifestInjector {
     public static void addToApp(XmlBuilder nx, String projectId) {
         ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
 
-        boolean themeInjected = false;
+        boolean themeInjected = nx.hasAttribute("android:theme");
         for (int i = 0; i < attributes.size(); i++) {
             HashMap<String, Object> attribute = attributes.get(i);
             Object name = attribute.get("name");
@@ -274,11 +362,10 @@ public class AndroidManifestInjector {
                     Object value = attribute.get("value");
 
                     if (value instanceof String) {
-                        nx.addAttributeValue((String) value);
-
                         if (!themeInjected && ((String) value).contains("android:theme")) {
                             themeInjected = true;
                         }
+                        nx.addAttributeValue((String) value);
                     } else {
                         SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_value, i + 1));
                     }
@@ -288,14 +375,15 @@ public class AndroidManifestInjector {
             }
         }
 
-        if (!themeInjected) {
+        if (!themeInjected && !nx.hasAttribute("android:theme")) {
             nx.addAttributeValue("android:theme=\"@style/AppTheme\"");
         }
     }
 
     public static void addToAct(XmlBuilder nx, String projectId, String actName) {
+        if (actName == null || actName.isEmpty()) return;
         ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
-        String className = actName.substring(0, actName.indexOf(".java"));
+        String className = actName.contains(".java") ? actName.substring(0, actName.indexOf(".java")) : actName;
 
         for (int i = 0; i < attributes.size(); i++) {
             HashMap<String, Object> attribute = attributes.get(i);

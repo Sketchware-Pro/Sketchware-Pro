@@ -18,7 +18,7 @@ import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 
 import a.a.a.Uu;
-import a.a.a.gB;
+import a.a.a.AnimUtil;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLibraryAdmobPreviewBinding;
@@ -38,7 +38,7 @@ public class ReviewStepView extends LinearLayout implements Uu {
     @SuppressLint("SetTextI18n")
     private void initialize(Context context) {
         binding = ManageLibraryAdmobPreviewBinding.inflate(LayoutInflater.from(context), this, true);
-        gB.b(this, 600, 200, null);
+        AnimUtil.b(this, 600, 200, null);
         binding.tvEnable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
         binding.tvTitleBanner.setText(Helper.getResString(R.string.design_library_admob_title_banner));
 

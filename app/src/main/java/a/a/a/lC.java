@@ -23,7 +23,7 @@ public class lC {
             try {
                 if (new File(file, str).exists()) {
                     String path = file.getAbsolutePath() + File.separator + str;
-                    HashMap<String, Object> a = vB.a(oBVar.a(oBVar.h(path)));
+                    HashMap<String, Object> a = JsonMapUtil.a(oBVar.a(oBVar.h(path)));
                     if (yB.c(a, "sc_id").equals(file.getName())) {
                         arrayList.add(a);
                     }
@@ -104,7 +104,7 @@ public class lC {
         }
         str = wq.c(str);
         str = str + File.separator + "project";
-        String a = vB.a(hashMap);
+        String a = JsonMapUtil.a(hashMap);
         oB oBVar = new oB();
         try {
             oBVar.a(str, oBVar.d(a));
@@ -131,7 +131,7 @@ public class lC {
                 return null;
             }
             String path = c + File.separator + "project";
-            HashMap<String, Object> a = vB.a(oBVar.a(oBVar.h(path)));
+            HashMap<String, Object> a = JsonMapUtil.a(oBVar.a(oBVar.h(path)));
             try {
                 return !yB.c(a, "sc_id").equals(str) ? null : a;
             } catch (Exception e2) {
@@ -153,7 +153,7 @@ public class lC {
             String path = file + File.separator + "project";
             oB fileUtil = new oB();
             try {
-                HashMap<String, Object> a = vB.a(fileUtil.a(fileUtil.h(path)));
+                HashMap<String, Object> a = JsonMapUtil.a(fileUtil.a(fileUtil.h(path)));
                 if (yB.c(a, "sc_id").equals(str)) {
                     if (hashMap.containsKey("isIconAdaptive")) {
                         a.put("isIconAdaptive", hashMap.get("isIconAdaptive"));
@@ -172,7 +172,7 @@ public class lC {
                     a.put("color_primary_dark", hashMap.get("color_primary_dark"));
                     a.put("color_control_highlight", hashMap.get("color_control_highlight"));
                     a.put("color_control_normal", hashMap.get("color_control_normal"));
-                    fileUtil.a(path, fileUtil.d(vB.a(a)));
+                    fileUtil.a(path, fileUtil.d(JsonMapUtil.a(a)));
                 }
             } catch (Throwable e) {
                 Log.e("DEBUG", e.getMessage(), e);

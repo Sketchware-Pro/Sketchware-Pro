@@ -29,6 +29,7 @@ import a.a.a.jC;
 import a.a.a.wB;
 import a.a.a.yq;
 import mod.hey.studios.code.SrcCodeEditor;
+import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.remaker.view.CustomAttributeView;
@@ -45,6 +46,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     private AndroidManifestInjectionBinding binding;
     private String sc_id;
     private String currentActivityName;
+    private ProjectSettings projectSettings;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,13 +59,85 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
             currentActivityName = getIntent().getStringExtra("file_name").replaceAll(".java", "");
         }
 
+        projectSettings = new ProjectSettings(sc_id);
+
         setupCustomToolbar();
         checkAttrs();
         setupOptions();
+        setupToggleManualEdit();
         refreshList();
         checkAttrs();
 
+        binding.btnOpenXmlEditor.setOnClickListener(v -> openManifestXmlEditor());
         binding.addActivity.setOnClickListener(v -> showAddActivityDialog());
+    }
+
+    private boolean isManualEditEnabled() {
+        return ProjectSettings.SETTING_GENERIC_VALUE_TRUE.equals(
+                projectSettings.getValue(
+                        ProjectSettings.SETTING_MANIFEST_MANUAL_EDIT_ENABLED,
+                        ProjectSettings.SETTING_MANIFEST_MANUAL_EDIT_ENABLED_DEFAULT
+                )
+        );
+    }
+
+    private void setupToggleManualEdit() {
+        boolean isEnabled = isManualEditEnabled();
+        binding.toggleManualEdit.setChecked(isEnabled);
+        updateManualEditUI(isEnabled);
+
+        binding.toggleManualEdit.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            projectSettings.setValue(
+                    ProjectSettings.SETTING_MANIFEST_MANUAL_EDIT_ENABLED,
+                    isChecked ? ProjectSettings.SETTING_GENERIC_VALUE_TRUE : ProjectSettings.SETTING_GENERIC_VALUE_FALSE
+            );
+            updateManualEditUI(isChecked);
+            refreshList();
+        });
+    }
+
+    private void updateManualEditUI(boolean enabled) {
+        binding.cards.setEnabled(enabled);
+        binding.content.setEnabled(enabled);
+
+        binding.activitiesListView.setEnabled(enabled);
+        binding.activitiesListView.setClickable(enabled);
+
+        binding.cardEditManifest.setEnabled(enabled);
+        binding.btnOpenXmlEditor.setEnabled(enabled);
+    }
+
+    private String ensureXmlHeader(String xmlContent) {
+        String trimmed = xmlContent == null ? "" : xmlContent.trim();
+        if (!trimmed.startsWith("<?xml")) {
+            return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + trimmed;
+        }
+        return trimmed;
+    }
+
+    private void openManifestXmlEditor() {
+        String manualManifestPath = AndroidManifestInjector.getPathManualManifest(sc_id).getAbsolutePath();
+        java.io.File manualDir = new java.io.File(manualManifestPath).getParentFile();
+        if (manualDir != null && !manualDir.exists()) {
+            manualDir.mkdirs();
+        }
+
+        if (!FileUtil.isExistFile(manualManifestPath)) {
+            String generatedManifest = new yq(getApplicationContext(), sc_id)
+                    .getFileSrc("AndroidManifest.xml", jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
+            String finalContent = ensureXmlHeader(generatedManifest);
+            FileUtil.writeFile(manualManifestPath, finalContent);
+        } else {
+            String content = ensureXmlHeader(FileUtil.readFile(manualManifestPath));
+            FileUtil.writeFile(manualManifestPath, content);
+        }
+
+        Intent intent = new Intent(this, SrcCodeEditor.class);
+        intent.putExtra("content", manualManifestPath);
+        intent.putExtra("xml", "");
+        intent.putExtra("sc_id", sc_id);
+        intent.putExtra("title", "AndroidManifest.xml");
+        startActivity(intent);
     }
 
     @Override
@@ -146,6 +220,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         if (!FileUtil.isExistFile(APP_COMPONENTS_PATH)) FileUtil.writeFile(APP_COMPONENTS_PATH, "");
         intent.putExtra("content", APP_COMPONENTS_PATH);
         intent.putExtra("xml", "");
+        intent.putExtra("sc_id", sc_id);
         intent.putExtra("disableHeader", "");
         intent.putExtra("title", getString(R.string.manifest_injection_manifest_app_components));
         startActivity(intent);
@@ -339,7 +414,17 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     private void showQuickManifestSourceDialog() {
         k();
         new Thread(() -> {
-            String source = new yq(getApplicationContext(), sc_id).getFileSrc("AndroidManifest.xml", jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
+            String manualManifestPath = AndroidManifestInjector.getPathManualManifest(sc_id).getAbsolutePath();
+            String rawSource;
+            if (isManualEditEnabled() && FileUtil.isExistFile(manualManifestPath)) {
+                rawSource = FileUtil.readFile(manualManifestPath);
+            } else {
+                rawSource = new yq(getApplicationContext(), sc_id).getFileSrc("AndroidManifest.xml", jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
+            }
+
+            rawSource = ensureXmlHeader(rawSource);
+            String formattedSource = SrcCodeEditor.prettifyXml(rawSource, 4, null);
+            String source = (formattedSource != null && !formattedSource.isEmpty()) ? formattedSource : rawSource;
 
             runOnUiThread(() -> {
                 if (isFinishing()) return;

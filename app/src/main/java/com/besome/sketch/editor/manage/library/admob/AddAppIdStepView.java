@@ -13,7 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import a.a.a.Uu;
 import a.a.a.bB;
-import a.a.a.gB;
+import a.a.a.AnimUtil;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLibraryAdmobAppIdBinding;
@@ -59,7 +59,7 @@ public class AddAppIdStepView extends LinearLayout implements Uu, View.OnClickLi
     private void initialize(Context context) {
         binding = ManageLibraryAdmobAppIdBinding.inflate(LayoutInflater.from(context), this, true);
         binding.getRoot();
-        gB.b(this, 600, 200, null);
+        AnimUtil.b(this, 600, 200, null);
         binding.textTitle.setText(Helper.getResString(R.string.design_library_admob_title_app_id));
         binding.textEdit.setOnClickListener(this);
     }
