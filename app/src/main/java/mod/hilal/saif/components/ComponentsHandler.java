@@ -69,18 +69,18 @@ public class ComponentsHandler {
                             try {
                                 return Integer.parseInt((String) id);
                             } catch (NumberFormatException e) {
-                                SketchwareUtil.toastError("Invalid ID entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_in_custom_component, i + 1), Toast.LENGTH_LONG);
                                 break;
                             }
                         } else {
-                            SketchwareUtil.toastError("Invalid ID entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_in_custom_component, i + 1), Toast.LENGTH_LONG);
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid type name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_type_name_entry_in_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
 
@@ -111,18 +111,18 @@ public class ComponentsHandler {
                             if (componentTypeName instanceof String) {
                                 return (String) componentTypeName;
                             } else {
-                                SketchwareUtil.toastError("Invalid type name entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_type_name_entry_at_custom_component, i + 1), Toast.LENGTH_LONG);
                                 break;
                             }
                         }
                     } catch (NumberFormatException e) {
-                        SketchwareUtil.toastError("Invalid ID entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_at_custom_component, i + 1), Toast.LENGTH_LONG);
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid ID entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_at_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
 
@@ -153,18 +153,18 @@ public class ComponentsHandler {
                             if (componentName instanceof String) {
                                 return (String) componentName;
                             } else {
-                                SketchwareUtil.toastError("Invalid name entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_name_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                                 break;
                             }
                         }
                     } catch (NumberFormatException e) {
-                        SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
         return "component";
@@ -195,19 +195,19 @@ public class ComponentsHandler {
                                 try {
                                     return OldResourceIdMapper.getDrawableFromOldResourceId(Integer.parseInt((String) iconObject));
                                 } catch (NumberFormatException e) {
-                                    SketchwareUtil.toastError("Invalid icon entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_icon_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                                     break;
                                 }
                             }
                         }
                     } catch (NumberFormatException e) {
-                        SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
 
@@ -249,18 +249,18 @@ public class ComponentsHandler {
                             if (componentDescription instanceof String) {
                                 return (String) component.get("description");
                             } else {
-                                SketchwareUtil.toastError("Invalid description entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_description_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                                 break;
                             }
                         }
                     } catch (NumberFormatException e) {
-                        SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
 
@@ -287,18 +287,18 @@ public class ComponentsHandler {
                                 if (componentUrl instanceof String) {
                                     return (String) componentUrl;
                                 } else {
-                                    SketchwareUtil.toastError("Invalid URL entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_url_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                                     break;
                                 }
                             }
                         } catch (NumberFormatException e) {
-                            SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                         }
                     } else {
-                        SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
                 }
             }
         }
@@ -329,18 +329,18 @@ public class ComponentsHandler {
                             if (componentBuildClass instanceof String) {
                                 return (String) componentBuildClass;
                             } else {
-                                SketchwareUtil.toastError("Invalid build class entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_build_class_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                                 break;
                             }
                         }
                     } catch (NumberFormatException e) {
-                        SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
 
@@ -367,13 +367,13 @@ public class ComponentsHandler {
                     try {
                         list.add(new ComponentBean(Integer.parseInt((String) componentId)));
                     } catch (NumberFormatException e) {
-                        SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
     }
@@ -402,18 +402,18 @@ public class ComponentsHandler {
                             if (componentTypeName instanceof String) {
                                 return (String) componentTypeName;
                             } else {
-                                SketchwareUtil.toastError("Invalid type name entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_type_name_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                                 break;
                             }
                         }
                     } catch (NumberFormatException e) {
-                        SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_id_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
 
@@ -437,14 +437,14 @@ public class ComponentsHandler {
                         if (varName instanceof String componentVarName) {
                             return componentVarName;
                         } else {
-                            SketchwareUtil.toastError("Invalid variable name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_variable_name_entry_in_custom_component, i + 1), Toast.LENGTH_LONG);
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid type name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_type_name_entry_in_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
 
@@ -473,15 +473,15 @@ public class ComponentsHandler {
                         if (componentClass instanceof String) {
                             return (String) componentClass;
                         } else {
-                            SketchwareUtil.toastError("Invalid class entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_class_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                             break;
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid type name entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_type_name_entry_for_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
 
@@ -518,14 +518,14 @@ public class ComponentsHandler {
                                                 replace("$NAME", varName.toUpperCase(Locale.ROOT));
                             }
                         } else {
-                            SketchwareUtil.toastError("Invalid additional variable entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_additional_variable_entry_at_custom_component, i + 1), Toast.LENGTH_LONG);
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid type name entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_type_name_entry_at_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
 
@@ -557,14 +557,14 @@ public class ComponentsHandler {
                                         replace("$NAME", varName.toUpperCase(Locale.ROOT));
                             }
                         } else {
-                            SketchwareUtil.toastError("Invalid additional variable entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_additional_variable_entry_in_custom_component, i + 1), Toast.LENGTH_LONG);
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid type name entry in Custom Component #" + (i + 1));
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_type_name_entry_in_custom_component, i + 1));
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
 
@@ -589,15 +589,15 @@ public class ComponentsHandler {
                             String[] componentImportsArray = componentImportsString.split("\n");
                             arrayList.addAll(Arrays.asList(componentImportsArray));
                         } else {
-                            SketchwareUtil.toastError("Invalid imports entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_imports_entry_in_custom_component, i + 1), Toast.LENGTH_LONG);
                             break;
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid type name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_type_name_entry_in_custom_component, i + 1), Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid (null) Custom Component at position " + i);
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_invalid_null_custom_component_at_position, i));
             }
         }
     }
@@ -617,10 +617,10 @@ public class ComponentsHandler {
                 data = new Gson().fromJson(FileUtil.readFile(getPath()), Helper.TYPE_MAP_LIST);
             } catch (Exception e) {
                 data = new ArrayList<>();
-                SketchwareUtil.toastError("Couldn't read Custom Components file: " + e.getMessage());
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_couldnt_read_custom_components_file, e.getMessage()));
             }
             if (data == null) {
-                SketchwareUtil.toastError("Found invalid Custom Components file");
+                SketchwareUtil.toastError(Helper.getResString(R.string.components_manager_found_invalid_custom_components_file));
                 data = new ArrayList<>();
             }
         } else {

@@ -47,13 +47,27 @@ public class BlockUtil {
      */
     @Nullable
     public static Rs getVariableBlock(Context context, int id, String spec, String opCode) {
-        var type = spec.charAt(1);
+        if (spec == null || spec.length() < 2 || spec.charAt(0) != '%') {
+            return null;
+        }
+
+        char type = spec.charAt(1);
         return switch (type) {
-            case 'b', 'd', 's' ->
-                    new Rs(context, id, spec.substring(3), Character.toString(type), opCode);
+            case 'b', 'd', 's' -> {
+                // A bare "%b"/"%d"/"%s" token without a variable name is
+                // allowed: use an empty label instead of crashing
+                String name = spec.length() > 3 ? spec.substring(3) : "";
+                yield new Rs(context, id, name, Character.toString(type), opCode);
+            }
             case 'm' -> {
-                String specLast = spec.substring(spec.lastIndexOf(".") + 1);
-                String specFirst = spec.substring(spec.indexOf(".") + 1, spec.lastIndexOf("."));
+                int firstDot = spec.indexOf(".");
+                int lastDot = spec.lastIndexOf(".");
+                // Not recognized: a bare "%m" or "%m.type" without a variable
+                if (firstDot < 0 || lastDot <= firstDot) {
+                    yield null;
+                }
+                String specLast = spec.substring(lastDot + 1);
+                String specFirst = spec.substring(firstDot + 1, lastDot);
                 yield new Rs(context, id, specLast, kq.a(specFirst), kq.b(specFirst), opCode);
             }
             default -> null;

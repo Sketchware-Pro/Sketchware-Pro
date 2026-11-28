@@ -14,6 +14,24 @@ import pro.sketchware.utility.ThemeUtils;
 
 public class BlocksHandler {
 
+    /**
+     * Generated-code snippet that reduces a pasted YouTube URL ("watch?v=", "youtu.be/",
+     * "/shorts/", "/embed/") to the bare video ID the player API expects - cueVideo/
+     * loadVideo fail silently on full URLs.
+     */
+    public static final String YOUTUBE_ID_NORMALIZER =
+            "    if (videoId != null && videoId.contains(\"://\")) {\r\n"
+                    + "      if (videoId.contains(\"v=\")) {\r\n"
+                    + "        videoId = videoId.split(\"v=\")[1].split(\"&\")[0];\r\n"
+                    + "      } else if (videoId.contains(\"youtu.be/\")) {\r\n"
+                    + "        videoId = videoId.substring(videoId.indexOf(\"youtu.be/\") + 9).split(\"[?&]\")[0];\r\n"
+                    + "      } else if (videoId.contains(\"/shorts/\")) {\r\n"
+                    + "        videoId = videoId.substring(videoId.indexOf(\"/shorts/\") + 8).split(\"[?&]\")[0];\r\n"
+                    + "      } else if (videoId.contains(\"/embed/\")) {\r\n"
+                    + "        videoId = videoId.substring(videoId.indexOf(\"/embed/\") + 7).split(\"[?&]\")[0];\r\n"
+                    + "      }\r\n"
+                    + "    }\r\n";
+
     public static void builtInBlocks(ArrayList<HashMap<String, Object>> arrayList) {
         ExtraBlocks.extraBlocks(arrayList);
 
@@ -2036,6 +2054,7 @@ public class BlocksHandler {
                         + "  @Override\r\n"
                         + "  public void onReady(@NonNull YouTubePlayer youTubePlayer) {\r\n"
                         + "    String videoId = %2$s;\r\n"
+                        + YOUTUBE_ID_NORMALIZER
                         + "    youTubePlayer.cueVideo(videoId, 0);\r\n"
                         + "    %3$s\r\n"
                         + "  }\r\n"
@@ -2043,6 +2062,25 @@ public class BlocksHandler {
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.youtubeview addYouTubePlayerListener VideoID %s");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "YTPVSetListenerAutoplay");
+        hashMap.put("type", "c");
+        hashMap.put(
+                "code",
+                "%1$s.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {\r\n"
+                        + "  @Override\r\n"
+                        + "  public void onReady(@NonNull YouTubePlayer youTubePlayer) {\r\n"
+                        + "    String videoId = %2$s;\r\n"
+                        + YOUTUBE_ID_NORMALIZER
+                        + "    youTubePlayer.loadVideo(videoId, 0);\r\n"
+                        + "    %3$s\r\n"
+                        + "  }\r\n"
+                        + "});");
+        hashMap.put("color", "#4A6CD4");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%m.youtubeview addYouTubePlayerListener VideoID %s autoplay");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -2611,7 +2649,7 @@ public class BlocksHandler {
             boolean isIntUsed,
             boolean isStrUsed,
             boolean isMapUsed) {
-        logicEditorActivity.a("Blocks", getTitleBgColor(logicEditorActivity));
+        logicEditorActivity.a(logicEditorActivity.getString(R.string.blocks_palette_header_blocks), getTitleBgColor(logicEditorActivity));
         if (showAll() || isBoolUsed) {
             logicEditorActivity.a(" ", "setVarBoolean");
         }
@@ -2625,7 +2663,7 @@ public class BlocksHandler {
         }
         if (showAll() || isMapUsed) {
             logicEditorActivity.a(" ", "mapCreateNew");
-            logicEditorActivity.a("Map put values", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.blocks_palette_header_map_put_values), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a(" ", "mapPut");
         }
         if (showBuiltIn() && (showAll() || isMapUsed)) {
@@ -2637,7 +2675,7 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "hashmapPutListmap");
         }
         if (showAll() || isMapUsed) {
-            logicEditorActivity.a("Map get values", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.blocks_palette_header_map_get_values), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a("s", "mapGet");
         }
         if (showBuiltIn() && (showAll() || isMapUsed)) {
@@ -2648,7 +2686,7 @@ public class BlocksHandler {
             logicEditorActivity.a("", "l", "List Map", "hashmapGetListmap");
         }
         if (showAll() || isMapUsed) {
-            logicEditorActivity.a("Map general", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.blocks_palette_header_map_general), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a("b", "mapIsEmpty");
             logicEditorActivity.a("b", "mapContainKey");
             logicEditorActivity.a("b", "mapContainValue");
@@ -2668,7 +2706,7 @@ public class BlocksHandler {
         boolean inOnBindCustomViewEvent = eventName.equals("onBindCustomView");
         boolean inOnFilesPickedEvent = eventName.equals("onFilesPicked");
         if (showAll() || isListNumUsed) {
-            logicEditorActivity.a("List Number", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.logic_variable_type_list_number), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a("b", "containListInt");
             logicEditorActivity.a("d", "getAtListInt");
             logicEditorActivity.a("d", "indexListInt");
@@ -2682,7 +2720,7 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "sortListnum");
         }
         if (showAll() || isListStrUsed || inOnFilesPickedEvent) {
-            logicEditorActivity.a("List String", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.logic_variable_type_list_string), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a("b", "containListStr");
             logicEditorActivity.a("d", "indexListStr");
             logicEditorActivity.a("s", "getAtListStr");
@@ -2696,7 +2734,7 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "sortList");
         }
         if (showAll() || isListMapUsed || inOnBindCustomViewEvent) {
-            logicEditorActivity.a("List Map", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.logic_variable_type_list_map), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a("b", "containListMap");
             logicEditorActivity.a("s", "getAtListMap");
             if (showBuiltIn()) {
@@ -2720,7 +2758,7 @@ public class BlocksHandler {
                 || isListNumUsed
                 || inOnBindCustomViewEvent
                 || inOnFilesPickedEvent) {
-            logicEditorActivity.a("General", getTitleBgColor(logicEditorActivity));
+            logicEditorActivity.a(logicEditorActivity.getString(R.string.common_word_general), getTitleBgColor(logicEditorActivity));
             logicEditorActivity.a(" ", "listAddAll");
             logicEditorActivity.a("d", "lengthList");
             logicEditorActivity.a(" ", "deleteList");
@@ -2824,7 +2862,7 @@ public class BlocksHandler {
             logicEditorActivity.a("s", "GsonListTojsonString");
             logicEditorActivity.a(" ", "stringSplitToList");
         }
-        logicEditorActivity.a("add source directly", getTitleBgColor(logicEditorActivity));
+        logicEditorActivity.a(logicEditorActivity.getString(R.string.blocks_palette_header_add_source_directly), getTitleBgColor(logicEditorActivity));
         logicEditorActivity.a(" ", "addSourceDirectly");
         logicEditorActivity.a("b", "asdBoolean");
         logicEditorActivity.a("d", "asdNumber");

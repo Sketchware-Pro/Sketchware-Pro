@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -161,8 +162,13 @@ public final class RemoteDebugManager {
 
     private boolean connectTarget(RemoteDeviceTarget target, String projectId, boolean select) {
         allowAutoReconnect = true;
+        return connectTargetInternal(target, projectId, select);
+    }
+
+    private boolean connectTargetInternal(RemoteDeviceTarget target, String projectId, boolean select) {
         return execute(45, () -> {
             ensureConnected(target, select);
+            allowAutoReconnect = true;
             settings.setRemote(projectId, true);
             setStatus(context.getString(R.string.remote_debug_connected, connectedName));
         });
@@ -249,6 +255,7 @@ public final class RemoteDebugManager {
                         : cancelled ? text(R.string.remote_debug_cancelled)
                         : error.getMessage() == null || error.getMessage().isBlank()
                         ? error.getClass().getSimpleName() : error.getMessage();
+                if (isNonRetryableFailure(error, reason)) allowAutoReconnect = false;
                 setStatus(context.getString(R.string.remote_debug_error, reason));
                 append(status);
             } finally {
@@ -338,8 +345,17 @@ public final class RemoteDebugManager {
             RemoteDeviceTarget target = settings.getTarget();
             if (AdbServiceSelector.connectionFor(discovery.snapshot(), target) == null) return;
             nextAutoAttempt = SystemClock.elapsedRealtime() + 15000;
-            connectTarget(target, null, false);
+            allowAutoReconnect = false;
+            connectTargetInternal(target, null, false);
         } catch (IllegalArgumentException ignored) { }
+    }
+
+    private boolean isNonRetryableFailure(Exception error, String reason) {
+        if (cancelled || error instanceof SecurityException) return true;
+        if (reason.equals(text(R.string.remote_debug_requires_android11))
+                || reason.equals(text(R.string.remote_debug_wrong_device))) return true;
+        String lower = reason.toLowerCase(Locale.ROOT);
+        return lower.contains("unauthori") || lower.contains("pair");
     }
 
     private RemoteAdbCommands commands() {

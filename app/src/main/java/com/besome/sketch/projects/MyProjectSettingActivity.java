@@ -168,7 +168,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             binding.etPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
             binding.etProjectName.setText(yB.c(metadata, "my_ws_name"));
             binding.etAppName.setText(yB.c(metadata, "my_app_name"));
-            binding.okButton.setText("Save changes");
+            binding.okButton.setText(R.string.common_word_save_changes);
             projectVersionCode = parseInt(yB.c(metadata, "sc_ver_code"), 1);
             parseVersion(yB.c(metadata, "sc_ver_name"));
             binding.verCode.setText(yB.c(metadata, "sc_ver_code"));

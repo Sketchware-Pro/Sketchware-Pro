@@ -218,7 +218,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
 
         cv_console.setOnClickListener(this);
         tv_goto_console.setText(R.string.design_library_firebase_button_goto_firebase_console);
-        icon.setImageResource(R.drawable.widget_firebase);
+        icon.setImageResource(R.drawable.ic_mtrl_firebase);
 
         btn_open_doc.setText(R.string.common_word_go_to_documentation);
         btn_open_doc.setOnClickListener(this);

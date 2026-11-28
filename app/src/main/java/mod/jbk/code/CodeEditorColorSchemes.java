@@ -14,9 +14,22 @@ import mod.jbk.util.LogUtil;
 import pro.sketchware.SketchApplication;
 
 public class CodeEditorColorSchemes {
+    public static final String THEME_DEFAULT = "Default.json";
     public static final String THEME_DRACULA = "dracula.json";
     public static final String THEME_GITHUB = "GitHub.tmTheme";
-    public static final String[] THEMES = {THEME_DRACULA, THEME_GITHUB};
+    public static final String THEME_ECLIPSE = "Eclipse.json";
+    public static final String THEME_XCODE = "Xcode.json";
+    public static final String THEME_SOLARIZED_LIGHT = "SolarizedLight.json";
+    public static final String THEME_MONOKAI = "Monokai.json";
+    public static final String THEME_ONE_DARK = "OneDark.json";
+
+    /**
+     * All loadable TextMate themes; {@code SrcCodeEditor#KNOWN_TEXTMATE_THEMES} mirrors this order.
+     */
+    public static final String[] THEMES = {
+            THEME_DEFAULT, THEME_DRACULA, THEME_GITHUB, THEME_ECLIPSE,
+            THEME_XCODE, THEME_SOLARIZED_LIGHT, THEME_MONOKAI, THEME_ONE_DARK
+    };
     private static final String TAG = "CodeEditorColorSchemes";
 
     static {
@@ -49,5 +62,17 @@ public class CodeEditorColorSchemes {
         }
 
         return scheme;
+    }
+
+    /**
+     * Position of a theme in {@link #THEMES}, or 0 if unknown.
+     */
+    public static int themeIndex(String theme) {
+        for (int i = 0; i < THEMES.length; i++) {
+            if (THEMES[i].equals(theme)) {
+                return i;
+            }
+        }
+        return 0;
     }
 }

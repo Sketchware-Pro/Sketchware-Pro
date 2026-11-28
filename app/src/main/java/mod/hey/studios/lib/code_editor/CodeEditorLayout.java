@@ -126,35 +126,35 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
         PopupMenu popup = new PopupMenu(context, v);
         Menu menu = popup.getMenu();
 
-        menu.add("Font size")
+        menu.add(Menu.NONE, 1, Menu.NONE, R.string.code_editor_layout_font_size)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        menu.add("Word wrap")
+        menu.add(Menu.NONE, 2, Menu.NONE, R.string.common_word_word_wrap)
                 .setCheckable(true)
                 .setChecked(word_wrap)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        menu.add("Complete brackets")
+        menu.add(Menu.NONE, 3, Menu.NONE, R.string.code_editor_layout_complete_brackets)
                 .setCheckable(true)
                 .setChecked(complete_brackets)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        menu.add("Dark theme")
+        menu.add(Menu.NONE, 4, Menu.NONE, R.string.settings_appearance_theme_dark)
                 .setCheckable(true)
                 .setChecked(dark_theme)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        menu.add("Pretty print")
+        menu.add(Menu.NONE, 5, Menu.NONE, R.string.common_word_pretty_print)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        menu.add("Exit confirmation")
+        menu.add(Menu.NONE, 6, Menu.NONE, R.string.code_editor_layout_exit_confirmation)
                 .setCheckable(true)
                 .setChecked(exit_confirmation_dialog)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         popup.setOnMenuItemClickListener(item -> {
-            switch (item.getTitle().toString()) {
-                case "Font size":
+            switch (item.getItemId()) {
+                case 1: // Font size
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                     NumberPicker numPicker = new NumberPicker(context);
@@ -164,7 +164,7 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
                     numPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
                     builder.setView(numPicker)
-                            .setTitle("Select font size")
+                            .setTitle(R.string.code_editor_layout_select_font_size)
                             .setPositiveButton(R.string.common_word_save, (dialog, which) -> {
                                 setTextSize(numPicker.getValue());
                                 dialog.dismiss();
@@ -173,25 +173,25 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
                             .show();
                     break;
 
-                case "Word wrap":
+                case 2: // Word wrap
                     item.setChecked(!item.isChecked());
                     setWordWrap(item.isChecked());
                     break;
 
-                case "Complete brackets":
+                case 3: // Complete brackets
                     item.setChecked(!item.isChecked());
                     complete_brackets = item.isChecked();
                     setPreference("complete_brackets", complete_brackets);
                     break;
 
-                case "Dark theme":
+                case 4: // Dark theme
                     item.setChecked(!item.isChecked());
                     dark_theme = item.isChecked();
                     editText.removeTextChangedListener(this);
                     startHighlighting(type);
                     break;
 
-                case "Pretty print":
+                case 5: // Pretty print
                     StringBuilder string = new StringBuilder();
                     String[] lines = getText().split("\n");
 
@@ -207,14 +207,14 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
                     try {
                         prettifiedString = Lx.j(Lx.j(prettifiedString, false), false);
                     } catch (Exception e) {
-                        SketchwareUtil.toastError("Error: Your code contains incorrectly nested parentheses");
+                        SketchwareUtil.toastError(Helper.getResString(R.string.code_editor_layout_error_incorrectly_nested_parentheses));
                         break;
                     }
 
                     setText(prettifiedString);
                     break;
 
-                case "Exit confirmation":
+                case 6: // Exit confirmation
                     exit_confirmation_dialog = !item.isChecked();
                     item.setChecked(exit_confirmation_dialog);
                     setPreference("exit_confirmation_dialog", exit_confirmation_dialog);

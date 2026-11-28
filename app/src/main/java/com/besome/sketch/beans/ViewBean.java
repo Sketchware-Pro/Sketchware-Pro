@@ -370,7 +370,7 @@ public class ViewBean extends nA implements Parcelable {
         inject = other.inject;
         convert = other.convert;
         progressStyle = other.progressStyle;
-        parentAttributes = other.parentAttributes;
+        parentAttributes = other.parentAttributes == null ? null : new HashMap<>(other.parentAttributes);
         isCustomWidget = other.isCustomWidget;
     }
 

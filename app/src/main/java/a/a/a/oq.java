@@ -13,8 +13,23 @@ public class oq {
 
     /**
      * The known Event names that can be added to all Activities.
+     * <p>
+     * This is re-assigned by {@link #refreshActivityEvents()} so that custom
+     * Activity Events created later in the Event Manager show up without
+     * restarting the app.
      */
-    public static final String[] ACTIVITY_EVENTS = EventsHandler.getActivityEvents();
+    public static String[] ACTIVITY_EVENTS = EventsHandler.getActivityEvents();
+
+    /**
+     * Re-reads the cached custom events and refreshes {@link #ACTIVITY_EVENTS}.
+     * Call this after the system events file has been modified (for example by
+     * the Event Manager), so newly created Activity Events become available
+     * without restarting the app.
+     */
+    public static void refreshActivityEvents() {
+        EventsHandler.refreshCachedCustomEvents();
+        ACTIVITY_EVENTS = EventsHandler.getActivityEvents();
+    }
 
     /**
      * @return The resource ID for an Event's icon

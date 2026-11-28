@@ -206,7 +206,7 @@ public class Lx {
                             "_filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _item.getUri()));\r\n" +
                             "}\r\n" +
                             "}\r\n" +
-                            "else {\r\n" +
+                            "else if (_data.getData() != null) {\r\n" +
                             "_filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _data.getData()));\r\n" +
                             "}\r\n" +
                             "}";

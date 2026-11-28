@@ -35,44 +35,31 @@
                 android:text="@string/logic_button_import_more_block"
                 android:textColor="?attr/colorOnSurface" />
 
-            <RelativeLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/search_container"
+                style="@style/Widget.SketchwarePro.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="6dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                app:startIconDrawable="@drawable/ic_mtrl_search"
+                app:startIconContentDescription="@string/logic_search_events"
+                app:endIconDrawable="@drawable/ic_mtrl_more_vertical"
+                app:endIconMode="custom"
+                app:endIconContentDescription="@string/logic_sort_menu">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/search_events"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_outline_edittext"
-                    android:drawableStart="@drawable/ic_mtrl_search"
-                    android:drawablePadding="8dp"
                     android:hint="@string/logic_search_events"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:paddingStart="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingEnd="40dp"
-                    android:paddingBottom="10dp"
                     android:textSize="14sp" />
-
-                <ImageView
-                    android:id="@+id/sort_menu"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="4dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/logic_sort_menu"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_mtrl_more_vertical" />
-            </RelativeLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tv_no_events"

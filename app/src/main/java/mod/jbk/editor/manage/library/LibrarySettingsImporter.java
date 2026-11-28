@@ -61,7 +61,7 @@ public class LibrarySettingsImporter {
         this.activity = activity;
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         dialog.setTitle(R.string.design_library_title_select_project);
-        dialog.setIcon(R.drawable.widget_firebase);
+        dialog.setIcon(R.drawable.ic_mtrl_category);
         LinearLayout root = (LinearLayout) wB.a(activity, R.layout.manage_library_popup_project_selector);
         LottieAnimationView animationView = root.findViewById(R.id.animation_view);
         RecyclerView recyclerView = root.findViewById(R.id.list);

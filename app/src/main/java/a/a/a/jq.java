@@ -90,6 +90,20 @@ public class jq {
     public static final int PERMISSION_ACCESS_FINE_LOCATION = 1024;
 
     /**
+     * A permission type for {@link jq#addPermission(String, int)}, {@link jq#addPermission(int)} and {@link a#b(int)}.
+     *
+     * @see android.Manifest.permission#BLUETOOTH_CONNECT
+     */
+    public static final int PERMISSION_BLUETOOTH_CONNECT = 2048;
+
+    /**
+     * A permission type for {@link jq#addPermission(String, int)}, {@link jq#addPermission(int)} and {@link a#b(int)}.
+     *
+     * @see android.Manifest.permission#BLUETOOTH_SCAN
+     */
+    public static final int PERMISSION_BLUETOOTH_SCAN = 4096;
+
+    /**
      * Project's package name,
      * e.g. com.jbk.internal.demo.
      */

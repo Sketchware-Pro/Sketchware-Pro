@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Static expressive-list shapes, matching ShapeAppearance.Material3.ListItem.*. -->
+    <style name="ShapeAppearance.CodeShrinking.First" parent="">
+        <item name="cornerFamily">?attr/shapeCornerFamily</item>
+        <item name="cornerSizeTopLeft">?attr/shapeCornerSizeLarge</item>
+        <item name="cornerSizeTopRight">?attr/shapeCornerSizeLarge</item>
+        <item name="cornerSizeBottomLeft">?attr/shapeCornerSizeExtraSmall</item>
+        <item name="cornerSizeBottomRight">?attr/shapeCornerSizeExtraSmall</item>
+    </style>
+
+    <style name="ShapeAppearance.CodeShrinking.Middle" parent="">
+        <item name="cornerFamily">?attr/shapeCornerFamily</item>
+        <item name="cornerSize">?attr/shapeCornerSizeExtraSmall</item>
+    </style>
+
+    <style name="ShapeAppearance.CodeShrinking.Last" parent="">
+        <item name="cornerFamily">?attr/shapeCornerFamily</item>
+        <item name="cornerSizeTopLeft">?attr/shapeCornerSizeExtraSmall</item>
+        <item name="cornerSizeTopRight">?attr/shapeCornerSizeExtraSmall</item>
+        <item name="cornerSizeBottomLeft">?attr/shapeCornerSizeLarge</item>
+        <item name="cornerSizeBottomRight">?attr/shapeCornerSizeLarge</item>
+    </style>
+
+    <style name="ShapeAppearance.CodeShrinking.Single" parent="">
+        <item name="cornerFamily">?attr/shapeCornerFamily</item>
+        <item name="cornerSize">?attr/shapeCornerSizeLarge</item>
+    </style>
+</resources>

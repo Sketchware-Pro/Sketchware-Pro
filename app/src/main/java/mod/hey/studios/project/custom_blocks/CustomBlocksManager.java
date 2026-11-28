@@ -22,6 +22,8 @@ import a.a.a.kq;
 import dev.aldi.sayuti.block.ExtraBlockFile;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -114,7 +116,7 @@ public class CustomBlocksManager {
                         new TypeToken<ArrayList<ExtraBlockInfo>>() {
                         }.getType());
             } catch (Exception e) {
-                SketchwareUtil.toastError("Failed to get Custom Blocks : " + e.getMessage());
+                SketchwareUtil.toastError(Helper.getResString(R.string.custom_blocks_failed_to_get_custom_blocks, e.getMessage()));
             }
         }
 

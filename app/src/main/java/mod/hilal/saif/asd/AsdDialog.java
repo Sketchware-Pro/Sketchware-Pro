@@ -83,7 +83,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                     code = Lx.j(code, true);
                 } catch (Exception e) {
                     failed = true;
-                    SketchwareUtil.toastError("Your code contains incorrectly nested parentheses");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.asd_incorrectly_nested_parentheses));
                 }
                 if (!failed) {
                     binding.editor.setText(code);

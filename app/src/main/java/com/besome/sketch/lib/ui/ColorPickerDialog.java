@@ -281,7 +281,7 @@ public class ColorPickerDialog extends PopupWindow {
                     return;
                 }
                 if (sc_id != null && finalJ == 2 && !material3LibraryManager.isMaterial3Enabled()) {
-                    SketchwareUtil.toastError("Please enable Material3 in the Library Manager first");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.color_picker_enable_material3_first));
                     return;
                 }
                 if (sc_id != null && finalJ == 1) {
@@ -419,7 +419,7 @@ public class ColorPickerDialog extends PopupWindow {
                 savedAttrs.add(attributeName);
                 saveCustomAttrs(savedAttrs);
 
-                attributes.add(new Attribute(attributeName, isFirstCustomAttr ? "Custom" : null));
+                attributes.add(new Attribute(attributeName, isFirstCustomAttr ? Helper.getResString(R.string.common_word_custom) : null));
                 assert binding.colorList.getAdapter() != null;
                 binding.colorList.getAdapter().notifyItemInserted(attributes.size());
                 binding.colorList.smoothScrollToPosition(attributes.size());
@@ -458,7 +458,7 @@ public class ColorPickerDialog extends PopupWindow {
         if (sc_id != null)
             colorList.add(new ColorBean("#FFF6F6F6", "colors.xml", "#212121", R.drawable.checked_grey_32));
         if (hasMaterialColors)
-            colorList.add(new ColorBean("#FFF6F6F6", "Material 3 Colors", "#212121", R.drawable.checked_grey_32));
+            colorList.add(new ColorBean("#FFF6F6F6", Helper.getResString(R.string.color_picker_material3_colors), "#212121", R.drawable.checked_grey_32));
         colorList.add(sq.p[0]);
         colorList.add(sq.q[0]);
         colorList.add(sq.r[0]);
@@ -629,7 +629,7 @@ public class ColorPickerDialog extends PopupWindow {
         for (int i = 0; i < savedAttrs.size(); i++) {
             String attr = savedAttrs.get(i);
             if (attr.isEmpty()) continue;
-            attributes.add(new Attribute(attr, i == 0 ? "Custom" : null));
+            attributes.add(new Attribute(attr, i == 0 ? Helper.getResString(R.string.common_word_custom) : null));
         }
     }
 
@@ -682,7 +682,7 @@ public class ColorPickerDialog extends PopupWindow {
         }
 
         public String attrTitle() {
-            return title + " Colors :";
+            return Helper.getResString(R.string.color_picker_attr_colors_title, title);
         }
     }
 

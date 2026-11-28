@@ -39,6 +39,8 @@ import java.util.concurrent.Executors;
 import a.a.a.MA;
 import a.a.a.mB;
 import mod.hey.studios.build.BuildSettings;
+import mod.hey.studios.project.ProjectSettings;
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLocallibrariesBinding;
 import pro.sketchware.databinding.ViewItemLocalLibBinding;
@@ -174,7 +176,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                     runOnUiThread(() -> {
                         if (isFinishing() || isDestroyed()) return;
                         h();
-                        SketchwareUtil.toast("Deleted successfully");
+                        SketchwareUtil.toast(Helper.getResString(R.string.common_word_deleted_successfully));
                         adapter.isSelectionModeEnabled = false;
                         adapter.notifyDataSetChanged();
                         collapseContextualToolbar();
@@ -195,6 +197,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             bundle.putBoolean("notAssociatedWithProject", notAssociatedWithProject);
             bundle.putSerializable("buildSettings", buildSettings);
             bundle.putString("localLibFile", getLocalLibFile(scId).getAbsolutePath());
+            bundle.putInt("minSdk", new ProjectSettings(scId).getMinSdkVersion());
 
             LibraryDownloaderDialogFragment fragment = new LibraryDownloaderDialogFragment();
             fragment.setArguments(bundle);
@@ -420,7 +423,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             if (library.isSelected() && isUsedLibrary(library.getName())) {
                 new MaterialAlertDialogBuilder(ManageLocalLibraryActivity.this)
                         .setTitle(R.string.common_word_warning)
-                        .setMessage("This library \"" + library.getName() + "\" already used in your project, removing it may break your project\rDo you want to continue removing it?")
+                        .setMessage(Helper.getResString(R.string.local_library_library_in_use_warning, library.getName()))
                         .setPositiveButton(R.string.common_word_yes, (dialog, which) -> dialog.dismiss())
                         .setNegativeButton(R.string.common_word_cancel, (dialog, which) -> {
                             toggleLocalLibrary(card, library, onLocalLibrarySelectedStateChangedListener);

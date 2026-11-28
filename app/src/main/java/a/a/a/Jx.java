@@ -111,6 +111,43 @@ public class Jx {
         return Lx.j(new Fx(projectFileBean.getActivityName(), buildConfig, blocks, isViewBindingEnabled).a(), false);
     }
 
+    /**
+     * @return Code for the {@code initializeLogic()} method: the canonical "On activity create"
+     * event (stored under {@code onCreate_initializeLogic}) plus any blocks stored under the
+     * legacy duplicate key {@code initializeLogic_initializeLogic}, which a pre-fix
+     * {@code AddEventActivity} could create.
+     */
+    public String initializeLogicMethod() {
+        StringBuilder sb = new StringBuilder();
+        // Legacy duplicate first: before the #2120 fix the legacy body ran in
+        // initialize(Bundle), i.e. BEFORE the canonical event in initializeLogic().
+        // Preserve that relative order so field writes in one body are visible to the other.
+        String legacyDuplicate = initializeLogic();
+        if (!TextUtils.isEmpty(legacyDuplicate)) {
+            // Guard: the legacy duplicate key predates the #2120 fix and only exists in old
+            // projects. Its body passes user-entered "add source directly" text through
+            // unchecked; a top-level return in it would make the following canonical body
+            // unreachable and the generated method uncompilable - skip the legacy body
+            // in that case rather than emitting broken code.
+            boolean legacyReturns = false;
+            for (String line : legacyDuplicate.split("\n")) {
+                if (line.trim().equals("return;")) {
+                    legacyReturns = true;
+                    break;
+                }
+            }
+            if (!legacyReturns) {
+                // Block scope: keeps variable declarations (e.g. _intent) from the legacy body
+                // from clashing with declarations emitted from the canonical event below.
+                sb.append("{").append(EOL).append(legacyDuplicate).append(EOL).append("}").append(EOL);
+            }
+        }
+        if (!onCreateEventCode.isEmpty()) {
+            sb.append("{").append(EOL).append(onCreateEventCode).append(EOL).append("}").append(EOL);
+        }
+        return sb.toString();
+    }
+
     private void extraVariables() {
         for (Map.Entry<String, ArrayList<BlockBean>> blocks : jC.a(projectDataManager.a).b(projectFileBean.getJavaName()).entrySet()) {
             for (BlockBean block : blocks.getValue()) {
@@ -414,7 +451,13 @@ public class Jx {
             // Adds initializeLogic() call too, don't worry
             sb.append(permissionManager.writePermission(buildConfig.g, buildConfig.a(projectFileBean.getActivityName()).c));
         } else {
-            sb.append("initializeLogic();").append(EOL);
+            if (isViewBindingEnabled) {
+                // Binding mode has no `_view` variable in onCreateView (it declares
+                // `binding` instead) - pass the root from the binding.
+                sb.append("initializeLogic(_savedInstanceState, binding.getRoot());").append(EOL);
+            } else {
+                sb.append("initializeLogic(_savedInstanceState, _view);").append(EOL);
+            }
             if (isViewBindingEnabled) {
                 sb.append("return binding.getRoot();").append(EOL);
             } else {
@@ -429,7 +472,7 @@ public class Jx {
             sb.append("public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {").append(EOL);
             sb.append("super.onRequestPermissionsResult(requestCode, permissions, grantResults);").append(EOL);
             sb.append("if (requestCode == 1000) {").append(EOL);
-            sb.append("initializeLogic();").append(EOL);
+            sb.append("initializeLogic(null);").append(EOL);
             sb.append("}").append(EOL);
             sb.append("}").append(EOL);
         }
@@ -440,10 +483,9 @@ public class Jx {
         } else {
             sb.append("private void initialize(Bundle _savedInstanceState) {");
         }
-        if (!TextUtils.isEmpty(initializeLogic())) {
-            sb.append(EOL);
-            sb.append(initializeLogic());
-        }
+        // Note: initializeLogic() blocks belong in the initializeLogic() method, not here.
+        // The default "On activity create" event is emitted into initializeLogic(); see
+        // initializeLogicMethod().
 
         for (String value : initializeMethodCode) {
             if (!value.isEmpty()) {
@@ -490,9 +532,17 @@ public class Jx {
         sb.append(EOL);
         sb.append("}").append(EOL);
         sb.append(EOL);
-        sb.append("private void initializeLogic() {").append(EOL);
-        if (!onCreateEventCode.isEmpty()) {
-            sb.append(onCreateEventCode).append(EOL);
+        // The legacy "On activity create" duplicate body (initializeLogic_initializeLogic,
+        // emitted by initializeLogicMethod()) references _savedInstanceState (and _view for
+        // fragments) because it used to run inside initialize(Bundle). Pass them through so
+        // user-entered raw source in that body still resolves.
+        if (isFragment) {
+            sb.append("private void initializeLogic(Bundle _savedInstanceState, View _view) {").append(EOL);
+        } else {
+            sb.append("private void initializeLogic(Bundle _savedInstanceState) {").append(EOL);
+        }
+        if (!TextUtils.isEmpty(initializeLogicMethod())) {
+            sb.append(initializeLogicMethod()).append(EOL);
         }
         sb.append("}").append(EOL);
 

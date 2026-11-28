@@ -19,6 +19,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import pro.sketchware.utility.SketchwareUtil;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public abstract class SoundPlayingAdapter<VH extends SoundPlayingAdapter.ViewHolder> extends RecyclerView.Adapter<VH> {
     protected final SoundPlayer soundPlayer;
@@ -157,7 +159,7 @@ public abstract class SoundPlayingAdapter<VH extends SoundPlayingAdapter.ViewHol
                     nowPlayingPosition = -1;
 
                     LogUtil.e("SoundPlayer", "Failed to play Sound " + audio, e);
-                    SketchwareUtil.toastError("Failed to play Sound: " + e);
+                    SketchwareUtil.toastError(Helper.getResString(R.string.sound_playing_failed_to_play_sound, e));
                 }
             }
         }

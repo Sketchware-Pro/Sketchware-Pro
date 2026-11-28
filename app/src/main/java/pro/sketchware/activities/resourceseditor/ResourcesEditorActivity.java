@@ -203,7 +203,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.resources_manager_xml_load_failed_title)
                 .setMessage(String.format(Helper.getResString(R.string.resources_manager_xml_load_failed_message), title))
-                .setPositiveButton("Open code editor", (dialog, which) -> goToCodeEditor(title, contentPath))
+                .setPositiveButton(R.string.resources_editor_open_code_editor, (dialog, which) -> goToCodeEditor(title, contentPath))
                 .setNegativeButton(R.string.common_word_exit, (dialogInterface, i) -> finish())
                 .setCancelable(false)
                 .create()
@@ -244,10 +244,10 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         if (unsavedFiles.size() == 1) {
             return unsavedFiles.get(0);
         } else if (unsavedFiles.size() == 2) {
-            return String.join(" and ", unsavedFiles);
+            return String.join(Helper.getResString(R.string.resources_editor_list_join_and), unsavedFiles);
         } else {
             String lastFile = unsavedFiles.remove(unsavedFiles.size() - 1);
-            return String.join(", ", unsavedFiles) + ", and " + lastFile;
+            return String.join(", ", unsavedFiles) + Helper.getResString(R.string.resources_editor_list_join_last) + lastFile;
         }
     }
 
@@ -398,7 +398,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         themesEditor.saveThemesFile();
         arraysEditor.saveArraysFile();
         updateProjectMetadata();
-        SketchwareUtil.toast("Save completed");
+        SketchwareUtil.toast(Helper.getResString(R.string.common_word_save_completed));
     }
 
     private void updateProjectMetadata() {
@@ -547,7 +547,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
             if (newVariant.startsWith(variantFullNameStarts)) {
                 initializeBackgroundTask(newVariant.replace("values", ""));
             } else {
-                SketchwareUtil.toastError("Invalid variant input");
+                SketchwareUtil.toastError(Helper.getResString(R.string.resources_editor_invalid_variant_input));
             }
         } else {
             initializeBackgroundTask(variants.get(selectedChoice.get()).replace("values", ""));

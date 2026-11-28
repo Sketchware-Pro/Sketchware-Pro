@@ -104,7 +104,7 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
                 String keyInput = Objects.requireNonNull(dialogBinding.stringKeyInput.getText()).toString();
                 String valueInput = Objects.requireNonNull(dialogBinding.stringValueInput.getText()).toString();
                 if (keyInput.isEmpty() || valueInput.isEmpty()) {
-                    SketchwareUtil.toast("Please fill in all fields", Toast.LENGTH_SHORT);
+                    SketchwareUtil.toast(Helper.getResString(R.string.common_fill_all_fields), Toast.LENGTH_SHORT);
                     return;
                 }
                 currentItem.put("key", keyInput);

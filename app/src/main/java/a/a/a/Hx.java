@@ -223,8 +223,11 @@ public class Hx {
     }
 
     private void addDrawerEvents(String targetId, String eventName, String eventLogic) {
+        // Newer drawer events carry the "_drawer_" prefix on targetId (namespaced logic keys);
+        // strip it to resolve the drawer Event. Legacy events stored the raw id.
+        String rawId = targetId.startsWith("_drawer_") ? targetId.substring("_drawer_".length()) : targetId;
         for (Event next : drawerViewEvents) {
-            if (next.id.equals(isViewBindingEnabled ? "binding.drawer." + ViewBindingBuilder.generateParameterFromId(targetId) : "_drawer_" + targetId)) {
+            if (next.id.equals(isViewBindingEnabled ? "binding.drawer." + ViewBindingBuilder.generateParameterFromId(rawId) : "_drawer_" + rawId)) {
                 next.addEvent(targetId, eventName, eventLogic);
                 return;
             }

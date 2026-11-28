@@ -72,11 +72,19 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
     public static final String FLAG_FROM_ANDROID_MANIFEST = "from_android_manifest";
     public static final List<Pair<String, Class<? extends EditorColorScheme>>> KNOWN_COLOR_SCHEMES = List.of(
             new Pair<>("Default", EditorColorScheme.class),
+            new Pair<>("Darcula", SchemeDarcula.class),
             new Pair<>("GitHub", SchemeGitHub.class),
             new Pair<>("Eclipse", SchemeEclipse.class),
-            new Pair<>("Darcula", SchemeDarcula.class),
             new Pair<>("VS2019", SchemeVS2019.class),
             new Pair<>("NotepadXX", SchemeNotepadXX.class)
+    );
+    /**
+     * Display names of the available TextMate themes, in the same order as
+     * {@link mod.jbk.code.CodeEditorColorSchemes#THEMES}.
+     */
+    public static final List<String> KNOWN_TEXTMATE_THEMES = List.of(
+            "Default", "Darcula", "GitHub", "Eclipse", "Xcode",
+            "Solarized Light", "Monokai", "One Dark"
     );
     public static SharedPreferences pref;
     public static int languageId;
@@ -107,18 +115,34 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
     }
 
     public static void selectTheme(CodeEditor ed, int which) {
-        if (!(ed.getColorScheme() instanceof TextMateColorScheme)) {
-            EditorColorScheme scheme = switch (which) {
-                case 1 -> new SchemeGitHub();
-                case 2 -> new SchemeEclipse();
-                case 3 -> new SchemeDarcula();
-                case 4 -> new SchemeVS2019();
-                case 5 -> new SchemeNotepadXX();
-                default -> new EditorColorScheme();
-            };
+        // Built-in schemes only recolor the editor chrome; use selectTextMateTheme for Kotlin/XML.
+        EditorColorScheme scheme = switch (which) {
+            case 1 -> new SchemeGitHub();
+            case 2 -> new SchemeEclipse();
+            case 3 -> new SchemeDarcula();
+            case 4 -> new SchemeVS2019();
+            case 5 -> new SchemeNotepadXX();
+            default -> new EditorColorScheme();
+        };
 
-            ed.setColorScheme(scheme);
-        }
+        ed.setColorScheme(scheme);
+    }
+
+    /**
+     * Applies one of the TextMate themes ({@link #KNOWN_TEXTMATE_THEMES}).
+     */
+    public static void selectTextMateTheme(CodeEditor ed, int which) {
+        String theme = CodeEditorColorSchemes.THEMES[which];
+        ed.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(theme));
+    }
+
+    /**
+     * Default TextMate theme: Darcula in dark mode, GitHub in light mode.
+     */
+    public static int defaultTextMateTheme(Context c) {
+        return ThemeUtils.isDarkThemeEnabled(c)
+                ? CodeEditorColorSchemes.themeIndex(CodeEditorColorSchemes.THEME_DRACULA)
+                : CodeEditorColorSchemes.themeIndex(CodeEditorColorSchemes.THEME_GITHUB);
     }
 
     public static void selectLanguage(CodeEditor ed, int which) {
@@ -254,8 +278,25 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                 .map(pair -> pair.first)
                 .toArray(String[]::new);
         new MaterialAlertDialogBuilder(activity)
-                .setTitle("Select Theme")
+                .setTitle(R.string.common_word_select_theme)
                 .setSingleChoiceItems(themeItems, selectedThemeIndex, listener)
+                .setNegativeButton(R.string.common_word_cancel, null)
+                .show();
+    }
+
+    public static void showSwitchTextMateThemeDialog(Activity activity, CodeEditor codeEditor, DialogInterface.OnClickListener listener) {
+        int selected;
+        if (codeEditor.getColorScheme() instanceof TextMateColorScheme) {
+            selected = (pref != null && pref.contains("act_tmtheme"))
+                    ? pref.getInt("act_tmtheme", 0)
+                    : defaultTextMateTheme(activity);
+        } else {
+            selected = 0;
+        }
+        String[] items = KNOWN_TEXTMATE_THEMES.toArray(new String[0]);
+        new MaterialAlertDialogBuilder(activity)
+                .setTitle("Select Theme")
+                .setSingleChoiceItems(items, selected, listener)
                 .setNegativeButton(R.string.common_word_cancel, null)
                 .show();
     }
@@ -268,7 +309,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         };
 
         new MaterialAlertDialogBuilder(activity)
-                .setTitle("Select Language")
+                .setTitle(R.string.common_word_select_language)
                 .setSingleChoiceItems(languagesList, languageId, listener)
                 .setNegativeButton(R.string.common_word_cancel, null)
                 .show();
@@ -307,24 +348,32 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             beforeContent = FileUtil.readFile(getIntent().getStringExtra("content"));
         binding.editor.setText(beforeContent);
 
+        boolean textMateLanguage = false;
         if (title.endsWith(".java")) {
             binding.editor.setEditorLanguage(new JavaLanguage());
             languageId = 0;
         } else if (title.endsWith(".kt")) {
             binding.editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_KOTLIN));
-            binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
             languageId = 1;
+            textMateLanguage = true;
         } else if (title.endsWith(".xml")) {
             binding.editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
-            if (ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
-                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
-            } else {
-                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
-            }
             languageId = 2;
+            textMateLanguage = true;
         }
 
-        loadCESettings(this, binding.editor, "act", true);
+        // Apply the theme matching the active language: a saved TextMate theme
+        // for Kotlin/XML (auto default on first open), else the built-in scheme.
+        SharedPreferences hsce = getSharedPreferences("hsce", Activity.MODE_PRIVATE);
+        loadCESettings(this, binding.editor, "act");
+        if (textMateLanguage) {
+            int tmDefault = languageId == 2 ? defaultTextMateTheme(getApplicationContext())
+                    : CodeEditorColorSchemes.themeIndex(CodeEditorColorSchemes.THEME_DRACULA);
+            int tmTheme = hsce.contains("act_tmtheme") ? hsce.getInt("act_tmtheme", 0) : tmDefault;
+            selectTextMateTheme(binding.editor, tmTheme);
+        } else {
+            selectTheme(binding.editor, hsce.getInt("act_theme", 3));
+        }
         loadToolbar();
 
         UI.addSystemWindowInsetToPadding(binding.appBarLayout, true, true, true, false);
@@ -369,7 +418,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                     if (activitiesComponents.get(i).get("name").equals(activityName)) {
                         activitiesComponents.get(i).put("value", beforeContent);
                         FileUtil.writeFile(filePath, getGson().toJson(activitiesComponents));
-                        SketchwareUtil.toast("Saved");
+                        SketchwareUtil.toast(Helper.getResString(R.string.common_word_saved));
                         return;
                     }
                 }
@@ -388,7 +437,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             }
         } else FileUtil.writeFile(getIntent().getStringExtra("content"), beforeContent);
 
-        SketchwareUtil.toast("Saved");
+        SketchwareUtil.toast(Helper.getResString(R.string.common_word_saved));
     }
 
     private void loadToolbar() {
@@ -398,36 +447,35 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             SharedPreferences local_pref = getSharedPreferences("hsce", Activity.MODE_PRIVATE);
             Menu toolbarMenu = binding.toolbar.getMenu();
             toolbarMenu.clear();
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Undo").setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_undo)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Redo").setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_redo)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Save").setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_save)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            toolbarMenu.add(Menu.NONE, 1, Menu.NONE, R.string.common_word_undo).setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_undo)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            toolbarMenu.add(Menu.NONE, 2, Menu.NONE, R.string.common_word_redo).setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_redo)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            toolbarMenu.add(Menu.NONE, 3, Menu.NONE, R.string.common_word_save).setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_save)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             if (isFileInLayoutFolder() && getIntent().hasExtra("sc_id")) {
-                toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Layout Preview");
+                toolbarMenu.add(Menu.NONE, 4, Menu.NONE, R.string.common_word_layout_preview);
             }
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Find & Replace");
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Word wrap").setCheckable(true).setChecked(local_pref.getBoolean("act_ww", false));
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Pretty print");
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Select language");
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Select theme");
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete").setCheckable(true).setChecked(local_pref.getBoolean("act_ac", true));
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete symbol pair").setCheckable(true).setChecked(local_pref.getBoolean("act_acsp", true));
+            toolbarMenu.add(Menu.NONE, 5, Menu.NONE, R.string.msg_find_amp_replace);
+            toolbarMenu.add(Menu.NONE, 6, Menu.NONE, R.string.common_word_word_wrap).setCheckable(true).setChecked(local_pref.getBoolean("act_ww", false));
+            toolbarMenu.add(Menu.NONE, 7, Menu.NONE, R.string.common_word_pretty_print);
+            toolbarMenu.add(Menu.NONE, 8, Menu.NONE, R.string.code_editor_select_language);
+            toolbarMenu.add(Menu.NONE, 9, Menu.NONE, R.string.code_editor_select_theme);
+            toolbarMenu.add(Menu.NONE, 10, Menu.NONE, R.string.common_word_auto_complete).setCheckable(true).setChecked(local_pref.getBoolean("act_ac", true));
+            toolbarMenu.add(Menu.NONE, 11, Menu.NONE, R.string.msg_auto_complete_symbol_pair).setCheckable(true).setChecked(local_pref.getBoolean("act_acsp", true));
 
             binding.toolbar.setOnMenuItemClickListener(item -> {
-                String title1 = item.getTitle().toString();
-                switch (title1) {
-                    case "Undo":
+                switch (item.getItemId()) {
+                    case 1: // Undo
                         binding.editor.undo();
                         break;
 
-                    case "Redo":
+                    case 2: // Redo
                         binding.editor.redo();
                         break;
 
-                    case "Save":
+                    case 3: // Save
                         save();
                         break;
 
-                    case "Pretty print":
+                    case 7: // Pretty print
                         if (getIntent().hasExtra("java")) {
                             StringBuilder b = new StringBuilder();
 
@@ -446,7 +494,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                                 ss = Lx.j(ss, true);
                             } catch (Exception e) {
                                 err = true;
-                                SketchwareUtil.toastError("Your code contains incorrectly nested parentheses");
+                                SketchwareUtil.toastError(Helper.getResString(R.string.code_editor_incorrectly_nested_parentheses));
                             }
 
                             if (!err) binding.editor.setText(ss);
@@ -457,21 +505,30 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                             if (format != null) {
                                 binding.editor.setText(format);
                             } else {
-                                SketchwareUtil.toastError("Failed to format XML file", Toast.LENGTH_LONG);
+                                SketchwareUtil.toastError(Helper.getResString(R.string.code_editor_failed_to_format_xml), Toast.LENGTH_LONG);
                             }
                         } else {
-                            SketchwareUtil.toast("Only Java and XML files can be formatted");
+                            SketchwareUtil.toast(Helper.getResString(R.string.code_editor_only_java_xml_formattable));
                         }
                         break;
 
-                    case "Select language":
+                    case 8: // Select language
                         showSwitchLanguageDialog(this, binding.editor, (dialog, which) -> {
                             selectLanguage(binding.editor, which);
+                            // Re-sync the color scheme to match the new language.
+                            if (which == 0) {
+                                selectTheme(binding.editor, pref.getInt("act_theme", 3));
+                            } else {
+                                int tmDefault = which == 2 ? defaultTextMateTheme(getApplicationContext())
+                                        : CodeEditorColorSchemes.themeIndex(CodeEditorColorSchemes.THEME_DRACULA);
+                                int tmTheme = pref.contains("act_tmtheme") ? pref.getInt("act_tmtheme", 0) : tmDefault;
+                                selectTextMateTheme(binding.editor, tmTheme);
+                            }
                             dialog.dismiss();
                         });
                         break;
 
-                    case "Find & Replace":
+                    case 5: // Find & Replace
                         binding.editor.getSearcher().stopSearch();
                         binding.editor.beginSearchMode();
                         binding.editor.postDelayed(() -> {
@@ -496,36 +553,44 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                         }, 250);
                         break;
 
-                    case "Select theme":
-                        showSwitchThemeDialog(this, binding.editor, (dialog, which) -> {
-                            selectTheme(binding.editor, which);
-                            pref.edit().putInt("act_theme", which).apply();
-                            dialog.dismiss();
-                        });
+                    case 9: // Select theme
+                        if (binding.editor.getColorScheme() instanceof TextMateColorScheme) {
+                            showSwitchTextMateThemeDialog(this, binding.editor, (dialog, which) -> {
+                                selectTextMateTheme(binding.editor, which);
+                                pref.edit().putInt("act_tmtheme", which).apply();
+                                dialog.dismiss();
+                            });
+                        } else {
+                            showSwitchThemeDialog(this, binding.editor, (dialog, which) -> {
+                                selectTheme(binding.editor, which);
+                                pref.edit().putInt("act_theme", which).apply();
+                                dialog.dismiss();
+                            });
+                        }
                         break;
 
-                    case "Word wrap":
+                    case 6: // Word wrap
                         item.setChecked(!item.isChecked());
                         binding.editor.setWordwrap(item.isChecked());
 
                         pref.edit().putBoolean("act_ww", item.isChecked()).apply();
                         break;
 
-                    case "Auto complete symbol pair":
+                    case 11: // Auto complete symbol pair
                         item.setChecked(!item.isChecked());
                         binding.editor.getProps().symbolPairAutoCompletion = item.isChecked();
 
                         pref.edit().putBoolean("act_acsp", item.isChecked()).apply();
                         break;
 
-                    case "Auto complete":
+                    case 10: // Auto complete
                         item.setChecked(!item.isChecked());
 
                         binding.editor.getComponent(EditorAutoCompletion.class).setEnabled(item.isChecked());
                         pref.edit().putBoolean("act_ac", item.isChecked()).apply();
                         break;
 
-                    case "Layout Preview":
+                    case 4: // Layout Preview
                         toLayoutPreview();
                         break;
 

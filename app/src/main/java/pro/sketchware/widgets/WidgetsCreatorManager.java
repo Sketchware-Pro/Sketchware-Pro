@@ -115,7 +115,7 @@ public class WidgetsCreatorManager {
             );
             widgetConfigurationsList.removeIf(this::isInvalidWidget);
         } catch (Exception e) {
-            SketchwareUtil.toastError("Error loading widgets: " + e.getMessage());
+            SketchwareUtil.toastError(Helper.getResString(R.string.widgets_creator_error_loading_widgets, e.getMessage()));
             createWidgetsFile();
         }
     }
@@ -124,18 +124,18 @@ public class WidgetsCreatorManager {
         List<String> requiredKeys = Arrays.asList("Class", "title", "name", "inject", "type", "position");
 
         if (!widgetData.keySet().containsAll(requiredKeys)) {
-            SketchwareUtil.toastError("Missing required keys for widget: " + widgetData.get("title"));
+            SketchwareUtil.toastError(Helper.getResString(R.string.widgets_creator_widget_missing_keys, widgetData.get("title")));
             return true;
         }
 
         try {
             int typeId = ((Number) widgetData.get("type")).intValue();
             if (!availableWidgetsTypes.contains(String.valueOf(typeId))) {
-                SketchwareUtil.toastError("Invalid widget type: " + widgetData.get("title"));
+                SketchwareUtil.toastError(Helper.getResString(R.string.widgets_creator_invalid_widget_type, widgetData.get("title")));
                 return true;
             }
         } catch (Exception e) {
-            SketchwareUtil.toastError("Invalid type format for widget: " + widgetData.get("title"));
+            SketchwareUtil.toastError(Helper.getResString(R.string.widgets_creator_invalid_widget_type_format, widgetData.get("title")));
             return true;
         }
 
@@ -215,19 +215,19 @@ public class WidgetsCreatorManager {
                 String widgetClass = Objects.requireNonNull(binding.addWidgetTo.getText()).toString().trim();
 
                 if (widgetTitle.isEmpty()) {
-                    binding.inputTitle.setError(String.format(Helper.getResString(R.string.var_is_required, "Widget title")));
+                    binding.inputTitle.setError(String.format(Helper.getResString(R.string.var_is_required, Helper.getResString(R.string.common_word_widget_title))));
                     return;
                 }
                 if (widgetName.isEmpty()) {
-                    binding.inputName.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget class name"));
+                    binding.inputName.setError(String.format(Helper.getResString(R.string.var_is_required), Helper.getResString(R.string.msg_widget_class_name)));
                     return;
                 }
                 if (widgetType.isEmpty()) {
-                    binding.inputType.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget type"));
+                    binding.inputType.setError(String.format(Helper.getResString(R.string.var_is_required), Helper.getResString(R.string.widget_type_title)));
                     return;
                 }
                 if (widgetClass.isEmpty()) {
-                    binding.inputClass.setError(String.format(Helper.getResString(R.string.var_is_required), "Category"));
+                    binding.inputClass.setError(String.format(Helper.getResString(R.string.var_is_required), Helper.getResString(R.string.widgets_creator_category)));
                     return;
                 }
 
@@ -251,7 +251,7 @@ public class WidgetsCreatorManager {
                 viewEditorFragment.e();
                 v.dismiss();
             } catch (Exception e) {
-                SketchwareUtil.toastError("Failed: " + e.getMessage());
+                SketchwareUtil.toastError(Helper.getResString(R.string.widgets_creator_failed_with_reason, e.getMessage()));
             }
         });
 
@@ -279,7 +279,7 @@ public class WidgetsCreatorManager {
                 FilePickerOptions options = new FilePickerOptions();
                 options.setMultipleSelection(true);
                 options.setExtensions(new String[]{"json"});
-                options.setTitle("Select .json widgets files");
+                options.setTitle(Helper.getResString(R.string.widgets_creator_select_json_widgets_files));
 
                 FilePickerCallback callback = new FilePickerCallback() {
                     @Override
@@ -292,7 +292,7 @@ public class WidgetsCreatorManager {
             } else {
                 String exportFilePath = widgetExportDirectoryPath + "allWidgets.json";
                 FileUtil.writeFile(exportFilePath, getGson().toJson(widgetConfigurationsList));
-                SketchwareUtil.toast("Exported in " + exportFilePath);
+                SketchwareUtil.toast(Helper.getResString(R.string.block_selector_exported_in, exportFilePath));
             }
             return true;
         });
@@ -301,7 +301,7 @@ public class WidgetsCreatorManager {
     }
 
     private void importWidgets(String[] paths) {
-        String ERROR_MESSAGE = "The imported widgets file #%s is empty or invalid";
+        String ERROR_MESSAGE = Helper.getResString(R.string.widgets_creator_imported_widgets_invalid);
         for (int i = 0; i < paths.length; i++) {
             String path = paths[i];
             String value = FileUtil.readFile(path);
@@ -334,7 +334,7 @@ public class WidgetsCreatorManager {
         if (!widgetConfigurationsList.isEmpty()) {
             FileUtil.writeFile(widgetsJsonFilePath, getGson().toJson(widgetConfigurationsList));
             viewEditorFragment.e();
-            SketchwareUtil.toast("Imported!");
+            SketchwareUtil.toast(Helper.getResString(R.string.widgets_creator_imported_excl));
         }
     }
 
@@ -489,7 +489,7 @@ public class WidgetsCreatorManager {
             HashMap<String, Object> mapToExport = widgetConfigurationsList.get(position);
             String exportFilePath = widgetExportDirectoryPath + mapToExport.get("title") + ".json";
             FileUtil.writeFile(exportFilePath, "[" + getGson().toJson(mapToExport) + "]");
-            SketchwareUtil.toast("Exported in " + exportFilePath);
+            SketchwareUtil.toast(Helper.getResString(R.string.block_selector_exported_in, exportFilePath));
             dialog.dismiss();
         });
         dialogBinding.delete.setOnClickListener(v -> {

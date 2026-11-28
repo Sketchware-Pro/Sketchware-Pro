@@ -15,6 +15,7 @@ import mod.hey.studios.util.Helper;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.xml.XmlBuilder;
+import pro.sketchware.R;
 
 public class AndroidManifestInjector {
 
@@ -70,7 +71,7 @@ public class AndroidManifestInjector {
             }
 
             attributes = new ArrayList<>();
-            SketchwareUtil.toastError("Failed to parse AndroidManifest attribute injections; Reason: " + errorMessage);
+            SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_parse_failed, errorMessage));
         }
 
         return attributes;
@@ -93,10 +94,10 @@ public class AndroidManifestInjector {
                         nx.addChildNode(usesPermissionTag);
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
+                    SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_value, i + 1));
                 }
             } else {
-                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_name, i + 1));
             }
         }
     }
@@ -114,12 +115,15 @@ public class AndroidManifestInjector {
             Object name = attribute.get("name");
 
             if (name instanceof String) {
-                if (className.equals(name)) {
+                // Honor the "_apply_for_all_activities" wildcard here too: the reader side
+                // (isActivityAttributeUsed) matches it, so without this the injection
+                // suppressed the default theme/orientation/exported yet was never emitted.
+                if (className.equals(name) || "_apply_for_all_activities".equals(name)) {
                     addToAct(nx, projectId, actName);
                     return true;
                 }
             } else {
-                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_name, i + 1));
             }
         }
 
@@ -159,11 +163,11 @@ public class AndroidManifestInjector {
                             return true;
                         }
                     } else {
-                        SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_value, i + 1));
                     }
                 }
             } else {
-                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_name, i + 1));
             }
         }
 
@@ -276,11 +280,11 @@ public class AndroidManifestInjector {
                             themeInjected = true;
                         }
                     } else {
-                        SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_value, i + 1));
                     }
                 }
             } else {
-                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_name, i + 1));
             }
         }
 
@@ -304,11 +308,11 @@ public class AndroidManifestInjector {
                     if (value instanceof String) {
                         nx.addAttributeValue((String) value);
                     } else {
-                        SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
+                        SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_value, i + 1));
                     }
                 }
             } else {
-                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
+                SketchwareUtil.toastError(Helper.getResString(R.string.android_manifest_injector_manifest_injection_invalid_name, i + 1));
             }
         }
     }

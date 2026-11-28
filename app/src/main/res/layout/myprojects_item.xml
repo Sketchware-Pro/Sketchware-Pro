@@ -99,6 +99,8 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:adjustViewBounds="true"
+        android:layout_marginEnd="4dp"
         android:scaleType="centerInside"
         android:src="@drawable/selector_ic_expand_more_24"
         app:tint="?attr/colorControlNormal" />

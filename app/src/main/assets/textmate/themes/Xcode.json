@@ -1,0 +1,25 @@
+{
+    "name": "Xcode",
+    "settings": [
+        {
+            "settings": {
+                "background": "#ffffff",
+                "foreground": "#000000",
+                "caret": "#000000",
+                "lineHighlight": "#0000000d",
+                "selection": "#b4d7ff",
+                "invisibles": "#bfbfbf"
+            }
+        },
+        { "name": "Comment", "scope": "comment", "settings": { "foreground": "#178f70" } },
+        { "name": "String", "scope": "string, string.quoted, string.xml", "settings": { "foreground": "#1c00cf" } },
+        { "name": "Keyword", "scope": "keyword, storage, storage.type, storage.modifier", "settings": { "foreground": "#8917b4" } },
+        { "name": "Tag", "scope": "entity.name.tag", "settings": { "foreground": "#ff0202" } },
+        { "name": "Attribute", "scope": "entity.other.attribute-name", "settings": { "foreground": "#0080ff" } },
+        { "name": "Constant", "scope": "constant, constant.numeric, constant.language, support.constant", "settings": { "foreground": "#00427c" } },
+        { "name": "Function", "scope": "entity.name.function, support.function", "settings": { "foreground": "#000000" } },
+        { "name": "Type", "scope": "entity.name.type, entity.name.class, support.type, support.class", "settings": { "foreground": "#5a2800" } },
+        { "name": "Variable", "scope": "variable, variable.other, variable.parameter", "settings": { "foreground": "#000000" } },
+        { "name": "Invalid", "scope": "invalid, invalid.illegal", "settings": { "foreground": "#ff0202" } }
+    ]
+}

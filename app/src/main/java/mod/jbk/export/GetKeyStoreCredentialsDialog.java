@@ -51,7 +51,7 @@ public class GetKeyStoreCredentialsDialog {
     private String[] getDropdownItems() {
         LinkedList<String> labels = new LinkedList<>();
         for (SigningMode mode : SigningMode.values()) {
-            labels.add(mode.label);
+            labels.add(Helper.getResString(mode.label));
         }
         return labels.toArray(new String[0]);
     }
@@ -76,7 +76,7 @@ public class GetKeyStoreCredentialsDialog {
                     ));
                 }
             } else {
-                SketchwareUtil.toastError("Keystore not found");
+                SketchwareUtil.toastError(Helper.getResString(R.string.get_key_store_credentials_keystore_not_found));
             }
         } else if (mode == SigningMode.TESTKEY) {
             dialogInterface.dismiss();
@@ -91,21 +91,21 @@ public class GetKeyStoreCredentialsDialog {
         boolean isValid = true;
 
         if (TextUtils.isEmpty(binding.etAlias.getText())) {
-            binding.tilAlias.setError("Alias can't be empty");
+            binding.tilAlias.setError(Helper.getResString(R.string.get_key_store_credentials_alias_empty));
             isValid = false;
         } else {
             binding.tilAlias.setError(null);
         }
 
         if (TextUtils.isEmpty(binding.etPassword.getText())) {
-            binding.tilPassword.setError("Password can't be empty");
+            binding.tilPassword.setError(Helper.getResString(R.string.get_key_store_credentials_password_empty));
             isValid = false;
         } else {
             binding.tilPassword.setError(null);
         }
 
         if (TextUtils.isEmpty(binding.etSigningAlgorithm.getText())) {
-            binding.tilSigningAlgorithm.setError("Algorithm can't be empty");
+            binding.tilSigningAlgorithm.setError(Helper.getResString(R.string.get_key_store_credentials_algorithm_empty));
             isValid = false;
         } else {
             binding.tilSigningAlgorithm.setError(null);
@@ -124,13 +124,13 @@ public class GetKeyStoreCredentialsDialog {
     }
 
     private enum SigningMode {
-        OWN_KEY_STORE("Sign using keystore"),
-        TESTKEY("Sign using a test key"),
-        DONT_SIGN("Don't sign");
+        OWN_KEY_STORE(R.string.get_key_store_credentials_sign_using_keystore),
+        TESTKEY(R.string.get_key_store_credentials_sign_using_test_key),
+        DONT_SIGN(R.string.get_key_store_credentials_dont_sign);
 
-        private final String label;
+        private final int label;
 
-        SigningMode(String label) {
+        SigningMode(int label) {
             this.label = label;
         }
     }

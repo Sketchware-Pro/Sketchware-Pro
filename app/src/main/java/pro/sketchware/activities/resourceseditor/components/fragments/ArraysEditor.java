@@ -135,7 +135,7 @@ public class ArraysEditor extends Fragment {
         binding.arrayType.setOnClickListener(view -> {
             String[] arrayTypes = {"STRING", "INTEGER", "OBJECT"};
             new MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Select Array Type")
+                    .setTitle(R.string.arrays_editor_select_array_type)
                     .setSingleChoiceItems(arrayTypes, -1, (dialogInterface, which) -> {
                         binding.arrayType.setText(arrayTypes[which]);
                         dialogInterface.dismiss();
@@ -149,12 +149,12 @@ public class ArraysEditor extends Fragment {
             String header = Objects.requireNonNull(binding.arrayHeaderInput.getText()).toString();
 
             if (arrayName.isEmpty()) {
-                SketchwareUtil.toastError("Array name Input is Empty");
+                SketchwareUtil.toastError(Helper.getResString(R.string.arrays_editor_array_name_empty));
                 return;
             }
 
             if (arrayTypeString.isEmpty()) {
-                SketchwareUtil.toastError("Array type not selected");
+                SketchwareUtil.toastError(Helper.getResString(R.string.arrays_editor_array_type_not_selected));
                 return;
             }
 
@@ -189,7 +189,7 @@ public class ArraysEditor extends Fragment {
         binding.arrayType.setOnClickListener(view -> {
             String[] arrayTypes = {"STRING", "INTEGER", "OBJECT"};
             new MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Select Array Type")
+                    .setTitle(R.string.arrays_editor_select_array_type)
                     .setSingleChoiceItems(arrayTypes, -1, (dialogInterface, which) -> {
                         binding.arrayType.setText(arrayTypes[which]);
                         dialogInterface.dismiss();
@@ -204,7 +204,7 @@ public class ArraysEditor extends Fragment {
             String header = Objects.requireNonNull(binding.arrayHeaderInput.getText()).toString();
 
             if (arrayName.isEmpty()) {
-                SketchwareUtil.toastError("Array name Input is Empty");
+                SketchwareUtil.toastError(Helper.getResString(R.string.arrays_editor_array_name_empty));
                 return;
             }
 
@@ -220,7 +220,7 @@ public class ArraysEditor extends Fragment {
         });
         dialog.setNeutralButton(R.string.common_word_delete, (d, which) -> new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.common_word_warning)
-                .setMessage("Are you sure you want to delete " + array.getArrayName() + "?")
+                .setMessage(Helper.getResString(R.string.common_confirm_delete_named, array.getArrayName()))
                 .setPositiveButton(R.string.common_word_yes, (d2, w) -> {
                     arraysList.remove(position);
                     notesMap.remove(position);
@@ -229,7 +229,7 @@ public class ArraysEditor extends Fragment {
                     updateNoContentLayout();
                     hasUnsavedChanges = true;
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(R.string.common_word_cancel, null)
                 .show());
         dialog.setNegativeButton(R.string.common_word_cancel, null);
         dialog.setView(binding.getRoot());
@@ -243,7 +243,7 @@ public class ArraysEditor extends Fragment {
         dialog.setContentView(binding.getRoot());
         dialog.show();
 
-        binding.title.setText(array.getArrayName() + " attributes");
+        binding.title.setText(Helper.getResString(R.string.common_attributes_title, array.getArrayName()));
 
         attributesAdapter = new PropertyInputItem.AttributesAdapter();
         attributesAdapter.setOnItemClickListener(
@@ -257,14 +257,14 @@ public class ArraysEditor extends Fragment {
                     public void onItemLongClick(LinkedHashMap<String, String> attributes, String attr) {
                         new MaterialAlertDialogBuilder(requireContext())
                                 .setTitle(R.string.common_word_warning)
-                                .setMessage("Are you sure you want to delete " + attr + "?")
+                                .setMessage(Helper.getResString(R.string.common_confirm_delete_named, attr))
                                 .setPositiveButton(R.string.common_word_yes, (d, w) -> {
                                     attributes.remove(attr);
                                     array.setAttributes(attributes);
                                     attributesAdapter.submitList(new ArrayList<>(attributes.keySet()));
                                     hasUnsavedChanges = true;
                                 })
-                                .setNegativeButton("Cancel", null)
+                                .setNegativeButton(R.string.common_word_cancel, null)
                                 .create()
                                 .show();
                     }
@@ -303,14 +303,14 @@ public class ArraysEditor extends Fragment {
             binding.itemValue.requestFocus();
         }
 
-        dialog.setTitle(isEditing ? "Edit item" : "Create new item");
+        dialog.setTitle(isEditing ? R.string.arrays_editor_edit_item : R.string.arrays_editor_create_new_item);
 
         dialog.setPositiveButton(R.string.common_word_save, (d, which) -> {
             String attribute = Objects.requireNonNull(binding.itemName.getText()).toString();
             String value = Objects.requireNonNull(binding.itemValue.getText()).toString();
 
             if (attribute.isEmpty() || value.isEmpty()) {
-                SketchwareUtil.toastError("Please fill in all fields");
+                SketchwareUtil.toastError(Helper.getResString(R.string.common_fill_all_fields));
                 return;
             }
 

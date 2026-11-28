@@ -77,12 +77,17 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 Intent data = result.getData();
                 if (data == null) {
-                    SketchwareUtil.toastError("Received invalid data");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.icon_creator_received_invalid_data));
                     return;
                 }
                 Uri uri = data.getData();
                 if (result.getResultCode() == RESULT_OK && uri != null) {
-                    iconFilePath = HB.a(getApplicationContext(), uri);
+                    String resolvedPath = HB.a(getApplicationContext(), uri);
+                    if (resolvedPath == null) {
+                        SketchwareUtil.toastError("Failed to resolve selected image");
+                        return;
+                    }
+                    iconFilePath = resolvedPath;
                     appIconBitmap = null;
                     Bitmap bitmap = iB.a(iconFilePath, 96, 96);
                     try {
@@ -99,7 +104,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 Intent data = result.getData();
                 if (data == null) {
-                    SketchwareUtil.toastError("Received invalid data");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.icon_creator_received_invalid_data));
                     return;
                 }
                 Bundle extras = data.getExtras();
@@ -118,12 +123,17 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 Intent data = result.getData();
                 if (data == null) {
-                    SketchwareUtil.toastError("Received invalid data");
+                    SketchwareUtil.toastError(Helper.getResString(R.string.icon_creator_received_invalid_data));
                     return;
                 }
                 Uri uri = data.getData();
                 if (result.getResultCode() == RESULT_OK && uri != null) {
-                    setAppIcoTexture(HB.a(getApplicationContext(), uri));
+                    String resolvedPath = HB.a(getApplicationContext(), uri);
+                    if (resolvedPath == null) {
+                        SketchwareUtil.toastError("Failed to resolve selected image");
+                        return;
+                    }
+                    setAppIcoTexture(resolvedPath);
                 }
             });
 

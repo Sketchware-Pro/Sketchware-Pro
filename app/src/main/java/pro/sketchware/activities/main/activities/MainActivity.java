@@ -211,8 +211,8 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                                 new MaterialAlertDialogBuilder(MainActivity.this)
                                         .setTitle(R.string.common_word_warning)
                                         .setMessage(BackupRestoreManager.getRestoreIntegratedLocalLibrariesMessage(false, -1, -1, null))
-                                        .setPositiveButton("Copy", (dialog, which) -> manager.doRestore(path, true))
-                                        .setNegativeButton("Don't copy", (dialog, which) -> manager.doRestore(path, false))
+                                        .setPositiveButton(R.string.common_word_copy, (dialog, which) -> manager.doRestore(path, true))
+                                        .setNegativeButton(R.string.main_dont_copy, (dialog, which) -> manager.doRestore(path, false))
                                         .setNeutralButton(R.string.common_word_cancel, null)
                                         .show();
                             } else {
@@ -222,7 +222,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                             // Clear intent so it doesn't duplicate
                             getIntent().setData(null);
                         } else {
-                            SketchwareUtil.toastError("Failed to copy backup file to temporary location: " + reason, Toast.LENGTH_LONG);
+                            SketchwareUtil.toastError(Helper.getResString(R.string.main_failed_copy_backup_temp, reason), Toast.LENGTH_LONG);
                         }
                     }
                 }).copyFile(data);
@@ -320,14 +320,10 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     @NonNull
     private BottomSheetDialogView getBottomSheetDialogView() {
         BottomSheetDialogView bottomSheetDialog = new BottomSheetDialogView(this);
-        bottomSheetDialog.setTitle("Major changes in v7.0.0");
-        bottomSheetDialog.setDescription("""
-                There have been major changes since v6.3.0 fix1, \
-                and it's very important to know them all if you want your projects to still work.
-                
-                You can view all changes whenever you want at the About Sketchware Pro screen.""");
+        bottomSheetDialog.setTitle(Helper.getResString(R.string.main_major_changes_title));
+        bottomSheetDialog.setDescription(Helper.getResString(R.string.main_major_changes_description));
 
-        bottomSheetDialog.setPositiveButton("View changes", (dialog, which) -> {
+        bottomSheetDialog.setPositiveButton(Helper.getResString(R.string.main_view_changes), (dialog, which) -> {
             ConfigActivity.setSetting(ConfigActivity.SETTING_CRITICAL_UPDATE_REMINDER, true);
             Intent launcher = new Intent(this, AboutActivity.class);
             launcher.putExtra("select", "changelog");
@@ -381,7 +377,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                 MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                 dialog.setIcon(R.drawable.ic_expire_48dp);
                 dialog.setTitle(R.string.title_android_11_storage_access);
-                dialog.setMessage("Starting with Android 11, Sketchware Pro needs a new permission to avoid " + "taking ages to build projects. Don't worry, we can't do more to storage than " + "with current granted permissions.");
+                dialog.setMessage(R.string.main_android11_storage_permission_message);
                 dialog.setPositiveButton(R.string.common_word_settings, (v, which) -> {
                     FileUtil.requestAllFilesAccessPermission(this);
                     v.dismiss();

@@ -73,7 +73,7 @@ public class CommitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             int activeBackgroundColor;
             int activeBackgroundTextColor;
             if (isCoreTeamMember(commitDetails.getCommitterName())) {
-                itemHolder.binding.tvStatus.setText("Core Team");
+                itemHolder.binding.tvStatus.setText(R.string.common_word_core_team);
                 activeBackgroundColor = MaterialColors.getColor(itemHolder.binding.tvStatus, R.attr.colorCoolGreenContainer);
                 activeBackgroundTextColor = MaterialColors.getColor(itemHolder.binding.tvStatus, R.attr.colorOnCoolGreenContainer);
             } else {
@@ -85,17 +85,17 @@ public class CommitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             itemHolder.binding.tvStatus.setTextColor(activeBackgroundTextColor);
 
             if (shaPosition > position || shaPosition == -1) {
-                itemHolder.binding.updateStatus.setText("New Update");
+                itemHolder.binding.updateStatus.setText(R.string.common_word_new_update);
                 activeBackgroundColor = MaterialColors.getColor(itemHolder.binding.updateStatus, R.attr.colorCoolGreenContainer);
                 activeBackgroundTextColor = MaterialColors.getColor(itemHolder.binding.updateStatus, R.attr.colorOnCoolGreenContainer);
                 advancedCorners(itemHolder.binding.viewLeftline, MaterialColors.getColor(itemHolder.binding.viewLeftline, R.attr.colorGreen));
             } else if (shaPosition < position) {
-                itemHolder.binding.updateStatus.setText("Old Version");
+                itemHolder.binding.updateStatus.setText(R.string.common_word_old_version);
                 activeBackgroundColor = MaterialColors.getColor(itemHolder.binding.updateStatus, R.attr.colorVioletContainer);
                 activeBackgroundTextColor = MaterialColors.getColor(itemHolder.binding.updateStatus, R.attr.colorViolet);
                 advancedCorners(itemHolder.binding.viewLeftline, MaterialColors.getColor(itemHolder.binding.viewLeftline, R.attr.colorViolet));
             } else {
-                itemHolder.binding.updateStatus.setText("Current Version");
+                itemHolder.binding.updateStatus.setText(R.string.common_word_current_version);
                 activeBackgroundColor = MaterialColors.getColor(itemHolder.binding.updateStatus, R.attr.colorAmberContainer);
                 activeBackgroundTextColor = MaterialColors.getColor(itemHolder.binding.updateStatus, R.attr.colorOnAmberContainer);
                 advancedCorners(itemHolder.binding.viewLeftline, MaterialColors.getColor(itemHolder.binding.viewLeftline, R.attr.colorAmber));

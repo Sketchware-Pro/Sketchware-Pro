@@ -12,6 +12,8 @@ import pro.sketchware.utility.FileUtil;
 public class SystemLogPrinter {
 
     private static final String PATH = FileUtil.getExternalStorageDir().concat("/.sketchware/debug.txt");
+    private static final PrintStream ORIGINAL_OUT = System.out;
+    private static final PrintStream ORIGINAL_ERR = System.err;
     private static PrintStream ps;
 
     public static void start() {
@@ -78,6 +80,9 @@ public class SystemLogPrinter {
         FileUtil.writeFile(path, "");
 
         try {
+            if (ps != null) {
+                ps.close();
+            }
             // Use FileOutputStream instead of FileWriter
             ps = new PrintStream(new FileOutputStream(path, true), true);
             System.setOut(ps);
@@ -88,6 +93,8 @@ public class SystemLogPrinter {
     }
 
     public static void stop() {
+        System.setOut(ORIGINAL_OUT);
+        System.setErr(ORIGINAL_ERR);
         if (ps != null) {
             ps.close();
             ps = null;

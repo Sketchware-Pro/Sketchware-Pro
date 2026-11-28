@@ -16,9 +16,11 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import a.a.a.oq;
 import a.a.a.qA;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.IconSelectorDialog;
+import mod.hilal.saif.events.EventsHandler;
 import mod.jbk.util.OldResourceIdMapper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentEventsManagerCreatorBinding;
@@ -160,11 +162,11 @@ public class EventsManagerCreatorFragment extends qA {
 
     private void save() {
         if (!filledIn()) {
-            SketchwareUtil.toast("Some required fields are empty!");
+            SketchwareUtil.toast(Helper.getResString(R.string.events_manager_required_fields_empty));
             return;
         }
         if (!OldResourceIdMapper.isValidIconId(Helper.getText(binding.eventsCreatorIcon))) {
-            binding.eventsCreatorIconTil.setError("Invalid icon ID");
+            binding.eventsCreatorIconTil.setError(Helper.getResString(R.string.invalid_icon_id));
             binding.eventsCreatorIcon.requestFocus();
             return;
         }
@@ -195,7 +197,9 @@ public class EventsManagerCreatorFragment extends qA {
             arrayList.add(hashMap);
         }
         FileUtil.writeFile(concat, getGson().toJson(arrayList));
-        SketchwareUtil.toast("Saved");
+        EventsHandler.refreshCachedCustomEvents();
+        oq.refreshActivityEvents();
+        SketchwareUtil.toast(Helper.getResString(R.string.common_word_saved));
         getParentFragmentManager().popBackStack();
     }
 
@@ -216,12 +220,12 @@ public class EventsManagerCreatorFragment extends qA {
         configureToolbar(binding.toolbar);
 
         if (isEdit) {
-            binding.toolbar.setTitle("Event Properties");
+            binding.toolbar.setTitle(R.string.common_word_event_properties);
             binding.toolbar.setSubtitle(event_name);
         } else if (isActivityEvent) {
-            binding.toolbar.setTitle("New Activity Event");
+            binding.toolbar.setTitle(R.string.events_manager_new_activity_event);
         } else {
-            binding.toolbar.setTitle("New Event");
+            binding.toolbar.setTitle(R.string.common_word_new_event);
             binding.toolbar.setSubtitle(lisName);
         }
     }

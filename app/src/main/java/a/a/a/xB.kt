@@ -1,5 +1,6 @@
 package a.a.a
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import java.util.ArrayList
@@ -142,6 +143,7 @@ object xB {
         return sb.toString()
     }
 
+    @SuppressLint("DiscouragedApi")
     private fun getResourceString(context: Context, name: String): String {
         val id = context.resources.getIdentifier(name, "string", context.packageName)
         if (id != 0) {

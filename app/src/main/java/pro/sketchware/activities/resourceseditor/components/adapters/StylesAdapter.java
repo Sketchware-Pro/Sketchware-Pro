@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import pro.sketchware.R;
 import pro.sketchware.activities.resourceseditor.components.fragments.StylesEditor;
 import pro.sketchware.activities.resourceseditor.components.fragments.ThemesEditor;
 import pro.sketchware.activities.resourceseditor.components.models.StyleModel;
@@ -74,7 +75,7 @@ public class StylesAdapter extends RecyclerView.Adapter<StylesAdapter.StyleViewH
         public void bind(StyleModel style) {
             binding.title.setText(style.getStyleName());
             if (style.getParent().isEmpty()) {
-                binding.sub.setText("No Parent");
+                binding.sub.setText(R.string.common_word_no_parent);
             } else {
                 binding.sub.setText(style.getParent());
             }

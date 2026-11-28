@@ -72,13 +72,13 @@ public class VersionDialog {
             if (validVerCode) {
                 binding.tilVersionCode.setError(null);
             } else {
-                binding.tilVersionCode.setError("Version code must be between 1 and 2100000000");
+                binding.tilVersionCode.setError(Helper.getResString(R.string.version_code_range));
             }
 
             if (validVerName) {
                 binding.tilVersionName.setError(null);
             } else {
-                binding.tilVersionName.setError("Invalid Version Name");
+                binding.tilVersionName.setError(Helper.getResString(R.string.version_invalid_version_name));
             }
 
             if (!mB.a() && validVerCode && validVerName) {

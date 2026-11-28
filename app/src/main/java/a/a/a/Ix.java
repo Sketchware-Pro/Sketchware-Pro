@@ -435,6 +435,12 @@ public class Ix {
             if (c.hasPermission(jq.PERMISSION_BLUETOOTH_ADMIN)) {
                 writePermission(a, Manifest.permission.BLUETOOTH_ADMIN);
             }
+            if (c.hasPermission(jq.PERMISSION_BLUETOOTH_CONNECT)) {
+                writePermission(a, Manifest.permission.BLUETOOTH_CONNECT);
+            }
+            if (c.hasPermission(jq.PERMISSION_BLUETOOTH_SCAN)) {
+                writePermission(a, Manifest.permission.BLUETOOTH_SCAN);
+            }
             if (c.hasPermission(jq.PERMISSION_ACCESS_FINE_LOCATION)) {
                 writePermission(a, Manifest.permission.ACCESS_FINE_LOCATION);
             }
@@ -524,9 +530,17 @@ public class Ix {
                 String javaName = projectFileBean.getJavaName();
                 activityTag.addAttribute("android", "name", "." + javaName.substring(0, javaName.indexOf(".java")));
 
-                if (!AndroidManifestInjector.getActivityAttrs(activityTag, c.sc_id, projectFileBean.getJavaName())) {
+                // Emit injected attributes (now honors the "_apply_for_all_activities"
+                // wildcard), then add defaults per-attribute - injecting just a theme must
+                // not silently delete configChanges/hardwareAccelerated/PiP.
+                AndroidManifestInjector.getActivityAttrs(activityTag, c.sc_id, projectFileBean.getJavaName());
+                if (!AndroidManifestInjector.isActivityAttributeUsed("android:configChanges", c.sc_id, projectFileBean.getJavaName())) {
                     activityTag.addAttribute("android", "configChanges", "orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout");
+                }
+                if (!AndroidManifestInjector.isActivityAttributeUsed("android:hardwareAccelerated", c.sc_id, projectFileBean.getJavaName())) {
                     activityTag.addAttribute("android", "hardwareAccelerated", "true");
+                }
+                if (!AndroidManifestInjector.isActivityAttributeUsed("android:supportsPictureInPicture", c.sc_id, projectFileBean.getJavaName())) {
                     activityTag.addAttribute("android", "supportsPictureInPicture", "true");
                 }
                 if (!AndroidManifestInjector.isActivityThemeUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
@@ -670,6 +684,8 @@ public class Ix {
         XmlBuilder activityTag = new XmlBuilder("activity");
         boolean specifiedActivityName = false;
         boolean specifiedConfigChanges = false;
+        boolean specifiedExported = false;
+        boolean hasIntentFilter = false;
         for (HashMap<String, Object> hashMap : activityAttrs) {
             if (hashMap.containsKey("name") && hashMap.containsKey("value")) {
                 Object nameObject = hashMap.get("name");
@@ -684,6 +700,12 @@ public class Ix {
                         } else if (value.contains("android:configChanges=")) {
                             specifiedConfigChanges = true;
                         }
+                        if (value.contains("android:exported=")) {
+                            specifiedExported = true;
+                        }
+                        if (value.contains("<intent-filter")) {
+                            hasIntentFilter = true;
+                        }
                     }
                 }
             }
@@ -693,6 +715,11 @@ public class Ix {
         }
         if (!specifiedConfigChanges) {
             activityTag.addAttribute("android", "configChanges", "orientation|screenSize");
+        }
+        // Android 12+ requires android:exported on any component with an intent-filter;
+        // java-manifest activities used to be emitted without it and fail aapt2.
+        if (hasIntentFilter && !specifiedExported && targetsSdkVersion31OrHigher) {
+            activityTag.addAttribute("android", "exported", "true");
         }
         applicationTag.addChildNode(activityTag);
     }

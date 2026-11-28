@@ -7,6 +7,7 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.firebase.FirebaseActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLibraryFirebasePreviewBinding;
 import pro.sketchware.utility.SketchwareUtil;
@@ -40,8 +41,7 @@ public class kv extends LinearLayout implements nv {
                     firebaseLibraryBean.useYn = "Y";
                 }
             } else {
-                SketchwareUtil.toast("Configure Firebase settings first, either by importing google-services.json, " +
-                        "or by manually entering the project's details.", Toast.LENGTH_LONG);
+                SketchwareUtil.toast(Helper.getResString(R.string.firebase_configure_firebase_first), Toast.LENGTH_LONG);
             }
         });
     }

@@ -31,6 +31,7 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 import a.a.a.bB;
+import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 import pro.sketchware.R;
 
@@ -170,8 +171,8 @@ public class SketchwareUtil {
     public static void showFailedToParseJsonDialog(Activity context, File json, String componentLabel, Consumer<Void> afterRenameLogic) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
         dialog.setIcon(R.drawable.break_warning_96_red);
-        dialog.setTitle("Couldn't get " + componentLabel);
-        dialog.setMessage("Failed to parse " + componentLabel + " from file " + json + ". Fix by renaming old file to " + json.getName() + ".bak? " + "If not, no " + componentLabel + " will be used.");
+        dialog.setTitle(Helper.getResString(R.string.common_couldnt_get, componentLabel));
+        dialog.setMessage(Helper.getResString(R.string.common_failed_to_parse_json, componentLabel, json, json.getName()));
         dialog.setPositiveButton(R.string.assets_manager_rename, (v, which) -> {
             FileUtil.renameFile(json.getAbsolutePath(), json.getAbsolutePath() + ".bak");
             afterRenameLogic.accept(null);
@@ -198,9 +199,9 @@ public class SketchwareUtil {
                     int _count1 = Integer.valueOf(_compareMap1.get(key).toString());
                     int _count2 = Integer.valueOf(_compareMap2.get(key).toString());
                     if (ascending) {
-                        return _count1 < _count2 ? -1 : _count1 < _count2 ? 1 : 0;
+                        return _count1 < _count2 ? -1 : _count1 > _count2 ? 1 : 0;
                     } else {
-                        return _count1 > _count2 ? -1 : _count1 > _count2 ? 1 : 0;
+                        return _count1 > _count2 ? -1 : _count1 < _count2 ? 1 : 0;
                     }
                 } else {
                     if (ascending) {

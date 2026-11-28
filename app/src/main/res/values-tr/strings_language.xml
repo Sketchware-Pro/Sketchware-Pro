@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_title">Dil</string>
+    <string name="settings_language_system">Sistem dili</string>
+</resources>
